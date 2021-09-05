@@ -1,0 +1,48 @@
+{
+  inputs = rec {
+    stable.url = "github:nixos/nixpkgs/nixos-21.05";
+    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.follows = "unstable";
+
+    home-manager = {
+      url = "github:rycee/home-manager";
+      inputs.nixpkgs.follows = "unstable";
+    };
+    nixos-hardware.url = "github:nixos/nixos-hardware";
+
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+  };
+
+  outputs = { self, ...}@inputs:
+    let
+      lib = inputs.unstable.lib; # unstable for home manager
+      overlays = [
+        inputs.neovim-nightly-overlay.overlay
+      ];
+    in {
+      nixosConfigurations.nixosvm = lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          { nixpkgs.overlays = overlays; }
+
+	  ./nixos/configs/main.nix
+	  ./hosts/nixosvm/configuration.nix
+
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.aaron = {
+	        imports = [
+		  ./home-manager/configs/main.nix
+		  ./hosts/nixosvm/home.nix
+		];
+	      };
+            };
+          }
+        ];
+        extraArgs = { inputs = inputs; };
+      };
+    };
+}
