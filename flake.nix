@@ -4,6 +4,8 @@
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.follows = "unstable";
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     home-manager = {
       url = "github:rycee/home-manager";
       inputs.nixpkgs.follows = "unstable";
@@ -13,7 +15,7 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = { self, ...}@inputs:
+  outputs = { self, nixpkgs, flake-utils, ...}@inputs:
     let
       lib = inputs.unstable.lib; # unstable for home manager
       overlays = [
@@ -25,8 +27,8 @@
         modules = [
           { nixpkgs.overlays = overlays; }
 
-	  ./nixos/configs/main.nix
-	  ./hosts/nixosvm/configuration.nix
+          ./nixos/configs/main.nix
+          ./hosts/nixosvm/configuration.nix
 
           inputs.home-manager.nixosModules.home-manager
           {
@@ -34,15 +36,28 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users.aaron = {
-	        imports = [
-		  ./home-manager/configs/main.nix
-		  ./hosts/nixosvm/home.nix
-		];
-	      };
+                imports = [
+                  ./home-manager/configs/main.nix
+                  ./hosts/nixosvm/home.nix
+                ];
+              };
             };
           }
         ];
         extraArgs = { inputs = inputs; };
       };
-    };
+    }
+    //
+    flake-utils.lib.eachDefaultSystem (system: 
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in {
+        devShell = pkgs.mkShell {
+          packages = with pkgs; [
+            gnumake
+            rsync
+          ];
+        };
+      }
+    );
 }
