@@ -3,6 +3,7 @@ let
   imports = [
       ../modules/xdg.nix
       ../modules/zsh.nix
+      ../modules/direnv.nix
       ../modules/neovim.nix
       ../modules/gpg.nix
       ../modules/git.nix
