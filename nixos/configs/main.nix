@@ -7,7 +7,8 @@
     ../modules/ssh.nix
     ../modules/essential_packages.nix
     ../modules/users/aaron.nix
-    ../modules/sway.nix
+    ../modules/sddm.nix
+    ../modules/plasma.nix
     ../modules/pipewire.nix
   ];
 
