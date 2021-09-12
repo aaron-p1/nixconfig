@@ -13,7 +13,6 @@ let
   ];
 
   cli-packages = with pkgs; [
-    jq
   ];
   gui-packages = with pkgs; [
   ];
