@@ -10,6 +10,8 @@
     ../modules/sddm.nix
     ../modules/plasma.nix
     ../modules/pipewire.nix
+
+    ../modules/vmclient.nix
   ];
 
 }
