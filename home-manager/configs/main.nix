@@ -4,18 +4,20 @@ let
       ../modules/xdg.nix
       ../modules/zsh.nix
       ../modules/direnv.nix
+      # cli tools
       ../modules/neovim.nix
       ../modules/gpg.nix
       ../modules/git.nix
+      # gui programs
+      ../modules/firefox.nix
   ];
 
   cli-packages = with pkgs; [
     jq
   ];
-  productivity = with pkgs; [
-    firefox
+  gui-packages = with pkgs; [
   ];
-  home-packages = cli-packages;
+  home-packages = cli-packages ++ gui-packages;
 in
   {
     inherit imports;
