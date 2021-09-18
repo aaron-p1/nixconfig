@@ -7,6 +7,8 @@
       enableSyntaxHighlighting = true;
       dotDir = ".config/zsh";
       shellAliases = {
+        free = "free -h";
+        df = "df -h";
         nvimgit = "nvim +Git +only +'bdelete 1'";
       };
       sessionVariables = {
