@@ -8,6 +8,7 @@ let
       ../modules/neovim.nix
       ../modules/gpg.nix
       ../modules/git.nix
+      ../modules/tmux.nix
       # gui programs
       ../modules/firefox.nix
       ../modules/alacritty.nix
