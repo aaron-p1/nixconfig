@@ -12,7 +12,7 @@ new: path := ${newSystemPath}
 existing new:
 	[ -w ${path} ]
 	mkdir -p ${path}
-	nix-shell -p rsync --run "rsync --verbose --delete-after --recursive --cvs-exclude --checksum . ${path}"
+	rsync --verbose --delete-after --recursive --cvs-exclude --filter=':- .gitignore' --checksum . ${path}
 
 switch:
 	nixos-rebuild switch
