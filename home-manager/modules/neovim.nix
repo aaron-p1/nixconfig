@@ -11,7 +11,7 @@
         text = ''
           #!/bin/sh
 
-          nix-shell -p python3 gnumake unzip --run "nvim +PackerSync"
+          nix shell "nixpkgs#"{python3,gnumake,unzip} --command nvim "+PackerSync"
         '';
       }
     )
