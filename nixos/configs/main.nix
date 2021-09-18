@@ -12,6 +12,10 @@
     ../modules/plasma.nix
     ../modules/pipewire.nix
 
+    # cli
+    ../modules/containers.nix
+    ../modules/podman.nix
+
     ../modules/vmclient.nix
   ];
 }
