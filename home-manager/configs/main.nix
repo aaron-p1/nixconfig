@@ -10,6 +10,7 @@ let
       ../modules/git.nix
       # gui programs
       ../modules/firefox.nix
+      ../modules/alacritty.nix
   ];
 
   cli-packages = with pkgs; [
