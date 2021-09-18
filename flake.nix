@@ -4,18 +4,19 @@
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.follows = "unstable";
 
+    nixos-hardware.url = "github:nixos/nixos-hardware";
+
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
       url = "github:rycee/home-manager";
       inputs.nixpkgs.follows = "unstable";
     };
-    nixos-hardware.url = "github:nixos/nixos-hardware";
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ...}@inputs:
+  outputs = { self, nixpkgs, nixos-hardware, flake-utils, ...}@inputs:
     let
       lib = inputs.unstable.lib; # unstable for home manager
       overlays = [
@@ -26,6 +27,8 @@
         system = "x86_64-linux";
         modules = [
           { nixpkgs.overlays = overlays; }
+
+          nixos-hardware.nixosModules.common-pc-ssd
 
           ./nixos/configs/main.nix
           ./hosts/nixosvm/configuration.nix
