@@ -17,4 +17,7 @@ existing new:
 switch:
 	nixos-rebuild switch
 
-.PHONY: default existing new switch
+update:
+	nix flake update
+
+.PHONY: default existing new switch update
