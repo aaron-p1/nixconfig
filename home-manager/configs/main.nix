@@ -17,7 +17,10 @@ let
   ];
   gui-packages = with pkgs; [
   ];
-  home-packages = cli-packages ++ gui-packages;
+  font-packages = with pkgs; [
+    nerdfonts
+  ];
+  home-packages = cli-packages ++ gui-packages ++ font-packages;
 in
   {
     inherit imports;
