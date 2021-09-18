@@ -5,7 +5,10 @@ function plugin.config()
 	cmp.setup {
 		sources = {
 			{ name = 'luasnip' },
-			{ name = 'nvim_lsp' },
+			{
+				name = 'nvim_lsp',
+				max_item_count = 8
+			},
 			{ name = 'cmp_tabnine' },
 			{ name = 'path' },
 			{ name = 'calc' },

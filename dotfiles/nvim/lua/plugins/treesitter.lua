@@ -6,7 +6,7 @@ function plugin.config()
 			enable = true, -- false will disable the whole extension
 		},
 		incremental_selection = {
-			enable = true,
+			enable = false,
 			-- don't know if used
 			keymaps = {
 				init_selection = 'gnn',

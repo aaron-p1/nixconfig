@@ -100,7 +100,8 @@ require('packer').startup({
 		use {
 			'tpope/vim-fugitive',
 			cmd = {'Git', 'Gpull', 'Gfetch', 'Gstatus', 'Glog', 'Gdiffsplit',
-				'Gwrite', 'Gread', 'GRename', 'GMove'}
+				'Gwrite', 'Gread', 'GRename', 'GMove'},
+			config = [[require'plugins.fugitive'.config()]]
 		}
 		use {
 			'lewis6991/gitsigns.nvim',
@@ -122,7 +123,7 @@ require('packer').startup({
 		use {
 			'nvim-telescope/telescope.nvim',
 			requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
-			after = {'which-key.nvim'},
+			after = {'trouble.nvim'},
 			wants = {'telescope-fzf-native.nvim', 'telescope-symbols.nvim'},
 			config = [[require'plugins.telescope'.config()]]
 		}
@@ -159,8 +160,14 @@ require('packer').startup({
 		use {
 			'neovim/nvim-lspconfig',
 			config = [[require'plugins.lspconfig'.config()]],
-			wants = {'which-key.nvim', 'lsp_signature.nvim', 'lspsaga.nvim', 'nvim-cmp'},
-			ft = {'dart', 'php', 'blade', 'html', 'css', 'scss', 'less', 'tex', 'bib', 'lua', 'json', 'yaml', 'graphql', 'vue'},
+			wants = {'telescope.nvim', 'which-key.nvim', 'lsp_signature.nvim', 'lspsaga.nvim', 'nvim-cmp'},
+			ft = {'dart', 'php', 'blade', 'html', 'css', 'scss', 'less', 'tex', 'bib', 'lua', 'json', 'yaml', 'graphql', 'vue', 'haskell'},
+		}
+		use {
+			'jose-elias-alvarez/null-ls.nvim',
+			requires = {'nvim-lua/plenary.nvim'},
+			config = [[require'plugins.null-ls'.config()]],
+			after = {'nvim-lspconfig'}
 		}
 		use {
 			'hrsh7th/nvim-cmp',
@@ -211,11 +218,6 @@ require('packer').startup({
 			requires = 'kyazdani42/nvim-web-devicons',
 			after = {'which-key.nvim'},
 			config = [[require'plugins.trouble'.config()]]
-		}
-		use {
-			'dense-analysis/ale',
-			config = [[require'plugins.ale'.config()]],
-			disable = true
 		}
 
 		-- dap
@@ -328,7 +330,7 @@ helper.keymap_cmd_leader_n_ns('n', 'noh')
 
 -- tab
 helper.keymap_cmd_leader_n_ns('tt', 'tablast')
-helper.keymap_cmd_leader_n_ns('tc', 'tabclose')
+helper.keymap_lua_leader_n_ns('tc', [[ vim.api.nvim_command('tabclose'); for i=2,vim.v.count,1 do vim.api.nvim_command('tabclose') end]])
 helper.keymap_cmd_leader_n_ns('to', 'tabonly')
 
 -- syntax

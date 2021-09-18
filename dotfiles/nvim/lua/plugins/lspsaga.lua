@@ -7,7 +7,7 @@ function plugin.config()
 			exec = '<CR>'
 		},
 		rename_action_keys = {
-			quit = {'q', '<Esc>', '<C-c>'},
+			quit = {'<Esc>', '<C-c>'},
 			exec = '<CR>'
 		},
 		code_action_prompt = {

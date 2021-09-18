@@ -47,7 +47,7 @@ local function keymap_cmd_ns(mode, key, cmd)
 end
 
 local function keymap_cmd_leader_ns(mode, key, cmd)
-	keymap_cmd_ns('n', '<leader>'..key, cmd)
+	keymap_cmd_ns(mode, '<leader>'..key, cmd)
 end
 
 local function keymap_lua_ns(mode, key, lua)
@@ -122,6 +122,10 @@ end
 
 function helper.keymap_lua_leader_n_ns(...)
 	keymap_lua_leader_ns('n', ...)
+end
+
+function helper.keymap_lua_leader_v_ns(...)
+	keymap_lua_leader_ns('v', ...)
 end
 
 function helper.keymap_b_lua_n_ns(...)

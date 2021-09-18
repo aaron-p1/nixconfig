@@ -7,9 +7,6 @@ function plugin.config()
 
 	local helper = require'helper'
 
-	helper.keymap_cmd_leader_n_ns('ol', 'Trouble loclist')
-	helper.keymap_cmd_leader_n_ns('od', 'Trouble lsp_document_diagnostics')
-
 	helper.registerPluginWk{
 		prefix = '<leader>',
 		map = {
@@ -18,6 +15,10 @@ function plugin.config()
 			}
 		}
 	}
+
+	helper.keymap_cmd_leader_n_ns('oo', 'TroubleToggle lsp_document_diagnostics')
+	helper.keymap_cmd_leader_n_ns('oi', 'TroubleToggle lsp_implementations')
+	helper.keymap_cmd_leader_n_ns('or', 'TroubleToggle lsp_references')
 end
 
 return plugin
