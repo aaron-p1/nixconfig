@@ -7,4 +7,8 @@
       enable = true;
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    latte-dock
+  ];
 }
