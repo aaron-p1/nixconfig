@@ -19,7 +19,6 @@ let
   gui-packages = with pkgs; [
   ];
   font-packages = with pkgs; [
-    nerdfonts
   ];
   home-packages = cli-packages ++ gui-packages ++ font-packages;
 in
