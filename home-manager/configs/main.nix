@@ -17,6 +17,7 @@ let
   cli-packages = with pkgs; [
   ];
   gui-packages = with pkgs; [
+    tdesktop
   ];
   font-packages = with pkgs; [
   ];
