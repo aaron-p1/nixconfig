@@ -4,6 +4,8 @@
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.follows = "unstable";
 
+    nur.url = "github:nix-community/NUR";
+
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     flake-utils.url = "github:numtide/flake-utils";
@@ -16,11 +18,12 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, flake-utils, ...}@inputs:
+  outputs = { self, nixpkgs, nur, nixos-hardware, flake-utils, ...}@inputs:
     let
       lib = inputs.unstable.lib; # unstable for home manager
       overlays = [
         inputs.neovim-nightly-overlay.overlay
+        nur.overlay
       ];
     in {
       nixosConfigurations.nixosvm = lib.nixosSystem {

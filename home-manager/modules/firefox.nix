@@ -2,6 +2,16 @@
 {
   programs.firefox = {
     enable = true;
+
+    extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+      bitwarden
+      sponsorblock
+      multi-account-containers
+      privacy-badger
+      sidebery
+      ff2mpv
+    ];
+
     profiles.main = {
       id = 0;
       isDefault = true;
