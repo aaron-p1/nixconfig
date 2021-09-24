@@ -3,14 +3,15 @@
   programs.tmux = {
     enable = true;
 
+    keyMode = "vi";
     clock24 = true;
     escapeTime = 0;
 
     historyLimit = 5000;
 
-    terminal = "tmux-256color";
-
     tmuxp.enable = true;
+
+    terminal = "tmux-256color";
 
     extraConfig = ''
       set-option -sa terminal-overrides ',xterm-256color:RGB'
