@@ -12,7 +12,7 @@
         text = ''
           #!/bin/sh
 
-          nix shell "nixpkgs#"{python3,gnumake,unzip} --command nvim "+PackerSync"
+          nix shell "nixpkgs#"{python3,gnumake,unzip,gcc} --command nvim "+PackerSync"
         '';
       }
     )
