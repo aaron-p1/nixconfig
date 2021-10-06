@@ -20,6 +20,7 @@ let
   gui-packages = with pkgs; [
     tdesktop
     discord
+    thunderbird
   ];
   font-packages = with pkgs; [
   ];
