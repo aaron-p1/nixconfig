@@ -15,5 +15,7 @@
     # cli
     ../modules/containers.nix
     ../modules/podman.nix
+
+    ../modules/vmclient.nix
   ];
 }
