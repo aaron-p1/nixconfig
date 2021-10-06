@@ -10,5 +10,12 @@
       "caps:escape"
       "compose:sclk"
     ];
+
+    libinput = {
+      enable = true;
+      mouse = {
+        accelProfile = "flat";
+      };
+    };
   };
 }
