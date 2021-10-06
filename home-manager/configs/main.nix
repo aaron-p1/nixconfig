@@ -19,6 +19,7 @@ let
   ];
   gui-packages = with pkgs; [
     tdesktop
+    discord
   ];
   font-packages = with pkgs; [
   ];
