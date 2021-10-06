@@ -13,6 +13,7 @@ let
       # gui programs
       ../modules/firefox.nix
       ../modules/alacritty.nix
+      ../modules/idea-ultimate.nix
   ];
 
   cli-packages = with pkgs; [
