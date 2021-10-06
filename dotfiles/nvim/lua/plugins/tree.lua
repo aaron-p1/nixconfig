@@ -1,11 +1,11 @@
 local plugin = {}
 
-function plugin.setup()
-	vim.g.nvim_tree_disable_netrw = 0
-	vim.g.nvim_tree_hijack_netrw = 0
-end
-
 function plugin.config()
+	require('nvim-tree').setup{
+		disable_netrw = false,
+		hijack_netrw = false,
+	}
+
 	local helper = require'helper'
 
 	helper.keymap_cmd_leader_n_ns('bb', 'NvimTreeToggle')

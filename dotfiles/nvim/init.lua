@@ -115,7 +115,6 @@ require('packer').startup({
 			'kyazdani42/nvim-tree.lua',
 			requires = {'kyazdani42/nvim-web-devicons'},
 			after = {'which-key.nvim'},
-			setup = [[require'plugins.tree'.setup()]],
 			config = [[require'plugins.tree'.config()]]
 		}
 
