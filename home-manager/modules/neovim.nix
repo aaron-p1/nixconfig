@@ -2,8 +2,11 @@
 {
   home.packages = with pkgs; [
     neovim-nightly
-    fd # used in telescope
-    nerdfonts # used in nvim tree
+    # used in telescope
+    fd
+    ripgrep
+    # used in nvim tree
+    nerdfonts
     (
       pkgs.writeTextFile rec {
         name = "update-neovim-packer";
