@@ -16,6 +16,7 @@
       id = 0;
       isDefault = true;
       settings = {
+        "browser.aboutConfig.showWarning" = false;
         "browser.search.isUS" = false;
         "browser.search.region" = "DE";
         "browser.startup.homepage" = "about:blank";
@@ -24,6 +25,7 @@
         "devtools.theme" = "dark";
         "devtools.toolbox.host" = "window";
         "general.useragent.locale" = "de-DE";
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
       };
       userChrome = ''
         #main-window #TabsToolbar {
