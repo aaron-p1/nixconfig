@@ -6,7 +6,7 @@
         ],
         "rnnoise": {
             "input-gain": 0.0,
-            "model-path": "./.config/easyeffects/rnnoise/only_voice_lq.rnnn",
+            "model-path": "{config}/easyeffects/rnnoise/only_voice_lq.rnnn",
             "output-gain": 0.0
         }
     }

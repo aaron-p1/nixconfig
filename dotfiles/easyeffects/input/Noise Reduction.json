@@ -1,19 +1,34 @@
 {
     "input": {
         "blocklist": [],
-        "echo_canceller": {
-            "filter-length": 100,
-            "frame-size": 10,
+        "gate": {
+            "attack": 20.0,
+            "detection": "RMS",
             "input-gain": 0.0,
-            "output-gain": 0.0
+            "knee": 9.0,
+            "makeup": 0.0,
+            "output-gain": 0.0,
+            "range": -24.0,
+            "ratio": 2.0,
+            "release": 250.0,
+            "stereo-link": "Average",
+            "threshold": -26.000000000000114
+        },
+        "maximizer": {
+            "ceiling": -13.999999999999966,
+            "input-gain": 0.0,
+            "output-gain": 0.0,
+            "release": 25.0,
+            "threshold": -18.999999999999844
         },
         "plugins_order": [
             "rnnoise",
-            "echo_canceller"
+            "gate",
+            "maximizer"
         ],
         "rnnoise": {
             "input-gain": 0.0,
-            "model-path": "./.config/easyeffects/rnnoise/Standard Model.rnnn",
+            "model-path": "{config}/easyeffects/rnnoise/Standard Model.rnnn",
             "output-gain": 0.0
         }
     }

@@ -6,7 +6,7 @@
         ],
         "rnnoise": {
             "input-gain": 0.0,
-            "model-path": "./.config/easyeffects/rnnoise/noise_mp.rnnn",
+            "model-path": "{config}/easyeffects/rnnoise/noise_mp.rnnn",
             "output-gain": 0.0
         }
     }
