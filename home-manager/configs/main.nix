@@ -4,6 +4,7 @@ let
       ../modules/xdg.nix
       ../modules/zsh.nix
       ../modules/direnv.nix
+      ../modules/easyeffects.nix
       # cli tools
       ../modules/neovim.nix
       ../modules/gpg.nix
