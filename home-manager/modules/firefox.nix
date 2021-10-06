@@ -10,6 +10,7 @@
       privacy-badger
       sidebery
       ff2mpv
+      plasma-integration
     ];
 
     profiles.main = {
