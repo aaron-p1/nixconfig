@@ -21,7 +21,7 @@
       history = {
         ignoreDups = true;
         ignoreSpace = true;
-        path = "${config.xdg.dataHome}/zsh/zsh_history";
+        path = ".local/share/zsh/zsh_history";
         save = 10000;
       };
       oh-my-zsh = {
