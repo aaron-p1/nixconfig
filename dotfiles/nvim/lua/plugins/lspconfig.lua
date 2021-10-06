@@ -23,6 +23,8 @@ local servers = {
 	'vuels',
 	-- haskell
 	'hls',
+	-- nix
+	'rnix',
 }
 
 function plugin.on_attach(client, bufnr)

@@ -160,7 +160,7 @@ require('packer').startup({
 			'neovim/nvim-lspconfig',
 			config = [[require'plugins.lspconfig'.config()]],
 			wants = {'telescope.nvim', 'which-key.nvim', 'lsp_signature.nvim', 'lspsaga.nvim', 'nvim-cmp'},
-			ft = {'dart', 'php', 'blade', 'html', 'css', 'scss', 'less', 'tex', 'bib', 'lua', 'json', 'yaml', 'graphql', 'vue', 'haskell'},
+			ft = {'dart', 'php', 'blade', 'html', 'css', 'scss', 'less', 'tex', 'bib', 'lua', 'json', 'yaml', 'graphql', 'vue', 'haskell', 'nix'},
 		}
 		use {
 			'jose-elias-alvarez/null-ls.nvim',
