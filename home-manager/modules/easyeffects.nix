@@ -22,7 +22,11 @@ let
 in {
   services.easyeffects = {
     enable = true;
-    preset = "Nothing";
+  };
+
+  dconf.settings."com/github/wwmm/easyeffects" = {
+    use-dark-theme = true;
+    process-all-inputs = true;
   };
 
   xdg.configFile = lib.recursiveUpdate profiles {
