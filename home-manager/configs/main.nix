@@ -15,6 +15,7 @@ let
       ../modules/firefox.nix
       ../modules/alacritty.nix
       ../modules/idea-ultimate.nix
+      ../modules/zathura.nix
   ];
 
   cli-packages = with pkgs; [
