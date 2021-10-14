@@ -10,6 +10,7 @@ let
       ../modules/gpg.nix
       ../modules/git.nix
       ../modules/tmux.nix
+      ../modules/mpv.nix
       # gui programs
       ../modules/firefox.nix
       ../modules/alacritty.nix
