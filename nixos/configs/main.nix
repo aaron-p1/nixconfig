@@ -14,6 +14,7 @@
     ../modules/pipewire.nix
     ../modules/bluetooth.nix
     ../modules/dconf.nix
+    ../modules/samba.nix
 
     # cli
     ../modules/containers.nix
