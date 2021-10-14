@@ -91,7 +91,6 @@
       packages = with pkgs; [
         gnumake
         rsync
-        rnix-lsp
       ];
     };
   }

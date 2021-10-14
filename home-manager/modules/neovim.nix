@@ -7,6 +7,8 @@
     ripgrep
     # used in nvim tree
     nerdfonts
+    # lsp
+    rnix-lsp
     (
       pkgs.writeTextFile rec {
         name = "update-neovim-packer";
