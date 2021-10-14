@@ -28,6 +28,7 @@ let
     discord
     thunderbird
     qalculate-gtk
+    flameshot
   ];
   font-packages = with pkgs; [
   ];
