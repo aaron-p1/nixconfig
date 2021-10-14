@@ -12,6 +12,7 @@
     ../modules/plasma.nix
     ../modules/pipewire.nix
     ../modules/bluetooth.nix
+    ../modules/dconf.nix
 
     # cli
     ../modules/containers.nix
