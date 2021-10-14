@@ -52,6 +52,9 @@ function plugin.config()
 	-- treesitter
 	helper.keymap_cmd_leader_n_ns('ft', 'Telescope treesitter')
 
+	--symbols
+	helper.keymap_cmd_leader_n_ns('fs', 'Telescope symbols')
+
 
 	helper.registerPluginWk{
 		prefix = '<leader>',
