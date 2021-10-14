@@ -30,6 +30,7 @@ let
     qalculate-gtk
     flameshot
     gImageReader
+    gtg
   ];
   font-packages = with pkgs; [
   ];
