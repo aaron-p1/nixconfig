@@ -1,0 +1,6 @@
+--------------------------------------------------------------------------------
+Check:
+  Easyeffects overlay:
+    zam-plugins were in ladspaPlugins -> plugin not found (since 6.0.3 must be lv2)
+    https://github.com/NixOS/nixpkgs/pull/141589
+--------------------------------------------------------------------------------

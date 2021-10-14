@@ -18,6 +18,8 @@ switch:
 	nixos-rebuild switch
 
 update:
+	cat ./afterupdate.txt
 	nix flake update
+	cat ./afterupdate.txt
 
 .PHONY: default existing new switch update
