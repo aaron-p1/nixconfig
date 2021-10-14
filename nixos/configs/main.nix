@@ -7,6 +7,7 @@
     ../modules/ssh.nix
     ../modules/essential_packages.nix
     ../modules/users/aaron.nix
+    ../modules/pamu2f.nix
     ../modules/xserver.nix
     ../modules/sddm.nix
     ../modules/plasma.nix
