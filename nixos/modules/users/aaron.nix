@@ -4,7 +4,7 @@
     isNormalUser = true;
     createHome = true;
     uid = 1000;
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "networkmanager"];
     shell = pkgs.zsh;
   };
 
