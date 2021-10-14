@@ -27,6 +27,7 @@ let
     tdesktop
     discord
     thunderbird
+    qalculate-gtk
   ];
   font-packages = with pkgs; [
   ];
