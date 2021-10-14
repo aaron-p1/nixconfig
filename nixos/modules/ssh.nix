@@ -4,5 +4,6 @@
     enable = true;
     ports = [ 25566 ];
     permitRootLogin = "no";
+    passwordAuthentication = false;
   };
 }
