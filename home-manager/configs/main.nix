@@ -19,6 +19,9 @@ let
   ];
 
   cli-packages = with pkgs; [
+    hunspell
+    hunspellDicts.en_US
+    hunspellDicts.de_DE
   ];
   gui-packages = with pkgs; [
     tdesktop
