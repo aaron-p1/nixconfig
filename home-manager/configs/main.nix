@@ -29,6 +29,7 @@ let
     thunderbird
     qalculate-gtk
     flameshot
+    gImageReader
   ];
   font-packages = with pkgs; [
   ];
