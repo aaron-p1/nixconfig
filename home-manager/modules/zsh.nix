@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, config, ... }:
 {
     programs.zsh = {
       enable = true;
@@ -19,6 +19,7 @@
         # vi mode plugin
         VI_MODE_RESET_PROMPT_ON_MODE_CHANGE = true;
         MODE_INDICATOR = "%B%F{white}<%b<<%f";
+        WD_CONFIG = "${config.xdg.configHome}/warprc";
       };
       history = {
         ignoreDups = true;
@@ -35,6 +36,7 @@
           "colored-man-pages"
           "vi-mode"
           "safe-paste"
+          "wd"
         ];
       };
     };
