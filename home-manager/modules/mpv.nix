@@ -11,6 +11,7 @@
 
     config = {
       volume = 100;
+      osc = "no"; # mpv_thumbnail_script_client_osc
     };
 
     profiles = {
