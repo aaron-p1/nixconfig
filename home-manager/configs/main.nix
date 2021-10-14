@@ -31,6 +31,7 @@ let
     flameshot
     gImageReader
     gtg
+    ark
   ];
   font-packages = with pkgs; [
   ];
