@@ -9,6 +9,8 @@
       shellAliases = {
         free = "free -h";
         df = "df -h";
+        cdtmp = "cd $(mktemp -d)";
+
         nvimgit = "nvim +Git +only +'bdelete 1'";
       };
       sessionVariables = {
