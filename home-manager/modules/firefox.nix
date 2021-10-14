@@ -1,5 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
+
+  # firefox override not working "gtk3 missing" (in browser parameter wrapper.nix)
+  # https://github.com/nix-community/home-manager/issues/1586
+  home.file.".mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json".source =
+    "${pkgs.plasma-browser-integration}/lib/mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json";
+
   programs.firefox = {
     enable = true;
 
