@@ -16,6 +16,8 @@
     ../modules/dconf.nix
     ../modules/samba.nix
 
+    ../modules/steam.nix
+
     # cli
     ../modules/containers.nix
     ../modules/podman.nix
