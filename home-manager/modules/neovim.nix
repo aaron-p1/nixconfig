@@ -9,6 +9,7 @@
     nerdfonts
     # lsp
     rnix-lsp
+    shellcheck
     (
       pkgs.writeTextFile rec {
         name = "update-neovim-packer";
