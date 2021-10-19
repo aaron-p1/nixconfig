@@ -4,6 +4,11 @@
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.follows = "unstable";
 
+    localpkgs = {
+      url = "path:./localpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nur.url = "github:nix-community/NUR";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -18,12 +23,13 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = { self, nixpkgs, nur, nixos-hardware, flake-utils, ...}@inputs:
+  outputs = { self, nixpkgs, nur, localpkgs, nixos-hardware, flake-utils, ...}@inputs:
   let
     lib = inputs.unstable.lib; # unstable for home manager
     overlays = [
       inputs.neovim-nightly-overlay.overlay
       nur.overlay
+      localpkgs.overlay
     ];
   in {
     nixosConfigurations = {

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, lib, ... }:
 {
   programs.tmux = {
     enable = true;
@@ -31,4 +31,20 @@
       }
     ];
   };
+
+  xdg.configFile."tmuxp/nixconfig.yml" = {
+    text = ''
+      session_name: nixconfig
+      start_directory: ${config.home.homeDirectory}/Documents/nixos/nixconfig
+      windows:
+        - window_name: nvim
+          panes:
+            - nvimgit
+        - window_name: zsh
+    '';
+  };
+
+  home.packages = [
+    pkgs.local.gotmux
+  ];
 }

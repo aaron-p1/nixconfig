@@ -1,0 +1,11 @@
+#compdef gotmux etmux
+
+_gotmux()
+{
+    local -a commands
+    commands=($(tmuxp ls))
+    compadd $commands
+}
+
+compdef _gotmux gotmux
+compdef etmux=gotmux

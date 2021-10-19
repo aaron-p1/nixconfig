@@ -1,0 +1,13 @@
+#compdef gotmux etmux
+
+_gotmux() {
+	COMPREPLY=($(compgen -W "$(tmuxp ls)" "$${COMP_WORDS[1]}"))
+}
+
+if [[ -n ${ZSH_VERSION} ]]; then
+    autoload -U bashcompinit
+    bashcompinit
+fi
+
+complete -F _gotmux gotmux
+complete -F _gotmux etmux
