@@ -1,21 +1,22 @@
 { config, lib, pkgs, ... }:
 let
   imports = [
-      ../modules/xdg.nix
-      ../modules/zsh.nix
-      ../modules/direnv.nix
-      ../modules/easyeffects.nix
-      # cli tools
-      ../modules/neovim.nix
-      ../modules/gpg.nix
-      ../modules/git.nix
-      ../modules/tmux.nix
-      ../modules/mpv.nix
-      # gui programs
-      ../modules/firefox.nix
-      ../modules/alacritty.nix
-      ../modules/idea-ultimate.nix
-      ../modules/zathura.nix
+    ../modules/xdg.nix
+    ../modules/zsh.nix
+    ../modules/ssh.nix
+    ../modules/direnv.nix
+    ../modules/easyeffects.nix
+    # cli tools
+    ../modules/neovim.nix
+    ../modules/gpg.nix
+    ../modules/git.nix
+    ../modules/tmux.nix
+    ../modules/mpv.nix
+    # gui programs
+    ../modules/firefox.nix
+    ../modules/alacritty.nix
+    ../modules/idea-ultimate.nix
+    ../modules/zathura.nix
   ];
 
   cli-packages = with pkgs; [
