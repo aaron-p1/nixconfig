@@ -32,6 +32,8 @@ let
     gImageReader
     gtg
     ark
+
+    multimc
   ];
   font-packages = with pkgs; [
   ];
@@ -44,5 +46,4 @@ in
     home.sessionVariables = {
       EDITOR = "nvim";
     };
-    
   }
