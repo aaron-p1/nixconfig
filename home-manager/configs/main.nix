@@ -35,6 +35,7 @@ let
     gtg
     ark
     obsidian
+    element-desktop
 
     multimc
   ];
