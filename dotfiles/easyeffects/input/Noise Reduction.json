@@ -10,16 +10,16 @@
             "output-gain": 0.0,
             "range": -24.0,
             "ratio": 2.0,
-            "release": 250.0,
+            "release": 100.0,
             "stereo-link": "Average",
             "threshold": -26.000000000000114
         },
         "maximizer": {
-            "ceiling": -13.999999999999966,
+            "ceiling": -14.999999999999963,
             "input-gain": 0.0,
             "output-gain": 0.0,
             "release": 25.0,
-            "threshold": -18.999999999999844
+            "threshold": -14.999999999999963
         },
         "plugins_order": [
             "rnnoise",
