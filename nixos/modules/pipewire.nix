@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   security.rtkit.enable = true; # optional but recommended
 

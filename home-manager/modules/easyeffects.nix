@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ lib, config, ... }:
 let
   # get file names of directory
   getFiles = (lib.flip lib.pipe) (with builtins; [ readDir attrNames ]);

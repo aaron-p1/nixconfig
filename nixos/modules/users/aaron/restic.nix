@@ -1,5 +1,5 @@
-{ pkgs, ... }: {
-
+{ pkgs, ... }:
+{
   services.restic.backups = {
     localbackup = {
       user = "aaron";

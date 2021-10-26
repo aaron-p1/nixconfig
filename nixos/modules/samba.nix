@@ -1,12 +1,12 @@
-{ pkgs, inputs, ... }:
+{ ... }:
 {
   services.samba = {
     enable = true;
 
-    extraConfig = builtins.concatStringsSep "\n" [
-      "load printers = no"
-      "vfs objects = fruit streams_xattr"
-    ];
+    extraConfig = ''
+      load printers = no
+      vfs objects = fruit streams_xattr
+    '';
 
 
     # for users set: smbpasswd -a <user>

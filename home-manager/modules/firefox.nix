@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
 
   # firefox override not working "gtk3 missing" (in browser parameter wrapper.nix)
