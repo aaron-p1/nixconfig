@@ -5,6 +5,8 @@ systemPath := /etc/nixos
 path :=
 nixargs :=
 
+rebuildCmds := switch boot test
+
 default: existing
 
 existing: path := ${systemPath}
@@ -15,12 +17,12 @@ existing new:
 	mkdir -p ${path}
 	rsync --verbose --delete-after --recursive --cvs-exclude --filter=':- .gitignore' --checksum . ${path}
 
-switch:
-	nixos-rebuild ${nixargs} switch
+${rebuildCmds}:
+	nixos-rebuild ${nixargs} $@
 
 update:
 	cat ./afterupdate.txt
 	nix flake update
 	cat ./afterupdate.txt
 
-.PHONY: default existing new switch update
+.PHONY: default existing new ${rebuildCmds} update
