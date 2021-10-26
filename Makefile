@@ -22,7 +22,7 @@ ${rebuildCmds}:
 
 update:
 	cat ./afterupdate.txt
+	@read -p "Update? " -n 1 -r ; echo ; [[ "$$REPLY" =~ ^[YyJj]$$ ]]
 	nix flake update
-	cat ./afterupdate.txt
 
 .PHONY: default existing new ${rebuildCmds} update
