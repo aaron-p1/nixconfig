@@ -34,6 +34,7 @@ let
     gImageReader
     gtg
     ark
+    obsidian
 
     multimc
   ];
