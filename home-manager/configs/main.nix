@@ -17,6 +17,7 @@ let
     ../modules/alacritty.nix
     ../modules/idea-ultimate.nix
     ../modules/zathura.nix
+    ../modules/obs-studio.nix
   ];
 
   cli-packages = with pkgs; [
