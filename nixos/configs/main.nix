@@ -6,7 +6,8 @@
     ../modules/networking.nix
     ../modules/ssh.nix
     ../modules/essential_packages.nix
-    ../modules/users/aaron.nix
+    ../modules/users/aaron
+    ../modules/users/aaron/restic.nix
     ../modules/pamu2f.nix
     ../modules/xserver.nix
     ../modules/sddm.nix

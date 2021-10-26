@@ -30,6 +30,11 @@
     keyMap = "de";
   };
 
+  fileSystems."/mnt/data" = {
+    device = "/dev/disk/by-label/Data";
+    fsType = "ext4";
+  };
+
   # file creation not working in btrfs
   # https://github.com/NixOS/nixpkgs/issues/91986
   # create manually
