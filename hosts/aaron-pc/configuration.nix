@@ -18,6 +18,8 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.device = "nodev";
 
+  hardware.nvidia.package = pkgs.local.nvidia_x11 config.boot.kernelPackages;
+
   # NETWORKING 
   networking.useDHCP = false;
   networking.hostName = "aaron-pc";

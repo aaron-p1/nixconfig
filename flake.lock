@@ -68,7 +68,7 @@
     },
     "localpkgs": {
       "locked": {
-        "narHash": "sha256-hs9YgY12wcg6y0T6CIFZp5msWHlOH0Ub57MGQv1RzlA=",
+        "narHash": "sha256-OewmmrP1lqGrStdFflxMzT4v/yDwMgp7NZWym140Ijg=",
         "path": "./localpkgs",
         "type": "path"
       },

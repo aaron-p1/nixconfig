@@ -1,6 +1,7 @@
 --------------------------------------------------------------------------------
 Check:
-  Easyeffects overlay:
-    zam-plugins were in ladspaPlugins -> plugin not found (since 6.0.3 must be lv2)
-    https://github.com/NixOS/nixpkgs/pull/141589
+  nvidia driver:
+    version is in keylase nvfbc and enc patch
+    https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix#L22
+    https://github.com/keylase/nvidia-patch
 --------------------------------------------------------------------------------
