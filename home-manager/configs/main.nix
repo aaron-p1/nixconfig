@@ -36,6 +36,7 @@ let
     ark
     obsidian
     element-desktop
+    bitwarden
 
     multimc
   ];
