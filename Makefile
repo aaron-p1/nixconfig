@@ -5,7 +5,7 @@ systemPath := /etc/nixos
 path :=
 nixargs :=
 
-rebuildCmds := switch boot test
+rebuildCmds := switch boot test build
 
 default: existing
 
