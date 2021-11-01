@@ -64,22 +64,16 @@ function plugin.on_attach(client, bufnr)
 
 	-- show info
 	keymap_b_lua_n_ns('K', 'vim.lsp.buf.hover()')
-	keymap_b_cmd_n_ns('<C-k>', 'Lspsaga signature_help')
-	keymap_b_cmd_leader_n_ns('lp', 'Lspsaga preview_definition')
+	keymap_b_lua_n_ns('<C-k>', 'vim.lsp.buf.signature_help()')
 	keymap_b_lua_leader_n_ns(
 		'lwl', 'print(vim.inspect(vim.lsp.buf.list_workspace_folders()))')
-	-- scroll hover doc or definition preview
-	keymap_b_lua_n_ns(
-		'<A-d>', [[require('lspsaga.action').smart_scroll_with_saga(1)]])
-	keymap_b_lua_n_ns(
-		'<A-u>', [[require('lspsaga.action').smart_scroll_with_saga(-1)]])
 
 	-- edit
 	keymap_b_lua_leader_n_ns('lwa', 'vim.lsp.buf.add_workspace_folder()')
 	keymap_b_lua_leader_n_ns('lwr', 'vim.lsp.buf.remove_workspace_folder()')
 	keymap_b_lua_leader_n_ns('lf', 'vim.lsp.buf.formatting()')
 	keymap_b_cmd_leader_n_ns('lc', 'Telescope lsp_code_actions')
-	keymap_b_cmd_leader_n_ns('lr', 'Lspsaga rename')
+	keymap_b_lua_leader_n_ns('lr', 'vim.lsp.buf.rename()')
 
 
 	-- which key
@@ -100,7 +94,6 @@ function plugin.on_attach(client, bufnr)
 	require'lsp_signature'.on_attach{
 		bind = true,
 		hint_prefix = '→ ',
-		use_lspsaga = true
 	}
 end
 

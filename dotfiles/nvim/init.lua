@@ -159,7 +159,7 @@ require('packer').startup({
 		use {
 			'neovim/nvim-lspconfig',
 			config = [[require'plugins.lspconfig'.config()]],
-			wants = {'telescope.nvim', 'which-key.nvim', 'lsp_signature.nvim', 'lspsaga.nvim', 'nvim-cmp'},
+			wants = {'telescope.nvim', 'which-key.nvim', 'lsp_signature.nvim', 'nvim-cmp'},
 			ft = {'dart', 'php', 'blade', 'html', 'css', 'scss', 'less', 'tex', 'bib', 'lua', 'json', 'yaml', 'graphql', 'vue', 'haskell', 'nix'},
 		}
 		use {
@@ -203,11 +203,6 @@ require('packer').startup({
 		}
 		use {
 			'ray-x/lsp_signature.nvim',
-			opt = true,
-		}
-		use {
-			'glepnir/lspsaga.nvim',
-			config = [[require'plugins.lspsaga'.config()]],
 			opt = true,
 		}
 
