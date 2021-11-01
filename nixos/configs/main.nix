@@ -23,4 +23,6 @@
     ../modules/containers.nix
     ../modules/podman.nix
   ];
+
+  boot.cleanTmpDir = true;
 }
