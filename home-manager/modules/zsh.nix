@@ -24,8 +24,12 @@
         MODE_INDICATOR = "%B%F{white}<%b<<%f";
         WD_CONFIG = "${config.xdg.configHome}/warprc";
       };
+      initExtra = ''
+        setopt HIST_IGNORE_ALL_DUPS
+      '';
       history = {
         ignoreDups = true;
+        share = false;
         ignoreSpace = true;
         path = ".local/share/zsh/zsh_history";
         save = 10000;
