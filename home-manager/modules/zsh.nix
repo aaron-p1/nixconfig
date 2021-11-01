@@ -14,6 +14,7 @@
         nvimgit = "nvim +Git +only +'bdelete 1'";
 
         ns = "NIXPKGS_ALLOW_UNFREE=1 nix shell --impure";
+        nr = "NIXPKGS_ALLOW_UNFREE=1 nix run --impure";
       };
       sessionVariables = {
         FZF_BASE = "${pkgs.fzf}/share/fzf";
