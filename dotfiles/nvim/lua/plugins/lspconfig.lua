@@ -25,6 +25,9 @@ local servers = {
 	'hls',
 	-- nix
 	'rnix',
+	-- elixir
+	{server = 'elixirls', cmd = {'elixir-ls'}},
+	
 }
 
 function plugin.on_attach(client, bufnr)
