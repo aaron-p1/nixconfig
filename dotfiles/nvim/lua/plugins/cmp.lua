@@ -20,7 +20,7 @@ function plugin.config()
 			end
 		},
 		mapping = {
-			['<CR>'] = cmp.mapping.confirm({
+			['<C-y>'] = cmp.mapping.confirm({
 				behavior = cmp.ConfirmBehavior.Replace,
 				select = true
 			}),
