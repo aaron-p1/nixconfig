@@ -5,23 +5,41 @@
     (buildFHSUserEnv {
       name = "codeWithMe";
       targetPkgs = pkgs: (with pkgs; [
-        unzip
-        glib
-        zlib
-        gawk
-        coreutils
-        wget
         bash
+        coreutils
         fontconfig
         freetype
-        noto-fonts
+        gawk
+        glib
         liberation_ttf
-        xorg.libXext
+        noto-fonts
+        unzip
+        wget
         xorg.libX11
+        xorg.libXcursor
+        xorg.libXext
+        xorg.libXi
         xorg.libXrender
         xorg.libXtst
-        xorg.libXi
-        xorg.libXcursor
+        zlib
+        # browser libraries
+        alsa-lib
+        atk
+        at-spi2-core
+        cups
+        dbus
+        expat
+        libdrm
+        libxkbcommon
+        mesa
+        nspr
+        nss
+        xorg.libxcb
+        xorg.libXcomposite
+        xorg.libXdamage
+        xorg.libXfixes
+        xorg.libXrandr
+        xorg.libxshmfence
       ]);
       runScript =
         let
