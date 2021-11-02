@@ -122,8 +122,7 @@ require('packer').startup({
 		use {
 			'nvim-telescope/telescope.nvim',
 			requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
-			after = {'trouble.nvim'},
-			wants = {'telescope-fzf-native.nvim', 'telescope-symbols.nvim'},
+			wants = {'trouble.nvim', 'telescope-fzf-native.nvim', 'telescope-symbols.nvim'},
 			config = [[require'plugins.telescope'.config()]]
 		}
 		use {
@@ -132,9 +131,7 @@ require('packer').startup({
 			run = 'make',
 			config = [[require'plugins.telescope-fzf-native'.config()]]
 		}
-		use {
-			'nvim-telescope/telescope-symbols.nvim',
-		}
+		use 'nvim-telescope/telescope-symbols.nvim'
 		use {
 			'nvim-telescope/telescope-dap.nvim',
 			requires = {'nvim-telescope/telescope.nvim', 'mfussenegger/nvim-dap'},
@@ -146,21 +143,15 @@ require('packer').startup({
 		-- snippets
 		use {
 			'L3MON4D3/LuaSnip',
-			wants = 'friendly-snippets',
-			opt = true,
 			config = [[require'plugins.luasnip'.config()]]
 		}
-		use {
-			'rafamadriz/friendly-snippets',
-			opt = true,
-		}
+		use 'rafamadriz/friendly-snippets'
 
 		-- lsp
 		use {
 			'neovim/nvim-lspconfig',
 			config = [[require'plugins.lspconfig'.config()]],
 			wants = {'telescope.nvim', 'which-key.nvim', 'lsp_signature.nvim', 'nvim-cmp'},
-			ft = {'dart', 'php', 'blade', 'html', 'css', 'scss', 'less', 'tex', 'bib', 'lua', 'json', 'yaml', 'graphql', 'vue', 'haskell', 'nix', 'elixir', 'eelixir'},
 		}
 		use {
 			'jose-elias-alvarez/null-ls.nvim',
@@ -170,51 +161,27 @@ require('packer').startup({
 		}
 		use {
 			'hrsh7th/nvim-cmp',
-			event = 'InsertCharPre',
-			wants = {'LuaSnip'},
 			config = [[require'plugins.cmp'.config()]]
 		}
-		use {
-			'hrsh7th/cmp-buffer',
-			after = {'nvim-cmp'},
-		}
-		use {
-			'hrsh7th/cmp-path',
-			after = {'nvim-cmp'},
-		}
-		use {
-			'hrsh7th/cmp-calc',
-			after = {'nvim-cmp'},
-		}
-		use {
-			'hrsh7th/cmp-cmdline',
-			after = {'nvim-cmp'},
-		}
-		use {
-			'saadparwaiz1/cmp_luasnip',
-			wants = {'LuaSnip'},
-			after = {'nvim-cmp'},
-		}
-		use {
-			'hrsh7th/cmp-nvim-lsp',
-			after = {'nvim-cmp'},
-		}
+		use 'hrsh7th/cmp-buffer'
+		use 'hrsh7th/cmp-path'
+		use 'hrsh7th/cmp-calc'
+		use 'hrsh7th/cmp-cmdline'
+		use 'saadparwaiz1/cmp_luasnip'
+		use 'hrsh7th/cmp-nvim-lsp'
 		use {
 			'tzachar/cmp-tabnine',
 			run='./install.sh',
 			after = {'nvim-cmp'},
 			config = [[require'plugins.cmp-tabnine'.config()]]
 		}
-		use {
-			'ray-x/lsp_signature.nvim',
-			opt = true,
-		}
+		use 'ray-x/lsp_signature.nvim'
 
 		-- diagnostics
 		use {
 			'folke/trouble.nvim',
 			requires = 'kyazdani42/nvim-web-devicons',
-			after = {'which-key.nvim'},
+			wants = {'which-key.nvim'},
 			config = [[require'plugins.trouble'.config()]]
 		}
 
