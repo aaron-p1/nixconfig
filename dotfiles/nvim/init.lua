@@ -187,6 +187,10 @@ require('packer').startup({
 			after = {'nvim-cmp'},
 		}
 		use {
+			'hrsh7th/cmp-cmdline',
+			after = {'nvim-cmp'},
+		}
+		use {
 			'saadparwaiz1/cmp_luasnip',
 			wants = {'LuaSnip'},
 			after = {'nvim-cmp'},

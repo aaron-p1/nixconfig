@@ -7,7 +7,7 @@ function plugin.config()
 			{ name = 'luasnip' },
 			{
 				name = 'nvim_lsp',
-				max_item_count = 8
+				max_item_count = 16
 			},
 			{ name = 'cmp_tabnine' },
 			{ name = 'path' },
@@ -49,6 +49,20 @@ function plugin.config()
 			end,
 		},
 	}
+
+	cmp.setup.cmdline('/', {
+			sources = {
+				{ name = 'buffer' }
+			},
+		})
+
+	cmp.setup.cmdline(':', {
+			sources = cmp.config.sources({
+					{ name = 'path' }
+				}, {
+					{ name = 'cmdline' }
+				}),
+		})
 end
 
 return plugin
