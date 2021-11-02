@@ -8,6 +8,8 @@
     };
   };
 
+  programs.kdeconnect.enable = true;
+
   environment.systemPackages = with pkgs; [
     local.latte-dock
   ];

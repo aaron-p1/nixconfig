@@ -51,4 +51,6 @@ in
     home.sessionVariables = {
       EDITOR = "nvim";
     };
+
+    services.kdeconnect.enable = true;
   }
