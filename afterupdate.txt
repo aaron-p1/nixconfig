@@ -1,7 +1,10 @@
 --------------------------------------------------------------------------------
 Check:
   nvidia driver:
-    version is in keylase nvfbc and enc patch
-    https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix#L22
-    https://github.com/keylase/nvidia-patch
+    check if nvlax still works
+    https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix
+    https://github.com/illnyang/nvlax
+    if not:
+      update with dependencies:
+        https://github.com/zyantific/zydis
 --------------------------------------------------------------------------------
