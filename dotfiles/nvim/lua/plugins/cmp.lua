@@ -20,25 +20,31 @@ function plugin.config()
 			end
 		},
 		mapping = {
+			['<C-Space>'] = cmp.mapping.complete(),
 			['<C-y>'] = cmp.mapping.confirm({
-				behavior = cmp.ConfirmBehavior.Replace,
-				select = true
-			}),
-			['<C-e>'] = cmp.mapping.close(),
-			['<C-d>'] = cmp.mapping.scroll_docs(-4),
-			['<C-u>'] = cmp.mapping.scroll_docs(4),
+					behavior = cmp.ConfirmBehavior.Replace,
+					select = true
+				}),
+			['<C-e>'] = cmp.mapping({
+					i = cmp.mapping.abort(),
+					c = cmp.mapping.close(),
+				}),
+			['<C-u>'] = cmp.mapping.scroll_docs(-4),
+			['<C-d>'] = cmp.mapping.scroll_docs(4),
+			['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }), {'i', 'c'}),
+			['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }), {'i', 'c'}),
 		},
 		formatting = {
 			format = function(entry, vim_item)
 				-- set a name for each source
 				vim_item.menu = ({
-					buffer = '[B]',
-					path = '[P]',
-					calc = '[C]',
-					luasnip = '[SNIP]',
-					nvim_lsp = '[LSP]',
-					cmp_tabnine = '[T9]',
-				})[entry.source.name]
+						buffer = '[B]',
+						path = '[P]',
+						calc = '[C]',
+						luasnip = '[SNIP]',
+						nvim_lsp = '[LSP]',
+						cmp_tabnine = '[T9]',
+					})[entry.source.name]
 				return vim_item
 			end,
 		},
