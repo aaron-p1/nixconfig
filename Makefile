@@ -25,4 +25,7 @@ update:
 	@read -p "Update? " -n 1 -r ; echo ; [[ "$$REPLY" =~ ^[YyJj]$$ ]]
 	nix flake update
 
-.PHONY: default existing new ${rebuildCmds} update
+listChanges:
+	ls -d1 /nix/var/nix/profiles/system-*-link | sort -V | tail -n 2 | xargs nix store diff-closures | less
+
+.PHONY: default existing new ${rebuildCmds} update listChanges
