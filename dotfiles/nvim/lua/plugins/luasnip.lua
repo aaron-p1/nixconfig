@@ -39,7 +39,7 @@ function plugin.config()
 	local d = ls.dynamic_node
 
 	-- Make sure to not pass an invalid command, as io.popen() may write over nvim-text.
-	local function shell(_, command)
+	local function shell(_, _, command)
 		local file = io.popen(command, "r")
 		local res = {}
 		for line in file:lines() do
@@ -67,16 +67,16 @@ function plugin.config()
 			parse('uf', 'public function $0'),
 			parse('if', 'private function $0'),
 			s('func', {
-				c(1, {
-					t('public'),
-					t('private'),
-					t('protected'),
-				}),
-				t(' function '), i(2), t('('), i(3), t(') '),
-				t({'', '{', '\t'}),
-				i(0),
-				t({'', '}'})
-			})
+					c(1, {
+							t('public'),
+							t('private'),
+							t('protected'),
+						}),
+					t(' function '), i(2), t('('), i(3), t(') '),
+					t({'', '{', '\t'}),
+					i(0),
+					t({'', '}'})
+				})
 		}
 	}
 
