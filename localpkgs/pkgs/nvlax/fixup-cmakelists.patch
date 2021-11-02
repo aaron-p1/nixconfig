@@ -1,0 +1,76 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5fa8620..8bd0091 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -13,56 +13,11 @@ cmake_minimum_required(VERSION 3.14)
+ 
+ project(nvlax CXX)
+ 
+-include(ExternalProject)
+-include(cmake/FetchCPM.cmake)
++find_package(LIEF REQUIRED)
++#find_package(Zydis CONFIG REQUIRED)
+ 
+-CPMAddPackage("gh:zyantific/zydis#master")
+-
+-CPMAddPackage(
+-        NAME LIEF_SRC
+-        GIT_TAG master
+-        GITHUB_REPOSITORY lief-project/LIEF
+-        DOWNLOAD_ONLY YES
+-)
+-
+-if (LIEF_SRC_ADDED)
+-    set(LIEF_PREFIX       "${CMAKE_CURRENT_BINARY_DIR}/LIEF")
+-    set(LIEF_INSTALL_DIR  "${LIEF_PREFIX}")
+-    set(LIEF_INCLUDE_DIRS "${LIEF_PREFIX}/include")
+-
+-    set(LIEF_LIBRARIES
+-            "${LIEF_PREFIX}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}LIEF${CMAKE_STATIC_LIBRARY_SUFFIX}"
+-    )
+-
+-    set(LIEF_CMAKE_ARGS
+-            -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+-            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+-            -DLIEF_DOC=off
+-            -DLIEF_PYTHON_API=off
+-            -DLIEF_EXAMPLES=off
+-            -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+-            -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+-    )
+-
+-    ExternalProject_Add(LIEF
+-            PREFIX           "${LIEF_PREFIX}"
+-            SOURCE_DIR       ${LIEF_SRC_SOURCE_DIR}
+-            INSTALL_DIR      ${LIEF_INSTALL_DIR}
+-            CMAKE_ARGS       ${LIEF_CMAKE_ARGS}
+-            BUILD_BYPRODUCTS ${LIEF_LIBRARIES}
+-            UPDATE_COMMAND   ""
+-    )
+-endif()
+-
+-message(STATUS "LIEF include directory: ${LIEF_INCLUDE_DIRS}")
+-message(STATUS "LIEF library: ${LIEF_LIBRARIES}")
+-
+-CPMAddPackage(
+-        NAME PPK_ASSERT
+-        GIT_TAG master
+-        GITHUB_REPOSITORY gpakosz/PPK_ASSERT
+-        DOWNLOAD_ONLY YES
+-)
++set(PPK_ASSERT_ADDED 1)
++get_filename_component(PPK_ASSERT_SOURCE_DIR ./ppk ABSOLUTE BASE_DIR "${CMAKE_BINARY_DIR}")
+ 
+ if (PPK_ASSERT_ADDED)
+     add_library(PPK_ASSERT STATIC
+@@ -89,8 +44,8 @@ add_executable(nvlax_fbc
+         src/lax_fbc.cc
+ )
+ 
+-add_dependencies(nvlax_encode LIEF)
+-add_dependencies(nvlax_fbc LIEF)
++#add_dependencies(nvlax_encode LIEF)
++#add_dependencies(nvlax_fbc LIEF)
+ 
+ target_compile_features(nvlax_encode PRIVATE cxx_std_17)
+ target_compile_features(nvlax_fbc PRIVATE cxx_std_17)
