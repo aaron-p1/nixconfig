@@ -1,10 +1,14 @@
 --------------------------------------------------------------------------------
 Check:
   nvidia driver:
-    check if nvlax still works
+    nvlax might fail
     https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix
     https://github.com/illnyang/nvlax
-    if not:
+    if updating:
       update with dependencies:
         https://github.com/zyantific/zydis
+  latte-dock:
+    check if merged:
+      https://github.com/NixOS/nixpkgs/pull/144026
+    remove overlay
 --------------------------------------------------------------------------------

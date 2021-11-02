@@ -9,6 +9,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    latte-dock
+    local.latte-dock
   ];
 }

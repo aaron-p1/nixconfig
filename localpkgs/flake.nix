@@ -11,6 +11,7 @@
           linuxPackages = linuxPackages;
           nvlax = nvlax;
         };
+        latte-dock = prev.callPackage ./overrides/latte-dock {};
       };
     };
   };
