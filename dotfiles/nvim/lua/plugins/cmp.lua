@@ -34,6 +34,7 @@ function plugin.config()
 			['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }), {'i', 'c'}),
 			['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }), {'i', 'c'}),
 		},
+		preselect = cmp.PreselectMode.Item;
 		formatting = {
 			format = function(entry, vim_item)
 				-- set a name for each source
@@ -47,6 +48,9 @@ function plugin.config()
 					})[entry.source.name]
 				return vim_item
 			end,
+		},
+		experimental = {
+			ghost_text = true,
 		},
 	}
 
