@@ -23,13 +23,16 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = { self, nixpkgs, nur, localpkgs, nixos-hardware, flake-utils, ...}@inputs:
+  outputs = { self, nixpkgs, stable, nur, localpkgs, nixos-hardware, flake-utils, ...}@inputs:
   let
     lib = inputs.unstable.lib; # unstable for home manager
     overlays = [
       inputs.neovim-nightly-overlay.overlay
       nur.overlay
       localpkgs.overlay
+      (final: prev: {
+        stable = import stable { system = final.system; };
+      })
     ];
   in {
     nixosConfigurations = {
