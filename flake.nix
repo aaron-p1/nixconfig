@@ -100,6 +100,9 @@
       packages = with pkgs; [
         gnumake
         rsync
+
+        # lsp
+        sumneko-lua-language-server
       ];
     };
   }
