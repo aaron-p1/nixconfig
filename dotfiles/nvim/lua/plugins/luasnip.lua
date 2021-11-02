@@ -13,6 +13,7 @@ function plugin.config()
 	helper.keymap_expr_i_s('<Tab>',
 		[[luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>']])
 	helper.keymap_lua_i_ns('<S-Tab>', [[require'luasnip'.jump(-1)]])
+	helper.keymap_expr_i_s('<C-y>', [['<Plug>luasnip-expand-or-jump']])
 
 	helper.keymap_lua_s_ns('<Tab>', [[require'luasnip'.jump(1)]])
 	helper.keymap_lua_s_ns('<S-Tab>', [[require'luasnip'.jump(-1)]])
