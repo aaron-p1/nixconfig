@@ -24,9 +24,23 @@ function plugin.config()
 
 	local ls = require'luasnip'
 
+	local types = require("luasnip.util.types")
+
 	ls.config.set_config{
 		updateevents = 'TextChanged,TextChangedI',
 		region_check_events = 'InsertEnter',
+		ext_opts = {
+			[types.choiceNode] = {
+				active = {
+					virt_text = {{"●", "GruvboxOrange"}}
+				}
+			},
+			[types.insertNode] = {
+				active = {
+					virt_text = {{"●", "GruvboxBlue"}}
+				}
+			}
+		},
 	}
 
 	local parse = ls.parser.parse_snippet
