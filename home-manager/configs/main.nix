@@ -39,6 +39,7 @@ let
     bitwarden
 
     multimc
+    lutris
   ];
   font-packages = with pkgs; [
   ];
