@@ -2,6 +2,8 @@
 {
   programs.ssh = {
     enable = true;
+    controlMaster = "yes";
+    controlPath = "~/.ssh/sockets/%r@%n:%p";
     matchBlocks = {
       public-server = {
         hostname = "public-server";
