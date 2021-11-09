@@ -24,10 +24,10 @@
       isDefault = true;
       settings = {
         "browser.aboutConfig.showWarning" = false;
+        "browser.newtabpage.enabled" = false;
         "browser.search.isUS" = false;
         "browser.search.region" = "DE";
         "browser.startup.homepage" = "about:blank";
-        "browser.newtabpage.enabled" = false;
         "browser.uidensity" = 1;
         "devtools.theme" = "dark";
         "devtools.toolbox.host" = "window";
