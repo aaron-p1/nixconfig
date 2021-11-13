@@ -12,6 +12,7 @@
     config = {
       volume = 100;
       osc = "no"; # mpv_thumbnail_script_client_osc
+      ytdl_path = "${pkgs.yt-dlp}/bin/yt-dlp";
     };
 
     profiles = {
