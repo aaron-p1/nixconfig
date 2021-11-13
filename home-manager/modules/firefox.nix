@@ -6,6 +6,10 @@
   home.file.".mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json".source =
     "${pkgs.plasma-browser-integration}/lib/mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json";
 
+  # ff2mpv does not exist in repo
+  home.file.".mozilla/native-messaging-hosts/ff2mpv.json".source =
+    "${pkgs.local.ff2mpv-native-client}/lib/mozilla/native-messaging-hosts/ff2mpv.json";
+
   programs.firefox = {
     enable = true;
 
