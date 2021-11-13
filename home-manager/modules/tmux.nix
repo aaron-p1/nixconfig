@@ -37,10 +37,15 @@
       session_name: nixconfig
       start_directory: ${config.home.homeDirectory}/Documents/nixos/nixconfig
       windows:
-        - window_name: nvim
-          panes:
-            - nvimgit
-        - window_name: zsh
+      - window_name: nvim
+        panes:
+        - shell_command:
+          - sleep 0.1
+          - nvimgit
+      - window_name: zsh
+      - window_name: man home-manager
+        panes:
+        - man home-configuration.nix
     '';
   };
 
