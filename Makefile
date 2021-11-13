@@ -17,7 +17,7 @@ existing new:
 	mkdir -p ${path}
 	rsync --verbose --delete-after --recursive --cvs-exclude --filter=':- .gitignore' --checksum . ${path}
 
-${rebuildCmds}:
+${rebuildCmds}: existing
 	nixos-rebuild ${nixargs} $@
 
 update:
