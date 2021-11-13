@@ -10,9 +10,11 @@
     # Set nixpkgs channel to follow flake
     registry.nixpkgs.flake = inputs.unstable;
 
+    autoOptimiseStore = true;
+
     gc = {
       automatic = true;
-      options = "--delete-older-than 30d";
+      options = "--delete-older-than 15d";
       dates = "weekly";
     };
   };
