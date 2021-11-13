@@ -9,7 +9,7 @@
 
     historyLimit = 5000;
 
-    tmuxp.enable = true;
+    tmuxp.enable = false; # not needed for gotmux
 
     terminal = "tmux-256color";
 
