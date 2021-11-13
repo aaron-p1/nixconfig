@@ -1,24 +1,33 @@
-{ stdenv, installShellFiles, lib }:
+{ stdenv, tmuxp, installShellFiles, lib }:
 stdenv.mkDerivation {
   pname = "gotmux";
   version = "1.0.0";
 
   src = ./.;
 
+  buildInputs = [ tmuxp ];
+
   nativeBuildInputs = [ installShellFiles ];
+
+  patchPhase = ''
+    patchShebangs gotmux
+    patchShebangs completions/gotmux.bash
+
+    substituteInPlace gotmux --replace tmuxp "${tmuxp}/bin/tmuxp"
+    substituteInPlace completions/gotmux.bash --replace tmuxp "${tmuxp}/bin/tmuxp"
+    substituteInPlace completions/gotmux.zsh --replace tmuxp "${tmuxp}/bin/tmuxp"
+  '';
 
   installPhase = ''
     mkdir -p $out/bin
 
-    cp -v gotmux $out/bin
-    cp -v etmux $out/bin
+    cp -v gotmux $out/bin/gotmux
+
+    runHook postInstall
   '';
 
-  postPhases = "postInstall";
-
   postInstall = ''
-    installShellCompletion --bash --cmd gotmux completion
-    installShellCompletion --zsh --cmd gotmux completion
+    installShellCompletion completions/gotmux.{bash,zsh}
   '';
 
   meta = with lib; {
