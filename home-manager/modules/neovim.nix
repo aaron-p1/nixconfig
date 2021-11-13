@@ -1,15 +1,22 @@
 { pkgs, ... }:
 {
+  # TODO change to package with dependency list
+  # then for each input replace @varName@: --subst-var-by <varName> <s>
   home.packages = with pkgs; [
     neovim-nightly
-    # used in telescope
+    # telescope
     fd
     ripgrep
-    # used in nvim tree
+    # nvim tree
     nerdfonts
     # lsp
     rnix-lsp
+    # null-ls
     shellcheck
+    shfmt
+    shellharden
+    nixfmt
+    statix
     (
       pkgs.writeTextFile rec {
         name = "update-neovim-packer";

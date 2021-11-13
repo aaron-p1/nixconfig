@@ -11,8 +11,11 @@ function plugin.config()
 		sources = {
 			-- shell
 			diagnostics.shellcheck,
-			formatting.shfmt,
 			formatting.shellharden,
+			-- nix
+			formatting.nixfmt,
+			diagnostics.statix,
+			code_actions.statix,
 		}
 	})
 
