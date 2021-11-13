@@ -17,6 +17,7 @@
         nr = "NIXPKGS_ALLOW_UNFREE=1 nix run --impure";
       };
       sessionVariables = {
+        LANG = "en_US.UTF-8";
         FZF_BASE = "${pkgs.fzf}/share/fzf";
 
         # vi mode plugin
