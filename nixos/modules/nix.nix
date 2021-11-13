@@ -5,6 +5,7 @@
     trustedUsers = [ "root" "@wheel" ];
     extraOptions = ''
       experimental-features = nix-command flakes
+      extra-platforms = aarch64-linux
     '';
     # Set nixpkgs channel to follow flake
     registry.nixpkgs.flake = inputs.unstable;
@@ -17,4 +18,6 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 }
