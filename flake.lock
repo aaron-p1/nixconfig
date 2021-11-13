@@ -68,7 +68,7 @@
     },
     "localpkgs": {
       "locked": {
-        "narHash": "sha256-IFX4NrLo7roAqobhBym+J1iRigmD9FNG8xpv+FguWbs=",
+        "narHash": "sha256-WPA2jNnq79rxfREB3vQe53qaLFspUyVN1uDcXJ2Sv4I=",
         "path": "./localpkgs",
         "type": "path"
       },
@@ -154,11 +154,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1636794213,
-        "narHash": "sha256-csrXbXmECHT662+Wul8s3PVo1FMXQ+Peijx0G7zTM5A=",
+        "lastModified": 1636800222,
+        "narHash": "sha256-rQHVTQnt7HCoO/MKXutFA8ArIkJHgut/96giwryMOpw=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "a879f61b4a720e708d9825a826c8c7a870085683",
+        "rev": "3a6eb10aeb8ed51a307c5867765379a0d82bc3e8",
         "type": "github"
       },
       "original": {

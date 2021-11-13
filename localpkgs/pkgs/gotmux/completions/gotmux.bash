@@ -7,7 +7,7 @@ _gotmux() {
 
 	files="$(tmuxp ls)"
 
-	COMPREPLY=($(compgen -W "$files" -- "${COMP_WORDS[COMP_CWORD]}"))
+	mapfile -t COMPREPLY < <(compgen -W "$files" -- "${COMP_WORDS[COMP_CWORD]}")
 }
 
 complete -F _gotmux gotmux

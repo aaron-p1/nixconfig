@@ -6,7 +6,7 @@ _gotmux() {
     (( CURRENT == 2 )) || return ret
 
     local -a args
-    args=($(tmuxp ls))
+    args=(${(f)"$(tmuxp ls)"})
 
     _values "Installed tmuxp Configs" $args[@] && ret=0
     return ret
