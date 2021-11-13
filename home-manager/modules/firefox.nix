@@ -16,7 +16,7 @@
       privacy-badger
       sidebery
       ff2mpv
-      # plasma-integration # deleted by mozilla: https://addons.mozilla.org/en-US/firefox/addon/plasma-integration/
+      plasma-integration # deleted by mozilla: https://addons.mozilla.org/en-US/firefox/addon/plasma-integration/
     ];
 
     profiles.main = {
