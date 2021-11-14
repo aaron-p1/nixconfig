@@ -47,7 +47,13 @@
   swapDevices = [{
     device = "/swapfile";
     size = 1024 * 20;
+    priority = 1;
   }];
+
+  # compressed ram swap max 50%
+  zramSwap = {
+    enable = true;
+  };
 
   # ZSH COMPLETION
   environment.pathsToLink = [
