@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   programs.git = {
     enable = true;
@@ -8,6 +8,7 @@
     };
     userName = "Aaron Pietscher";
     signing = {
+      gpgPath = "${config.programs.gpg.package}/bin/gpg2";
       signByDefault = true;
       key = "59C3DF25ECE049B6";
     };
