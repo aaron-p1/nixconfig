@@ -49,6 +49,7 @@ in
         sub-lang = "\"en,de\"";
         write-sub = "";
         write-auto-sub = "";
+        embed-chapters = "";
       };
     };
 
