@@ -20,7 +20,7 @@
 
   environment.etc."NetworkManager/dnsmasq.d/network" = {
     text = ''
-      address=/public-server/192.168.178.26
+      address=/public-server/192.168.178.8
     '';
   };
 }
