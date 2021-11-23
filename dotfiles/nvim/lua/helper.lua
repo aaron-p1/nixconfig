@@ -104,6 +104,10 @@ function helper.keymap_b_cmd_leader_n_ns(...)
 	keymap_b_cmd_leader_ns('n', ...)
 end
 
+function helper.keymap_b_cmd_leader_v_ns(...)
+	keymap_b_cmd_leader_ns('v', ...)
+end
+
 function helper.keymap_b_cmd_n_ns(...)
 	keymap_b_cmd_ns('n', ...)
 end
