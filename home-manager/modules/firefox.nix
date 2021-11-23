@@ -21,6 +21,7 @@
       sidebery
       ff2mpv
       plasma-integration # deleted by mozilla: https://addons.mozilla.org/en-US/firefox/addon/plasma-integration/
+      ublock-origin
     ];
 
     profiles.main = {
