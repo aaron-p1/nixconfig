@@ -39,6 +39,11 @@ in
         ytdl_hook = {
           ytdl_path = "${pkgs.yt-dlp}/bin/yt-dlp";
         };
+        sponsorblock = rec {
+          categories = "\"sponsor,intro,outro,interaction,selfpromo,preview\"";
+          skip_categories = categories;
+          local_database = "no";
+        };
       };
       ytdl-raw-options = toListOptions {
         sub-lang = "\"en,de\"";
