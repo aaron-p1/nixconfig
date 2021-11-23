@@ -66,9 +66,28 @@
         "type": "github"
       }
     },
-    "localpkgs": {
+    "jdt-ls": {
       "locked": {
-        "narHash": "sha256-WPA2jNnq79rxfREB3vQe53qaLFspUyVN1uDcXJ2Sv4I=",
+        "lastModified": 1634990178,
+        "narHash": "sha256-xNtoedxFiPXk9W6cTBBQEVUZDc8lGW+QMUGxiS0pKyk=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "3ae6abea23628f16a1c60ce9f9ec36deb0b5a59e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "3ae6abea23628f16a1c60ce9f9ec36deb0b5a59e",
+        "type": "github"
+      }
+    },
+    "localpkgs": {
+      "inputs": {
+        "jdt-ls": "jdt-ls"
+      },
+      "locked": {
+        "narHash": "sha256-rWeKrxfLaow8qtpG5Iojc+eybBPB9rLwoVYmFhj5bfY=",
         "path": "./localpkgs",
         "type": "path"
       },

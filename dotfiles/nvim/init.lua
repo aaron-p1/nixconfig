@@ -153,6 +153,7 @@ require('packer').startup({
 			config = [[require'plugins.lspconfig'.config()]],
 			wants = {'telescope.nvim', 'which-key.nvim', 'lsp_signature.nvim', 'nvim-cmp'},
 		}
+		use 'mfussenegger/nvim-jdtls' -- java
 		use {
 			'jose-elias-alvarez/null-ls.nvim',
 			requires = {'nvim-lua/plenary.nvim'},

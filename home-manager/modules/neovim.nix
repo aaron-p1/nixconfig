@@ -17,6 +17,8 @@
     shellharden
     nixfmt
     statix
+    # java
+    local.jdt-language-server
     (
       pkgs.writeTextFile rec {
         name = "update-neovim-packer";
