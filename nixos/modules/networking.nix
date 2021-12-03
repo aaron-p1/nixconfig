@@ -1,26 +1,65 @@
-{ ... }:
-{
-  networking.useDHCP = false; # deprecated
+{ config, lib, ... }:
+let
+  cfg = config.within.networking;
 
-  networking.firewall = {
-    enable = true;
-    allowPing = true;
+  enabledOption = name:
+    with lib;
+    mkOption {
+      type = types.bool;
+      default = true;
+      description = name;
+    };
+
+  mkStringSetOption = name:
+    with lib;
+    mkOption {
+      type = with types; nullOr (attrsOf str);
+      default = null;
+      description = name;
+    };
+
+  # attrs -> string
+  mkDnsmasqFile = with lib;
+    attrs:
+    concatStringsSep "\n" (mapAttrsToList (k: v: "address=/${k}/${v}") attrs);
+
+in with lib; {
+  options.within.networking = {
+    enable = mkEnableOption "basic setup";
+
+    firewall = enabledOption "firewall";
+
+    nm = {
+      enable = enabledOption "NetworkManager";
+      dnsmasq = {
+        enable = enabledOption "dnsmasq";
+        localDomains = mkStringSetOption "local domains";
+        networkDomains = mkStringSetOption "network domains";
+      };
+    };
   };
 
-  networking.networkmanager = {
-    enable = true;
-    dns = "dnsmasq";
-  };
+  config = mkIf cfg.enable {
+    networking.useDHCP = false; # discouraged
 
-  environment.etc."NetworkManager/dnsmasq.d/local" = {
-    text = ''
-      address=/exo/127.32.0.2
-    '';
-  };
+    networking.firewall = {
+      enable = cfg.firewall;
+      allowPing = true;
+    };
 
-  environment.etc."NetworkManager/dnsmasq.d/network" = {
-    text = ''
-      address=/public-server/192.168.178.8
-    '';
+    networking.networkmanager = {
+      enable = true;
+      dns = optionalString cfg.nm.dnsmasq.enable "dnsmasq";
+    };
+
+    environment.etc."NetworkManager/dnsmasq.d/local" =
+      optionalAttrs (cfg.nm.dnsmasq.localDomains != null) {
+        text = mkDnsmasqFile cfg.nm.dnsmasq.localDomains;
+      };
+
+    environment.etc."NetworkManager/dnsmasq.d/network" =
+      optionalAttrs (cfg.nm.dnsmasq.networkDomains != null) {
+        text = mkDnsmasqFile cfg.nm.dnsmasq.networkDomains;
+      };
   };
 }

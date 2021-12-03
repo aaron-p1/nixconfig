@@ -25,13 +25,13 @@
 
   outputs = { self, nixpkgs, stable, nur, localpkgs, nixos-hardware, flake-utils, ...}@inputs:
   let
-    lib = inputs.unstable.lib; # unstable for home manager
+    inherit (inputs.unstable) lib; # unstable for home manager
     overlays = [
       inputs.neovim-nightly-overlay.overlay
       nur.overlay
       localpkgs.overlay
       (final: prev: {
-        stable = import stable { system = final.system; };
+        stable = import stable { inherit (final) system; };
       })
     ];
   in {
@@ -61,14 +61,14 @@
             };
           }
         ];
-        extraArgs = { inputs = inputs; };
+        extraArgs = { inherit inputs; };
       };
     };
   }
   //
   flake-utils.lib.eachDefaultSystem (system: 
   let
-    pkgs = nixpkgs.legacyPackages.${system};
+    pkgs = nixpkgs.legacyPackages."${system}";
   in {
     devShell = pkgs.mkShell {
       packages = with pkgs; [
