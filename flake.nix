@@ -63,32 +63,6 @@
         ];
         extraArgs = { inputs = inputs; };
       };
-      nixosvm = lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          { nixpkgs.overlays = overlays; }
-
-          nixos-hardware.nixosModules.common-pc-ssd
-
-          ./nixos/configs/vm.nix
-          ./hosts/nixosvm/configuration.nix
-
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.aaron = {
-                imports = [
-                  ./home-manager/configs/vm.nix
-                  ./hosts/nixosvm/home.nix
-                ];
-              };
-            };
-          }
-        ];
-        extraArgs = { inputs = inputs; };
-      };
     };
   }
   //
