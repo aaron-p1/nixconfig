@@ -36,6 +36,7 @@
         "browser.uidensity" = 1;
         "devtools.theme" = "dark";
         "devtools.toolbox.host" = "window";
+        "extensions.update.autoUpdateDefault" = false;
         "general.useragent.locale" = "de-DE";
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
       };
