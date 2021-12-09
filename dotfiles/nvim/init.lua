@@ -29,7 +29,10 @@ require('packer').startup({
 		}
 
 		-- small text utilities
-		use 'tpope/vim-commentary'
+		use {
+			'numToStr/Comment.nvim',
+			config = [[require('plugins.comment').config()]]
+		}
 		use 'tpope/vim-surround'
 		use 'tpope/vim-unimpaired'
 		use 'tpope/vim-repeat'
