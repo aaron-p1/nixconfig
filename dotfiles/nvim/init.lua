@@ -80,6 +80,12 @@ require('packer').startup({
 			after = {'which-key.nvim', 'nvim-treesitter'},
 			config = [[require'plugins.treesitter-textobjects'.config()]]
 		}
+		use {
+			'nvim-treesitter/playground',
+			requires = 'nvim-treesitter/nvim-treesitter',
+			after = {'nvim-treesitter'},
+			config = [[require'plugins.treesitter-playground'.config()]]
+		}
 
 		-- syntax
 		use 'sheerun/vim-polyglot'
