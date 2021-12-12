@@ -1,5 +1,9 @@
-{ pkgs, config, ... }:
-{
+{ config, lib, pkgs, ... }:
+let cfg = config.within.zsh;
+in with lib; {
+  options.within.zsh = { enable = mkEnableOption "ZSH"; };
+
+  config = mkIf cfg.enable {
     programs.zsh = {
       enable = true;
       enableAutosuggestions = true;
@@ -38,14 +42,9 @@
       oh-my-zsh = {
         enable = true;
         theme = "robbyrussell";
-        plugins = [
-          "git"
-          "fzf"
-          "colored-man-pages"
-          "vi-mode"
-          "safe-paste"
-          "wd"
-        ];
+        plugins =
+          [ "git" "fzf" "colored-man-pages" "vi-mode" "safe-paste" "wd" ];
       };
     };
+  };
 }
