@@ -16,7 +16,7 @@ function plugin.config()
 		}
 	}
 
-	helper.keymap_cmd_leader_n_ns('oo', 'TroubleToggle lsp_document_diagnostics')
+	helper.keymap_cmd_leader_n_ns('oo', 'TroubleToggle document_diagnostics')
 	helper.keymap_cmd_leader_n_ns('oi', 'TroubleToggle lsp_implementations')
 	helper.keymap_cmd_leader_n_ns('or', 'TroubleToggle lsp_references')
 end
