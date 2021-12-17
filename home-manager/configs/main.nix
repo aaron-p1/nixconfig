@@ -71,5 +71,7 @@
 
     multimc
     lutris
+
+    (blender.override { cudaSupport = true; })
   ];
 }
