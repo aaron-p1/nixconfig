@@ -11,4 +11,7 @@ Check:
   jdtls:
     change lspconfig for java
     https://github.com/NixOS/nixpkgs/pull/99330
+  neovim:
+    remove tree sitter performance fix when tree sitter is version 0.21
+    https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/development/tools/parsing/tree-sitter/default.nix
 --------------------------------------------------------------------------------
