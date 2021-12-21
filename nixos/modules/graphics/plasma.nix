@@ -18,7 +18,7 @@ with lib; {
     };
 
     environment.systemPackages = with pkgs; [
-      local.latte-dock
+      latte-dock
     ];
 
     programs.kdeconnect.enable = cfg.kdeConnect;

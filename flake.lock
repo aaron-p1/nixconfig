@@ -87,7 +87,7 @@
         "jdt-ls": "jdt-ls"
       },
       "locked": {
-        "narHash": "sha256-VMx2toDX3mLJUFKJyLNcaLwq1V2FfsTGdZp2oQsRKLI=",
+        "narHash": "sha256-J9ltpGnW0kYv6g1yLa+Tb9HaxeHSWoMnYhOOmJwr/R4=",
         "path": "./localpkgs",
         "type": "path"
       },

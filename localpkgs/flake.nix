@@ -24,7 +24,6 @@
           prev.callPackage ./overrides/nvidia_x11-fbc {
             inherit linuxPackages nvlax;
           };
-        latte-dock = prev.callPackage ./overrides/latte-dock { };
       };
     };
   };
