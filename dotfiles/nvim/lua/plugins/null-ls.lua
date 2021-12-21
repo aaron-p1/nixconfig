@@ -2,12 +2,13 @@ local plugin = {}
 
 function plugin.config()
 	local nls = require("null-ls")
+	local lsplugin = require('plugins.lspconfig')
 
 	local diagnostics = nls.builtins.diagnostics
 	local formatting = nls.builtins.formatting
 	local code_actions = nls.builtins.code_actions
 
-	nls.config({
+	nls.setup({
 		sources = {
 			-- shell
 			diagnostics.shellcheck,
@@ -16,12 +17,7 @@ function plugin.config()
 			formatting.nixfmt,
 			diagnostics.statix,
 			code_actions.statix,
-		}
-	})
-
-	local lsplugin = require('plugins.lspconfig')
-
-	require('lspconfig')['null-ls'].setup({
+		},
 		on_attach = lsplugin.on_attach,
 		capabilities = lsplugin.getCapabilities()
 	})
