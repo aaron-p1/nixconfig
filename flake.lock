@@ -82,20 +82,6 @@
         "type": "github"
       }
     },
-    "localpkgs": {
-      "inputs": {
-        "jdt-ls": "jdt-ls"
-      },
-      "locked": {
-        "narHash": "sha256-J9ltpGnW0kYv6g1yLa+Tb9HaxeHSWoMnYhOOmJwr/R4=",
-        "path": "./localpkgs",
-        "type": "path"
-      },
-      "original": {
-        "path": "./localpkgs",
-        "type": "path"
-      }
-    },
     "neovim-flake": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -189,7 +175,7 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
-        "localpkgs": "localpkgs",
+        "jdt-ls": "jdt-ls",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": [
