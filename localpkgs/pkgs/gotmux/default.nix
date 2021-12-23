@@ -23,6 +23,8 @@ stdenv.mkDerivation {
 
     cp -v gotmux $out/bin/gotmux
 
+    chmod +x $out/bin/gotmux
+
     runHook postInstall
   '';
 
