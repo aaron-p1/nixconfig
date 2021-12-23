@@ -9,21 +9,8 @@ in with lib; {
     home.packages = with pkgs; [
       local.neovim-nightly
       xsel
-      # telescope
-      fd
-      ripgrep
       # nvim tree
       nerdfonts
-      # lsp
-      rnix-lsp
-      # null-ls
-      shellcheck
-      shfmt
-      shellharden
-      nixfmt
-      statix
-      # java
-      local.jdt-language-server
 
       (pkgs.writeShellScriptBin "update-neovim-packer" ''
         nix shell "nixpkgs#"{python3,gnumake,unzip,gcc} --command nvim "+PackerSync"
@@ -31,7 +18,7 @@ in with lib; {
     ];
 
     xdg.configFile."nvim" = {
-      source = ../../dotfiles/nvim;
+      source = pkgs.dotfiles.nvim;
       recursive = true;
     };
   };

@@ -11,12 +11,15 @@ function plugin.config()
 	nls.setup({
 		sources = {
 			-- shell
-			diagnostics.shellcheck,
-			formatting.shellharden,
+			diagnostics.shellcheck.with({command = "@shellcheck@/bin/shellcheck"}),
+			formatting.shellharden.with({command = "@shellharden@/bin/shellharden"}),
 			-- nix
-			formatting.nixfmt,
-			diagnostics.statix,
-			code_actions.statix,
+			formatting.nixfmt.with({command = "@nixfmt@/bin/nixfmt"}),
+			diagnostics.statix.with({command = "@statix@/bin/statix"}),
+			code_actions.statix.with({command = "@statix@/bin/statix"}),
+			-- elixir
+			formatting.mix.with({command = "@elixir@/bin/mix"}),
+			diagnostics.credo.with({command = "@elixir@/bin/mix"})
 		},
 		on_attach = lsplugin.on_attach,
 		capabilities = lsplugin.getCapabilities()

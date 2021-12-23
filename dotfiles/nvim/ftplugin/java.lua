@@ -47,7 +47,7 @@ end
 
 local config = {
   cmd = {
-	  'jdt-language-server'
+	  '@jdtls@/bin/jdt-language-server'
   },
 
   root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),

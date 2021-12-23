@@ -2,32 +2,27 @@ local plugin = {}
 
 local servers = {
 	-- dart
-	'dartls',
+	{server = 'dartls', cmd = {'@dart@/bin/dart', './snapshots/analysis_server.dart.snapshot', '--lsp'}},
 	-- html
-	{server = 'html', filetypes = {'html', 'blade'}},
+	{server = 'html', filetypes = {'html', 'blade'}, cmd = { '@vscodelsp@/bin/vscode-html-language-server', '--stdio'}},
 	-- css
-	'cssls',
+	{server = 'cssls', cmd = {'@vscodelsp@/bin/vscode-css-language-server', '--stdio'}},
 	-- php
-	--'phpactor',
-	'intelephense',
-	-- {'psalm', onlyDiagnostics},
+	{server = 'intelephense', cmd = {'@intelephense@/bin/intelephense', '--stdio'}},
 	-- tex
-	'texlab',
+	{server = 'texlab', cmd = {'@texlab@/bin/texlab'}},
 	-- json
-	'jsonls',
+	{server = 'jsonls', cmd = {'@vscodelsp@/bin/vscode-json-language-server', '--stdio'}},
 	-- yaml
-	'yamlls',
-	-- graphql
-	'graphql',
+	{server = 'yamlls', cmd = {'@yamlls@/bin/yaml-language-server', '--stdio'}},
 	-- vue
-	'vuels',
+	{server = 'vuels', cmd = {'@vls@/bin/vls'}},
 	-- haskell
-	'hls',
+	{server = 'hls', cmd = {'@hls@/bin/haskell-language-server-wrapper', '--lsp'}},
 	-- nix
-	'rnix',
+	{server = 'rnix', cmd = {'@rnix@/bin/rnix-lsp'}},
 	-- elixir
-	{server = 'elixirls', cmd = {'elixir-ls'}},
-	
+	{server = 'elixirls', cmd = {'@elixirls@/bin/elixir-ls'}},
 }
 
 function plugin.on_attach(client, bufnr)
@@ -176,7 +171,7 @@ function plugin.config()
 	nvim_lsp.sumneko_lua.setup {
 		on_attach = plugin.on_attach,
 		capabilities = capabilities,
-		cmd = {'lua-language-server'},
+		cmd = {'@luals@/bin/lua-language-server'},
 		settings = {
 			Lua = {
 				runtime = {

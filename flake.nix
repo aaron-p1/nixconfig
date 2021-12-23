@@ -32,6 +32,7 @@
         nur.overlay
         neovim-nightly-overlay.overlay
         (import ./localpkgs { inherit inputs; })
+        (import ./dotfiles { })
       ];
     in {
       nixosConfigurations = {

@@ -14,6 +14,15 @@ function plugin.config()
 				n = {
 					['<leader>ot'] = trouble.open_with_trouble
 				}
+			},
+			vimgrep_arguments = {
+				"@rg@/bin/rg",
+				"--color=never",
+				"--no-heading",
+				"--with-filename",
+				"--line-number",
+				"--column",
+				"--smart-case"
 			}
 		},
 		extensions = {
@@ -30,8 +39,8 @@ function plugin.config()
 
 	local helper = require'helper'
 	-- file
-	helper.keymap_cmd_leader_n_ns('fa', 'Telescope find_files find_command=fd,-uu,--type,file,--size,-1M')
-	helper.keymap_cmd_leader_n_ns('ff', 'Telescope find_files find_command=fd,-H,-E,.git,--size,-1M')
+	helper.keymap_cmd_leader_n_ns('fa', 'Telescope find_files find_command=@fd@/bin/fd,-uu,--type,file,--size,-1M')
+	helper.keymap_cmd_leader_n_ns('ff', 'Telescope find_files find_command=@fd@/bin/fd,-H,-E,.git,--size,-1M')
 	helper.keymap_cmd_leader_n_ns('fr', 'Telescope live_grep')
 	helper.keymap_cmd_leader_n_ns('fu', 'Telescope file_browser')
 	-- vim
