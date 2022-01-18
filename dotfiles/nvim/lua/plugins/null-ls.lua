@@ -14,12 +14,12 @@ function plugin.config()
 			diagnostics.shellcheck.with({command = "@shellcheck@/bin/shellcheck"}),
 			formatting.shellharden.with({command = "@shellharden@/bin/shellharden"}),
 			-- nix
-			formatting.nixfmt.with({command = "@nixfmt@/bin/nixfmt"}),
 			diagnostics.statix.with({command = "@statix@/bin/statix"}),
+			formatting.nixfmt.with({command = "@nixfmt@/bin/nixfmt"}),
 			code_actions.statix.with({command = "@statix@/bin/statix"}),
 			-- elixir
-			formatting.mix.with({command = "@elixir@/bin/mix"}),
-			diagnostics.credo.with({command = "@elixir@/bin/mix"})
+			diagnostics.credo.with({command = "@elixir@/bin/mix"}),
+			formatting.surface.with({command = "@elixir@/bin/mix", filetypes = {"surface"}}),
 		},
 		on_attach = lsplugin.on_attach,
 		capabilities = lsplugin.getCapabilities()
