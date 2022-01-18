@@ -4,14 +4,14 @@ function plugin.config()
 	local cmp = require'cmp'
 	cmp.setup {
 		sources = {
-			{ name = 'luasnip' },
 			{
 				name = 'nvim_lsp',
 				max_item_count = 16
 			},
-			{ name = 'cmp_tabnine' },
+			{ name = 'luasnip' },
 			{ name = 'path' },
 			{ name = 'calc' },
+			{ name = 'cmp_tabnine' },
 			{ name = 'buffer' },
 		},
 		snippet = {
