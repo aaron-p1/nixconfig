@@ -1,5 +1,8 @@
 --------------------------------------------------------------------------------
 Check:
+  firefox:
+    plasma integration not working
+    https://github.com/nix-community/home-manager/issues/1586
   nvidia driver:
     495.44
     nvlax might fail
