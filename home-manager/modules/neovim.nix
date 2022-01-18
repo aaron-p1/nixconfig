@@ -7,7 +7,7 @@ in with lib; {
     # TODO change to package with dependency list
     # then for each input replace @varName@: --subst-var-by <varName> <s>
     home.packages = with pkgs; [
-      local.neovim-nightly
+      neovim-nightly
       xsel
       # nvim tree
       nerdfonts

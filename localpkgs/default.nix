@@ -9,9 +9,6 @@ final: prev: {
     # firefox native messaging hosts
     ff2mpv-native-client = prev.callPackage ./pkgs/ff2mpv-native-client { };
 
-    # neovim tree sitter patch
-    neovim-nightly = prev.callPackage ./overrides/neovim { };
-
     # java language server
     inherit (jdt-ls.legacyPackages."${final.system}") jdt-language-server;
 
