@@ -42,6 +42,7 @@ function plugin.config()
 		preselect = cmp.PreselectMode.Item;
 		formatting = {
 			format = function(entry, vim_item)
+				local orig_menu = vim_item.menu
 				-- set a name for each source
 				vim_item.menu = ({
 						buffer = '[B]',
@@ -50,7 +51,13 @@ function plugin.config()
 						luasnip = '[SNIP]',
 						nvim_lsp = '[LSP]',
 						cmp_tabnine = '[T9]',
+						omni = '[OMNI]'
 					})[entry.source.name]
+
+				if orig_menu ~= nil then
+					vim_item.menu = vim_item.menu .. ': ' .. orig_menu
+				end
+
 				return vim_item
 			end,
 		},
@@ -72,6 +79,10 @@ function plugin.config()
 					{ name = 'cmdline' }
 				}),
 		})
+
+	vim.cmd[[
+		autocmd FileType tex,plaintex lua require('cmp').setup.buffer {sources = {{name = 'omni'}, {name = 'luasnip'}, {name = 'path'}, {name = 'calc'}, {name = 'cmp_tabnine'}, {name = 'buffer'}}}
+	]]
 end
 
 return plugin

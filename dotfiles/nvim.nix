@@ -1,7 +1,7 @@
 { lib, fd, ripgrep,
 
 dart, elixir, elixir_ls, haskell-language-server, nodePackages, local
-, sumneko-lua-language-server, rnix-lsp, texlab,
+, sumneko-lua-language-server, rnix-lsp, texlab, texlive,
 
 nixfmt, shellcheck, shellharden, statix, stdenv, findutils }:
 let
@@ -23,6 +23,7 @@ let
     "luals" = sumneko-lua-language-server;
     "rnix" = rnix-lsp;
     "texlab" = texlab;
+    "texlive" = texlive.combined.scheme-medium;
     "vscodelsp" = nodePackages.vscode-langservers-extracted;
     "vls" = nodePackages.vls;
     "yamlls" = nodePackages.yaml-language-server;

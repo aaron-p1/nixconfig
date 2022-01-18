@@ -9,8 +9,6 @@ local servers = {
 	{server = 'cssls', cmd = {'@vscodelsp@/bin/vscode-css-language-server', '--stdio'}},
 	-- php
 	{server = 'intelephense', cmd = {'@intelephense@/bin/intelephense', '--stdio'}},
-	-- tex
-	{server = 'texlab', cmd = {'@texlab@/bin/texlab'}},
 	-- json
 	{server = 'jsonls', cmd = {'@vscodelsp@/bin/vscode-json-language-server', '--stdio'}},
 	-- yaml

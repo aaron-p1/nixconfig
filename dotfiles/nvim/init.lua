@@ -178,6 +178,7 @@ require('packer').startup({
 		use 'hrsh7th/cmp-calc'
 		use 'hrsh7th/cmp-cmdline'
 		use 'saadparwaiz1/cmp_luasnip'
+		use 'hrsh7th/cmp-omni'
 		use 'hrsh7th/cmp-nvim-lsp'
 		use {
 			'tzachar/cmp-tabnine',
@@ -212,6 +213,12 @@ require('packer').startup({
 			requires = {'mfussenegger/nvim-dap'},
 			after = {'nvim-dap'},
 			config = [[require'plugins.dap-ui'.config()]]
+		}
+
+		-- tex
+		use {
+			'lervag/vimtex',
+			config = [[require('plugins.vimtex').config()]]
 		}
 
 		use_rocks 'fun'
