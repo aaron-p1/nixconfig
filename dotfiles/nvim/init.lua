@@ -7,18 +7,19 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	  .. install_path)
 end
 
-local helper = require'helper'
+local helper = require('helper')
+local packer = require('packer')
 
-local use = require('packer').use
-local use_rocks = require('packer').use_rocks
-require('packer').startup({
+local use = packer.use
+local use_rocks = packer.use_rocks
+packer.startup({
 	function()
 		use 'wbthomason/packer.nvim'
 
 		-- color scheme
 		use {
 			'morhetz/gruvbox',
-			config = [[require'plugins.gruvbox'.config()]]
+			config = [[require('plugins.gruvbox').config()]]
 		}
 
 		-- small text utilities
@@ -37,16 +38,16 @@ require('packer').startup({
 		}
 		use {
 			'norcalli/nvim-colorizer.lua',
-			config = [[require'plugins.colorizer'.config()]]
+			config = [[require('plugins.colorizer').config()]]
 		}
 		use {
 			'lukas-reineke/indent-blankline.nvim',
-			config = [[require'plugins.indent-blankline'.config()]]
+			config = [[require('plugins.indent-blankline').config()]]
 		}
 		use {
 			'windwp/nvim-autopairs',
 			after = {'nvim-cmp'},
-			config = [[require'plugins.autopairs'.config()]]
+			config = [[require('plugins.autopairs').config()]]
 		}
 		use {
 			'windwp/nvim-ts-autotag',
@@ -55,32 +56,32 @@ require('packer').startup({
 		-- config
 		use {
 			'editorconfig/editorconfig-vim',
-			config = [[require'plugins.editorconfig'.config()]]
+			config = [[require('plugins.editorconfig').config()]]
 		}
 
 		-- status line
 		use {
 			'itchyny/lightline.vim',
-			config = [[require'plugins.lightline'.config()]]
+			config = [[require('plugins.lightline').config()]]
 		}
 
 		use {
 			'nvim-treesitter/nvim-treesitter',
 			run = ':TSUpdate',
 			wants = {'nvim-ts-autotag'},
-			config = [[require'plugins.treesitter'.config()]]
+			config = [[require('plugins.treesitter').config()]]
 		}
 		use {
 			'nvim-treesitter/nvim-treesitter-textobjects',
 			requires = 'nvim-treesitter/nvim-treesitter',
 			after = {'which-key.nvim', 'nvim-treesitter'},
-			config = [[require'plugins.treesitter-textobjects'.config()]]
+			config = [[require('plugins.treesitter-textobjects').config()]]
 		}
 		use {
 			'nvim-treesitter/playground',
 			requires = 'nvim-treesitter/nvim-treesitter',
 			after = {'nvim-treesitter'},
-			config = [[require'plugins.treesitter-playground'.config()]]
+			config = [[require('plugins.treesitter-playground').config()]]
 		}
 
 		-- syntax
@@ -90,13 +91,13 @@ require('packer').startup({
 		-- helper
 		use {
 			'folke/which-key.nvim',
-			config = [[require'plugins.which-key'.config()]]
+			config = [[require('plugins.which-key').config()]]
 		}
 		use {
 			'phaazon/hop.nvim',
 			after = {'which-key.nvim'},
 			keys = {'<leader>h1', '<leader>h2', '<leader>hw'},
-			config = [[require'plugins.hop'.config()]]
+			config = [[require('plugins.hop').config()]]
 		}
 
 		-- git
@@ -104,13 +105,13 @@ require('packer').startup({
 			'tpope/vim-fugitive',
 			cmd = {'Git', 'Gpull', 'Gfetch', 'Gstatus', 'Glog', 'Gdiffsplit',
 				'Gwrite', 'Gread', 'GRename', 'GMove'},
-			config = [[require'plugins.fugitive'.config()]]
+			config = [[require('plugins.fugitive').config()]]
 		}
 		use {
 			'lewis6991/gitsigns.nvim',
 			requires = {'nvim-lua/plenary.nvim'},
 			after = {'vim-fugitive'},
-			config = [[require'plugins.gitsigns'.config()]]
+			config = [[require('plugins.gitsigns').config()]]
 		}
 
 		-- file manager
@@ -118,7 +119,7 @@ require('packer').startup({
 			'kyazdani42/nvim-tree.lua',
 			requires = {'kyazdani42/nvim-web-devicons'},
 			after = {'which-key.nvim'},
-			config = [[require'plugins.tree'.config()]]
+			config = [[require('plugins.tree').config()]]
 		}
 
 		-- fuzzy finder
@@ -126,13 +127,13 @@ require('packer').startup({
 			'nvim-telescope/telescope.nvim',
 			requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
 			wants = {'trouble.nvim', 'telescope-fzf-native.nvim', 'telescope-symbols.nvim'},
-			config = [[require'plugins.telescope'.config()]]
+			config = [[require('plugins.telescope').config()]]
 		}
 		use {
 			'nvim-telescope/telescope-fzf-native.nvim',
 			requires = {'nvim-telescope/telescope.nvim'},
 			run = 'make',
-			config = [[require'plugins.telescope-fzf-native'.config()]]
+			config = [[require('plugins.telescope-fzf-native').config()]]
 		}
 		use 'nvim-telescope/telescope-symbols.nvim'
 		use {
@@ -140,32 +141,32 @@ require('packer').startup({
 			requires = {'nvim-telescope/telescope.nvim', 'mfussenegger/nvim-dap'},
 			after = {'telescope.nvim', 'nvim-dap'},
 			-- TODO keymaps for common commands
-			config = [[require'plugins.telescope-dap'.config()]]
+			config = [[require('plugins.telescope-dap').config()]]
 		}
 
 		-- snippets
 		use {
 			'L3MON4D3/LuaSnip',
-			config = [[require'plugins.luasnip'.config()]]
+			config = [[require('plugins.luasnip').config()]]
 		}
 		use 'rafamadriz/friendly-snippets'
 
 		-- lsp
 		use {
 			'neovim/nvim-lspconfig',
-			config = [[require'plugins.lspconfig'.config()]],
+			config = [[require('plugins.lspconfig').config()]],
 			wants = {'telescope.nvim', 'which-key.nvim', 'lsp_signature.nvim', 'nvim-cmp'},
 		}
 		use 'mfussenegger/nvim-jdtls' -- java
 		use {
 			'jose-elias-alvarez/null-ls.nvim',
 			requires = {'nvim-lua/plenary.nvim'},
-			config = [[require'plugins.null-ls'.config()]],
+			config = [[require('plugins.null-ls').config()]],
 			after = {'nvim-lspconfig'}
 		}
 		use {
 			'hrsh7th/nvim-cmp',
-			config = [[require'plugins.cmp'.config()]]
+			config = [[require('plugins.cmp').config()]]
 		}
 		use 'hrsh7th/cmp-buffer'
 		use 'hrsh7th/cmp-path'
@@ -178,7 +179,7 @@ require('packer').startup({
 			'tzachar/cmp-tabnine',
 			run='./install.sh',
 			after = {'nvim-cmp'},
-			config = [[require'plugins.cmp-tabnine'.config()]]
+			config = [[require('plugins.cmp-tabnine').config()]]
 		}
 		use 'ray-x/lsp_signature.nvim'
 
@@ -187,26 +188,26 @@ require('packer').startup({
 			'folke/trouble.nvim',
 			requires = 'kyazdani42/nvim-web-devicons',
 			wants = {'which-key.nvim'},
-			config = [[require'plugins.trouble'.config()]]
+			config = [[require('plugins.trouble').config()]]
 		}
 
 		-- dap
 		use {
 			'mfussenegger/nvim-dap',
 			keys = {'<F5>', '<F8>'},
-			config = [[require'plugins.dap'.config()]]
+			config = [[require('plugins.dap').config()]]
 		}
 		use {
 			'theHamsta/nvim-dap-virtual-text',
 			requires = {'mfussenegger/nvim-dap'},
 			after = {'nvim-dap'},
-			config = [[require'plugins.dap-virtual-text'.config()]]
+			config = [[require('plugins.dap-virtual-text').config()]]
 		}
 		use {
 			'rcarriga/nvim-dap-ui',
 			requires = {'mfussenegger/nvim-dap'},
 			after = {'nvim-dap'},
-			config = [[require'plugins.dap-ui'.config()]]
+			config = [[require('plugins.dap-ui').config()]]
 		}
 
 		use 'vim-test/vim-test'
