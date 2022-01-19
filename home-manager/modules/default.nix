@@ -8,6 +8,7 @@ _: {
     ./git.nix
     ./gpg.nix
     ./idea-ultimate.nix
+    ./libreoffice.nix
     ./mpv.nix
     ./neovim.nix
     ./obs-studio.nix

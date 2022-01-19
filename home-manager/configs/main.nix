@@ -46,6 +46,9 @@
 
     # ../modules/idea-ultimate.nix
     idea-ultimate.enable = true;
+
+    # ../modules/libreoffice.nix
+    libreoffice.enable = true;
   };
 
   home.sessionVariables = { EDITOR = "nvim"; };
