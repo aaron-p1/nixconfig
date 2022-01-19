@@ -216,6 +216,8 @@ require('packer').startup({
 			config = [[require'plugins.dap-ui'.config()]]
 		}
 
+		use 'vim-test/vim-test'
+
 		-- tex
 		use {
 			'lervag/vimtex',
