@@ -18,8 +18,13 @@ with lib; {
     virtualisation = {
       containers = {
         enable = true;
-        containersConf.settings = {
-          engine.network_cmd_options = cfg.networkOptions;
+        containersConf = {
+          settings = {
+            engine.network_cmd_options = cfg.networkOptions;
+          };
+          cniPlugins = with pkgs; [
+            dnsname-cni
+          ];
         };
       };
 
