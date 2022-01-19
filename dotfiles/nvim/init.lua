@@ -263,7 +263,7 @@ helper.setOptions(vim.o, {
 
 	omnifunc = 'syntaxcomplete#Complete',
 
-	showbreak = '―→',
+	showbreak = '─→',
 	-- indent
 	tabstop = 4,
 	shiftwidth = 4,
