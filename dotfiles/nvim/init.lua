@@ -7,13 +7,6 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	  .. install_path)
 end
 
-vim.cmd[[
-  augroup Packer
-    autocmd!
-    autocmd BufWritePost ~/.config/nvim/init.lua nested source <afile> | PackerCompile
-  augroup end
-]]
-
 local helper = require'helper'
 
 local use = require('packer').use
