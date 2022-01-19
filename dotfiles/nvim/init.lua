@@ -92,6 +92,7 @@ require('packer').startup({
 
 		-- syntax
 		use 'sheerun/vim-polyglot'
+		use 'dylon/vim-antlr'
 
 		-- helper
 		use {
