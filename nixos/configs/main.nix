@@ -100,5 +100,9 @@
     neovim-nightly
   ];
 
+  fonts.fonts = with pkgs; [
+    corefonts
+  ];
+
   boot.cleanTmpDir = true;
 }
