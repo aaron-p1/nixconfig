@@ -3,6 +3,7 @@ local lspconfig = require("plugins.lspconfig")
 
 local function on_attach(client, bufnr)
   lspconfig.on_attach(client, bufnr);
+  require('jdtls.setup').add_commands()
 
   local function keymap_jdtls_leader_n(key, action)
     helper.keymap_b_lua_leader_n_ns(bufnr, key, [[require('jdtls').]] .. action)
@@ -18,9 +19,6 @@ local function on_attach(client, bufnr)
         silent = true,
       })
   end
-
-  keymap_jdtls_leader_n('lc', 'code_action()')
-  keymap_jdtls_leader_v('lc', 'code_action(true)')
 
   keymap_jdtls_leader_n('llo', 'organize_imports()')
   keymap_jdtls_leader_n('llv', 'extract_variable()')
