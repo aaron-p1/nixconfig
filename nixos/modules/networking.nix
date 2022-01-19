@@ -45,6 +45,9 @@ in with lib; {
     networking.firewall = {
       enable = cfg.firewall;
       allowPing = true;
+      extraCommands = ''
+        iptables -t nat -A OUTPUT -d 127.32.0.0/16 -p tcp -m tcp --dport 80 -j DNAT --to-destination ':8000'
+      '';
     };
 
     networking.networkmanager = {
