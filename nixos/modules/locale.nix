@@ -18,7 +18,6 @@ with lib; {
         LC_TIME = "de_DE.UTF-8";
         LC_COLLATE = "de_DE.UTF-8";
         LC_MONETARY = "de_DE.UTF-8";
-        LC_MESSAGES = "de_DE.UTF-8";
         LC_PAPER = "de_DE.UTF-8";
         LC_NAME = "de_DE.UTF-8";
         LC_ADDRESS = "de_DE.UTF-8";
