@@ -66,7 +66,7 @@ local function keymap_b_cmd_ns(mode, buf, key, cmd)
 end
 
 local function keymap_b_cmd_leader_ns(mode, buf, key, cmd)
-	keymap_b_cmd_ns('n', buf, '<leader>'..key, cmd)
+	keymap_b_cmd_ns(mode, buf, '<leader>'..key, cmd)
 end
 
 local function keymap_expr_s(mode, key, expr)
@@ -138,6 +138,10 @@ end
 
 function helper.keymap_b_lua_leader_n_ns(...)
 	keymap_b_lua_leader_ns('n', ...)
+end
+
+function helper.keymap_b_lua_leader_v_ns(...)
+	keymap_b_lua_leader_ns('v', ...)
 end
 
 function helper.keymap_expr_i_s(...)

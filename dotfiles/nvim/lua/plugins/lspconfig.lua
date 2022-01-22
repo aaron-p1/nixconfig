@@ -30,22 +30,16 @@ function plugin.on_attach(client, bufnr)
 	local function keymap_b_cmd_n_ns(...)
 		helper.keymap_b_cmd_n_ns(bufnr, ...)
 	end
-	local function keymap_b_cmd_leader_n_ns(...)
-		helper.keymap_b_cmd_leader_n_ns(bufnr, ...)
-	end
-	local function keymap_b_cmd_leader_v_ns(...)
-		helper.keymap_b_cmd_leader_v_ns(bufnr, ...)
-	end
 	local function keymap_b_lua_n_ns(...)
 		helper.keymap_b_lua_n_ns(bufnr, ...)
 	end
 	local function keymap_b_lua_leader_n_ns(...)
 		helper.keymap_b_lua_leader_n_ns(bufnr, ...)
 	end
-
-	local function buf_set_keymap(...)
-		vim.api.nvim_buf_set_keymap(bufnr, ...)
+	local function keymap_b_lua_leader_v_ns(...)
+		helper.keymap_b_lua_leader_v_ns(bufnr, ...)
 	end
+
 	local function buf_set_option(...)
 		vim.api.nvim_buf_set_option(bufnr, ...)
 	end
@@ -71,8 +65,8 @@ function plugin.on_attach(client, bufnr)
 	keymap_b_lua_leader_n_ns('lwa', 'vim.lsp.buf.add_workspace_folder()')
 	keymap_b_lua_leader_n_ns('lwr', 'vim.lsp.buf.remove_workspace_folder()')
 	keymap_b_lua_leader_n_ns('lf', 'vim.lsp.buf.formatting()')
-	keymap_b_cmd_leader_n_ns('lc', 'Telescope lsp_code_actions')
-	keymap_b_cmd_leader_v_ns('lc', 'Telescope lsp_range_code_actions')
+	keymap_b_lua_leader_n_ns('lc', 'vim.lsp.buf.code_action()')
+	keymap_b_lua_leader_v_ns('lc', 'vim.lsp.buf.range_code_action()')
 	keymap_b_lua_leader_n_ns('lr', 'vim.lsp.buf.rename()')
 
 

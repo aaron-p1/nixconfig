@@ -50,8 +50,6 @@ function plugin.config()
 	-- lsp
 	helper.keymap_cmd_leader_n_ns('flr', 'Telescope lsp_refrences')
 	helper.keymap_cmd_leader_n_ns('fls', 'Telescope lsp_document_symbols')
-	-- (maybe code actions)
-	-- helper.keymap_cmd_leader_n_ns('flc', 'Telescope lsp_code_actions')
 	helper.keymap_cmd_leader_n_ns('fli', 'Telescope lsp_implementations')
 	helper.keymap_cmd_leader_n_ns('fld', 'Telescope lsp_definitions')
 	-- git
