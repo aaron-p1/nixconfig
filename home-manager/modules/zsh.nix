@@ -22,6 +22,7 @@ in with lib; {
       };
       sessionVariables = {
         LANG = "en_US.UTF-8";
+        LANGUAGE = "en_US.UTF-8";
         FZF_BASE = "${pkgs.fzf}/share/fzf";
 
         # vi mode plugin
