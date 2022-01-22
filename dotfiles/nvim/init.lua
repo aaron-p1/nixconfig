@@ -131,9 +131,7 @@ packer.startup({
 		}
 		use {
 			'nvim-telescope/telescope-fzf-native.nvim',
-			requires = {'nvim-telescope/telescope.nvim'},
 			run = 'make',
-			config = [[require('plugins.telescope-fzf-native').config()]]
 		}
 		use 'nvim-telescope/telescope-symbols.nvim'
 		use {
