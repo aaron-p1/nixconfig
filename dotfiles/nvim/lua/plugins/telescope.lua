@@ -31,11 +31,17 @@ function plugin.config()
 				override_generic_sorter = true,
 				override_file_sorter = true,
 				case_mode = 'smart_case',
+			},
+			['ui-select'] = {
+				require('telescope.themes').get_dropdown {
+					-- even more opts
+				}
 			}
 		}
 	}
 
 	t.load_extension('fzf')
+	t.load_extension('ui-select')
 
 	local helper = require'helper'
 	-- file

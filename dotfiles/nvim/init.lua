@@ -126,13 +126,14 @@ packer.startup({
 		use {
 			'nvim-telescope/telescope.nvim',
 			requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
-			wants = {'trouble.nvim', 'telescope-fzf-native.nvim', 'telescope-symbols.nvim'},
+			wants = {'trouble.nvim', 'telescope-fzf-native.nvim', 'telescope-symbols.nvim', 'telescope-ui-select.nvim'},
 			config = [[require('plugins.telescope').config()]]
 		}
 		use {
 			'nvim-telescope/telescope-fzf-native.nvim',
 			run = 'make',
 		}
+		use 'nvim-telescope/telescope-ui-select.nvim'
 		use 'nvim-telescope/telescope-symbols.nvim'
 		use {
 			'nvim-telescope/telescope-dap.nvim',
