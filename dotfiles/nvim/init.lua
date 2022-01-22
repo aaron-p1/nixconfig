@@ -279,6 +279,8 @@ helper.setOptions(vim.o, {
 	dictionary = '/usr/share/dict/ngerman,/usr/share/dict/usa',
 })
 
+vim.cmd("language en_US.utf8")
+
 -- TERMINAL
 -- alt + Esc for leaving terminal
 vim.api.nvim_set_keymap('t', '<A-Esc>', [[<c-\><c-n>]], { noremap = true })
