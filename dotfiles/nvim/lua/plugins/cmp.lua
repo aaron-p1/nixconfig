@@ -6,7 +6,7 @@ function plugin.config()
 		sources = {
 			{
 				name = 'nvim_lsp',
-				max_item_count = 16
+				max_item_count = 32
 			},
 			{ name = 'luasnip' },
 			{ name = 'path' },
