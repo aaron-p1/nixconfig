@@ -51,6 +51,7 @@ local config = {
   root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),
 
   capabilities = lspconfig.getCapabilities(),
+  extendedClientCapabilities = require("jdtls").extendedClientCapabilities,
   on_attach = on_attach
 }
 
