@@ -72,7 +72,7 @@
     element-desktop
     bitwarden
 
-    multimc
+    polymc
     lutris
 
     (blender.override { cudaSupport = true; })

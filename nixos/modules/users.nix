@@ -59,6 +59,8 @@ with lib; {
             extraGroups = [ "wheel" "networkmanager" ];
             shell = pkgs.zsh;
 
+            autoSubUidGidRange = true; # for containers
+
             openssh.authorizedKeys.keys = config.sshKeys;
           })
         cfg;

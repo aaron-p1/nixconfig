@@ -1,5 +1,8 @@
 --------------------------------------------------------------------------------
 Check:
+  nixpkgs Breaking Changes:
+  	https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/doc/manual/release-notes/rl-2205.section.md
+
   firefox:
     plasma integration not working
     https://github.com/nix-community/home-manager/issues/1586
