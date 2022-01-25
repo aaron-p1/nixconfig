@@ -9,9 +9,10 @@ in with lib; {
 
       settings = {
         window.dimensions = {
-          lines = 24;
-          columns = 80;
+          lines = 28;
+          columns = 100;
         };
+        font.size = 9;
         key_bindings = [{
           key = "F11";
           action = "ToggleFullscreen";
