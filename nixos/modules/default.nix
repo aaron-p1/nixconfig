@@ -14,6 +14,7 @@ _:
     ./samba.nix
     ./steam.nix
     ./vmclient.nix
+    ./pihole.nix
 
     ./users.nix
   ];

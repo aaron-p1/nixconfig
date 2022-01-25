@@ -33,6 +33,8 @@ with lib; {
         enableNvidia = true;
         dockerCompat = true;
       };
+
+      oci-containers.backend = "podman";
     };
 
     environment.systemPackages = optional cfg.podman pkgs.podman-compose;
