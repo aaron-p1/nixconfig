@@ -15,7 +15,6 @@ with lib; {
   config = mkIf cfg.enable {
     nix = {
       package = pkgs.nixUnstable;
-      trustedUsers = [ "root" "@wheel" ];
       extraOptions = ''
         experimental-features = nix-command flakes
         extra-platforms = ${concatStringsSep " " cfg.emulatedSystems}
@@ -23,15 +22,18 @@ with lib; {
       # Set nixpkgs channel to follow flake
       registry.nixpkgs.flake = inputs.unstable;
 
-      binaryCaches = [
-        "https://nix-community.cachix.org/"
-      ];
+      settings = {
+        trusted-users = [ "root" "@wheel" ];
 
-      binaryCachePublicKeys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
+        substituters = [
+          "https://nix-community.cachix.org/"
+        ];
+        trusted-public-keys = [
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        ];
 
-      autoOptimiseStore = true;
+        auto-optimise-store = true;
+      };
 
       gc = {
         automatic = true;

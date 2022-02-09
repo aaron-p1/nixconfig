@@ -37,13 +37,6 @@
     fsType = "ext4";
   };
 
-  # file creation not working in btrfs
-  # https://github.com/NixOS/nixpkgs/issues/91986
-  # create manually
-  #
-  # ${pkgs.coreutils}/bin/truncate -s 0 /swapfile
-  # ${pkgs.e2fsprogs}/bin/chattr +C /swapfile
-  # ${pkgs.btrfs-progs}/bin/btrfs property set /swapfile compression none
   swapDevices = [{
     device = "/swapfile";
     size = 1024 * 20;
