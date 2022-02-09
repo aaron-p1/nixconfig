@@ -94,11 +94,23 @@
     dconf.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    wget
-    neovim-nightly
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      git
+      wget
+      neovim-nightly
+    ];
+    sessionVariables = {
+      XDG_CACHE_HOME  = "\${HOME}/.cache";
+      XDG_CONFIG_HOME = "\${HOME}/.config";
+      XDG_BIN_HOME    = "\${HOME}/.local/bin";
+      XDG_DATA_HOME   = "\${HOME}/.local/share";
+
+      PATH = [ 
+        "\${XDG_BIN_HOME}"
+      ];
+    };
+  };
 
   fonts.fonts = with pkgs; [
     corefonts
