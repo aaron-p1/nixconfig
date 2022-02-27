@@ -9,6 +9,6 @@
   outputs = { self, nixpkgs, flake-compat }: {
 
     devShell.x86_64-linux = with nixpkgs.legacyPackages.x86_64-linux;
-      mkShell { packages = [ elixir ]; };
+      mkShell { packages = [ elixir elixir_ls ]; };
   };
 }
