@@ -13,6 +13,8 @@ function plugin.config()
 			-- shell
 			diagnostics.shellcheck.with({command = "@shellcheck@/bin/shellcheck"}),
 			formatting.shellharden.with({command = "@shellharden@/bin/shellharden"}),
+			-- lua
+			formatting.stylua.with({command = "@stylua@/bin/stylua"}),
 			-- nix
 			diagnostics.statix.with({command = "@statix@/bin/statix"}),
 			formatting.nixfmt.with({command = "@nixfmt@/bin/nixfmt"}),

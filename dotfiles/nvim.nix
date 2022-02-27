@@ -3,7 +3,7 @@
 dart, elixir, elixir_ls, haskell-language-server, nodePackages, local
 , sumneko-lua-language-server, rnix-lsp, texlab, texlive,
 
-nixfmt, shellcheck, shellharden, statix, stdenv, findutils }:
+nixfmt, shellcheck, shellharden, statix, stylua, stdenv, findutils }:
 let
   inherit (builtins) attrValues;
   inherit (lib) mapAttrsToList;
@@ -33,6 +33,7 @@ let
     "shellcheck" = shellcheck;
     "shellharden" = shellharden;
     "statix" = statix;
+    "stylua" = stylua;
   };
 in stdenv.mkDerivation {
   pname = "dotfiles-nvim";
