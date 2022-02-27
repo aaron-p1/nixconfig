@@ -8,6 +8,9 @@ in with lib; {
       enable = true;
       enableZshIntegration = true;
       nix-direnv = { enable = true; };
+      config = {
+        skip_dotenv = true;
+      };
     };
   };
 }
