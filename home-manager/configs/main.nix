@@ -71,10 +71,5 @@
     obsidian
     element-desktop
     bitwarden
-
-    polymc
-    lutris
-
-    (blender.override { cudaSupport = true; })
   ];
 }
