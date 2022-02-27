@@ -15,6 +15,8 @@ in with lib; {
         df = "df -h";
         cdtmp = "cd $(mktemp -d)";
 
+        o = "xdg-open";
+
         nvimgit = "nvim +Git +only +'bdelete 1'";
 
         ns = "NIXPKGS_ALLOW_UNFREE=1 nix shell --impure";
