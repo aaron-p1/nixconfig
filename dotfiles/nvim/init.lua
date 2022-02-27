@@ -247,6 +247,8 @@ helper.setOptions(vim.o, {
 	'undofile',
 	--
 	'cursorline',
+	-- ! don't use tmp file
+	'noshelltemp',
 
 	background = 'dark',
 
