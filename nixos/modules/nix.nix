@@ -8,6 +8,7 @@ in with lib; {
       default = [ ];
       description = "emulated systems with qemu";
     };
+    enablei686 = mkEnableOption "i686 platform";
   };
 
   config = mkIf cfg.enable {
@@ -15,7 +16,9 @@ in with lib; {
       package = pkgs.nixUnstable;
       extraOptions = ''
         experimental-features = nix-command flakes
-        extra-platforms = ${concatStringsSep " " cfg.emulatedSystems}
+        extra-platforms = ${optionalString cfg.enablei686 "i686-linux "}${
+          concatStringsSep " " cfg.emulatedSystems
+        }
       '';
       # Set nixpkgs channel to follow flake
       registry.nixpkgs.flake = inputs.unstable;

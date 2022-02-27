@@ -6,6 +6,7 @@
     nix = {
       enable = true;
       emulatedSystems = [ "aarch64-linux" ];
+      enablei686 = true;
     };
 
     # ../modules/locale.nix
