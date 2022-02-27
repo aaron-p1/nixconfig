@@ -26,49 +26,40 @@ local servers = {
 function plugin.on_attach(client, bufnr)
 	local helper = require'helper'
 
-	-- helper functions
-	local function keymap_b_cmd_n_ns(...)
-		helper.keymap_b_cmd_n_ns(bufnr, ...)
-	end
-	local function keymap_b_lua_n_ns(...)
-		helper.keymap_b_lua_n_ns(bufnr, ...)
-	end
-	local function keymap_b_lua_leader_n_ns(...)
-		helper.keymap_b_lua_leader_n_ns(bufnr, ...)
-	end
-	local function keymap_b_lua_leader_v_ns(...)
-		helper.keymap_b_lua_leader_v_ns(bufnr, ...)
+	local function buf_keymap(mode, key, fn)
+		vim.keymap.set(mode, key, fn, {buffer = bufnr})
 	end
 
-	local function buf_set_option(...)
-		vim.api.nvim_buf_set_option(bufnr, ...)
-	end
+	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-	buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+	local vl = vim.lsp.buf
+	local vd = vim.lsp.diagnostic
+	local tb = require('telescope.builtin')
 
 	-- jump to
-	keymap_b_lua_n_ns('gD', 'vim.lsp.buf.declaration()')
-	keymap_b_cmd_n_ns('gd', 'Telescope lsp_definitions')
-	keymap_b_cmd_n_ns('gi', 'Telescope lsp_implementations')
-	keymap_b_lua_leader_n_ns('lD', 'vim.lsp.buf.type_definition()')
-	keymap_b_cmd_n_ns('gr', 'Telescope lsp_references')
-	keymap_b_lua_n_ns('[d', 'vim.lsp.diagnostic.goto_prev()')
-	keymap_b_lua_n_ns(']d', 'vim.lsp.diagnostic.goto_next()')
+	buf_keymap('n', 'gd', tb.lsp_definitions)
+	buf_keymap('n', 'gD', vl.declaration)
+	buf_keymap('n', 'gi', tb.lsp_implementations)
+	buf_keymap('n', 'gr', tb.lsp_references)
+	buf_keymap('n', '<Leader>lD', vl.type_definition)
+	buf_keymap('n', '[d', vd.goto_prev)
+	buf_keymap('n', ']d', vd.goto_next)
 
 	-- show info
-	keymap_b_lua_n_ns('K', 'vim.lsp.buf.hover()')
-	keymap_b_lua_n_ns('<C-k>', 'vim.lsp.buf.signature_help()')
-	keymap_b_lua_leader_n_ns(
-		'lwl', 'print(vim.inspect(vim.lsp.buf.list_workspace_folders()))')
+	buf_keymap('n', 'K', vl.hover)
+	buf_keymap('n', '<C-K>', vl.signature_help)
+
+	buf_keymap('n', '<Leader>lwl', function ()
+		print(vim.inspect(vl.list_workspace_folders))
+	end)
+	buf_keymap('n', '<Leader>lwa', vl.add_workspace_folder)
+	buf_keymap('n', '<Leader>lwr', vl.remove_workspace_folder)
 
 	-- edit
-	keymap_b_lua_leader_n_ns('lwa', 'vim.lsp.buf.add_workspace_folder()')
-	keymap_b_lua_leader_n_ns('lwr', 'vim.lsp.buf.remove_workspace_folder()')
-	keymap_b_lua_leader_n_ns('lf', 'vim.lsp.buf.formatting()')
-	keymap_b_lua_leader_n_ns('lc', 'vim.lsp.buf.code_action()')
-	keymap_b_lua_leader_v_ns('lc', 'vim.lsp.buf.range_code_action()')
-	keymap_b_lua_leader_n_ns('lr', 'vim.lsp.buf.rename()')
-
+	buf_keymap('n', '<Leader>lf', vl.formatting)
+	buf_keymap('n', '<Leader>lc', vl.code_action)
+	buf_keymap('v', '<Leader>lc', vl.range_code_action)
+	buf_keymap('n', '<Leader>lr', vl.rename)
 
 	-- which key
 	helper.registerPluginWk{
@@ -77,12 +68,31 @@ function plugin.on_attach(client, bufnr)
 		map = {
 			l = {
 				name = 'LSP',
+				D = 'Type definition',
+				f = 'Format',
+				c = 'Code action',
+				r = 'Rename',
 				w = {
 					name = 'Workspace',
+					l = 'List',
+					a = 'Add folder',
+					r = 'Remove folder',
 				}
 			},
 		},
 	}
+	helper.registerPluginWk{
+		prefix = 'g',
+		buffer = bufnr,
+		map = {
+			d = 'Definitions',
+			D = 'Declaration',
+			i = 'Implementations',
+			r = 'References',
+		}
+	}
+	helper.registerPluginWk{prefix = '[', buffer = bufnr, map = {d = 'Prev Diagnostic'}}
+	helper.registerPluginWk{prefix = ']', buffer = bufnr, map = {d = 'Next Diagnostic'}}
 
 	-- lsp signature
 	require'lsp_signature'.on_attach{

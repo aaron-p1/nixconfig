@@ -278,7 +278,7 @@ vim.cmd("language en_US.utf8")
 
 -- TERMINAL
 -- alt + Esc for leaving terminal
-vim.api.nvim_set_keymap('t', '<A-Esc>', [[<c-\><c-n>]], { noremap = true })
+vim.keymap.set('t', '<A-Esc>', '<C-\\><C-N>')
 
 --Disable numbers in terminal mode
 vim.cmd[[
@@ -297,26 +297,26 @@ vim.cmd[[
 	augroup end
 ]]
 
--- Y yank until the end of line
-vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true })
-
 -- noh
-helper.keymap_cmd_leader_n_ns('n', 'noh')
+vim.keymap.set('n', '<Leader>n', '<Cmd>nohlsearch<CR>', {silent = true})
 
 -- tab
-helper.keymap_cmd_leader_n_ns('tt', 'tablast')
-helper.keymap_lua_leader_n_ns('tc', [[ vim.api.nvim_command('tabclose'); for i=2,vim.v.count,1 do vim.api.nvim_command('tabclose') end]])
-helper.keymap_cmd_leader_n_ns('to', 'tabonly')
-
--- syntax
-helper.keymap_cmd_leader_n_ns('xs', 'syntax sync fromstart')
+vim.keymap.set('n', '<Leader>tc', function ()
+	local count = vim.v.count == 0 and 1 or vim.v.count
+	pcall(function ()
+		for _ = 1, count do
+			vim.api.nvim_command('tabclose')
+		end
+	end)
+end)
+vim.keymap.set('n', '<Leader>to', '<Cmd>tabonly<CR>', {silent = true})
 
 -- Compare Remote
 local compare_remotes = {
 	exo = 'scp://exoshare//var/www/html/exomind/',
 }
 
-function CompareRemotes(remote)
+local function compareRemotes(remote)
 	local local_path = vim.api.nvim_eval(
 		[[system('realpath --relative-base=' . getcwd() . ' ' . expand('%:p'))]])
 
@@ -330,7 +330,7 @@ function CompareRemotes(remote)
 	vim.cmd('vertical diffsplit ' .. remote_path)
 end
 
-helper.keymap_lua_leader_n_ns('rexo', [[CompareRemotes('exo')]])
+vim.keymap.set('n', '<Leader>rexo', function () compareRemotes('exo') end)
 
 vim.cmd[[
 	augroup my_scp

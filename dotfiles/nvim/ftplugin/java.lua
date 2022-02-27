@@ -1,31 +1,23 @@
+local j = require('jdtls')
 local helper = require('helper')
 local lspconfig = require("plugins.lspconfig")
 
 local function on_attach(client, bufnr)
   lspconfig.on_attach(client, bufnr);
+
   require('jdtls.setup').add_commands()
 
-  local function keymap_jdtls_leader_n(key, action)
-    helper.keymap_b_lua_leader_n_ns(bufnr, key, [[require('jdtls').]] .. action)
+  local function buf_keymap(mode, key, fn)
+      vim.keymap.set(mode, key, fn, {buffer = bufnr})
   end
 
-  local function keymap_jdtls_leader_v(key, action)
-    vim.api.nvim_buf_set_keymap(
-      bufnr,
-      'v',
-      '<leader>' .. key, [[<Esc><Cmd>lua require('jdtls').]] .. action .. '<CR>',
-      {
-        noremap = true,
-        silent = true,
-      })
-  end
 
-  keymap_jdtls_leader_n('llo', 'organize_imports()')
-  keymap_jdtls_leader_n('llv', 'extract_variable()')
-  keymap_jdtls_leader_v('llv', 'extract_variable(true)')
-  keymap_jdtls_leader_n('llc', 'extract_constant()')
-  keymap_jdtls_leader_v('llc', 'extract_constant(true)')
-  keymap_jdtls_leader_v('llm', 'extract_method(true)')
+  buf_keymap('n', '<Leader>llo', j.organize_imports)
+  buf_keymap('n', '<Leader>llv', j.extract_variable)
+  buf_keymap('v', '<Leader>llv', function () j.extract_variable(true) end)
+  buf_keymap('n', '<Leader>llc', j.extract_constant)
+  buf_keymap('v', '<Leader>llc', function () j.extract_constant(true) end)
+  buf_keymap('v', '<Leader>llm', function () j.extract_method(true) end)
 
   -- which key
   helper.registerPluginWk{
@@ -35,6 +27,10 @@ local function on_attach(client, bufnr)
       l = {
         l = {
           name = 'Java',
+          o = 'Organize imports',
+          v = 'Extract variable',
+          c = 'Extract Constant',
+          m = 'Extract Method',
         }
       },
     },
@@ -55,4 +51,4 @@ local config = {
   on_attach = on_attach
 }
 
-require('jdtls').start_or_attach(config)
+j.start_or_attach(config)

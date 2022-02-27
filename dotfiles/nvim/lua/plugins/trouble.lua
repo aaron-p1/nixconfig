@@ -1,9 +1,15 @@
 local plugin = {}
 
 function plugin.config()
-	require('trouble').setup {
+	local t = require('trouble')
+
+	t.setup {
 		mode = 'loclist'
 	}
+
+	vim.keymap.set('n', '<Leader>oo', function () t.toggle('document_diagnostics') end)
+	vim.keymap.set('n', '<Leader>oi', function () t.toggle('lsp_implementations') end)
+	vim.keymap.set('n', '<Leader>or', function () t.toggle('lsp_references') end)
 
 	local helper = require'helper'
 
@@ -11,14 +17,13 @@ function plugin.config()
 		prefix = '<leader>',
 		map = {
 			o = {
-				name = 'Trouble'
+				name = 'Trouble',
+				o = 'Document diagnostics',
+				i = 'Implementations',
+				r = 'References',
 			}
 		}
 	}
-
-	helper.keymap_cmd_leader_n_ns('oo', 'TroubleToggle document_diagnostics')
-	helper.keymap_cmd_leader_n_ns('oi', 'TroubleToggle lsp_implementations')
-	helper.keymap_cmd_leader_n_ns('or', 'TroubleToggle lsp_references')
 end
 
 return plugin

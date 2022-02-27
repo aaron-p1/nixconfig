@@ -3,7 +3,20 @@ local plugin = {}
 function plugin.config()
 	local helper = require'helper'
 
-	helper.keymap_cmd_leader_n_ns('gbb', 'Git blame')
+	vim.keymap.set('n', '<Leader>gbb', '<Cmd>Git blame<CR>', {silent = true})
+
+	helper.registerPluginWk{
+		map = {
+			g = {
+				name = 'Git',
+				b = {
+					name = 'Blame',
+					b = 'Whole file',
+				}
+			}
+		}
+	}
+
 end
 
 return plugin

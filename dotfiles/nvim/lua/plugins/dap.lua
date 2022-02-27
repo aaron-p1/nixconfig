@@ -1,27 +1,32 @@
 local plugin = {}
 
 function plugin.config()
+	local dap = require('dap')
 	local helper = require'helper'
 
-	helper.keymap_lua_n_ns('<F1>', [[require'dap'.repl.toggle()]])
-	helper.keymap_lua_n_ns('<F2>', [[require'dap'.step_over()]])
-	helper.keymap_lua_n_ns('<F3>', [[require'dap'.step_into()]])
-	helper.keymap_lua_n_ns('<F4>', [[require'dap'.step_out()]])
+	vim.keymap.set('n', '<F1>', dap.repl.toggle)
+	vim.keymap.set('n', '<F2>', dap.step_over)
+	vim.keymap.set('n', '<F3>', dap.step_into)
+	vim.keymap.set('n', '<F4>', dap.step_out)
 	-- continue or run
-	helper.keymap_lua_n_ns('<F5>', [[require'dap'.continue()]])
-	helper.keymap_lua_n_ns('<F6>', [[require'dap'.disconnect()]])
-	helper.keymap_lua_n_ns('<F7>', [[require'dap'.run_to_cursor()]])
-	helper.keymap_lua_n_ns('<F8>', [[require'dap'.toggle_breakpoint()]])
-	helper.keymap_lua_leader_n_ns(
-		'<F8>',
-		[[require'dap'.toggle_breakpoint(vim.fn.input('Breakpoint condition: '))]]
-	)
-	helper.keymap_lua_n_ns('<F9>', [[require'dap'.list_breakpoints()]])
-	helper.keymap_lua_n_ns('<F10>', [[require'dap'.up()]])
-	helper.keymap_lua_leader_n_ns('<F10>', [[require'dap'.down()]])
+	vim.keymap.set('n', '<F5>', dap.continue)
+	vim.keymap.set('n', '<F6>', dap.disconnect)
+	vim.keymap.set('n', '<F7>', dap.run_to_cursor)
+	vim.keymap.set('n', '<F8>', dap.toggle_breakpoint)
+	vim.keymap.set('n', '<Leader><F8>', function ()
+		dap.toggle_breakpoint(vim.fn.input('Breakpoint condition: '))
+	end)
+	vim.keymap.set('n', '<F9>', dap.list_breakpoints)
+	vim.keymap.set('n', '<F10>', dap.up)
+	vim.keymap.set('n', '<Leader><F10>', dap.down)
 
-
-	local dap = require('dap')
+	helper.registerPluginWk{
+		prefix = '<leader>',
+		map = {
+			['<F8>'] = 'Conditional Breakpoint',
+			['<F10>'] = 'Stack Down',
+		}
+	}
 
 	-- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
 
@@ -29,7 +34,7 @@ function plugin.config()
 		type = 'executable',
 		command = 'node',
 		args = {
-			os.getenv('HOME') .. '/.local/share/dap/vscode-php-debug/out/phpDebug.js'
+			os.getenv('HOME') .. '/.local/share/dap/vscode-php-debug/out/phpDebug.js' -- TODO install
 		}
 	}
 

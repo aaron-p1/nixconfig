@@ -5,18 +5,50 @@ function plugin.config()
 	local fun = require('fun')
 	local helper = require'helper'
 
-	helper.keymap_expr_i_s('<Tab>',
-		[[luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>']])
-	helper.keymap_lua_i_ns('<S-Tab>', [[require'luasnip'.jump(-1)]])
-	helper.keymap_expr_i_s('<C-y>', [['<Plug>luasnip-expand-or-jump']])
+	vim.keymap.set('n', '<leader>rpls', function ()
+		package.loaded['plugins.luasnip'] = nil
 
-	helper.keymap_lua_s_ns('<Tab>', [[require'luasnip'.jump(1)]])
-	helper.keymap_lua_s_ns('<S-Tab>', [[require'luasnip'.jump(-1)]])
+		fun.iter(package.loaded)
+			:map(function (k, _)
+				return k
+			end)
+			:filter(function (k)
+				return k:find('^plugins[.]my-luasnip[.]') ~= nil
+			end)
+			:each(function (k)
+				package.loaded[k] = nil
+			end)
 
-	helper.keymap_expr_i_s('<C-E>', [[luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>']])
-	helper.keymap_expr_s_s('<C-E>', [[luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>']])
+		require('plugins.luasnip').config()
 
-	helper.keymap_lua_leader_n_ns('i', [[require'luasnip'.unlink_current()]])
+	end)
+
+	vim.keymap.set('i', '<C-K>', ls.expand)
+	vim.keymap.set({'i', 's'}, '<C-J>', function() ls.jump(-1) end)
+	vim.keymap.set({'i', 's'}, '<C-L>', function() ls.jump(1) end)
+
+	vim.keymap.set('n', '<leader>i', function () ls.unlink_current() end)
+
+	vim.keymap.set({'i', 's'}, '<C-E>', function ()
+		return ls.choice_active() and '<Plug>luasnip-next-choice' or '<C-E>'
+	end, {expr = true, remap = true})
+
+	helper.registerPluginWk{
+		prefix = '<leader>',
+		map = {
+			i = 'Unlink snip',
+			r = {
+				name = 'Reload',
+				p = {
+					name = 'Plugin',
+					l = {
+						name = 'L',
+						s = 'LuaSnip',
+					}
+				}
+			}
+		}
+	}
 
 	local types = require("luasnip.util.types")
 

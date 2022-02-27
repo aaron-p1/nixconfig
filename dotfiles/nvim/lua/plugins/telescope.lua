@@ -43,30 +43,34 @@ function plugin.config()
 	t.load_extension('fzf')
 	t.load_extension('ui-select')
 
+	local tb = require('telescope.builtin')
 	local helper = require'helper'
 	-- file
-	helper.keymap_cmd_leader_n_ns('fa', 'Telescope find_files find_command=@fd@/bin/fd,-uu,--type,file,--size,-1M')
-	helper.keymap_cmd_leader_n_ns('ff', 'Telescope find_files find_command=@fd@/bin/fd,-H,-E,.git,--size,-1M')
-	helper.keymap_cmd_leader_n_ns('fr', 'Telescope live_grep')
-	helper.keymap_cmd_leader_n_ns('fu', 'Telescope file_browser')
+	vim.keymap.set('n', '<Leader>fa', function ()
+		tb.find_files({find_command = {'@fd@/bin/fd', '--type=file', '--size=-1M', '--hidden', '--strip-cwd-prefix', '--no-ignore'}})
+	end)
+	vim.keymap.set('n', '<Leader>ff', function ()
+		tb.find_files({find_command = {'@fd@/bin/fd', '--type=file', '--size=-1M', '--hidden', '--strip-cwd-prefix', '--exclude=.git'}})
+	end)
+	vim.keymap.set('n', '<Leader>fr', tb.live_grep)
 	-- vim
-	helper.keymap_cmd_leader_n_ns('fb', 'Telescope buffers')
-	helper.keymap_cmd_leader_n_ns('fm', 'Telescope marks')
-	helper.keymap_cmd_leader_n_ns('fcr', 'Telescope current_buffer_fuzzy_find')
+	vim.keymap.set('n', '<Leader>fb', tb.buffers)
+	vim.keymap.set('n', '<Leader>fm', tb.marks)
+	vim.keymap.set('n', '<Leader>fcr', tb.current_buffer_fuzzy_find)
 	-- lsp
-	helper.keymap_cmd_leader_n_ns('flr', 'Telescope lsp_refrences')
-	helper.keymap_cmd_leader_n_ns('fls', 'Telescope lsp_document_symbols')
-	helper.keymap_cmd_leader_n_ns('fli', 'Telescope lsp_implementations')
-	helper.keymap_cmd_leader_n_ns('fld', 'Telescope lsp_definitions')
+	vim.keymap.set('n', '<Leader>flr', tb.lsp_references)
+	vim.keymap.set('n', '<Leader>fls', tb.lsp_document_symbols)
+	vim.keymap.set('n', '<Leader>fli', tb.lsp_implementations)
+	vim.keymap.set('n', '<Leader>fld', tb.lsp_definitions)
 	-- git
-	helper.keymap_cmd_leader_n_ns('fgc', 'Telescope git_commits')
-	helper.keymap_cmd_leader_n_ns('fgb', 'Telescope git_bcommits')
-	helper.keymap_cmd_leader_n_ns('fgt', 'Telescope git_stash')
+	vim.keymap.set('n', '<Leader>fgc', tb.git_commits)
+	vim.keymap.set('n', '<Leader>fgb', tb.git_bcommits)
+	vim.keymap.set('n', '<Leader>fgf', tb.git_stash)
 	-- treesitter
-	helper.keymap_cmd_leader_n_ns('ft', 'Telescope treesitter')
+	vim.keymap.set('n', '<Leader>ft', tb.treesitter)
 
 	--symbols
-	helper.keymap_cmd_leader_n_ns('fs', 'Telescope symbols')
+	vim.keymap.set('n', '<Leader>fs', tb.symbols)
 
 
 	helper.registerPluginWk{
@@ -74,14 +78,29 @@ function plugin.config()
 		map = {
 			f = {
 				name = 'Telescope',
-				g = {
-					name = 'Git',
-				},
+				a = 'All Files',
+				f = 'Files',
+				r = 'Live grep',
+				b = 'Buffers',
+				m = 'Marks',
+				t = 'Treesitter nodes',
+				s = 'Symbols',
 				c = {
 					name = 'Current Buffer',
+					r = 'Fuzzy find',
 				},
 				l = {
 					name = 'LSP',
+					r = 'References',
+					s = 'Document symbols',
+					i = 'Implementations',
+					d = 'Definitions',
+				},
+				g = {
+					name = 'Git',
+					c = 'Commits',
+					b = 'BCommits',
+					t = 'Stash'
 				},
 			},
 		}

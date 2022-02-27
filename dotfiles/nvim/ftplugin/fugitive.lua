@@ -1,7 +1,25 @@
-local helper = require'helper'
+local helper = require('helper')
+local fun = require('fun')
 
-helper.keymap_b_cmd_leader_n_ns(0, 'gP', 'Git push')
-helper.keymap_b_cmd_leader_n_ns(0, 'gl', 'Git log -25')
+fun.iter({
+	p = 'pull',
+	f = 'fetch',
+	P = 'push',
+	l = 'log -25',
+}):each(function (k, v)
+	vim.keymap.set('n', '<Leader>g' .. k, '<Cmd>Git ' .. v .. '<CR>', {buffer = true})
+end)
 
-helper.keymap_b_cmd_leader_n_ns(0, 'gf', 'Git fetch')
-helper.keymap_b_cmd_leader_n_ns(0, 'gp', 'Git pull')
+helper.registerPluginWk{
+	prefix = '<leader>',
+	buffer = 0,
+	map = {
+		g = {
+			name = 'Git',
+			p = 'Pull',
+			f = 'Fetch',
+			P = 'Push',
+			l = 'Log 25',
+		}
+	}
+}

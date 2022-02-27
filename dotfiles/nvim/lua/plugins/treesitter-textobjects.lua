@@ -55,10 +55,10 @@ function plugin.config()
 		map = {
 			s = {
 				name = 'Swap',
-				a = { name = 'Argument forward', },
-				A = { name = 'Argument backward', },
-				f = { name = 'Function forward', },
-				F = { name = 'Function backward', },
+				a = 'Argument forward',
+				A = 'Argument backward',
+				f = 'Function forward',
+				F = 'Function backward',
 			},
 		}
 	}

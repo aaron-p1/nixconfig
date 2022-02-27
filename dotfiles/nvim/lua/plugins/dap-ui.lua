@@ -41,21 +41,21 @@ function plugin.config()
 		}
 	}
 
+	vim.keymap.set('n', '<Leader>dd', ui.toggle)
+	vim.keymap.set({'n', 'v'}, '<Leader>de', ui.eval)
+
 	local helper = require'helper'
 
 	helper.registerPluginWk{
 		prefix = '<leader>',
 		map = {
 			d = {
-				name = 'dap'
+				name = 'dap',
+				d = 'Toggle UI',
+				e = 'Toggle eval',
 			}
 		}
 	}
-
-	helper.keymap_lua_leader_n_ns('dd', [[require'dapui'.toggle()]])
-	helper.keymap_lua_leader_n_ns('de', [[require'dapui'.eval()]])
-
-	helper.keymap_lua_leader_v_ns('de', [[require'dapui'.eval()]])
 end
 
 return plugin
