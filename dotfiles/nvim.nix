@@ -1,7 +1,7 @@
 { lib, fd, ripgrep,
 
-dart, elixir, elixir_ls, haskell-language-server, nodePackages, local
-, sumneko-lua-language-server, rnix-lsp, texlab, texlive,
+nodePackages, local
+, sumneko-lua-language-server, rnix-lsp,
 
 nixfmt, shellcheck, shellharden, statix, stylua, stdenv, findutils }:
 let
@@ -14,25 +14,21 @@ let
     "rg" = ripgrep;
 
     # lspconfig
-    "dart" = dart;
-    "elixir" = elixir;
-    "elixirls" = elixir_ls;
-    "hls" = haskell-language-server;
     "intelephense" = nodePackages.intelephense;
     "jdtls" = local.jdt-language-server;
     "luals" = sumneko-lua-language-server;
     "rnix" = rnix-lsp;
-    "texlab" = texlab;
-    "texlive" = texlive.combined.scheme-medium;
     "vscodelsp" = nodePackages.vscode-langservers-extracted;
-    "vls" = nodePackages.vls;
     "yamlls" = nodePackages.yaml-language-server;
 
-    # null-ls
+    # ---- null-ls
+    # nix
     "nixfmt" = nixfmt;
+    "statix" = statix;
+    # shell
     "shellcheck" = shellcheck;
     "shellharden" = shellharden;
-    "statix" = statix;
+    # lua
     "stylua" = stylua;
   };
 in stdenv.mkDerivation {

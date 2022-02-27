@@ -2,7 +2,7 @@ local plugin = {}
 
 local servers = {
   -- dart
-  { server = "dartls", cmd = { "@dart@/bin/dart", "./snapshots/analysis_server.dart.snapshot", "--lsp" } },
+  { server = "dartls" },
   -- html
   { server = "html", filetypes = { "html", "blade" }, cmd = {
     "@vscodelsp@/bin/vscode-html-language-server",
@@ -17,13 +17,13 @@ local servers = {
   -- yaml
   { server = "yamlls", cmd = { "@yamlls@/bin/yaml-language-server", "--stdio" } },
   -- vue
-  { server = "vuels", cmd = { "@vls@/bin/vls" } },
+  { server = "vuels" },
   -- haskell
-  { server = "hls", cmd = { "@hls@/bin/haskell-language-server-wrapper", "--lsp" } },
+  { server = "hls" },
   -- nix
   { server = "rnix", cmd = { "@rnix@/bin/rnix-lsp" } },
   -- elixir
-  { server = "elixirls", cmd = { "@elixirls@/bin/elixir-ls" }, filetypes = { "elixir", "eelixir", "heex" } },
+  { server = "elixirls", filetypes = { "elixir", "eelixir", "heex" } },
 }
 
 function plugin.on_attach(client, bufnr)

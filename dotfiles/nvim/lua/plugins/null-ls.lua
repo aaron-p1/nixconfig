@@ -20,8 +20,8 @@ function plugin.config()
       formatting.nixfmt.with({ command = "@nixfmt@/bin/nixfmt" }),
       code_actions.statix.with({ command = "@statix@/bin/statix" }),
       -- elixir
-      diagnostics.credo.with({ command = "@elixir@/bin/mix" }),
-      formatting.surface.with({ command = "@elixir@/bin/mix", filetypes = { "surface" } }),
+      diagnostics.credo,
+      formatting.surface,
     },
     on_attach = lsplugin.on_attach,
     capabilities = lsplugin.getCapabilities(),
