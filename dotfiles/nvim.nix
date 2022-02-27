@@ -1,19 +1,15 @@
-{ lib, fd, ripgrep,
-
-nodePackages, local
-, sumneko-lua-language-server, rnix-lsp,
-
-nixfmt, shellcheck, shellharden, statix, stylua, stdenv, findutils }:
+{ lib, fd, ripgrep, nodePackages, local, sumneko-lua-language-server, rnix-lsp
+, nixfmt, shellcheck, shellharden, statix, stylua, stdenv, findutils }:
 let
   inherit (builtins) attrValues;
   inherit (lib) mapAttrsToList;
 
   dependencies = {
-    # Telescope
+    # ---- telescope
     "fd" = fd;
     "rg" = ripgrep;
 
-    # lspconfig
+    # ---- lspconfig
     "intelephense" = nodePackages.intelephense;
     "jdtls" = local.jdt-language-server;
     "luals" = sumneko-lua-language-server;
@@ -30,6 +26,9 @@ let
     "shellharden" = shellharden;
     # lua
     "stylua" = stylua;
+
+    # ---- dap
+    "phpdebug" = local.vscode-php-debug;
   };
 in stdenv.mkDerivation {
   pname = "dotfiles-nvim";

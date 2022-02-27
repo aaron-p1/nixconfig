@@ -33,9 +33,7 @@ function plugin.config()
   dap.adapters.php = {
     type = "executable",
     command = "node",
-    args = {
-      os.getenv("HOME") .. "/.local/share/dap/vscode-php-debug/out/phpDebug.js", -- TODO install
-    },
+    args = { "@phpdebug@/phpDebug.js" },
   }
 
   dap.configurations.php = {

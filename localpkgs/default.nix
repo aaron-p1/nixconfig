@@ -6,6 +6,8 @@ in final: prev: {
 
     initdev = prev.callPackage ./pkgs/initdev { };
 
+    vscode-php-debug = prev.callPackage ./pkgs/vscode-php-debug { };
+
     # firefox native messaging hosts
     ff2mpv-native-client = prev.callPackage ./pkgs/ff2mpv-native-client { };
 
