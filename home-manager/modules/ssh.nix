@@ -6,7 +6,7 @@ in with lib; {
   config = mkIf cfg.enable {
     programs.ssh = {
       enable = true;
-      controlMaster = "yes";
+      controlMaster = "auto";
       controlPath = "~/.ssh/sockets/%r@%n:%p";
       matchBlocks = {
         public-server = {
