@@ -93,12 +93,6 @@ packer.startup({
 			'folke/which-key.nvim',
 			config = [[require('plugins.which-key').config()]]
 		}
-		use {
-			'phaazon/hop.nvim',
-			after = {'which-key.nvim'},
-			keys = {'<leader>h1', '<leader>h2', '<leader>hw'},
-			config = [[require('plugins.hop').config()]]
-		}
 
 		-- git
 		use {
