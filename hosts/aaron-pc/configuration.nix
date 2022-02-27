@@ -1,32 +1,22 @@
 { pkgs, config, ... }: {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ ./hardware-configuration.nix ../../nixos/modules ];
 
   powerManagement.cpuFreqGovernor = "ondemand";
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # ../../nixos/modules/boot.nix
+  within.boot = {
+    grub = true;
+    supportedFilesystems = [ "btrfs" ];
+    kernelPackages = pkgs.linuxPackages_latest;
+  };
+
   hardware.enableAllFirmware = true;
-  boot.supportedFilesystems = [ "btrfs" ];
-
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub.enable = false;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.device = "nodev";
-
-  hardware.nvidia.package = pkgs.local.nvidia_x11 config.boot.kernelPackages;
 
   # NETWORKING
   networking.useDHCP = false;
   networking.hostName = "aaron-pc";
   networking.interfaces.enp4s0.useDHCP = true;
   networking.interfaces.wlp7s0.useDHCP = true;
-
-  # LOCALE
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "de";
-  };
 
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-label/Data";
@@ -45,6 +35,7 @@
   # ZSH COMPLETION
   environment.pathsToLink = [ "/share/zsh" ];
 
+  hardware.nvidia.package = pkgs.local.nvidia_x11 config.boot.kernelPackages;
   services.xserver.videoDrivers = [ "nvidia" ];
 
   # This value determines the NixOS release from which the default

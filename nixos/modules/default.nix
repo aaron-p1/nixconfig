@@ -3,6 +3,7 @@ _: {
     ./graphics
 
     ./bluetooth.nix
+    ./boot.nix
     ./containers.nix
     ./locale.nix
     ./networking.nix
