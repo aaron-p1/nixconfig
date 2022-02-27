@@ -13,6 +13,7 @@ in with lib; {
           columns = 100;
         };
         font.size = 9;
+        mouse.hide_when_typing = true;
         key_bindings = [{
           key = "F11";
           action = "ToggleFullscreen";
