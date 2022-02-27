@@ -99,6 +99,8 @@
       git
       wget
       neovim-nightly
+
+      local.initdev
     ];
     sessionVariables = {
       XDG_CACHE_HOME  = "\${HOME}/.cache";

@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+
+import argparse
+import os, sys
+import pathlib
+import shutil
+
+def parseArgs():
+    parser = argparse.ArgumentParser(description="init dev env")
+
+    parser.add_argument("envtype", help="Type of environment")
+
+    return parser.parse_args()
+
+def getEnvPath():
+    dir = pathlib.Path(__file__).parent.parent
+    return dir.joinpath('share', 'initdev-envfiles')
+
+def main(args):
+    envPath = getEnvPath()
+
+    if (envPath == None):
+        print("Env Path not found", file=sys.stderr)
+        return
+
+    envtypes = os.listdir(envPath)
+
+    if (args.envtype not in envtypes):
+        print("Env type not found", file=sys.stderr)
+        return
+
+    envToCopy = str(envPath.joinpath(args.envtype))
+    filesInEnv = os.listdir(envToCopy)
+    filesInProject = os.listdir(".")
+
+    duplicateFiles = list(filter(lambda f: f in filesInProject, filesInEnv))
+    if (len(duplicateFiles) > 0):
+        print("Files would be overridden:\n" + "\n".join(duplicateFiles), file=sys.stderr)
+        return
+
+    print("copying " + args.envtype)
+    for file in filesInEnv:
+        shutil.copy(envToCopy + "/" + file, ".")
+
+if __name__ == "__main__":
+    args = parseArgs()
+    main(args)
