@@ -64,9 +64,6 @@ function plugin.config()
 				:totable()
 		end)
 		:tomap()
-
-	-- friendly-snippets
-	require'luasnip/loaders/from_vscode'.lazy_load()
 end
 
 return plugin

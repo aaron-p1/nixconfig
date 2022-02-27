@@ -142,7 +142,6 @@ packer.startup({
 			'L3MON4D3/LuaSnip',
 			config = [[require('plugins.luasnip').config()]]
 		}
-		use 'rafamadriz/friendly-snippets'
 
 		-- lsp
 		use {
