@@ -111,22 +111,6 @@ end
 function plugin.config()
 
 	local nvim_lsp = require('lspconfig')
-	-- local configs = require('lspconfig/configs')
-	-- local util = require('lspconfig/util')
-
-	-- psalm
-	local serverExec = vim.fn.glob('vendor/bin/psalm')
-	if (serverExec == '') then
-		serverExec = 'psalm'
-	end
-
-	-- configs['psalm'] = {
-	-- 	default_config = {
-	-- 		cmd = {serverExec, '--language-server'},
-	-- 		filetypes = {'php'},
-	-- 		root_dir = util.root_pattern('composer.json', '.git')
-	-- 	}
-	-- }
 
 	local onlyDiagnostics = vim.lsp.protocol.make_client_capabilities()
 	onlyDiagnostics.textDocument = {
