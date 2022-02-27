@@ -37,6 +37,7 @@ in with lib; {
           "browser.search.region" = "DE";
           "browser.startup.homepage" = "about:blank";
           "browser.uidensity" = 1;
+          "browser.urlbar.trimURLs" = false;
           "devtools.theme" = "dark";
           "devtools.toolbox.host" = "window";
           "extensions.update.autoUpdateDefault" = false;
