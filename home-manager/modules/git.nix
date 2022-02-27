@@ -46,6 +46,7 @@ in with lib; {
 
             [ -z "$result" ] && usage
 
+            echo "Setting user.email to '$result'"
             ${pkgs.git}/bin/git config user.email "$result"
           '';
         })
