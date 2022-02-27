@@ -72,7 +72,7 @@ function plugin.config()
   -- git
   vim.keymap.set("n", "<Leader>fgc", tb.git_commits)
   vim.keymap.set("n", "<Leader>fgb", tb.git_bcommits)
-  vim.keymap.set("n", "<Leader>fgf", tb.git_stash)
+  vim.keymap.set("n", "<Leader>fgt", tb.git_stash)
   -- treesitter
   vim.keymap.set("n", "<Leader>ft", tb.treesitter)
 
