@@ -1,5 +1,5 @@
-local helper = require'helper'
+local helper = require("helper")
 
 helper.setOptions(vim.bo, {
-	'expandtab',
+  "expandtab",
 })
