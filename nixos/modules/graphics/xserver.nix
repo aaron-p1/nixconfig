@@ -1,11 +1,7 @@
 { config, lib, ... }:
-let
-  cfg = config.within.graphics.xserver;
-in
-with lib; {
-  options.within.graphics.xserver = {
-    enable = mkEnableOption "XServer";
-  };
+let cfg = config.within.graphics.xserver;
+in with lib; {
+  options.within.graphics.xserver = { enable = mkEnableOption "XServer"; };
 
   config = mkIf cfg.enable {
     services.xserver = {
@@ -21,9 +17,7 @@ with lib; {
 
       libinput = {
         enable = true;
-        mouse = {
-          accelProfile = "flat";
-        };
+        mouse = { accelProfile = "flat"; };
       };
     };
   };

@@ -1,13 +1,13 @@
 {
-    "output": {
-        "blocklist": [],
-        "plugins_order": [
-            "rnnoise"
-        ],
-        "rnnoise": {
-            "input-gain": 0.0,
-            "model-path": "{config}/easyeffects/rnnoise/noise_mp.rnnn",
-            "output-gain": 0.0
-        }
+  "output": {
+    "blocklist": [],
+    "plugins_order": [
+      "rnnoise"
+    ],
+    "rnnoise": {
+      "input-gain": 0.0,
+      "model-path": "{config}/easyeffects/rnnoise/noise_mp.rnnn",
+      "output-gain": 0.0
     }
+  }
 }

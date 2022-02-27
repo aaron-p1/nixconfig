@@ -1,8 +1,6 @@
 { config, lib, ... }:
-let
-  cfg = config.within.pam;
-in
-with lib; {
+let cfg = config.within.pam;
+in with lib; {
   options.within.pam = {
     u2f = {
       enable = mkEnableOption "pamu2f mappings";

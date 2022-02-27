@@ -1,6 +1,6 @@
 { stdenv, fetchFromGitHub, cmake, zydis, pkg-config, lief, ... }:
 let
-  zycore = (stdenv.mkDerivation rec {
+  zycore = stdenv.mkDerivation rec {
     pname = "zycore";
     version = "0.9.0";
 
@@ -12,7 +12,7 @@ let
     };
 
     nativeBuildInputs = [ cmake ];
-  });
+  };
   fixedZydis = zydis.overrideAttrs (old: {
     src = fetchFromGitHub {
       owner = "zyantific";
@@ -22,39 +22,38 @@ let
       fetchSubmodules = true;
     };
   });
-in
-  stdenv.mkDerivation rec {
-    pname = "nvlax";
-    version = "unstable-2021-11-01";
+in stdenv.mkDerivation rec {
+  pname = "nvlax";
+  version = "unstable-2021-11-01";
 
-    srcs = [
-      (fetchFromGitHub {
-        owner = "illnyang";
-        repo = pname;
-        rev = "b3699ad40c4dfbb9d46c53325d63ae8bf4a94d7f";
-        sha256 = "sha256-xNZnMa4SFUFwnJAOruez9JxnCC91htqzR5HOqD4RZtc=";
-        name = pname;
-      })
-      (fetchFromGitHub {
-        owner = "gpakosz";
-        repo = "PPK_ASSERT";
-        rev = "833b8b7ea49aea540a49f07ad08bf0bae1faac32";
-        sha256 = "sha256-gGhqhdPMweFjhGPMGza5MwEOo5cJKrb5YrskjCvWX3w=";
-        name = "ppk";
-      })
-    ];
+  srcs = [
+    (fetchFromGitHub {
+      owner = "illnyang";
+      repo = pname;
+      rev = "b3699ad40c4dfbb9d46c53325d63ae8bf4a94d7f";
+      sha256 = "sha256-xNZnMa4SFUFwnJAOruez9JxnCC91htqzR5HOqD4RZtc=";
+      name = pname;
+    })
+    (fetchFromGitHub {
+      owner = "gpakosz";
+      repo = "PPK_ASSERT";
+      rev = "833b8b7ea49aea540a49f07ad08bf0bae1faac32";
+      sha256 = "sha256-gGhqhdPMweFjhGPMGza5MwEOo5cJKrb5YrskjCvWX3w=";
+      name = "ppk";
+    })
+  ];
 
-    nativeBuildInputs = [ cmake pkg-config ];
+  nativeBuildInputs = [ cmake pkg-config ];
 
-    buildInputs = [ fixedZydis zycore lief ];
+  buildInputs = [ fixedZydis zycore lief ];
 
-    sourceRoot = pname;
+  sourceRoot = pname;
 
-    postUnpack = ''
-      mkdir ${pname}/build
-      cp -rp -- ppk ${pname}/build/ppk
-    '';
+  postUnpack = ''
+    mkdir ${pname}/build
+    cp -rp -- ppk ${pname}/build/ppk
+  '';
 
-    # Remove CPM from cmakelists
-    patches = [ ./fixup-cmakelists.patch ];
-  }
+  # Remove CPM from cmakelists
+  patches = [ ./fixup-cmakelists.patch ];
+}

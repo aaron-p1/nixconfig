@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-
 [ -z "$1" ] && {
-	echo "Usage: $0 {config}" 1>&2
-	exit 1
+  echo "Usage: $0 {config}" 1>&2
+  exit 1
 }
 
 tmuxp load "$1"

@@ -1,9 +1,5 @@
-{ pkgs, config, ... }:
-{
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
+{ pkgs, config, ... }: {
+  imports = [ ./hardware-configuration.nix ];
 
   powerManagement.cpuFreqGovernor = "ondemand";
 
@@ -20,7 +16,7 @@
 
   hardware.nvidia.package = pkgs.local.nvidia_x11 config.boot.kernelPackages;
 
-  # NETWORKING 
+  # NETWORKING
   networking.useDHCP = false;
   networking.hostName = "aaron-pc";
   networking.interfaces.enp4s0.useDHCP = true;
@@ -44,14 +40,10 @@
   }];
 
   # compressed ram swap max 50%
-  zramSwap = {
-    enable = true;
-  };
+  zramSwap = { enable = true; };
 
   # ZSH COMPLETION
-  environment.pathsToLink = [
-    "/share/zsh"
-  ];
+  environment.pathsToLink = [ "/share/zsh" ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -64,4 +56,3 @@
   system.stateVersion = "21.05"; # Did you read the comment?
 
 }
-

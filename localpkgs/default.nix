@@ -1,8 +1,6 @@
 { inputs, ... }:
-let
-  inherit (inputs) jdt-ls;
-in
-final: prev: {
+let inherit (inputs) jdt-ls;
+in final: prev: {
   local = rec {
     gotmux = prev.callPackage ./pkgs/gotmux { };
 

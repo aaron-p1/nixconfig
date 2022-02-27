@@ -1,11 +1,7 @@
 { config, lib, ... }:
-let
-  cfg = config.within.samba;
-in
-with lib; {
-  options.within.samba = {
-    enable = mkEnableOption "Samba";
-  };
+let cfg = config.within.samba;
+in with lib; {
+  options.within.samba = { enable = mkEnableOption "Samba"; };
 
   config = mkIf cfg.enable {
     services.samba = {
@@ -15,7 +11,6 @@ with lib; {
         load printers = no
         vfs objects = fruit streams_xattr
       '';
-
 
       # for users set: smbpasswd -a <user>
       shares = {

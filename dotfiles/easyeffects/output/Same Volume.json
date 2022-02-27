@@ -1,13 +1,13 @@
 {
-    "output": {
-        "blocklist": [],
-        "maximizer": {
-            "ceiling": -11.999999999999973,
-            "release": 25.0,
-            "threshold": -30.0
-        },
-        "plugins_order": [
-            "maximizer"
-        ]
-    }
+  "output": {
+    "blocklist": [],
+    "maximizer": {
+      "ceiling": -11.999999999999973,
+      "release": 25.0,
+      "threshold": -30.0
+    },
+    "plugins_order": [
+      "maximizer"
+    ]
+  }
 }

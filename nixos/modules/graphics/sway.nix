@@ -1,11 +1,7 @@
 { config, lib, pkgs, ... }:
-let
-  cfg = config.within.graphics.sway;
-in
-with lib; {
-  options.within.graphics.sway = {
-    enable = mkEnableOption "Sway";
-  };
+let cfg = config.within.graphics.sway;
+in with lib; {
+  options.within.graphics.sway = { enable = mkEnableOption "Sway"; };
 
   config = mkIf cfg.enable {
     # vm sway fix
@@ -28,9 +24,9 @@ with lib; {
     };
 
     # start sway program
-    environment.systemPackages = with pkgs; [
-      (
-        pkgs.writeTextFile {
+    environment.systemPackages = with pkgs;
+      [
+        (pkgs.writeTextFile {
           name = "startsway";
           destination = "/bin/startsway";
           executable = true;
@@ -40,9 +36,8 @@ with lib; {
             systemctl --user import-environment
             exec systemctl --user start sway.service
           '';
-        }
-      )
-    ];
+        })
+      ];
 
     systemd.user.targets.sway-session = {
       description = "Sway compositor session";
@@ -81,10 +76,11 @@ with lib; {
       partOf = [ "graphical-session.target" ];
       path = [ pkgs.bash ];
       serviceConfig = {
-        ExecStart = '' ${pkgs.swayidle}/bin/swayidle -w -d \
-        timeout 300 '${pkgs.sway}/bin/swaymsg "output * dpms off"' \
-        resume '${pkgs.sway}/bin/swaymsg "output * dpms on"'
-      '';
+        ExecStart = ''
+          ${pkgs.swayidle}/bin/swayidle -w -d \
+                 timeout 300 '${pkgs.sway}/bin/swaymsg "output * dpms off"' \
+                 resume '${pkgs.sway}/bin/swaymsg "output * dpms on"'
+               '';
       };
     };
 

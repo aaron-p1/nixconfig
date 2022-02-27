@@ -1,8 +1,6 @@
 { config, lib, pkgs, ... }:
-let
-  cfg = config.within.containers;
-in
-with lib; {
+let cfg = config.within.containers;
+in with lib; {
   options.within.containers = {
     enable = mkEnableOption "container support";
     networkOptions = mkOption {
@@ -19,12 +17,8 @@ with lib; {
       containers = {
         enable = true;
         containersConf = {
-          settings = {
-            engine.network_cmd_options = cfg.networkOptions;
-          };
-          cniPlugins = with pkgs; [
-            dnsname-cni
-          ];
+          settings = { engine.network_cmd_options = cfg.networkOptions; };
+          cniPlugins = with pkgs; [ dnsname-cni ];
         };
       };
 

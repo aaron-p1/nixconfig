@@ -8,11 +8,7 @@
 
   outputs = { self, nixpkgs, flake-compat }: {
 
-    devShell.x86_64-linux = with nixpkgs.legacyPackages.x86_64-linux; mkShell {
-      packages = [
-        elixir
-        inotify-tools
-      ];
-    };
+    devShell.x86_64-linux = with nixpkgs.legacyPackages.x86_64-linux;
+      mkShell { packages = [ elixir inotify-tools ]; };
   };
 }

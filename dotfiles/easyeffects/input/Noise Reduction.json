@@ -1,35 +1,35 @@
 {
-    "input": {
-        "blocklist": [],
-        "gate": {
-            "attack": 20.0,
-            "detection": "RMS",
-            "input-gain": 0.0,
-            "knee": 9.0,
-            "makeup": 0.0,
-            "output-gain": 0.0,
-            "range": -24.0,
-            "ratio": 2.0,
-            "release": 100.0,
-            "stereo-link": "Average",
-            "threshold": -26.000000000000114
-        },
-        "maximizer": {
-            "ceiling": -14.999999999999963,
-            "input-gain": 0.0,
-            "output-gain": 0.0,
-            "release": 25.0,
-            "threshold": -14.999999999999963
-        },
-        "plugins_order": [
-            "rnnoise",
-            "gate",
-            "maximizer"
-        ],
-        "rnnoise": {
-            "input-gain": 0.0,
-            "model-path": "{config}/easyeffects/rnnoise/Standard Model.rnnn",
-            "output-gain": 0.0
-        }
+  "input": {
+    "blocklist": [],
+    "gate": {
+      "attack": 20.0,
+      "detection": "RMS",
+      "input-gain": 0.0,
+      "knee": 9.0,
+      "makeup": 0.0,
+      "output-gain": 0.0,
+      "range": -24.0,
+      "ratio": 2.0,
+      "release": 100.0,
+      "stereo-link": "Average",
+      "threshold": -26.000000000000114
+    },
+    "maximizer": {
+      "ceiling": -14.999999999999963,
+      "input-gain": 0.0,
+      "output-gain": 0.0,
+      "release": 25.0,
+      "threshold": -14.999999999999963
+    },
+    "plugins_order": [
+      "rnnoise",
+      "gate",
+      "maximizer"
+    ],
+    "rnnoise": {
+      "input-gain": 0.0,
+      "model-path": "{config}/easyeffects/rnnoise/Standard Model.rnnn",
+      "output-gain": 0.0
     }
+  }
 }

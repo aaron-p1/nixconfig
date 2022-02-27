@@ -1,13 +1,11 @@
 { config, lib, pkgs, inputs, ... }:
-let
-  cfg = config.within.nix;
-in
-with lib; {
+let cfg = config.within.nix;
+in with lib; {
   options.within.nix = {
     enable = mkEnableOption "nix config";
     emulatedSystems = mkOption {
       type = with types; listOf str;
-      default = [];
+      default = [ ];
       description = "emulated systems with qemu";
     };
   };
@@ -25,9 +23,7 @@ with lib; {
       settings = {
         trusted-users = [ "root" "@wheel" ];
 
-        substituters = [
-          "https://nix-community.cachix.org/"
-        ];
+        substituters = [ "https://nix-community.cachix.org/" ];
         trusted-public-keys = [
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];

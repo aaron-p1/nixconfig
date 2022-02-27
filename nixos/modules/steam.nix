@@ -1,11 +1,7 @@
 { config, lib, pkgs, ... }:
-let
-  cfg = config.within.steam;
-in
-with lib; {
-  options.within.steam = {
-    enable = mkEnableOption "Steam";
-  };
+let cfg = config.within.steam;
+in with lib; {
+  options.within.steam = { enable = mkEnableOption "Steam"; };
 
   config = mkIf cfg.enable {
     programs.steam = {
@@ -15,9 +11,9 @@ with lib; {
       dedicatedServer.openFirewall = false;
     };
 
-    environment.systemPackages = with pkgs; [
-      (
-        pkgs.writeTextFile {
+    environment.systemPackages = with pkgs;
+      [
+        (pkgs.writeTextFile {
           name = "aftersteam";
           destination = "/bin/aftersteam";
           executable = true;
@@ -33,8 +29,7 @@ with lib; {
             echo "Stopped, waiting 3s"
             sleep 3
           '';
-        }
-      )
-    ];
+        })
+      ];
   };
 }

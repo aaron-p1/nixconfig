@@ -5,9 +5,7 @@ stdenv.mkDerivation {
 
   src = ./.;
 
-  buildInputs = [
-    (python3.withPackages (p: with p; [ ]))
-  ];
+  buildInputs = [ (python3.withPackages (p: with p; [ ])) ];
 
   nativeBuildInputs = [ installShellFiles ];
 

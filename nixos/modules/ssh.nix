@@ -1,11 +1,7 @@
 { config, lib, ... }:
-let
-  cfg = config.within.ssh;
-in
-with lib; {
-  options.within.ssh = {
-    enable = mkEnableOption "SSH";
-  };
+let cfg = config.within.ssh;
+in with lib; {
+  options.within.ssh = { enable = mkEnableOption "SSH"; };
 
   config = mkIf cfg.enable {
     services.openssh = {

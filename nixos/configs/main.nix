@@ -1,8 +1,5 @@
-{ pkgs, ... }:
-{
-  imports = [
-    ../modules
-  ];
+{ pkgs, ... }: {
+  imports = [ ../modules ];
 
   within = {
     # ../modules/nix.nix
@@ -22,12 +19,8 @@
         enable = true;
         dnsmasq = {
           enable = true;
-          localDomains = {
-            exo = "127.32.0.2";
-          };
-          networkDomains = {
-            public-server = "192.168.178.8";
-          };
+          localDomains = { exo = "127.32.0.2"; };
+          networkDomains = { public-server = "192.168.178.8"; };
         };
       };
     };
@@ -50,9 +43,7 @@
 
       resticBackup = {
         enable = true;
-        paths = [
-          "/home/aaron/Documents"
-        ];
+        paths = [ "/home/aaron/Documents" ];
 
         repository = "/mnt/data/backup/restic";
       };
@@ -90,9 +81,7 @@
     steam.enable = true;
   };
 
-  programs = {
-    dconf.enable = true;
-  };
+  programs = { dconf.enable = true; };
 
   environment = {
     systemPackages = with pkgs; [
@@ -103,20 +92,16 @@
       local.initdev
     ];
     sessionVariables = {
-      XDG_CACHE_HOME  = "\${HOME}/.cache";
+      XDG_CACHE_HOME = "\${HOME}/.cache";
       XDG_CONFIG_HOME = "\${HOME}/.config";
-      XDG_BIN_HOME    = "\${HOME}/.local/bin";
-      XDG_DATA_HOME   = "\${HOME}/.local/share";
+      XDG_BIN_HOME = "\${HOME}/.local/bin";
+      XDG_DATA_HOME = "\${HOME}/.local/share";
 
-      PATH = [ 
-        "\${XDG_BIN_HOME}"
-      ];
+      PATH = [ "\${XDG_BIN_HOME}" ];
     };
   };
 
-  fonts.fonts = with pkgs; [
-    corefonts
-  ];
+  fonts.fonts = with pkgs; [ corefonts ];
 
   boot.tmpOnTmpfs = true;
 }
