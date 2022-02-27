@@ -20,7 +20,7 @@ local servers = {
 	-- nix
 	{server = 'rnix', cmd = {'@rnix@/bin/rnix-lsp'}},
 	-- elixir
-	{server = 'elixirls', cmd = {'@elixirls@/bin/elixir-ls'}},
+	{server = 'elixirls', cmd = {'@elixirls@/bin/elixir-ls'}, filetypes = { "elixir", "eelixir", "heex" }},
 }
 
 function plugin.on_attach(client, bufnr)
