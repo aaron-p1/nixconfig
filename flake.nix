@@ -21,10 +21,13 @@
     # LOCAL PACKAGES
     jdt-ls.url =
       "github:nixos/nixpkgs?rev=aa4be0ccb4e62231fddcfa1d95c5b7642c6b1423";
+
+    steam.url =
+      "github:nixos/nixpkgs?rev=b69cf210b67552a921c89c57a273ba1e185ff062";
   };
 
   outputs = { self, stable, unstable, nixpkgs, flake-utils, nixos-hardware, nur
-    , home-manager, neovim-nightly-overlay, ... }@inputs:
+    , home-manager, neovim-nightly-overlay, steam, ... }@inputs:
     let
       inherit (unstable) lib; # unstable for home manager
       overlays = [
@@ -33,6 +36,7 @@
         neovim-nightly-overlay.overlay
         (import ./localpkgs { inherit inputs; })
         (import ./dotfiles { })
+        (final: prev: { inherit (import steam { inherit (final) system config; }) steam; })
       ];
     in {
       nixosConfigurations = {

@@ -38,7 +38,10 @@ in with lib; {
       };
     };
 
-    nixpkgs.config.allowUnfree = true;
+    nixpkgs.config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [ "electron-13.6.9" ];
+    };
 
     boot.binfmt.emulatedSystems = cfg.emulatedSystems;
   };

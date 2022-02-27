@@ -25,6 +25,9 @@ Check:
     enable when ipv6 support lands
 	maybe podman 4.0:
 		https://github.com/containers/podman/releases
+  steam not working:
+    delete overlay
+    https://github.com/NixOS/nixpkgs/pull/157907
 
   Dotfiles:
     nvim:
