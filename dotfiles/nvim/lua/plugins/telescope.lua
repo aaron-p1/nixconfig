@@ -23,7 +23,10 @@ function plugin.config()
 				"--line-number",
 				"--column",
 				"--smart-case"
-			}
+			},
+			preview = {
+				filesize_limit = 1; -- 1 MB
+			},
 		},
 		extensions = {
 			fzf = {
