@@ -3,6 +3,10 @@ Check:
   nixpkgs Breaking Changes:
   	https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/doc/manual/release-notes/rl-2205.section.md
 
+  nix develop copying files:
+    use flake-compat as workaround
+    https://github.com/NixOS/nix/issues/3121
+
   firefox:
     plasma integration not working
     https://github.com/nix-community/home-manager/issues/1586
