@@ -23,17 +23,11 @@
     fsType = "ext4";
   };
 
-  swapDevices = [{
-    device = "/swapfile";
-    size = 1024 * 20;
-    priority = 1;
-  }];
-
-  # compressed ram swap max 50%
-  zramSwap = { enable = true; };
-
-  # ZSH COMPLETION
-  environment.pathsToLink = [ "/share/zsh" ];
+  # ../../nixos/modules/swap.nix
+  within.swap = {
+    zram = true;
+    file = 20;
+  };
 
   hardware.nvidia.package = pkgs.local.nvidia_x11 config.boot.kernelPackages;
   services.xserver.videoDrivers = [ "nvidia" ];

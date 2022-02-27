@@ -13,6 +13,7 @@ _: {
     ./audio.nix
     ./samba.nix
     ./steam.nix
+    ./swap.nix
     ./vmclient.nix
     ./pihole.nix
 
