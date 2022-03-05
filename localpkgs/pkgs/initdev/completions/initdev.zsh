@@ -6,7 +6,7 @@ _initdev() {
   (( CURRENT == 2 )) || return ret
 
   local -a args
-  args=(elixir phoenix)
+  args=(any elixir phoenix python)
 
   _values "Installed dev env Configs" $args[@] && ret=0
   return ret
