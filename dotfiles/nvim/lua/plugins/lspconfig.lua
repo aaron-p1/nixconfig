@@ -4,10 +4,11 @@ local servers = {
   -- dart
   { server = "dartls" },
   -- html
-  { server = "html", filetypes = { "html", "blade" }, cmd = {
-    "@vscodelsp@/bin/vscode-html-language-server",
-    "--stdio",
-  } },
+  {
+    server = "html",
+    filetypes = { "html", "blade" },
+    cmd = { "@vscodelsp@/bin/vscode-html-language-server", "--stdio" },
+  },
   -- css
   { server = "cssls", cmd = { "@vscodelsp@/bin/vscode-css-language-server", "--stdio" } },
   -- php
@@ -24,6 +25,8 @@ local servers = {
   { server = "rnix", cmd = { "@rnix@/bin/rnix-lsp" } },
   -- elixir
   { server = "elixirls", filetypes = { "elixir", "eelixir", "heex" } },
+  -- python
+  { server = "pyright" },
 }
 
 function plugin.on_attach(client, bufnr)
