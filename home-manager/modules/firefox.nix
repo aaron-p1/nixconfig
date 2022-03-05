@@ -42,6 +42,7 @@ in with lib; {
           "devtools.toolbox.host" = "window";
           "extensions.update.autoUpdateDefault" = false;
           "general.useragent.locale" = "de-DE";
+          "media.ffmpeg.vaapi.enabled" = true;
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         };
         userChrome = ''
