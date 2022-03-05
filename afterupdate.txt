@@ -28,6 +28,9 @@ Check:
   steam not working:
     delete overlay
     https://github.com/NixOS/nixpkgs/pull/157907
+  obsidian using an old electron version:
+    https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/obsidian/default.nix#L5
+    remove permittedInsecurePackages
 
   Dotfiles:
     nvim:

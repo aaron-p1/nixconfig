@@ -13,8 +13,6 @@ in with lib; {
       pulse.enable = true;
 
       #jack.enable = true; # for jack applications
-
-      media-session.enable = true;
     };
   };
 }
