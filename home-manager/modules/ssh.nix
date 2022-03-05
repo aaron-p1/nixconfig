@@ -9,6 +9,11 @@ in with lib; {
       controlMaster = "auto";
       controlPath = "~/.ssh/sockets/%r@%n:%p";
       matchBlocks = {
+        laptop = {
+          hostname = "aaron-laptop";
+          user = "aaron";
+          port = 25566;
+        };
         public-server = {
           hostname = "public-server";
           user = "aaron";
