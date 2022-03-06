@@ -1,7 +1,15 @@
 { config, lib, pkgs, ... }:
 let cfg = config.within.git;
 in with lib; {
-  options.within.git = { enable = mkEnableOption "Git"; };
+  options.within.git = {
+    enable = mkEnableOption "Git";
+
+    signingKey = mkOption {
+      type = with types; nullOr str;
+      default = null;
+      description = "enable git commit signing";
+    };
+  };
 
   config = mkIf cfg.enable {
     programs.git = {
@@ -11,10 +19,10 @@ in with lib; {
         f = "fetch";
       };
       userName = "Aaron Pietscher";
-      signing = {
+      signing = mkIf (cfg.signingKey != null) {
         gpgPath = "${config.programs.gpg.package}/bin/gpg2";
         signByDefault = true;
-        key = "59C3DF25ECE049B6";
+        key = cfg.signingKey;
       };
     };
 
