@@ -32,11 +32,20 @@
   hardware.nvidia.package = pkgs.local.nvidia_x11 config.boot.kernelPackages;
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  within.users.aaron.resticBackup = {
-    enable = true;
-    paths = [ "/home/aaron/Documents" ];
+  within.users.aaron = {
+    u2fKeys = [
+      # 1
+      "Mb3DZGUsu4lhdja3HFiITo8bVdlYSSCisnNaXUukK0hLeIuHp7xHf7QFP/2VTwVei23pVNT9e3wE/eX1JJSkUQ==,Xu6hTKJhHgVU7Z3hIzqBhst3E0xW4J/MudMPLhruK4XFhIr74y69D9Z0aCsFZQ6YOcE0rk+4yTFSQhu/bR2S7A==,es256,+presence"
+      # 2
+      "LV/FPWrKyNQBfWhHDGxXVZkx/LDoW+EJKV65A28igjqqGKPGJ7PWWEQlNtumOy6b0C2WHYXo9MeSbqQboAs98w==,dSfmZDimcp1x3ttEM9sBCd7/fBE+EZ2aoboLx9GR/YIfJCyU/DWH7t+6vWQv8MzxL5mjZOjboGHoUrnCxCopvQ==,es256,+presence"
+    ];
 
-    repository = "/mnt/data/backup/restic";
+    resticBackup = {
+      enable = true;
+      paths = [ "/home/aaron/Documents" ];
+
+      repository = "/mnt/data/backup/restic";
+    };
   };
 
   # This value determines the NixOS release from which the default

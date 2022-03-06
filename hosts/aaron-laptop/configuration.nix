@@ -22,6 +22,13 @@
     intelBusId = "PCI:0:2:0";
   };
 
+  within.users.aaron.u2fKeys = [
+    # 1
+    "K75FjUADd0jxHJxt1mSt1l9SaMZytdusDhBWHreUHkZF2t3NLKoSMswyLgaNDktrc5OdCNuQvc5ZF0w+Jyk5Jw==,KAoLBV0lY/dTByVVLUshVjIZknJuolefxUG68FcVD86kU+mvXc7qh5vRSXE56QL6zXQ0yJWnrqcXp0hZnsUkLQ==,es256,+presence"
+    # 2
+    "11iNbdbRK5qw71GUhRYJ+/EQW1T/GU/X3NMjpcMHuXqkybKZ5Qa74dmlR8iXIb/6+SXwTno1oVAAJHm5IJDtvA==,AYID8itmW0xAcd+9ZCl4pHVuTQwB7Npk4XhmqVP5KFMuDfaDOG4aYi1E+p62wPdpxc6xPTPx6ZwU23jGPtutPA==,es256,+presence"
+  ];
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
