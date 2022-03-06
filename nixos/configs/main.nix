@@ -41,13 +41,6 @@
         # yubikey ..2
         "LV/FPWrKyNQBfWhHDGxXVZkx/LDoW+EJKV65A28igjqqGKPGJ7PWWEQlNtumOy6b0C2WHYXo9MeSbqQboAs98w==,dSfmZDimcp1x3ttEM9sBCd7/fBE+EZ2aoboLx9GR/YIfJCyU/DWH7t+6vWQv8MzxL5mjZOjboGHoUrnCxCopvQ==,es256,+presence"
       ];
-
-      resticBackup = {
-        enable = true;
-        paths = [ "/home/aaron/Documents" ];
-
-        repository = "/mnt/data/backup/restic";
-      };
     };
 
     # ../modules/ssh.nix

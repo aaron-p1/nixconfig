@@ -67,6 +67,35 @@
             }
           ];
         };
+        aaron-laptop = lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            { _module.args = { inherit inputs; }; }
+            { nixpkgs.overlays = overlays; }
+
+            nixos-hardware.nixosModules.common-pc-laptop
+            nixos-hardware.nixosModules.common-cpu-intel
+            nixos-hardware.nixosModules.common-gpu-nvidia
+            nixos-hardware.nixosModules.common-pc-ssd
+
+            ./nixos/configs/main.nix
+            ./hosts/aaron-laptop/configuration.nix
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.aaron = {
+                  imports = [
+                    ./home-manager/configs/main.nix
+                    ./hosts/aaron-laptop/home.nix
+                  ];
+                };
+              };
+            }
+          ];
+        };
       };
     } // flake-utils.lib.eachDefaultSystem (system:
       let pkgs = nixpkgs.legacyPackages."${system}";

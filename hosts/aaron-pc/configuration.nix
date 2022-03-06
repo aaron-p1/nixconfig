@@ -32,6 +32,13 @@
   hardware.nvidia.package = pkgs.local.nvidia_x11 config.boot.kernelPackages;
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  within.users.aaron.resticBackup = {
+    enable = true;
+    paths = [ "/home/aaron/Documents" ];
+
+    repository = "/mnt/data/backup/restic";
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
