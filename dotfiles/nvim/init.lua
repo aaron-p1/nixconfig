@@ -297,6 +297,8 @@ vim.cmd([[
 	augroup end
 ]])
 
+vim.keymap.set("n", "<Leader>du", "<Cmd>diffupdate<CR>", { silent = true })
+
 -- noh
 vim.keymap.set("n", "<Leader>n", "<Cmd>nohlsearch<CR>", { silent = true })
 
