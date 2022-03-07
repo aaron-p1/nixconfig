@@ -27,6 +27,8 @@ local servers = {
   { server = "elixirls", filetypes = { "elixir", "eelixir", "heex" } },
   -- python
   { server = "pyright" },
+  -- javascript
+  { server = "tsserver" },
 }
 
 function plugin.on_attach(client, bufnr)
