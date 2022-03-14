@@ -27,4 +27,12 @@ function helper.setOptions(optapi, table)
   end
 end
 
+function helper.startsWith(str, start)
+  return str:sub(1, #start) == start
+end
+
+function helper.endsWith(str, ending)
+  return ending == "" or str:sub(-#ending) == ending
+end
+
 return helper
