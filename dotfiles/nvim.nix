@@ -1,5 +1,5 @@
 { lib, fd, ripgrep, nodePackages, local, sumneko-lua-language-server, rnix-lsp
-, nixfmt, shellcheck, shellharden, statix, stylua, stdenv, findutils }:
+, nixfmt, shellcheck, shellharden, statix, stylua, nodejs, stdenv, findutils }:
 let
   inherit (builtins) attrValues;
   inherit (lib) mapAttrsToList;
@@ -29,6 +29,7 @@ let
 
     # ---- dap
     "phpdebug" = local.vscode-php-debug;
+    "nodejs" = nodejs;
   };
 in stdenv.mkDerivation {
   pname = "dotfiles-nvim";

@@ -32,8 +32,8 @@ function plugin.config()
 
   dap.adapters.php = {
     type = "executable",
-    command = "node",
-    args = { "@phpdebug@/phpDebug.js" },
+    command = "@nodejs@/bin/node",
+    args = { "@phpdebug@/libexec/php-debug/deps/php-debug/out/phpDebug.js" },
   }
 
   dap.configurations.php = {

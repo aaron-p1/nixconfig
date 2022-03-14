@@ -1,20 +1,17 @@
-{ stdenv, fetchzip }:
-stdenv.mkDerivation rec {
-  pname = "vscode-php-debug";
-  version = "1.24.3";
-
-  src = fetchzip rec {
-    url =
-      "https://github.com/xdebug/${pname}/releases/download/v${version}/php-debug-${version}.vsix";
-    sha256 = "sha256-FUoCYrumyoDEMcm8xX/c0F7ziCL+A2pSuWTKPSH+kU0=";
-    extension = "zip";
-
-    stripRoot = false;
+{ mkYarnPackage, fetchFromGitHub }:
+# yarn import
+# yarn2nix > yarn.nix
+# yarm.lock versions not found because it is defining name@*
+mkYarnPackage {
+  name = "vscode-php-debug";
+  src = fetchFromGitHub {
+    owner = "xdebug";
+    repo = "vscode-php-debug";
+    rev = "84d7444ed80f7f7830b03bdfdb0fe746ffbdde0f";
+    sha256 = "sha256-/D6+Sd+MJG9C2aQyIW2OWjUC02r2svG7kUNJAqCxRAg=";
   };
-
-  installPhase = ''
-    mkdir -p $out
-
-    cp -r extension/out/* $out
-  '';
+  yarnLock = ./yarn.lock;
+  yarnNix = ./yarn.nix;
+  buildPhase = "yarn --offline run build";
+  distPhase = "true";
 }
