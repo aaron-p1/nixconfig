@@ -11,7 +11,7 @@ in with lib; {
   };
 
   config = mkMerge [
-    (mkIf cfg.zram { zramSwap = { enable = true; }; })
+    (mkIf cfg.zram { zramSwap.enable = true; })
 
     (mkIf (cfg.file > 0) {
       swapDevices = [{
