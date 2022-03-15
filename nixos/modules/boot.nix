@@ -24,7 +24,7 @@ in with lib; {
     boot = {
       inherit (cfg) kernelPackages supportedFilesystems;
       loader = {
-        timeout = 1;
+        timeout = 2;
         efi = {
           canTouchEfiVariables = true;
           efiSysMountPoint = cfg.efiMountPoint;
