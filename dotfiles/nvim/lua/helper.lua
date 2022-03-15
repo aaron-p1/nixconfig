@@ -1,5 +1,7 @@
 local helper = {}
 
+-- Not allowed to require rocks
+
 function helper.registerPluginWk(config)
   assert(config.map ~= nil, "Map cannot be nil")
 
@@ -33,6 +35,17 @@ end
 
 function helper.endsWith(str, ending)
   return ending == "" or str:sub(-#ending) == ending
+end
+
+function helper.chain(...)
+  local fnchain = { ... }
+  return function(...)
+    local args = { ... }
+    for _, fn in ipairs(fnchain) do
+      args = { fn(unpack(args)) }
+    end
+    return unpack(args)
+  end
 end
 
 return helper
