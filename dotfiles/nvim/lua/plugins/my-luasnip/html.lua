@@ -1,11 +1,10 @@
-local helper = require("plugins.my-luasnip.helper")
-
-local s = helper.s
-local i = helper.i
-local l = helper.l
-local fmt = helper.fmt
-
 local fun = require("fun")
+local lsh = require("plugins.my-luasnip.helper")
+
+local s = lsh.s
+local i = lsh.i
+local l = lsh.l
+local fmt = lsh.fmt
 
 local snip_shorts = {
   repeat_tag = function(index)

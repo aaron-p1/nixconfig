@@ -1,9 +1,9 @@
-local helper = require("plugins.my-luasnip.helper")
+local lsh = require("plugins.my-luasnip.helper")
 
-local s = helper.s
-local i = helper.i
-local t = helper.t
-local fmta = helper.fmta
+local s = lsh.s
+local i = lsh.i
+local t = lsh.t
+local fmta = lsh.fmta
 
 local snips = {
   s("t", t("true")),

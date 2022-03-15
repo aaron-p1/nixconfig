@@ -1,7 +1,7 @@
-local helper = require("plugins.my-luasnip.helper")
+local lsh = require("plugins.my-luasnip.helper")
 
-local s = helper.s
-local f = helper.f
+local s = lsh.s
+local f = lsh.f
 
 -- Make sure to not pass an invalid command, as io.popen() may write over nvim-text.
 local function shell(_, _, command)

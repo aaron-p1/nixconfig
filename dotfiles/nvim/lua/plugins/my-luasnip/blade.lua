@@ -1,8 +1,8 @@
-local helper = require("plugins.my-luasnip.helper")
+local lsh = require("plugins.my-luasnip.helper")
 
-local s = helper.s
-local i = helper.i
-local fmta = helper.fmta
+local s = lsh.s
+local i = lsh.i
+local fmta = lsh.fmta
 
 local snips = {
   s("p", fmta("{{ <> }}", i(0))),
