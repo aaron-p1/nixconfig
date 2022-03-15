@@ -11,6 +11,7 @@ local i = lsh.i
 local c = lsh.c
 local d = lsh.d
 local n = lsh.n
+local fmt = lsh.fmt
 local fmta = lsh.fmta
 local conds = lsh.conds
 
@@ -127,6 +128,17 @@ local snips = {
     }
   ),
   s("fnn", fmta("fn (<>) =>> <>", { i(1), i(0) })),
+  s(
+    "fe",
+    fmta("foreach (<> as <>) {\n\t<>\n}", {
+      i(1),
+      c(2, {
+        i(nil),
+        sn(nil, fmt("{} => {}", { i(1), i(2) })),
+      }),
+      i(0),
+    })
+  ),
 }
 
 return snips
