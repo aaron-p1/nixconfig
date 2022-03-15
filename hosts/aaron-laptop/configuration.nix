@@ -22,6 +22,16 @@
     intelBusId = "PCI:0:2:0";
   };
 
+  specialisation.use-nvidia-gpu.configuration = {
+    hardware.nvidia = {
+      modesetting.enable = true;
+      prime = {
+        offload.enable = false;
+        sync.enable = true;
+      };
+    };
+  };
+
   within.users.aaron.u2fKeys = [
     # 1
     "K75FjUADd0jxHJxt1mSt1l9SaMZytdusDhBWHreUHkZF2t3NLKoSMswyLgaNDktrc5OdCNuQvc5ZF0w+Jyk5Jw==,KAoLBV0lY/dTByVVLUshVjIZknJuolefxUG68FcVD86kU+mvXc7qh5vRSXE56QL6zXQ0yJWnrqcXp0hZnsUkLQ==,es256,+presence"
