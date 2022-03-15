@@ -1,7 +1,8 @@
 local fun = require("fun")
 local helper = require("helper")
-
 local lsh = require("plugins.my-luasnip.helper")
+
+local chain = helper.chain
 
 local s = lsh.s
 local sn = lsh.sn
@@ -9,8 +10,9 @@ local t = lsh.t
 local i = lsh.i
 local c = lsh.c
 local d = lsh.d
-
+local n = lsh.n
 local fmta = lsh.fmta
+local conds = lsh.conds
 
 local firstLine = lsh.firstLine
 local firstInFile = lsh.firstInFile
@@ -100,13 +102,29 @@ local snips = {
     fmta("<> function <>(<>)\n{\n\t<>\n}", {
       c(1, {
         t("public"),
-        t("projected"),
+        t("protected"),
         t("private"),
       }),
       i(2, "functionname"),
       i(3),
       i(0),
-    })
+    }),
+    {
+      condition = conds.line_begin,
+    }
+  ),
+  s(
+    "fn",
+    fmta("function (<>) <><><>{\n\t<>\n}", {
+      i(1),
+      n(2, "use ("),
+      i(2),
+      n(2, ") "),
+      i(0),
+    }),
+    {
+      condition = chain(conds.line_begin, fun.op.lnot),
+    }
   ),
 }
 
