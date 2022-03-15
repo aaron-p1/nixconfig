@@ -53,7 +53,11 @@ in with lib; {
     networking.networkmanager = {
       enable = true;
       dns = optionalString cfg.nm.dnsmasq.enable "dnsmasq";
+      dhcp = "internal";
     };
+
+    # Network Manager uses internal
+    networking.dhcpcd.enable = false;
 
     environment.etc."NetworkManager/dnsmasq.d/local" =
       optionalAttrs (cfg.nm.dnsmasq.localDomains != null) {
