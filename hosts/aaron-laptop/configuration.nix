@@ -13,7 +13,10 @@
   networking.interfaces.enp3s0.useDHCP = true;
   networking.interfaces.wlp2s0.useDHCP = true;
 
-  within.swap.zram = true;
+  within.swap = {
+    zram = true;
+    file = 20;
+  };
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
