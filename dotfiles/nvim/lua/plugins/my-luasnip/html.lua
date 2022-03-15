@@ -44,7 +44,7 @@ local snips = {
       snip_shorts.repeat_tag(1),
     })
   ),
-  s("=", fmt('="{}"', i(1))),
+  s({ trig = "=", wordTrig = false }, fmt('="{}"', i(1))),
   s("itext", fmt('<input type="text"{}/>', i(1))),
   s("inumber", fmt('<input type="number"{}/>', i(1))),
 }
