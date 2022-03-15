@@ -126,6 +126,7 @@ local snips = {
       condition = chain(conds.line_begin, fun.op.lnot),
     }
   ),
+  s("fnn", fmta("fn (<>) =>> <>", { i(1), i(0) })),
 }
 
 return snips
