@@ -14,10 +14,10 @@ local function shell(_, _, command)
 end
 
 local snips = {
-  s("uuidgen", f(shell, {}, "uuidgen")),
-  s("date", f(shell, {}, "date --iso-8601")),
-  s("datetime", f(shell, {}, "date --rfc-3339=seconds")),
-  s("datetimei", f(shell, {}, "date --iso-8601=seconds")),
+  s("uuidgen", f(shell, {}, { user_args = { "uuidgen" } })),
+  s("date", f(shell, {}, { user_args = { "date --iso-8601" } })),
+  s("datetime", f(shell, {}, { user_args = { "date --rfc-3339=seconds" } })),
+  s("datetimei", f(shell, {}, { user_args = { "date --iso-8601=seconds" } })),
 }
 
 return snips
