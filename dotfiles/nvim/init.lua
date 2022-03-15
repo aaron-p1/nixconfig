@@ -281,21 +281,23 @@ vim.cmd("language en_US.utf8")
 vim.keymap.set("t", "<A-Esc>", "<C-\\><C-N>")
 
 --Disable numbers in terminal mode
-vim.cmd([[
-	augroup Terminal
-		autocmd!
-		autocmd TermOpen * set nonumber norelativenumber
-	augroup end
-]])
+local group_terminal = vim.api.nvim_create_augroup("Terminal", { clear = true })
+vim.api.nvim_create_autocmd("TermOpen", {
+  group = group_terminal,
+  callback = function()
+    helper.setOptions(vim.bo, { "nonumber", "norelativenumber" })
+  end,
+})
 
 -- YANK
 -- Highlight on yank
-vim.cmd([[
-	augroup YankHighlight
-		autocmd!
-		autocmd TextYankPost * silent! lua vim.highlight.on_yank {timeout=300}
-	augroup end
-]])
+local group_yank_highlight = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = group_yank_highlight,
+  callback = function()
+    vim.highlight.on_yank({ timeout = 300 })
+  end,
+})
 
 vim.keymap.set("n", "<Leader>du", "<Cmd>diffupdate<CR>", { silent = true })
 
@@ -335,9 +337,11 @@ vim.keymap.set("n", "<Leader>rexo", function()
   compareRemotes("exo")
 end)
 
-vim.cmd([[
-	augroup my_scp
-		autocmd!
-		autocmd BufNewFile,BufRead,BufLeave scp://* setlocal bufhidden=delete
-	augroup END
-]])
+local group_my_scp = vim.api.nvim_create_augroup("MyScp", { clear = true })
+vim.api.nvim_create_autocmd("BufNewFile,BufRead,BufLeave", {
+  group = group_my_scp,
+  pattern = "scp://*",
+  callback = function()
+    vim.bo.bufhidden = "delete"
+  end,
+})
