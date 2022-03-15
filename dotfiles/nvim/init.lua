@@ -315,7 +315,7 @@ vim.keymap.set("n", "<Leader>to", "<Cmd>tabonly<CR>", { silent = true })
 
 -- Compare Remote
 local compare_remotes = {
-  exo = "scp://exoshare//var/www/html/exomind/",
+  exo = "scp://exo//var/www/html/exomind/",
 }
 
 local function compareRemotes(remote)
