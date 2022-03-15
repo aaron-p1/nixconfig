@@ -81,6 +81,7 @@ function plugin.config()
     "php",
     "laravel",
     "blade",
+    "json",
   })
     :map(function(v)
       return v, require("plugins.my-luasnip." .. v)
@@ -92,6 +93,7 @@ function plugin.config()
     html = { "html" },
     php = { "php", "c_like", "laravel" },
     blade = { "blade", "html" },
+    json = { "json" },
   }
 
   ls.snippets = fun.iter(group_assignments)
