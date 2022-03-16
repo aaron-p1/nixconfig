@@ -285,7 +285,7 @@ local group_terminal = vim.api.nvim_create_augroup("Terminal", { clear = true })
 vim.api.nvim_create_autocmd("TermOpen", {
   group = group_terminal,
   callback = function()
-    helper.setOptions(vim.bo, { "nonumber", "norelativenumber" })
+    helper.setOptions(vim.o, { "nonumber", "norelativenumber" })
   end,
 })
 
