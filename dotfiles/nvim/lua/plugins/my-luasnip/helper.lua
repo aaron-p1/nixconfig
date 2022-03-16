@@ -25,7 +25,25 @@ local fmta = require("luasnip.extras.fmt").fmta
 local conds = require("luasnip.extras.expand_conditions")
 
 -- Helper
--- conditions
+-- Nodes
+local function matchCapture(group, _then, _else)
+  assert(_then, "You have to pass at least 2 arguments")
+
+  return f(function(_, snip)
+    local cap = snip.captures[group]
+    return (cap ~= nil and cap ~= "") and _then or _else or ""
+  end)
+end
+
+-- types = [ "capture" = nodes ]
+local function applyCapture(pos, group, types)
+  return d(pos, function(_, snip)
+    local type = types[snip.captures[group]]
+    return sn(nil, type)
+  end)
+end
+
+-- Conditions
 local function firstLine()
   return vim.fn.line(".") == 1
 end
@@ -35,6 +53,7 @@ local function firstInFile(line_to_cursor, matched_trigger)
 end
 
 return {
+  -- LuaSnip
   ls = ls,
   s = s,
   sn = sn,
@@ -47,7 +66,6 @@ return {
   r = r,
   events = events,
   ai = ai,
-
   l = l,
   rep = rep,
   p = p,
@@ -56,9 +74,14 @@ return {
   dl = dl,
   fmt = fmt,
   fmta = fmta,
-
   conds = conds,
 
+  -- Helper
+  -- Nodes
+  mc = matchCapture,
+  ac = applyCapture,
+
+  -- Conditions
   firstLine = firstLine,
   firstInFile = firstInFile,
 }
