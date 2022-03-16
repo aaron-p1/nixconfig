@@ -96,7 +96,7 @@ function plugin.config()
     blade = { "blade", "html" },
     json = { "json" },
     javascript = { "javascript", "c_like" },
-    vue = { "javascript", "c_like" },
+    vue = { "html", "javascript", "c_like" },
   }
 
   ls.snippets = fun.iter(group_assignments)
