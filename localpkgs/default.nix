@@ -8,6 +8,8 @@ in final: prev: {
 
     vscode-php-debug = prev.callPackage ./pkgs/vscode-php-debug { };
 
+    yuescript = prev.callPackage ./pkgs/yuescript { };
+
     # firefox native messaging hosts
     ff2mpv-native-client = prev.callPackage ./pkgs/ff2mpv-native-client { };
 

@@ -1,0 +1,97 @@
+export config = ->
+  import "luasnip" as ls
+  import "fun"
+  import "helper"
+  import "luasnip.util.types" as types
+
+  vim.keymap.set("n", "<leader>rpls", ->
+    package.loaded["plugins.luasnip"] = nil
+
+    fun.iter(package.loaded)
+      ::map((k, _) -> k)
+      ::filter((k) -> k:find("^plugins[.]my-luasnip[.]") ~= nil)
+      ::each((k) -> package.loaded[k] = nil)
+
+    import "plugins.luasnip" as pls
+    pls.config()
+  )
+
+  vim.keymap.set("i", "<C-K>", ls.expand)
+  vim.keymap.set({"i", "s"}, "<C-J>", -> ls.jump(-1))
+  vim.keymap.set({"i", "s"}, "<C-L>", -> ls.jump(1))
+
+  vim.keymap.set("n", "<leader>i", ls.unlink_current)
+
+  vim.keymap.set({"i", "s"}, "<C-E>",
+    -> if ls.choice_active() then "<Plug>luasnip-next-choice" else "<C-E>",
+    {expr: true, remap: true})
+
+  helper.registerPluginWk({
+    prefix: "<leader>"
+    map:
+      i: "Unlink snip"
+      r:
+        name: "Reload"
+        p:
+          name: "Plugin"
+          l:
+            name: "L"
+            s: "LuaSnip"
+  })
+
+  ls.config.set_config({
+    updateevents: "TextChanged,TextChangedI"
+    region_check_events: "InsertEnter"
+    ext_opts:
+      [types.choiceNode]:
+        active:
+          virt_text: {{"●", "GruvboxOrange"}}
+      [types.insertNode]:
+        active:
+          virt_text: {{"●", "GruvboxBlue"}}
+  })
+
+  snippet_groups = fun.iter({
+    "all",
+    "c_like",
+    "html",
+    "php",
+    "laravel",
+    "blade",
+    "json",
+    "javascript",
+  })
+    ::map((v) -> v, require("plugins.my-luasnip.#{v}"))
+    ::tomap()
+
+  group_assignments =
+    all:
+      * "all"
+    json:
+      * "json"
+    php:
+      * "php"
+      * "c_like"
+      * "laravel"
+    blade:
+      * "blade"
+      * "html"
+    html:
+      * "html"
+      * "javascript"
+      * "c_like"
+    javascript:
+      * "javascript"
+      * "c_like"
+    vue:
+      * "html"
+      * "javascript"
+      * "c_like"
+
+  ls.snippets = fun.iter(group_assignments)
+    ::map((ft, groups) ->
+      return ft, fun.iter(groups)
+          ::map((group) -> snippet_groups[group])
+          ::foldl(((acc, val) -> fun.chain(acc, val)), {})
+          ::totable())
+    ::tomap()

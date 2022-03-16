@@ -1,0 +1,4 @@
+export config = ->
+  import "Comment" as c
+
+  c.setup()

@@ -1,0 +1,4 @@
+export config = ->
+  import "telescope" as t
+
+  t.load_extension("dap")

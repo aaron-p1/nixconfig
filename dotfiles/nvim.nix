@@ -1,5 +1,5 @@
 { lib, fd, ripgrep, nodePackages, local, sumneko-lua-language-server, rnix-lsp
-, nixfmt, shellcheck, shellharden, statix, stylua, nodejs, stdenv, findutils }:
+, nixfmt, shellcheck, shellharden, statix, stylua, nodejs, stdenv, findutils, rsync }:
 let
   inherit (builtins) attrValues;
   inherit (lib) mapAttrsToList;
@@ -37,20 +37,24 @@ in stdenv.mkDerivation {
 
   src = ./nvim;
 
-  nativeBuildInputs = [ findutils ];
+  nativeBuildInputs = [ findutils local.yuescript rsync ];
   buildInputs = attrValues dependencies;
 
   replacements = mapAttrsToList (k: v: "s=@${k}@=${v}=g") dependencies;
 
-  patchPhase = ''
+  buildPhase = ''
+    yue -t result .
+
+    rsync --verbose --recursive --filter='- *.yue' --filter='- /result' ./ result
+
     for rep in $replacements
     do
-      find . -type f -print0 | xargs -0 sed -i "$rep"
+      find result -type f -print0 | xargs -0 sed -i "$rep"
     done
   '';
 
   installPhase = ''
-    cp -r . $out
+    cp -r result $out
   '';
 
   meta = with lib; {

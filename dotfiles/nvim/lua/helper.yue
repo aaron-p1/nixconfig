@@ -1,0 +1,33 @@
+-- Not allowed to import rocks
+
+export registerPluginWk = (config) ->
+  assert(config.map ~= nil, "Map cannot be nil")
+
+  return if not package.loaded["which-key"]
+
+  import "which-key" as wk
+
+  wk.register(config.map, {
+    prefix: config.prefix or "",
+    buffer: config.buffer,
+  })
+
+export setOptions = (optapi, opts) ->
+  for key, val in pairs(opts)
+    if tonumber(key)
+      isno = val::sub(0, 2) == "no"
+      optname = if isno then val::sub(3, #val) else val
+      optapi[optname] = not isno
+    else
+      optapi[key] = val
+
+export startsWith = (str, start) -> str.sub(1, #start) == start
+export endsWith = (str, ending) -> ending == "" or str.sub(-#ending) == ending
+
+export chain = (...) ->
+  fnchain = {...}
+  (...) ->
+    args = {...}
+    for fn in *fnchain
+      args = { fn(unpack(args)) }
+    unpack(args)

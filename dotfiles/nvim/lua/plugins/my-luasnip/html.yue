@@ -1,0 +1,49 @@
+import "fun"
+import "plugins.my-luasnip.helper" as lsh
+
+s = lsh.s
+i = lsh.i
+l = lsh.l
+fmt = lsh.fmt
+
+snip_shorts = {
+  repeat_tag: (index) -> l(l._1::match("^[^ ]*"), index)
+}
+
+attributes = {
+  i: "id"
+  cl: "class"
+  h: "href"
+  t: "type"
+  n: "name"
+}
+
+attribute_snips = fun.iter(attributes)
+  ::map((trig, attr) -> s("a#{trig}", fmt("#{attr}=\"{}\"", i(1))))
+  ::totable()
+
+snips = {
+  s(
+    "<",
+    fmt("<{}>\n\t{}\n</{}>", {
+      i(1, "TAG"),
+      i(0),
+      snip_shorts.repeat_tag(1),
+    })
+  ),
+  s(
+    "<i",
+    fmt("<{}>{}</{}>", {
+      i(1, "TAG"),
+      i(2),
+      snip_shorts.repeat_tag(1),
+    })
+  ),
+  s({trig: "=", wordTrig: false}, fmt('="{}"', i(1))),
+  s("itext", fmt('<input type="text"{}/>', i(1))),
+  s("inumber", fmt('<input type="number"{}/>', i(1))),
+}
+
+export default fun
+  .chain(snips, attribute_snips)
+  ::totable()

@@ -1,0 +1,8 @@
+export config = ->
+  import "cmp_tabnine.config" as tn
+
+  tn::setup({
+    max_lines: 1000,
+    max_num_results: 5,
+    sort: true,
+  })

@@ -1,0 +1,31 @@
+import "plugins.my-luasnip.helper" as lsh
+
+s = lsh.s
+i = lsh.i
+t = lsh.t
+fmta = lsh.fmta
+
+mc = lsh.mc
+ac = lsh.ac
+
+typeTable = {
+  t: t("true")
+  f: t("false")
+  n: t("")
+  s: fmta('"<>"', i(1))
+  a: fmta("[\n\t<>\n]", i(1))
+  o: fmta("{\n\t<>\n}", i(1))
+}
+
+export default {
+  s("t", t("true")),
+  s("f", t("false")),
+  s(
+    {trig: "o([tfnsao])(c?)", regTrig: true},
+    fmta('"<>": <><>', {i(1), ac(2, 1, typeTable), mc(2, ",")})
+  ),
+  s(
+    {trig: "a([tfsao])(c?)", regTrig: true},
+    fmta('<><>', {ac(2, 1, typeTable), mc(2, ",")})
+  ),
+}

@@ -1,0 +1,21 @@
+export config = ->
+  import "trouble" as t
+  import "helper"
+
+  t.setup({
+    mode: "loclist"
+  })
+
+  vim.keymap.set("n", "<Leader>oo", -> t.toggle("document_diagnostics"))
+  vim.keymap.set("n", "<Leader>oi", -> t.toggle("lsp_implementations"))
+  vim.keymap.set("n", "<Leader>or", -> t.toggle("lsp_references"))
+
+  helper.registerPluginWk({
+    prefix: "<leader>"
+    map:
+      o:
+        name: "Trouble"
+        o: "Document diagnostics"
+        i: "Implementations"
+        r: "References"
+  })

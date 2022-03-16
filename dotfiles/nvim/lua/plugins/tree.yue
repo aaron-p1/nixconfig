@@ -1,0 +1,20 @@
+export config = ->
+  import "nvim-tree" as nt
+  import "helper"
+
+  nt.setup({
+    disable_netrw: false
+    hijack_netrw: false
+  })
+
+  vim.keymap.set("n", "<Leader>bb", nt.toggle)
+  vim.keymap.set("n", "<Leader>bf", -> nt.find_file(true))
+
+  helper.registerPluginWk({
+    prefix: "<leader>"
+    map:
+      b:
+        name: "Nvim Tree"
+        b: "Toggle"
+        f: "Find file"
+  })

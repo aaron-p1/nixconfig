@@ -1,0 +1,15 @@
+import "plugins.my-luasnip.helper" as lsh
+
+s = lsh.s
+i = lsh.i
+t = lsh.t
+fmta = lsh.fmta
+
+export default {
+  s("t", t("true")),
+  s("f", t("false")),
+  s("if", fmta("if (<>) {\n\t<>\n}", {i(1, "true"), i(0)})),
+  s("ei", fmta("else if (<>) {\n\t<>\n}", {i(1, "true"), i(0)})),
+  s("el", fmta("else {\n\t<>\n}", i(0))),
+  s("r", fmta("return <>;", i(0))),
+}

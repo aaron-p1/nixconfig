@@ -1,0 +1,42 @@
+export config = ->
+  vim.g.lightline =
+    active:
+      right:
+        * {"lineinfo"}
+        * {"percent"}
+        * {"spell", "gitbranch", "fileencoding", "filetype"}
+    inactive:
+      left:
+        * {"mode", "paste"}
+        * {"readonly", "filename", "modified"}
+      right:
+        * {"lineinfo"}
+        * {"percent"}
+        * {"spell", "gitbranch", "fileencoding", "filetype"}
+    tabline:
+      right: {}
+    tab:
+      active: {"tabnum", "filename", "tab_modified"}
+      inactive: {"tabnum", "filename", "tab_modified"}
+    component_function:
+      gitbranch: "FugitiveHead"
+    tab_component_function:
+      tab_modified: "LightlineTablineModified"
+
+  _G.lightlineTablineModified = (tabnr) ->
+    lastwin = vim.fn.tabpagewinnr(tabnr, "$")
+    modified = false
+    modifiable = false
+
+    for i = 1, lastwin, 1
+      modified or= vim.fn.gettabwinvar(tabnr, i, "&modified") == 1
+      modifiable or= vim.fn.gettabwinvar(tabnr, i, "&modifiable") == 1
+      break if modified and modifiable
+
+    return if modified then "+" elseif not modifiable then "-" else ""
+
+  vim.cmd([[
+    function! LightlineTablineModified(tabnr)
+      return v:lua.lightlineTablineModified(a:tabnr)
+    endfunction
+	]])
