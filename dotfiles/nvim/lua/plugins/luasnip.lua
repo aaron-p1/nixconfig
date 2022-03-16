@@ -91,7 +91,7 @@ function plugin.config()
 
   local group_assignments = {
     all = { "all" },
-    html = { "html" },
+    html = { "html", "javascript", "c_like" },
     php = { "php", "c_like", "laravel" },
     blade = { "blade", "html" },
     json = { "json" },
