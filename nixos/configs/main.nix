@@ -15,17 +15,25 @@
     # ../modules/networking.nix
     networking = {
       enable = true;
-      firewall = true;
+
+      v4.redirectLoopback80 = true;
+      v6.redirectLoopback80 = true;
+
+      localDomains = {
+        exo = "127.32.0.2";
+        sso = "127.32.0.3";
+      };
+      networkDomains = { public-server = "192.168.178.8"; };
+
+      dns = "dnsmasq";
+
+      nameservers = [
+        "9.9.9.9"
+      ];
+
       nm = {
         enable = true;
-        dnsmasq = {
-          enable = true;
-          localDomains = {
-            exo = "127.32.0.2";
-            sso = "127.32.0.3";
-          };
-          networkDomains = { public-server = "192.168.178.8"; };
-        };
+        dns = "none";
       };
     };
 

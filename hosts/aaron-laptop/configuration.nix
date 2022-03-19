@@ -13,6 +13,11 @@
   networking.interfaces.enp3s0.useDHCP = true;
   networking.interfaces.wlp2s0.useDHCP = true;
 
+  within.networking.v6 = {
+    loopbackPrefix = "fdfd:3ea0:fd08:44cc";
+    loopbackPrefixLength = 64;
+  };
+
   within.swap = {
     zram = true;
     file = 20;

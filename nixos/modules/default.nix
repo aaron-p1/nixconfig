@@ -1,12 +1,12 @@
 _: {
   imports = [
     ./graphics
+    ./networking
 
     ./bluetooth.nix
     ./boot.nix
     ./containers.nix
     ./locale.nix
-    ./networking.nix
     ./nix.nix
     ./ssh.nix
     ./pam.nix
