@@ -25,10 +25,12 @@
       };
       networkDomains = { public-server = "192.168.178.8"; };
 
-      dns = "dnsmasq";
+      dns = "blocky";
 
       nameservers = [
-        "9.9.9.9"
+        "https://dns.quad9.net/dns-query"
+        "https://dns.digitale-gesellschaft.ch/dns-query"
+        "https://dnsforge.de/dns-query"
       ];
 
       nm = {

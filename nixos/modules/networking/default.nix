@@ -43,7 +43,7 @@ let
     };
 
 in with lib; {
-  imports = [ ./networkmanager.nix ./dnsmasq.nix ];
+  imports = [ ./networkmanager.nix ./dnsmasq.nix ./blocky.nix ];
 
   options.within.networking = {
     enable = mkEnableOption "basic setup";
@@ -77,7 +77,7 @@ in with lib; {
     };
 
     dns = mkOption {
-      type = types.enum [ "none" "networkmanager" "dnsmasq" ];
+      type = types.enum [ "none" "networkmanager" "dnsmasq" "blocky" ];
       default = "none";
       description = "dns server to use";
     };
@@ -125,7 +125,7 @@ in with lib; {
       }
       {
         assertion = length (attrValues (cfg.localDomains // cfg.networkDomains))
-          > 0 -> builtins.elem cfg.dns [ "dnsmasq" ];
+          > 0 -> builtins.elem cfg.dns [ "dnsmasq" "blocky" ];
         message = ''
           The option within.networking.localDomains or
           within.networking.networkDomains is defined, but the dns backend
@@ -163,6 +163,11 @@ in with lib; {
         enable = true;
         mapDomains = cfg.networkDomains // realLocalDomains;
         servers = cfg.nameservers;
+      };
+      blocky = mkIf (cfg.dns == "blocky") {
+        enable = true;
+        mapDomains = cfg.networkDomains // realLocalDomains;
+        inherit (cfg) nameservers;
       };
     };
   }]);
