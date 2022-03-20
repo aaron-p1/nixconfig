@@ -51,7 +51,17 @@ export on_attach = (client, bufnr) ->
   })
 
   -- jump to
-  buf_keymap("n", "gd", tb.lsp_definitions)
+  buf_keymap("n", "gd", ->)
+  buf_keymap("n", "gdd", tb.lsp_definitions)
+  buf_keymap("n", "gdv", ->
+    vim.api.nvim_command("vsplit")
+    tb.lsp_definitions())
+  buf_keymap("n", "gdx", ->
+    vim.api.nvim_command("split")
+    tb.lsp_definitions())
+  buf_keymap("n", "gdt", ->
+    vim.api.nvim_command("tab split")
+    tb.lsp_definitions())
   buf_keymap("n", "gD", vl.declaration)
   buf_keymap("n", "gi", tb.lsp_implementations)
   buf_keymap("n", "gr", tb.lsp_references)
@@ -95,7 +105,12 @@ export on_attach = (client, bufnr) ->
     prefix: "g"
     buffer: bufnr
     map:
-      d: "Definitions"
+      d:
+        name: "Definitions"
+        d: "This window"
+        v: "Vertical split"
+        x: "Horizontal split"
+        t: "Tab"
       D: "Declaration"
       i: "Implementations"
       r: "References"
