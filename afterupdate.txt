@@ -21,10 +21,6 @@ Check:
   jdtls:
     change lspconfig for java
     https://github.com/NixOS/nixpkgs/pull/99330
-  pihole:
-    enable when ipv6 support lands
-	maybe podman 4.0:
-		https://github.com/containers/podman/releases
 
   Dotfiles:
     nvim:

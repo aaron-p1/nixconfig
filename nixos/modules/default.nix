@@ -15,7 +15,6 @@ _: {
     ./steam.nix
     ./swap.nix
     ./vmclient.nix
-    ./pihole.nix
 
     ./users.nix
   ];
