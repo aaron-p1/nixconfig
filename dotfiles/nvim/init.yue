@@ -2,211 +2,165 @@
 install_path = "#{vim.fn.stdpath("data")}/site/pack/packer/start/packer.nvim"
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0
-  vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim #{install_path}")
+  vim.fn.execute(
+    "!git clone https://github.com/wbthomason/packer.nvim #{install_path}")
 
 import "helper"
-import "packer"
+import "packer" as {:use, :use_rocks, startup: psetup}
 import "packer.util" as putil
 
-use = packer.use
-use_rocks = packer.use_rocks
-packer.startup({
+u = (url, opts = {}) ->
+  addOpts = opts
+
+  if opts.file
+    addOpts.setup = "require('plugins.#{opts.file}').setup()" if opts.setup
+    addOpts.config = "require('plugins.#{opts.file}').config()" if not opts.setup or opts.config
+
+  addOpts.file = nil
+  addOpts[1] = url
+  use(addOpts)
+
+psetup({
   (->
-    use("wbthomason/packer.nvim")
+    u("wbthomason/packer.nvim")
 
     -- color scheme
-    use({
-      "morhetz/gruvbox",
-      config: [[require('plugins.gruvbox').config()]],
-    })
+    u("morhetz/gruvbox", file: "gruvbox")
 
     -- small text utilities
-    use({
-      "numToStr/Comment.nvim",
-      config: [[require('plugins.comment').config()]],
-    })
-    use("tpope/vim-surround")
-    use("tpope/vim-unimpaired")
-    use("tpope/vim-repeat")
-    use("tpope/vim-abolish")
-    use("tpope/vim-characterize")
-    use({
-      "AndrewRadev/splitjoin.vim",
-      keys: {"gS", "gJ"},
-    })
-    use({
-      "norcalli/nvim-colorizer.lua",
-      config: [[require('plugins.colorizer').config()]],
-    })
-    use({
-      "lukas-reineke/indent-blankline.nvim",
-      config: [[require('plugins.indent-blankline').config()]],
-    })
-    use({
-      "windwp/nvim-autopairs",
-      after: {"nvim-cmp"},
-      config: [[require('plugins.autopairs').config()]],
-    })
-    use({
-      "windwp/nvim-ts-autotag",
-    })
+    u("numToStr/Comment.nvim", file: "comment")
+    u("tpope/vim-surround")
+    u("tpope/vim-unimpaired")
+    u("tpope/vim-repeat")
+    u("tpope/vim-abolish")
+    u("tpope/vim-characterize")
+    u("AndrewRadev/splitjoin.vim", keys: {"gS", "gJ"})
+    u("norcalli/nvim-colorizer.lua", file: "colorizer")
+    u("lukas-reineke/indent-blankline.nvim", file: "indent-blankline")
+    u("windwp/nvim-autopairs", {file: "autopairs", after: {"nvim-cmp"}})
+    u("windwp/nvim-ts-autotag")
 
     -- config
-    use({
-      "editorconfig/editorconfig-vim",
-      config: [[require('plugins.editorconfig').config()]],
-    })
+    u("editorconfig/editorconfig-vim", file: "editorconfig")
 
     -- status line
-    use({
-      "itchyny/lightline.vim",
-      config: [[require('plugins.lightline').config()]],
-    })
+    u("itchyny/lightline.vim", file: "lightline")
 
-    use({
-      "nvim-treesitter/nvim-treesitter",
-      run: ":TSUpdate",
-      wants: {"nvim-ts-autotag"},
-      config: [[require('plugins.treesitter').config()]],
+    u("nvim-treesitter/nvim-treesitter", {
+      file: "treesitter"
+      run: ":TSUpdate"
+      wants: {"nvim-ts-autotag"}
     })
-    use({
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      requires: "nvim-treesitter/nvim-treesitter",
-      after: {"which-key.nvim", "nvim-treesitter"},
-      config: [[require('plugins.treesitter-textobjects').config()]],
+    u("nvim-treesitter/nvim-treesitter-textobjects", {
+      file: "treesitter-textobjects"
+      requires: "nvim-treesitter/nvim-treesitter"
+      after: {"which-key.nvim", "nvim-treesitter"}
     })
-    use({
-      "nvim-treesitter/playground",
-      requires: "nvim-treesitter/nvim-treesitter",
-      after: {"nvim-treesitter"},
-      config: [[require('plugins.treesitter-playground').config()]],
+    u("nvim-treesitter/playground", {
+      file: "treesitter-playground"
+      requires: "nvim-treesitter/nvim-treesitter"
+      after: {"nvim-treesitter"}
     })
 
     -- syntax
-    use("sheerun/vim-polyglot")
-    use("dylon/vim-antlr")
-    use("pigpigyyy/Yuescript-vim")
+    u("sheerun/vim-polyglot")
+    u("dylon/vim-antlr")
+    u("pigpigyyy/Yuescript-vim")
 
     -- helper
-    use({
-      "folke/which-key.nvim",
-      config: [[require('plugins.which-key').config()]],
-    })
+    u("folke/which-key.nvim", file: "which-key")
 
     -- git
-    use({
-      "tpope/vim-fugitive",
-      cmd: {"Git", "Gpull", "Gfetch", "Gstatus", "Glog", "Gdiffsplit", "Gwrite", "Gread", "GRename", "GMove"},
-      config: [[require('plugins.fugitive').config()]],
+    u("tpope/vim-fugitive", {
+      file: "fugitive"
+      cmd: {"Git", "Gpull", "Gfetch", "Gstatus", "Glog",
+        "Gdiffsplit", "Gwrite", "Gread", "GRename", "GMove"}
     })
-    use({
-      "lewis6991/gitsigns.nvim",
-      requires: {"nvim-lua/plenary.nvim"},
-      after: {"vim-fugitive"},
-      config: [[require('plugins.gitsigns').config()]],
+    u("lewis6991/gitsigns.nvim", {
+      file: "gitsigns"
+      requires: {"nvim-lua/plenary.nvim"}
+      after: {"vim-fugitive"}
     })
 
     -- file manager
-    use({
-      "kyazdani42/nvim-tree.lua",
-      requires: {"kyazdani42/nvim-web-devicons"},
-      after: { "which-key.nvim" },
-      config: [[require('plugins.tree').config()]],
+    u("kyazdani42/nvim-tree.lua", {
+      file: "tree"
+      requires: {"kyazdani42/nvim-web-devicons"}
+      after: {"which-key.nvim"}
     })
 
     -- fuzzy finder
-    use({
-      "nvim-telescope/telescope.nvim",
-      requires: {{"nvim-lua/popup.nvim"}, {"nvim-lua/plenary.nvim"}},
-      wants: {"trouble.nvim", "telescope-fzf-native.nvim", "telescope-symbols.nvim", "telescope-ui-select.nvim"},
-      config: [[require('plugins.telescope').config()]],
+    u("nvim-telescope/telescope.nvim", {
+      file: "telescope"
+      requires: {{"nvim-lua/popup.nvim"}, {"nvim-lua/plenary.nvim"}}
+      wants: {"trouble.nvim", "telescope-fzf-native.nvim",
+        "telescope-symbols.nvim", "telescope-ui-select.nvim"}
     })
-    use({
-      "nvim-telescope/telescope-fzf-native.nvim",
-      run: "make",
-    })
-    use("nvim-telescope/telescope-ui-select.nvim")
-    use("nvim-telescope/telescope-symbols.nvim")
-    use({
-      "nvim-telescope/telescope-dap.nvim",
-      requires: {"nvim-telescope/telescope.nvim", "mfussenegger/nvim-dap"},
-      after: {"telescope.nvim", "nvim-dap"},
-      -- TODO keymaps for common commands
-      config: [[require('plugins.telescope-dap').config()]],
+    u("nvim-telescope/telescope-fzf-native.nvim", run: "make")
+    u("nvim-telescope/telescope-ui-select.nvim")
+    u("nvim-telescope/telescope-symbols.nvim")
+    u("nvim-telescope/telescope-dap.nvim", {
+      file: "telescope-dap"
+      requires: {"nvim-telescope/telescope.nvim", "mfussenegger/nvim-dap"}
+      after: {"telescope.nvim", "nvim-dap"}
     })
 
     -- snippets
-    use({
-      "L3MON4D3/LuaSnip",
-      config: [[require('plugins.luasnip').config()]],
-    })
+    u("L3MON4D3/LuaSnip", file: "luasnip")
 
     -- lsp
-    use({
-      "neovim/nvim-lspconfig",
-      config: [[require('plugins.lspconfig').config()]],
-      wants: {"telescope.nvim", "which-key.nvim", "lsp_signature.nvim", "nvim-cmp"},
+    u("neovim/nvim-lspconfig", {
+      file: "lspconfig"
+      wants: {"telescope.nvim", "which-key.nvim", "lsp_signature.nvim", "nvim-cmp"}
     })
-    use("mfussenegger/nvim-jdtls") -- java
-    use({
-      "jose-elias-alvarez/null-ls.nvim",
-      requires: {"nvim-lua/plenary.nvim"},
-      config: [[require('plugins.null-ls').config()]],
-      after: {"nvim-lspconfig"},
+    u("mfussenegger/nvim-jdtls") -- java
+    u("jose-elias-alvarez/null-ls.nvim", {
+      file: "null-ls"
+      requires: {"nvim-lua/plenary.nvim"}
+      after: {"nvim-lspconfig"}
     })
-    use({
-      "hrsh7th/nvim-cmp",
-      config: [[require('plugins.cmp').config()]],
+    u("hrsh7th/nvim-cmp", file: "cmp")
+    u("hrsh7th/cmp-buffer")
+    u("hrsh7th/cmp-path")
+    u("hrsh7th/cmp-calc")
+    u("hrsh7th/cmp-cmdline")
+    u("saadparwaiz1/cmp_luasnip")
+    u("hrsh7th/cmp-omni")
+    u("hrsh7th/cmp-nvim-lsp")
+    u("tzachar/cmp-tabnine", {
+      file: "cmp-tabnine"
+      run: "./install.sh"
+      after: {"nvim-cmp"}
     })
-    use("hrsh7th/cmp-buffer")
-    use("hrsh7th/cmp-path")
-    use("hrsh7th/cmp-calc")
-    use("hrsh7th/cmp-cmdline")
-    use("saadparwaiz1/cmp_luasnip")
-    use("hrsh7th/cmp-omni")
-    use("hrsh7th/cmp-nvim-lsp")
-    use({
-      "tzachar/cmp-tabnine",
-      run: "./install.sh",
-      after: {"nvim-cmp"},
-      config: [[require('plugins.cmp-tabnine').config()]],
-    })
-    use("ray-x/lsp_signature.nvim")
+    u("ray-x/lsp_signature.nvim")
 
     -- diagnostics
-    use({
-      "folke/trouble.nvim",
-      requires: "kyazdani42/nvim-web-devicons",
-      wants: {"which-key.nvim"},
-      config: [[require('plugins.trouble').config()]],
+    u("folke/trouble.nvim", {
+      file: "trouble"
+      requires: "kyazdani42/nvim-web-devicons"
+      wants: {"which-key.nvim"}
     })
 
     -- dap
-    use({
-      "mfussenegger/nvim-dap",
-      keys: {"<F5>", "<F8>"},
-      config: [[require('plugins.dap').config()]],
+    u("mfussenegger/nvim-dap", {
+      file: "dap"
+      keys: {"<F5>", "<F8>"}
     })
-    use({
-      "theHamsta/nvim-dap-virtual-text",
-      requires: {"mfussenegger/nvim-dap"},
-      after: {"nvim-dap"},
-      config: [[require('plugins.dap-virtual-text').config()]],
+    u("theHamsta/nvim-dap-virtual-text", {
+      file: "dap-virtual-text"
+      requires: {"mfussenegger/nvim-dap"}
+      after: {"nvim-dap"}
     })
-    use({
-      "rcarriga/nvim-dap-ui",
-      requires: {"mfussenegger/nvim-dap"},
-      after: {"nvim-dap"},
-      config: [[require('plugins.dap-ui').config()]],
+    u("rcarriga/nvim-dap-ui", {
+      file: "dap-ui"
+      requires: {"mfussenegger/nvim-dap"}
+      after: {"nvim-dap"}
     })
 
-    use("vim-test/vim-test")
+    u("vim-test/vim-test")
 
     -- tex
-    use({
-      "lervag/vimtex",
-      config: [[require('plugins.vimtex').config()]],
-    })
+    u("lervag/vimtex", file: "vimtex")
 
     use_rocks("fun")
   )
