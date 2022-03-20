@@ -16,6 +16,8 @@ attributes = {
   h: "href"
   t: "type"
   n: "name"
+  m: "method"
+  v: "value"
 }
 
 attribute_snips = fun.iter(attributes)
