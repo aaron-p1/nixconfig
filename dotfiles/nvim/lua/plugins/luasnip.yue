@@ -52,14 +52,15 @@ export config = ->
   })
 
   snippet_groups = fun.iter({
-    "all",
-    "c_like",
-    "html",
-    "php",
-    "laravel",
-    "blade",
-    "json",
-    "javascript",
+    "all"
+    "c_like"
+    "html"
+    "php"
+    "laravel"
+    "blade"
+    "json"
+    "javascript"
+    "nix"
   })
     ::map((v) -> v, require("plugins.my-luasnip.#{v}"))
     ::tomap()
@@ -87,6 +88,8 @@ export config = ->
       * "html"
       * "javascript"
       * "c_like"
+    nix:
+      * "nix"
 
   ls.snippets = fun.iter(group_assignments)
     ::map((ft, groups) ->

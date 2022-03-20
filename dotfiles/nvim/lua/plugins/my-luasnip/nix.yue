@@ -1,0 +1,27 @@
+import "plugins.my-luasnip.helper" as {
+  :s
+  :i
+  :rep
+  :fmta
+}
+
+export default {
+  s("initmod", fmta(
+    "{ config, lib, ... }:\n" ..
+    "let\n" ..
+    "\tcfg = config.within.<>;\n" ..
+    "in with lib; {\n" ..
+    "\toptions.within.<> = {\n" ..
+    "\t\tenable = mkEnableOption \"<>\";\n" ..
+    "\t};\n" ..
+    "\n" ..
+    "\tconfig = mkIf cfg.enable {\n" ..
+    "\t\t<>\n" ..
+    "\t};\n" ..
+    "}\n", {
+    rep(1),
+    i(1),
+    i(2),
+    i(0)
+  }))
+}
