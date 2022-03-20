@@ -32,10 +32,11 @@ servers =
   -- javascript
   * server: "tsserver"
 
-on_attach = (client, bufnr) ->
+export on_attach = (client, bufnr) ->
   import "helper"
   import "telescope.builtin" as tb
   import "lsp_signature" as ls
+
   vl = vim.lsp.buf
   vd = vim.lsp.diagnostic
 
@@ -102,17 +103,13 @@ on_attach = (client, bufnr) ->
   helper.registerPluginWk({prefix: "[", buffer: bufnr, map: {d: "Prev Diagnostic"}})
   helper.registerPluginWk({prefix: "]", buffer: bufnr, map: {d: "Next Diagnostic"}})
 
-export on_attach = on_attach
-
-getCapabilities = ->
+export getCapabilities = ->
   import "cmp_nvim_lsp" as cnl
 
   capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities = cnl.update_capabilities(capabilities)
 
   return capabilities
-
-export getCapabilities = getCapabilities
 
 export config = ->
   import "lspconfig" as nvim_lsp
