@@ -65,7 +65,10 @@ export default {
     }),
     {condition: firstInFile, show_condition: firstLine}
   ),
+  -- common
   s("th", t("$this->")),
+  s("ei", fmta("elseif (<>) {\n\t<>\n}", {i(1, "true"), i(0)})),
+  -- Functions
   s("ufn", t("public function ")),
   s("ofn", t("protected function ")),
   s("ifn", t("private function ")),
@@ -99,6 +102,7 @@ export default {
     }
   ),
   s("fnn", fmta("fn (<>) =>> <>", { i(1), i(0) })),
+  -- For
   s(
     "fo",
     fmta("for (<> = <>; <> <>; <><>) {\n\t<>\n}", {
