@@ -7,7 +7,7 @@ f = lsh.f
 shell = (_, _, command) ->
   file = io.popen(command, "r")
   res = {}
-  for line in file:lines() do
+  for line in file::lines() do
     table.insert(res, line)
   return res
 
