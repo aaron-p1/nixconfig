@@ -16,6 +16,8 @@
   networking.interfaces.enp4s0.useDHCP = true;
   networking.interfaces.wlp7s0.useDHCP = true;
 
+  networking.firewall.allowedTCPPorts = [ 19000 ];
+
   within.networking.v6 = {
     loopbackPrefix = "fd70:a008:85df:ffb2";
     loopbackPrefixLength = 64;
