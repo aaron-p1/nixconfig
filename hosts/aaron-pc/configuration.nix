@@ -10,8 +10,6 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  hardware.enableAllFirmware = true;
-
   # NETWORKING
   networking.useDHCP = false;
   networking.hostName = "aaron-pc";
