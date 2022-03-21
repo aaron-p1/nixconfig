@@ -51,7 +51,6 @@ export on_attach = (client, bufnr) ->
   })
 
   -- jump to
-  buf_keymap("n", "gd", ->)
   buf_keymap("n", "gdd", tb.lsp_definitions)
   buf_keymap("n", "gdv", ->
     vim.api.nvim_command("vsplit")
