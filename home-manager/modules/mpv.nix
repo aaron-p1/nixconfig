@@ -38,7 +38,7 @@ in with lib; {
       };
 
       config = {
-        volume = 100;
+        volume = 80;
         audio-display = "no";
         script-opts = toListOptionsPrefix {
           ytdl_hook = { ytdl_path = "${pkgs.yt-dlp}/bin/yt-dlp"; };
