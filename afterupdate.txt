@@ -21,6 +21,10 @@ Check:
   jdtls:
     change lspconfig for java
     https://github.com/NixOS/nixpkgs/pull/99330
+  hardware intel + nvidia collision between vaapiVdpau and vaapi in opengl:
+    reenable nixos-hardware.nixosModules.common-cpu-intel
+    https://github.com/NixOS/nixos-hardware/issues/388
+    https://github.com/NixOS/nixos-hardware/blob/master/common/cpu/intel/default.nix
 
   Dotfiles:
     nvim:

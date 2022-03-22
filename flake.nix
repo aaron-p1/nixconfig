@@ -43,7 +43,6 @@
             { nixpkgs.overlays = overlays; }
 
             nixos-hardware.nixosModules.common-pc-ssd
-            nixos-hardware.nixosModules.common-cpu-intel
 
             ./nixos/configs/main.nix
             ./hosts/aaron-pc/configuration.nix
@@ -70,7 +69,6 @@
             { nixpkgs.overlays = overlays; }
 
             nixos-hardware.nixosModules.common-pc-laptop
-            nixos-hardware.nixosModules.common-cpu-intel
             nixos-hardware.nixosModules.common-gpu-nvidia
             nixos-hardware.nixosModules.common-pc-ssd
 
