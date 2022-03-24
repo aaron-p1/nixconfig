@@ -5,7 +5,7 @@ _initdev() {
 
   (( COMP_CWORD == 1 )) || return
 
-  files="any elixir phoenix python"
+  files="any elixir phoenix python npm yarn"
 
   mapfile -t COMPREPLY < <(compgen -W "$files" -- "${COMP_WORDS[COMP_CWORD]}")
 }
