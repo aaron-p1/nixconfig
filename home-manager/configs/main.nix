@@ -71,5 +71,7 @@
     obsidian
     element-desktop
     bitwarden
+
+    local.nix-autobahn
   ];
 }
