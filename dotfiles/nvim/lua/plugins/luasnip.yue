@@ -60,6 +60,7 @@ export config = ->
     "blade"
     "json"
     "javascript"
+    "typescript"
     "nix"
   })
     ::map((v) -> v, require("plugins.my-luasnip.#{v}"))
@@ -84,12 +85,17 @@ export config = ->
     javascript:
       * "javascript"
       * "c_like"
+    typescript:
+      * "typescript"
+      * "c_like"
     vue:
       * "html"
       * "javascript"
       * "c_like"
     nix:
       * "nix"
+
+  group_assignments.typescriptreact = group_assignments.typescript
 
   ls.snippets = fun.iter(group_assignments)
     ::map((ft, groups) ->
