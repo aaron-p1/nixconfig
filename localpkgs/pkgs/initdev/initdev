@@ -41,6 +41,7 @@ def main(args):
   print("copying " + args.envtype)
   for file in filesInEnv:
     shutil.copy(envToCopy + "/" + file, ".")
+    os.chmod(file, 0o644)
 
 if __name__ == "__main__":
   args = parseArgs()
