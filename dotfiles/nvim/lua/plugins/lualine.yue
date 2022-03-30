@@ -1,0 +1,95 @@
+export config = ->
+  import "lualine" as ll
+  import "lualine.components.tabs.tab"
+  import "lualine.highlight" as llh
+  import "lualine.utils.utils" as llu
+  import "nvim-web-devicons" as devicons
+
+  ll.setup({
+    options:
+      theme: "onedark"
+      globalstatus: false
+    extensions:
+      * "fugitive"
+      * "nvim-tree"
+      * "quickfix"
+    sections:
+      lualine_a:
+        * "mode"
+      lualine_b:
+        * "filename"
+      lualine_c:
+        * "diagnostics"
+
+      lualine_x:
+        * "diff"
+        * "branch"
+      lualine_y:
+        * "encoding"
+        * "filetype"
+      lualine_z:
+        * "progress"
+        * "location"
+    inactive_sections:
+      lualine_a:
+        * "filename"
+      lualine_b:
+        * "diagnostics"
+      lualine_c: {}
+      lualine_x:
+        * "diff"
+        * "branch"
+      lualine_y:
+        * "encoding"
+        * "filetype"
+      lualine_z:
+        * "progress"
+        * "location"
+    tabline:
+      lualine_a:
+        * "tabs"
+  })
+
+  tablineModified = (tabnr) ->
+    lastwin = vim.fn.tabpagewinnr(tabnr, "$")
+    modified = false
+    modifiable = false
+
+    for i = 1, lastwin, 1
+      modified or= vim.fn.gettabwinvar(tabnr, i, "&modified") == 1
+      modifiable or= vim.fn.gettabwinvar(tabnr, i, "&modifiable") == 1
+      break if modified and modifiable
+
+    return if modified then "+" elseif not modifiable then "-" else ""
+
+  -- https://github.com/nvim-lualine/lualine.nvim/blob/master/lua/lualine/components/tabs/tab.lua#L49
+  tab.render = (self) ->
+    hl = self.highlights[(self.current and 'active' or 'inactive')]
+
+    name = nil
+    if self.ellipse
+      name = '...'
+    else
+      name = self.label(self)
+      self.len = vim.fn.strchars(name)
+
+      self.len += 2
+      name = "#{self.tabnr} #{name}"
+      self.len += 2
+      name ..= " " .. tablineModified(self.tabnr)
+      self.len += 2
+
+      name = vim.trim(name)
+
+    beforelen = vim.fn.strchars(name)
+    name = tab.apply_padding(name, self.options.padding)
+    self.len += vim.fn.strchars(name) - beforelen
+
+    name = llh.component_format_highlight(hl) .. name
+
+    if not self.first
+      sep_before = self::separator_before()
+      name = sep_before .. name
+      self.len = self.len + vim.fn.strchars(sep_before)
+
+    return name
