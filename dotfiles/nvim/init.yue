@@ -9,12 +9,14 @@ import "helper"
 import "packer" as {:use, :use_rocks, startup: psetup}
 import "packer.util" as putil
 
-u = (url, opts = {}) ->
+u = (url, opts = {}, disable = false) ->
   addOpts = opts
 
   if opts.file
     addOpts.setup = "require('plugins.#{opts.file}').setup()" if opts.setup
     addOpts.config = "require('plugins.#{opts.file}').config()" if not opts.setup or opts.config
+
+  addOpts.disable = disable
 
   addOpts.file = nil
   addOpts[1] = url
