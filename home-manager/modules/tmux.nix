@@ -18,7 +18,7 @@ in with lib; {
       terminal = "tmux-256color";
 
       extraConfig = ''
-        set-option -sa terminal-overrides ',xterm-256color:RGB'
+        set -as terminal-features ",alacritty:RGB"
 
         # Underline
         set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
