@@ -1,0 +1,62 @@
+diff --git a/src/lax_encode.cc b/src/lax_encode.cc
+index 0967a6c..0253b52 100644
+--- a/src/lax_encode.cc
++++ b/src/lax_encode.cc
+@@ -42,7 +42,7 @@ patch_linux (LIEF::ELF::Binary *bin)
+         auto f_nvenc_ci = bin->get_symbol("NvEncodeAPICreateInstance");
+ 
+         // 0x260 here is an approximation (we should never have to go past that address)
+-        auto v_func_bytes = bin->get_content_from_virtual_address(f_nvenc_ci.value(), 0x260);
++        auto v_func_bytes = bin->get_content_from_virtual_address(f_nvenc_ci->value(), 0x260);
+ 
+         uint8_t *data = v_func_bytes.data();
+         size_t length = v_func_bytes.size();
+@@ -50,7 +50,7 @@ patch_linux (LIEF::ELF::Binary *bin)
+         ZydisDecodedInstruction instr;
+         while (ZYAN_SUCCESS(ZydisDecoderDecodeBuffer(&decoder, data, length, &instr))) {
+             if (instr.mnemonic == ZYDIS_MNEMONIC_LEA) {
+-                offset = f_nvenc_ci.value() +
++                offset = f_nvenc_ci->value() +
+                          (data - v_func_bytes.data() + instr.length) +
+                          instr.operands[1].mem.disp.value;
+             }
+diff --git a/src/lax_fbc.cc b/src/lax_fbc.cc
+index 1f4ede5..39520bc 100644
+--- a/src/lax_fbc.cc
++++ b/src/lax_fbc.cc
+@@ -37,7 +37,7 @@ main (int argc,
+ 
+     {
+         auto s_rodata = bin->get_section(".rodata");
+-        offset = s_rodata.virtual_address() + s_rodata.search("This hardware does not support NvFBC");
++        offset = s_rodata->virtual_address() + s_rodata->search("This hardware does not support NvFBC");
+     }
+ 
+     std::cout << "[+] libnvidia-fbc.so\n";
+@@ -49,22 +49,22 @@ main (int argc,
+ 
+     {
+         auto s_text = bin->get_section(".text");
+-        auto v_text_content = s_text.content();
++        auto v_text_content = s_text->content();
+ 
+-        uint8_t *data = v_text_content.data();
++        uint8_t *data = (uint8_t*)v_text_content.data();
+         size_t length = v_text_content.size();
+ 
+         // find the only x-ref to the string above
+         ZydisDecodedInstruction instr;
+         while (ZYAN_SUCCESS(ZydisDecoderDecodeBuffer(&decoder, data, length, &instr))) {
+             if (instr.mnemonic == ZYDIS_MNEMONIC_LEA) {
+-                size_t temp = s_text.virtual_address() +
++                size_t temp = s_text->virtual_address() +
+                               (data - v_text_content.data() + instr.length) +
+                               instr.operands[1].mem.disp.value;
+ 
+                 if (temp == offset) {
+                     found = true;
+-                    offset = s_text.virtual_address() + data - v_text_content.data();
++                    offset = s_text->virtual_address() + data - v_text_content.data();
+                     break;
+                 }
+             }
