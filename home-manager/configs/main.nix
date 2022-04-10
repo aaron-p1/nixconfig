@@ -63,7 +63,7 @@
     tdesktop
     discord
     thunderbird
-    stable.qalculate-gtk
+    qalculate-gtk
     flameshot
     gImageReader
     gtg
