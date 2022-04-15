@@ -69,13 +69,13 @@ export config = ->
     name = nil
     if self.ellipse
       name = '...'
+      self.len = 3
     else
       name = self.label(self)
       self.len = vim.fn.strchars(name)
 
-      self.len += 2
       name = "#{self.tabnr} #{name}"
-      self.len += 2
+      self.len += 3
       name ..= " " .. tablineModified(self.tabnr)
       self.len += 2
 
