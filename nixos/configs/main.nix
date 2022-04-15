@@ -85,6 +85,8 @@
     steam.enable = true;
   };
 
+  hardware.keyboard.zsa.enable = true;
+
   programs = { dconf.enable = true; };
 
   environment = {
