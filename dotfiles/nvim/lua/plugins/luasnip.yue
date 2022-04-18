@@ -97,10 +97,12 @@ export config = ->
 
   group_assignments.typescriptreact = group_assignments.typescript
 
-  ls.snippets = fun.iter(group_assignments)
+  snippets = fun.iter(group_assignments)
     ::map((ft, groups) ->
       return ft, fun.iter(groups)
           ::map((group) -> snippet_groups[group])
           ::foldl(((acc, val) -> fun.chain(acc, val)), {})
           ::totable())
     ::tomap()
+
+  ls.add_snippets(nil, snippets, key: "all")
