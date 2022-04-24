@@ -47,7 +47,10 @@ export config = ->
         * "location"
     tabline:
       lualine_a:
-        * "tabs"
+        * {
+          "tabs"
+          max_length: vim.o.columns - 4
+        }
   })
 
   tablineModified = (tabnr) ->
@@ -72,14 +75,12 @@ export config = ->
       self.len = 3
     else
       name = self.label(self)
-      self.len = vim.fn.strchars(name)
 
       name = "#{self.tabnr} #{name}"
-      self.len += 3
       name ..= " " .. tablineModified(self.tabnr)
-      self.len += 2
 
       name = vim.trim(name)
+      self.len = vim.fn.strchars(name)
 
     beforelen = vim.fn.strchars(name)
     name = tab.apply_padding(name, self.options.padding)
@@ -90,6 +91,6 @@ export config = ->
     if not self.first
       sep_before = self::separator_before()
       name = sep_before .. name
-      self.len = self.len + vim.fn.strchars(sep_before)
+      self.len += 1
 
     return name
