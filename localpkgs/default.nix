@@ -4,7 +4,7 @@ in final: prev: {
   local = rec {
     nix-autobahn = prev.callPackage ./pkgs/nix-autobahn/default.nix { };
 
-    gotmux = prev.callPackage ./pkgs/gotmux { };
+    gotmux = prev.callPackage ./pkgs/gotmux { inherit (prev.stable) tmuxp; };
 
     initdev = prev.callPackage ./pkgs/initdev { };
 

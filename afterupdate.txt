@@ -1,32 +1,41 @@
 --------------------------------------------------------------------------------
 Check:
-  nixpkgs Breaking Changes:
-  	https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/doc/manual/release-notes/rl-2205.section.md
+  nixos:
+    nixpkgs Breaking Changes:
+      https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/doc/manual/release-notes/rl-2205.section.md
 
-  nix develop copying files:
-    use flake-compat as workaround
-    https://github.com/NixOS/nix/issues/3121
+    nvidia driver:
+      495.44
+      nvlax might fail
+      https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix
+      https://github.com/illnyang/nvlax
+      if updating:
+        update with dependencies:
+          https://github.com/zyantific/zydis
 
-  firefox:
-    plasma integration not working
-    https://github.com/nix-community/home-manager/issues/1586
-  nvidia driver:
-    495.44
-    nvlax might fail
-    https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix
-    https://github.com/illnyang/nvlax
-    if updating:
-      update with dependencies:
-        https://github.com/zyantific/zydis
-  jdtls:
-    change lspconfig for java
-    https://github.com/NixOS/nixpkgs/pull/99330
-  hardware intel + nvidia collision between vaapiVdpau and vaapi in opengl:
-    reenable nixos-hardware.nixosModules.common-cpu-intel
-    https://github.com/NixOS/nixos-hardware/issues/388
-    https://github.com/NixOS/nixos-hardware/blob/master/common/cpu/intel/default.nix
+  home-manager:
 
-  Dotfiles:
+  dotfiles:
+    jdtls:
+      change lspconfig for java
+      https://github.com/NixOS/nixpkgs/pull/99330
+
+Broken Stuff:
+  nixos:
+    nix develop copying files:
+      use flake-compat as workaround
+      https://github.com/NixOS/nix/issues/3121
+
+  home-manager:
+    firefox:
+      plasma integration not working
+      https://github.com/nix-community/home-manager/issues/1586
+
+  dotfiles:
     nvim:
       which-key not supporting desc key in keymap: https://github.com/folke/which-key.nvim/issues/242
+
+  localpkgs:
+    tmuxp click dependency too new:
+      remove override in callpackage
 --------------------------------------------------------------------------------
