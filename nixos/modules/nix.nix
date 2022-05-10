@@ -21,7 +21,8 @@ in with lib; {
         }
       '';
       # Set nixpkgs channel to follow flake
-      registry.nixpkgs.flake = inputs.unstable;
+      registry.nixpkgs.flake = inputs.nixpkgs;
+      nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
       settings = {
         trusted-users = [ "root" "@wheel" ];
