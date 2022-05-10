@@ -167,6 +167,8 @@ psetup({
     -- tex
     u("lervag/vimtex", file: "vimtex")
 
+    u("jalvesaq/Nvim-R", file: "r")
+
     use_rocks("fun")
   )
   config:

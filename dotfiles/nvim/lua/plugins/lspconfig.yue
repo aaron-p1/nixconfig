@@ -31,6 +31,8 @@ servers =
   * server: "pyright"
   -- javascript
   * server: "tsserver"
+  -- R
+  * server: "r_language_server"
 
 export on_attach = (client, bufnr) ->
   import "helper"

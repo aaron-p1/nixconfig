@@ -1,0 +1,11 @@
+export config = ->
+  import "helper"
+
+  vim.g.R_assign = 0
+  vim.g.R_rnowebchunk = 0
+
+  helper.registerPluginWk({
+    map:
+      "<LocalLeader>":
+        name: "Local Map"
+  })
