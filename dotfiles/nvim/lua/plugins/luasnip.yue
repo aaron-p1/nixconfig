@@ -4,7 +4,7 @@ export config = ->
   import "helper"
   import "luasnip.util.types" as types
 
-  vim.keymap.set("n", "<leader>rpls", ->
+  vim.keymap.set("n", "<leader>rpls", (->
     package.loaded["plugins.luasnip"] = nil
 
     fun.iter(package.loaded)
@@ -13,30 +13,28 @@ export config = ->
       ::each((k) -> package.loaded[k] = nil)
 
     import "plugins.luasnip" as pls
-    pls.config()
+    pls.config()), desc: "Luasnip"
   )
 
-  vim.keymap.set("i", "<C-K>", ls.expand)
-  vim.keymap.set({"i", "s"}, "<C-J>", -> ls.jump(-1))
-  vim.keymap.set({"i", "s"}, "<C-L>", -> ls.jump(1))
+  vim.keymap.set("i", "<C-K>", ls.expand, desc: "Expand")
+  vim.keymap.set({"i", "s"}, "<C-J>", (-> ls.jump(-1)), desc: "Prev")
+  vim.keymap.set({"i", "s"}, "<C-L>", (-> ls.jump(1)), desc: "Next")
 
-  vim.keymap.set("n", "<leader>i", ls.unlink_current)
+  vim.keymap.set("n", "<leader>i", ls.unlink_current, desc: "Unlink snip")
 
   vim.keymap.set({"i", "s"}, "<C-E>",
     -> if ls.choice_active() then "<Plug>luasnip-next-choice" else "<C-E>",
-    {expr: true, remap: true})
+    {expr: true, remap: true, desc: "Next choice"})
 
   helper.registerPluginWk({
     prefix: "<leader>"
     map:
-      i: "Unlink snip"
       r:
         name: "Reload"
         p:
           name: "Plugin"
           l:
             name: "L"
-            s: "LuaSnip"
   })
 
   ls.config.set_config({

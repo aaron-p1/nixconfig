@@ -11,7 +11,6 @@ let
 
     # ---- lspconfig
     "intelephense" = nodePackages.intelephense;
-    "jdtls" = local.jdt-language-server;
     "luals" = sumneko-lua-language-server;
     "rnix" = rnix-lsp;
     "vscodelsp" = nodePackages.vscode-langservers-extracted;

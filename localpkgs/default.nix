@@ -1,10 +1,9 @@
 { inputs, ... }:
-let inherit (inputs) jdt-ls;
-in final: prev: {
+final: prev: {
   local = rec {
     nix-autobahn = prev.callPackage ./pkgs/nix-autobahn/default.nix { };
 
-    gotmux = prev.callPackage ./pkgs/gotmux { inherit (prev.stable) tmuxp; };
+    gotmux = prev.callPackage ./pkgs/gotmux { };
 
     initdev = prev.callPackage ./pkgs/initdev { };
 
@@ -14,9 +13,6 @@ in final: prev: {
 
     # firefox native messaging hosts
     ff2mpv-native-client = prev.callPackage ./pkgs/ff2mpv-native-client { };
-
-    # java language server
-    inherit (jdt-ls.legacyPackages."${final.system}") jdt-language-server;
 
     # Nvidia
     nvlax = prev.callPackage ./pkgs/nvlax { };

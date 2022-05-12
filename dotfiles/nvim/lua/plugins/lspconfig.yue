@@ -42,7 +42,7 @@ export on_attach = (client, bufnr) ->
   vl = vim.lsp.buf
   vd = vim.lsp.diagnostic
 
-  buf_keymap = (mode, key, fn) -> vim.keymap.set(mode, key, fn, {buffer: bufnr})
+  buf_keymap = (mode, key, desc, fn) -> vim.keymap.set(mode, key, fn, {buffer: bufnr, desc: desc})
 
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -53,37 +53,37 @@ export on_attach = (client, bufnr) ->
   })
 
   -- jump to
-  buf_keymap("n", "gdd", tb.lsp_definitions)
-  buf_keymap("n", "gdv", ->
+  buf_keymap("n", "gdd", "This window", tb.lsp_definitions)
+  buf_keymap("n", "gdv", "Vertical split", ->
     vim.api.nvim_command("vsplit")
     tb.lsp_definitions())
-  buf_keymap("n", "gdx", ->
+  buf_keymap("n", "gdx", "Horizontal split", ->
     vim.api.nvim_command("split")
     tb.lsp_definitions())
-  buf_keymap("n", "gdt", ->
+  buf_keymap("n", "gdt", "Tab", ->
     vim.api.nvim_command("tab split")
     tb.lsp_definitions())
-  buf_keymap("n", "gD", vl.declaration)
-  buf_keymap("n", "gi", tb.lsp_implementations)
-  buf_keymap("n", "gr", tb.lsp_references)
-  buf_keymap("n", "<Leader>lD", vl.type_definition)
-  buf_keymap("n", "[d", vd.goto_prev)
-  buf_keymap("n", "]d", vd.goto_next)
+  buf_keymap("n", "gD", "Declaration", vl.declaration)
+  buf_keymap("n", "gi", "Implementations", tb.lsp_implementations)
+  buf_keymap("n", "gr", "References", tb.lsp_references)
+  buf_keymap("n", "<Leader>lD", "Type definition", vl.type_definition)
+  buf_keymap("n", "[d", "Prev diagnostic", vd.goto_prev)
+  buf_keymap("n", "]d", "Next diagnostic", vd.goto_next)
 
   -- show info
-  buf_keymap("n", "K", vl.hover)
-  buf_keymap("n", "<C-K>", vl.signature_help)
+  buf_keymap("n", "K", "Hover", vl.hover)
+  buf_keymap("n", "<C-K>", "Signature", vl.signature_help)
 
-  buf_keymap("n", "<Leader>lwl",
+  buf_keymap("n", "<Leader>lwl", "List",
     -> print(vim.inspect(vl.list_workspace_folders)))
-  buf_keymap("n", "<Leader>lwa", vl.add_workspace_folder)
-  buf_keymap("n", "<Leader>lwr", vl.remove_workspace_folder)
+  buf_keymap("n", "<Leader>lwa", "Add folder", vl.add_workspace_folder)
+  buf_keymap("n", "<Leader>lwr", "Remove folder", vl.remove_workspace_folder)
 
   -- edit
-  buf_keymap("n", "<Leader>lf", vl.formatting)
-  buf_keymap("n", "<Leader>lc", vl.code_action)
-  buf_keymap("v", "<Leader>lc", vl.range_code_action)
-  buf_keymap("n", "<Leader>lr", vl.rename)
+  buf_keymap("n", "<Leader>lf", "Format", vl.formatting)
+  buf_keymap("n", "<Leader>lc", "Code action", vl.code_action)
+  buf_keymap("v", "<Leader>lc", "Code action", vl.range_code_action)
+  buf_keymap("n", "<Leader>lr", "Rename", vl.rename)
 
   -- which key
   helper.registerPluginWk({
@@ -92,15 +92,8 @@ export on_attach = (client, bufnr) ->
     map:
       l:
         name: "LSP"
-        D: "Type definition"
-        f: "Format"
-        c: "Code action"
-        r: "Rename"
         w:
           name: "Workspace"
-          l: "List"
-          a: "Add folder"
-          r: "Remove folder"
   })
   helper.registerPluginWk({
     prefix: "g"
@@ -108,16 +101,7 @@ export on_attach = (client, bufnr) ->
     map:
       d:
         name: "Definitions"
-        d: "This window"
-        v: "Vertical split"
-        x: "Horizontal split"
-        t: "Tab"
-      D: "Declaration"
-      i: "Implementations"
-      r: "References"
   })
-  helper.registerPluginWk({prefix: "[", buffer: bufnr, map: {d: "Prev Diagnostic"}})
-  helper.registerPluginWk({prefix: "]", buffer: bufnr, map: {d: "Next Diagnostic"}})
 
 export getCapabilities = ->
   import "cmp_nvim_lsp" as cnl

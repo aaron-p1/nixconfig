@@ -7,22 +7,28 @@ local function on_attach(client, bufnr)
 
   require("jdtls.setup").add_commands()
 
-  local function buf_keymap(mode, key, fn)
-    vim.keymap.set(mode, key, fn, { buffer = bufnr })
+  local function buf_keymap(mode, key, fn, opts)
+    if opts == nil then
+      opts = {}
+    end
+
+    opts.buffer = bufnr
+
+    vim.keymap.set(mode, key, fn, opts)
   end
 
-  buf_keymap("n", "<Leader>llo", j.organize_imports)
-  buf_keymap("n", "<Leader>llv", j.extract_variable)
+  buf_keymap("n", "<Leader>llo", j.organize_imports, {desc = "Organize imports"})
+  buf_keymap("n", "<Leader>llv", j.extract_variable, {desc = "Extract variable"})
   buf_keymap("v", "<Leader>llv", function()
     j.extract_variable(true)
-  end)
-  buf_keymap("n", "<Leader>llc", j.extract_constant)
+  end, {desc = "Extract variable"})
+  buf_keymap("n", "<Leader>llc", j.extract_constant, {desc = "Extract constant"})
   buf_keymap("v", "<Leader>llc", function()
     j.extract_constant(true)
-  end)
+  end, {desc = "Extract constant"})
   buf_keymap("v", "<Leader>llm", function()
     j.extract_method(true)
-  end)
+  end, {desc = "Extract Method"})
 
   -- which key
   helper.registerPluginWk({
@@ -32,10 +38,6 @@ local function on_attach(client, bufnr)
       l = {
         l = {
           name = "Java",
-          o = "Organize imports",
-          v = "Extract variable",
-          c = "Extract Constant",
-          m = "Extract Method",
         },
       },
     },
@@ -46,7 +48,7 @@ end
 
 local config = {
   cmd = {
-    "@jdtls@/bin/jdt-language-server",
+    "jdt-language-server",
   },
 
   root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }),

@@ -39,7 +39,7 @@ export config = ->
 
   -- file
   vim.keymap.set("n", "<Leader>fa",
-    -> tb.find_files({
+    (-> tb.find_files({
       find_command:
         * "@fd@/bin/fd"
         * "--type=file"
@@ -47,9 +47,9 @@ export config = ->
         * "--hidden"
         * "--strip-cwd-prefix"
         * "--no-ignore"
-    }))
+    })), desc: "All files")
   vim.keymap.set("n", "<Leader>ff",
-    -> tb.find_files({
+    (-> tb.find_files({
       find_command:
         * "@fd@/bin/fd"
         * "--type=file"
@@ -57,51 +57,36 @@ export config = ->
         * "--hidden"
         * "--strip-cwd-prefix"
         * "--exclude=.git"
-    }))
-  vim.keymap.set("n", "<Leader>fr", tb.live_grep)
+    })), desc: "Files")
+  vim.keymap.set("n", "<Leader>fr", tb.live_grep, desc: "Live grep")
   -- vim
-  vim.keymap.set("n", "<Leader>fb", tb.buffers)
-  vim.keymap.set("n", "<Leader>fm", tb.marks)
-  vim.keymap.set("n", "<Leader>fcr", tb.current_buffer_fuzzy_find)
+  vim.keymap.set("n", "<Leader>fb", tb.buffers, desc: "Buffers")
+  vim.keymap.set("n", "<Leader>fm", tb.marks, desc: "Marks")
+  vim.keymap.set("n", "<Leader>fcr", tb.current_buffer_fuzzy_find, desc: "Fuzzy find")
   -- lsp
-  vim.keymap.set("n", "<Leader>flr", tb.lsp_references)
-  vim.keymap.set("n", "<Leader>fls", tb.lsp_document_symbols)
-  vim.keymap.set("n", "<Leader>fli", tb.lsp_implementations)
-  vim.keymap.set("n", "<Leader>fld", tb.lsp_definitions)
+  vim.keymap.set("n", "<Leader>flr", tb.lsp_references, desc: "References")
+  vim.keymap.set("n", "<Leader>fls", tb.lsp_document_symbols, desc: "Document symbols")
+  vim.keymap.set("n", "<Leader>fli", tb.lsp_implementations, desc: "Implementations")
+  vim.keymap.set("n", "<Leader>fld", tb.lsp_definitions, desc: "Definitions")
   -- git
-  vim.keymap.set("n", "<Leader>fgc", tb.git_commits)
-  vim.keymap.set("n", "<Leader>fgb", tb.git_bcommits)
-  vim.keymap.set("n", "<Leader>fgt", tb.git_stash)
+  vim.keymap.set("n", "<Leader>fgc", tb.git_commits, desc: "Commits")
+  vim.keymap.set("n", "<Leader>fgb", tb.git_bcommits, desc: "BCommits")
+  vim.keymap.set("n", "<Leader>fgt", tb.git_stash, desc: "Stash")
   -- treesitter
-  vim.keymap.set("n", "<Leader>ft", tb.treesitter)
+  vim.keymap.set("n", "<Leader>ft", tb.treesitter, desc: "Treesitter nodes")
 
   --symbols
-  vim.keymap.set("n", "<Leader>fs", tb.symbols)
+  vim.keymap.set("n", "<Leader>fs", tb.symbols, desc: "Symbols")
 
   helper.registerPluginWk({
     prefix: "<leader>"
     map:
       f:
         name: "Telescope"
-        a: "All Files"
-        f: "Files"
-        r: "Live grep"
-        b: "Buffers"
-        m: "Marks"
-        t: "Treesitter nodes"
-        s: "Symbols"
         c:
           name: "Current Buffer"
-          r: "Fuzzy find"
         l:
           name: "LSP"
-          r: "References"
-          s: "Document symbols"
-          i: "Implementations"
-          d: "Definitions"
         g:
           name: "Git"
-          c: "Commits"
-          b: "BCommits"
-          t: "Stash"
   })

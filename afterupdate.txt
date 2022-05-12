@@ -16,9 +16,6 @@ Check:
   home-manager:
 
   dotfiles:
-    jdtls:
-      change lspconfig for java
-      https://github.com/NixOS/nixpkgs/pull/99330
 
 Broken Stuff:
   nixos:
@@ -32,10 +29,6 @@ Broken Stuff:
       https://github.com/nix-community/home-manager/issues/1586
 
   dotfiles:
-    nvim:
-      which-key not supporting desc key in keymap: https://github.com/folke/which-key.nvim/issues/242
 
   localpkgs:
-    tmuxp click dependency too new:
-      remove override in callpackage
 --------------------------------------------------------------------------------

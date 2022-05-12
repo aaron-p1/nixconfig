@@ -17,10 +17,6 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "unstable";
     };
-
-    # LOCAL PACKAGES
-    jdt-ls.url =
-      "github:nixos/nixpkgs?rev=aa4be0ccb4e62231fddcfa1d95c5b7642c6b1423";
   };
 
   outputs = { self, stable, unstable, nixpkgs, flake-utils, nixos-hardware, nur

@@ -7,8 +7,8 @@ export config = ->
     hijack_netrw: false
   })
 
-  vim.keymap.set("n", "<Leader>bb", nt.toggle)
-  vim.keymap.set("n", "<Leader>bf", -> nt.find_file(true))
+  vim.keymap.set("n", "<Leader>bb", nt.toggle, desc: "Toggle")
+  vim.keymap.set("n", "<Leader>bf", (-> nt.find_file(true)), desc: "Find file")
 
   helper.registerPluginWk({
     prefix: "<leader>"
