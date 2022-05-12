@@ -19,6 +19,8 @@ in with lib; {
         extra-platforms = ${optionalString cfg.enablei686 "i686-linux "}${
           concatStringsSep " " cfg.emulatedSystems
         }
+        keep-outputs = true
+        keep-derivations = true
       '';
       # Set nixpkgs channel to follow flake
       registry.nixpkgs.flake = inputs.nixpkgs;
