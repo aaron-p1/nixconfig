@@ -60,7 +60,10 @@
     graphics = {
       xserver.enable = true;
       sddm.enable = true;
-      plasma.enable = true;
+      plasma = {
+        enable = true;
+        kdeConnect = true;
+      };
     };
 
     # ../modules/bluetooth.nix
