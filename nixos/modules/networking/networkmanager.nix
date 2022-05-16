@@ -24,6 +24,9 @@ in with lib; {
   };
 
   config = mkIf cfg.enable {
+    # enabled by default
+    networking.dhcpcd.enable = cfg.dhcp == "dhcpcd";
+
     networking.networkmanager = {
       enable = true;
       inherit (cfg) dns dhcp;

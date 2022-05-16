@@ -39,9 +39,6 @@ in with lib; {
   };
 
   config = mkIf cfg.enable {
-    # enabled by default
-    networking.dhcpcd.enable = false;
-
     services.dnsmasq = {
       enable = true;
       inherit (cfg) servers;
