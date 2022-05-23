@@ -57,7 +57,7 @@ in with lib; {
         if [ -z "$1" ]
         then
           echo "Usage: $0 {nixpkg}" 1>&2
-          exit
+          exit 1
         fi
 
         pkg="$1"
