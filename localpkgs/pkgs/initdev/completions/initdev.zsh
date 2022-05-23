@@ -6,7 +6,7 @@ _initdev() {
   (( CURRENT == 2 )) || return ret
 
   local -a args
-  args=(any elixir phoenix python npm yarn)
+  args=(any dart elixir npm phoenix python yarn)
 
   _values "Installed dev env Configs" $args[@] && ret=0
   return ret
