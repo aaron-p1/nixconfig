@@ -2,7 +2,7 @@
 Check:
   nixos:
     nixpkgs Breaking Changes:
-      https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/doc/manual/release-notes/rl-2205.section.md
+      https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/doc/manual/release-notes/rl-2211.section.md
 
     nvidia driver:
       495.44
@@ -20,7 +20,7 @@ Check:
 Broken Stuff:
   nixos:
     nix develop copying files:
-      use flake-compat as workaround
+      workaround: filter source
       https://github.com/NixOS/nix/issues/3121
 
   home-manager:
