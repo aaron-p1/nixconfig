@@ -21,8 +21,8 @@ export setOptions = (optapi, opts) ->
     else
       optapi[key] = val
 
-export startsWith = (str, start) -> str.sub(1, #start) == start
-export endsWith = (str, ending) -> ending == "" or str.sub(-#ending) == ending
+export startsWith = (str, start) -> str::sub(1, #start) == start
+export endsWith = (str, ending) -> ending == "" or str::sub(-#ending) == ending
 
 export chain = (...) ->
   fnchain = {...}

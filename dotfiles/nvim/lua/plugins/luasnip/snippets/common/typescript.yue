@@ -6,7 +6,7 @@ import "helper" as {
   :chain
 }
 
-import "plugins.my-luasnip.helper" as {
+import "plugins.luasnip.snippets.utils" as {
   :s
   :i
   :fmta

@@ -1,10 +1,10 @@
 import "fun"
-import "plugins.my-luasnip.helper" as lsh
-
-s = lsh.s
-i = lsh.i
-l = lsh.l
-fmt = lsh.fmt
+import "plugins.luasnip.snippets.utils" as {
+  :s
+  :i
+  :l
+  :fmt
+}
 
 snip_shorts = {
   repeat_tag: (index) -> l(l._1::match("^[^ ]*"), index)

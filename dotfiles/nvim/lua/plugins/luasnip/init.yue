@@ -3,13 +3,14 @@ export config = ->
   import "fun"
   import "helper"
   import "luasnip.util.types" as types
+  import "plugins.luasnip.snippets" as sn
 
   vim.keymap.set("n", "<leader>rpls", (->
     package.loaded["plugins.luasnip"] = nil
 
     fun.iter(package.loaded)
       ::map((k, _) -> k)
-      ::filter((k) -> k:find("^plugins[.]my-luasnip[.]") ~= nil)
+      ::filter((k) -> k::find("^plugins[.]luasnip[.]") ~= nil)
       ::each((k) -> package.loaded[k] = nil)
 
     import "plugins.luasnip" as pls
@@ -49,58 +50,4 @@ export config = ->
           virt_text: {{"●", "GruvboxBlue"}}
   })
 
-  snippet_groups = fun.iter({
-    "all"
-    "c_like"
-    "html"
-    "php"
-    "laravel"
-    "blade"
-    "json"
-    "javascript"
-    "typescript"
-    "nix"
-  })
-    ::map((v) -> v, require("plugins.my-luasnip.#{v}"))
-    ::tomap()
-
-  group_assignments =
-    all:
-      * "all"
-    json:
-      * "json"
-    php:
-      * "php"
-      * "c_like"
-      * "laravel"
-    blade:
-      * "blade"
-      * "html"
-    html:
-      * "html"
-      * "javascript"
-      * "c_like"
-    javascript:
-      * "javascript"
-      * "c_like"
-    typescript:
-      * "typescript"
-      * "c_like"
-    vue:
-      * "html"
-      * "javascript"
-      * "c_like"
-    nix:
-      * "nix"
-
-  group_assignments.typescriptreact = group_assignments.typescript
-
-  snippets = fun.iter(group_assignments)
-    ::map((ft, groups) ->
-      return ft, fun.iter(groups)
-          ::map((group) -> snippet_groups[group])
-          ::foldl(((acc, val) -> fun.chain(acc, val)), {})
-          ::totable())
-    ::tomap()
-
-  ls.add_snippets(nil, snippets, key: "all")
+  sn.load_snippets()

@@ -1,8 +1,8 @@
-import "plugins.my-luasnip.helper" as lsh
-
-s = lsh.s
-i = lsh.i
-fmta = lsh.fmta
+import "plugins.luasnip.snippets.utils" as {
+  :s
+  :i
+  :fmta
+}
 
 export default {
   s("p", fmta("{{ <> }}", i(0))),

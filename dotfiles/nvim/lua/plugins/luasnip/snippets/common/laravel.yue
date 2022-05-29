@@ -1,11 +1,11 @@
-import "plugins.my-luasnip.helper" as lsh
-
-s = lsh.s
-sn = lsh.sn
-t = lsh.t
-i = lsh.i
-c = lsh.c
-fmta = lsh.fmta
+import "plugins.luasnip.snippets.utils" as {
+  :s
+  :sn
+  :t
+  :i
+  :c
+  :fmta
+}
 
 export default {
   s(

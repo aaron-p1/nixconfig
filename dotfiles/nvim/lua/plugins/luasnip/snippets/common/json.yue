@@ -1,12 +1,12 @@
-import "plugins.my-luasnip.helper" as lsh
+import "plugins.luasnip.snippets.utils" as {
+  :s
+  :i
+  :t
+  :fmta
 
-s = lsh.s
-i = lsh.i
-t = lsh.t
-fmta = lsh.fmta
-
-mc = lsh.mc
-ac = lsh.ac
+  :mc
+  :ac
+}
 
 typeTable = {
   t: t("true")
