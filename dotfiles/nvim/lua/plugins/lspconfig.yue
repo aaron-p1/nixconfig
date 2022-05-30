@@ -80,7 +80,7 @@ export on_attach = (client, bufnr) ->
   buf_keymap("n", "<Leader>lwr", "Remove folder", vl.remove_workspace_folder)
 
   -- edit
-  buf_keymap("n", "<Leader>lf", "Format", vl.formatting)
+  buf_keymap("n", "<Leader>lf", "Format", -> vl.format(async: true))
   buf_keymap("n", "<Leader>lc", "Code action", vl.code_action)
   buf_keymap("v", "<Leader>lc", "Code action", vl.range_code_action)
   buf_keymap("n", "<Leader>lr", "Rename", vl.rename)
