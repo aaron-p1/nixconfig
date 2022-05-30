@@ -4,31 +4,20 @@ import "plugins.luasnip.snippets.utils" as {
   :rep
   :fmta
 
-  :firstInFile
-  :firstLine
+  :readTemplateFile
+  :oFileStart
 }
 
 export default {
   s(
     "initmod",
     fmta(
-      "{ config, lib, ... }:\n" ..
-      "let\n" ..
-      "\tcfg = config.within.<>;\n" ..
-      "in with lib; {\n" ..
-      "\toptions.within.<> = {\n" ..
-      "\t\tenable = mkEnableOption \"<>\";\n" ..
-      "\t};\n" ..
-      "\n" ..
-      "\tconfig = mkIf cfg.enable {\n" ..
-      "\t\t<>\n" ..
-      "\t};\n" ..
-      "}\n", {
+      readTemplateFile("nix-mod.nix"), {
       rep(1),
       i(1),
       i(2),
       i(0)
     }),
-    {condition: firstInFile, show_condition: firstLine}
+    oFileStart
   )
 }

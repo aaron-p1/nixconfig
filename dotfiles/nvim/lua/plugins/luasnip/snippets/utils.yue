@@ -59,3 +59,17 @@ export ac = (pos, group, types) ->
 export firstLine = -> vim.fn.line(".") == 1
 export firstInFile = (line_to_cursor, matched_trigger) ->
   firstLine() and line_to_cursor == matched_trigger
+
+
+-- Snippet construction Helper
+-- Snip
+export readTemplateFile = (name) ->
+  path = vim.fn.stdpath("config") ..
+    "/lua/plugins/luasnip/snippets/file-templates/files"
+
+  filename = "#{path}/#{name}"
+
+  return vim.fn.join(vim.fn.readfile(filename), "\n")
+
+-- Opts
+export oFileStart = {condition: firstInFile, show_condition: firstLine}

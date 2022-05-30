@@ -1,0 +1,7 @@
+# https://editorconfig.org/
+
+[*]
+indent_style = tab
+
+[**.yml]
+indent_style = space

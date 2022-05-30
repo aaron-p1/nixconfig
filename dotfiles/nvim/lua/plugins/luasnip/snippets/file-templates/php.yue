@@ -12,8 +12,8 @@ import "plugins.luasnip.snippets.utils" as {
   :d
   :fmta
 
-  :firstLine
-  :firstInFile
+  :readTemplateFile
+  :oFileStart
 }
 
 getNamespaceFromPath = ->
@@ -52,13 +52,13 @@ getClassName = -> sn(nil, i(1, vim.fn.expand("%:t:r")))
 
 export default {
   s(
-    "init",
-    fmta("<<?php\n<>\nclass <><>\n{\n\t<>\n}", {
+    "initclass",
+    fmta(readTemplateFile("php-class.php"), {
       d(1, getNamespace, {}),
       d(2, getClassName, {}),
       i(3),
       i(0),
     }),
-    {condition: firstInFile, show_condition: firstLine}
+    oFileStart
   ),
 }
