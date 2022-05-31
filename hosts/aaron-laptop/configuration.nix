@@ -5,7 +5,7 @@
     grub = true;
     efiMountPoint = "/boot/efi";
     supportedFilesystems = [ "btrfs" ];
-    kernelPackages = pkgs.linuxPackages_zen;
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   networking.useDHCP = false;
