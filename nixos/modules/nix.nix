@@ -63,7 +63,7 @@ in with lib; {
         pkg="$1"
         shift
 
-        NIXPKGS_ALLOW_UNFREE=1 exec nix --quiet run --impure "nixpkgs#$pkg" $@
+        NIXPKGS_ALLOW_UNFREE=1 exec nix --quiet run --impure "nixpkgs#$pkg" -- $@
       '')
     ];
   };
