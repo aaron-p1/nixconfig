@@ -22,6 +22,7 @@
       localDomains = {
         exo = "127.32.0.2";
         sso = "127.32.0.3";
+        plat = "127.32.0.4";
       };
       networkDomains = { public-server = "192.168.178.8"; };
 
