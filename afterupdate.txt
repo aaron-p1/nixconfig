@@ -29,6 +29,10 @@ Broken Stuff:
       https://github.com/nix-community/home-manager/issues/1586
 
   dotfiles:
+    nvim:
+      tree-sitter dart parser error:
+        revert commit hash to original in nvim-treesitter/lockfile.json before updating
+        https://github.com/nvim-treesitter/nvim-treesitter/issues/2972
 
   localpkgs:
 --------------------------------------------------------------------------------
