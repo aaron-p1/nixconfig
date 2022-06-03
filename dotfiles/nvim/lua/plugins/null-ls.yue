@@ -2,12 +2,19 @@ export config = ->
   import "null-ls" as nls
   import "plugins.lspconfig" as lsplugin
 
-  diagnostics = nls.builtins.diagnostics
-  formatting = nls.builtins.formatting
-  code_actions = nls.builtins.code_actions
+  {
+    :diagnostics
+    :formatting
+    :code_actions
+    :hover
+  } = nls.builtins
 
   nls.setup({
     sources:
+      -- text / markdown
+      * hover.dictionary
+      -- web languages
+      * formatting.prettier
       -- shell
       * diagnostics.shellcheck.with({command: "@shellcheck@/bin/shellcheck"})
       * formatting.shellharden.with({command: "@shellharden@/bin/shellharden"})
