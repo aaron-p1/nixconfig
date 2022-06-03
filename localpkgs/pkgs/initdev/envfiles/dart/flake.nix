@@ -17,6 +17,10 @@
           # packages
           dart
         ];
+
+        shellHook = ''
+          export PATH="$HOME/.pub-cache/bin:$PATH"
+        '';
       };
   };
 }

@@ -35,9 +35,6 @@ in with lib; {
       initExtra = ''
         setopt HIST_IGNORE_ALL_DUPS
       '';
-      envExtra = ''
-        PATH=$PATH:"$HOME/.pub-cache/bin"
-      '';
       history = {
         ignoreDups = true;
         share = false;
