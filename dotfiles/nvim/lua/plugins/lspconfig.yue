@@ -67,8 +67,8 @@ export on_attach = (client, bufnr) ->
   buf_keymap("n", "gi", "Implementations", tb.lsp_implementations)
   buf_keymap("n", "gr", "References", tb.lsp_references)
   buf_keymap("n", "<Leader>lD", "Type definition", vl.type_definition)
-  buf_keymap("n", "[d", "Prev diagnostic", vd.goto_prev)
-  buf_keymap("n", "]d", "Next diagnostic", vd.goto_next)
+  buf_keymap("n", "[d", "Prev diagnostic", vim.diagnostic.goto_prev)
+  buf_keymap("n", "]d", "Next diagnostic", vim.diagnostic.goto_next)
 
   -- show info
   buf_keymap("n", "K", "Hover", vl.hover)
