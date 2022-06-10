@@ -10,7 +10,7 @@ in with lib; {
       nix-direnv = { enable = true; };
       config = {
         load_dotenv = false;
-        warn_timeout = "0";
+        warn_timeout = "1h";
       };
     };
   };
