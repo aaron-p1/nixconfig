@@ -32,7 +32,8 @@ Broken Stuff:
     nvim:
       tree-sitter dart parser error:
         revert commit hash to original in nvim-treesitter/lockfile.json before updating
-        https://github.com/nvim-treesitter/nvim-treesitter/issues/2972
+        https://github.com/UserNobody14/tree-sitter-dart
+        https://github.com/nvim-treesitter/nvim-treesitter/blame/master/lockfile.json#L48
 
   localpkgs:
 --------------------------------------------------------------------------------
