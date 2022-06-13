@@ -50,8 +50,10 @@ in with lib; {
         blocking = {
           blackLists.default = cfg.blockLists;
           clientGroupsBlock.default = [ "default" ];
-          downloadAttempts = 100;
+          downloadAttempts = -1;
+          downloadCooldown = "4s";
         };
+        logLevel = "warn";
       };
     };
   };
