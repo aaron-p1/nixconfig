@@ -37,27 +37,32 @@
   hardware.nvidia.package = pkgs.local.nvidia_x11 config.boot.kernelPackages;
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  within.users.aaron = {
-    u2fKeys = [
-      # 1
-      "hMb1Haep8BdpUGM/wGAnHuhKbZE+jQ9T6LjQZiChafEHAERJCDgDZhfCpA9/zw7fJSai0HRtvqFxcNZpHkroiA==,rzWcdmxnQy2bPhxifpLLK2K4cL+F3crEc2BuvlCPM51Dsq5N9VawvFxo9HPv1bHRqvYtq+/HlNM47ZtwlijArw==,es256,+presence"
-      # 2
-      "nuf7Ig6OU1qW3Q7srl4JfD5j3yED6ai0TeMV7N9L3maVMVcx8gbmw/nJgefpTiDWOp27I9IkvMB7S8cWL2zr3Q==,wAoubro0eh+hziuSt2Me8IwyWgpCgZq4dv95So+gRDGSIhDJB5VGYT5XljNUJRRD7jXxVMNMh65kAXeIuO7Mqw==,es256,+presence"
-    ];
+  within = {
+    users.aaron = {
+      u2fKeys = [
+        # 1
+        "hMb1Haep8BdpUGM/wGAnHuhKbZE+jQ9T6LjQZiChafEHAERJCDgDZhfCpA9/zw7fJSai0HRtvqFxcNZpHkroiA==,rzWcdmxnQy2bPhxifpLLK2K4cL+F3crEc2BuvlCPM51Dsq5N9VawvFxo9HPv1bHRqvYtq+/HlNM47ZtwlijArw==,es256,+presence"
+        # 2
+        "nuf7Ig6OU1qW3Q7srl4JfD5j3yED6ai0TeMV7N9L3maVMVcx8gbmw/nJgefpTiDWOp27I9IkvMB7S8cWL2zr3Q==,wAoubro0eh+hziuSt2Me8IwyWgpCgZq4dv95So+gRDGSIhDJB5VGYT5XljNUJRRD7jXxVMNMh65kAXeIuO7Mqw==,es256,+presence"
+      ];
 
-    resticBackup = {
-      enable = true;
-      paths = [ "/home/aaron/Documents" ];
+      resticBackup = {
+        enable = true;
+        paths = [ "/home/aaron/Documents" ];
 
-      repository = "/mnt/data/backup/restic";
+        repository = "/mnt/data/backup/restic";
+      };
+    };
+
+    syncthing = {
+      devices = [ "aaron-laptop" ];
+      folders.thl.devices = [ "aaron-laptop" ];
     };
   };
 
   virtualisation.libvirtd = {
     enable = true;
-    qemu = {
-      package = pkgs.qemu_kvm;
-    };
+    qemu = { package = pkgs.qemu_kvm; };
   };
 
   # This value determines the NixOS release from which the default
