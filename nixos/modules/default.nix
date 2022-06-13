@@ -14,6 +14,7 @@ _: {
     ./samba.nix
     ./steam.nix
     ./swap.nix
+    ./syncthing.nix
     ./vmclient.nix
 
     ./users.nix

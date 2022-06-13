@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   imports = [ ../modules ];
 
   within = {
@@ -23,6 +23,8 @@
         exo = "127.32.0.2";
         sso = "127.32.0.3";
         plat = "127.32.0.4";
+
+        syncthing = "127.32.0.101";
       };
       networkDomains = { public-server = "192.168.178.8"; };
 
@@ -84,6 +86,24 @@
 
     # ../modules/samba.nix
     samba.enable = true;
+
+    # ../modules/syncthing.nix
+    syncthing = {
+      enable = true;
+      user = "aaron";
+      group = "users";
+      guiAddress = "${config.within.networking.localDomains.syncthing}:8000";
+      deviceIDFile = ../../secrets/inline-secrets/syncthing-device-ids.json;
+
+      folders.thl = {
+        path = "/home/aaron/Documents/thl";
+        ignorePerms = false;
+        versioning = {
+          type = "simple";
+          params.keep = "3";
+        };
+      };
+    };
 
     # ../modules/steam.nix
     steam.enable = true;
