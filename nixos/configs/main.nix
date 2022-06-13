@@ -134,4 +134,6 @@
   fonts.fonts = with pkgs; [ corefonts ];
 
   boot.tmpOnTmpfs = true;
+
+  services.journald.extraConfig = "SystemMaxUse=1G";
 }
