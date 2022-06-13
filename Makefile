@@ -15,7 +15,7 @@ new: path := ${newSystemPath}
 existing new:
 	[ -w ${path} ]
 	mkdir -p ${path}
-	rsync --verbose --delete-after --recursive --cvs-exclude --filter=':- .gitignore' --checksum . ${path}
+	rsync --verbose --delete-after --recursive --cvs-exclude --filter=':- .gitignore' --filter=':- .rsyncignore' --checksum . ${path}
 
 ${rebuildCmds}: existing
 	nixos-rebuild ${nixargs} $@

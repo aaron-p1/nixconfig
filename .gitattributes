@@ -1,0 +1,2 @@
+secrets/inline-secrets/** filter=git-crypt diff=git-crypt
+hosts/*/secrets/inline-secrets/** filter=git-crypt diff=git-crypt

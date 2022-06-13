@@ -96,6 +96,7 @@
           packages = with pkgs; [
             gnumake
             rsync
+            git-crypt
 
             # lsp
             sumneko-lua-language-server
