@@ -1,4 +1,4 @@
-_: {
+{ lib, ... }: {
   imports = [
     ./alacritty.nix
     ./chromium.nix
@@ -18,4 +18,12 @@ _: {
     ./zathura.nix
     ./zsh.nix
   ];
+
+  options.within.enableEncryptedFileOptions = with lib;
+    mkOption {
+      type = types.bool;
+      default = true;
+      description =
+        "disable all options that require decryption of inline-secrets";
+    };
 }

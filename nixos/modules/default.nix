@@ -1,4 +1,4 @@
-_: {
+{ lib, ... }: {
   imports = [
     ./graphics
     ./networking
@@ -19,4 +19,12 @@ _: {
 
     ./users.nix
   ];
+
+  options.within.enableEncryptedFileOptions = with lib;
+    mkOption {
+      type = types.bool;
+      default = true;
+      description =
+        "disable all options that require decryption of inline-secrets";
+    };
 }

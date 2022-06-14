@@ -4,7 +4,10 @@ let
 
   userHome = config.users.users."${cfg.user}".home;
 
-  deviceIDFileContent = builtins.readFile cfg.deviceIDFile;
+  deviceIDFileContent = if config.within.enableEncryptedFileOptions then
+    builtins.readFile cfg.deviceIDFile
+  else
+    "{}";
   deviceIDs = builtins.fromJSON deviceIDFileContent;
   chosenDeviceIDs = lib.getAttrs cfg.devices deviceIDs;
 
@@ -95,7 +98,10 @@ in with lib; {
       }
       {
         assertion = hasPrefix "{" deviceIDFileContent;
-        message = "Device file does not start with {"; # }}
+        message = ''
+          Device file does not start with {. If it's encrypted you could
+          set within.enableEncryptedFileOptions to false in nixos config.
+        ''; # }}
       }
     ];
 

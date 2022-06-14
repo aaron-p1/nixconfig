@@ -2,8 +2,10 @@
 let
   cfg = config.within.ssh;
 
-  additionalHostsContent =
-    builtins.readFile ../../secrets/inline-secrets/additional-ssh-hosts.json;
+  additionalHostsContent = if config.within.enableEncryptedFileOptions then
+    builtins.readFile ../../secrets/inline-secrets/additional-ssh-hosts.json
+  else
+    "{}";
   additionalHosts = builtins.fromJSON additionalHostsContent;
 
 in with lib; {
@@ -12,7 +14,10 @@ in with lib; {
   config = mkIf cfg.enable {
     assertions = [{
       assertion = hasPrefix "{" additionalHostsContent;
-      message = "Host file does not start with {"; # }}
+      message = ''
+        Host file does not start with {. If it's encrypted you could
+        set within.enableEncryptedFileOptions to false in home-manager config.
+      ''; # }}
     }];
 
     programs.ssh = {
