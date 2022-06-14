@@ -48,10 +48,7 @@
       "11iNbdbRK5qw71GUhRYJ+/EQW1T/GU/X3NMjpcMHuXqkybKZ5Qa74dmlR8iXIb/6+SXwTno1oVAAJHm5IJDtvA==,AYID8itmW0xAcd+9ZCl4pHVuTQwB7Npk4XhmqVP5KFMuDfaDOG4aYi1E+p62wPdpxc6xPTPx6ZwU23jGPtutPA==,es256,+presence"
     ];
 
-    syncthing = {
-      devices = [ "aaron-pc" ];
-      folders.thl.devices = [ "aaron-pc" ];
-    };
+    syncthing.folders.thl.devices = [ "aaron-pc" ];
   };
 
   programs.chromium.enable = true;

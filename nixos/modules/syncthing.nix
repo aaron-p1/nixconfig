@@ -9,7 +9,10 @@ let
   else
     "{}";
   deviceIDs = builtins.fromJSON deviceIDFileContent;
-  chosenDeviceIDs = lib.getAttrs cfg.devices deviceIDs;
+
+  folderDevices =
+    lib.flatten (lib.mapAttrsToList (_: val: val.devices) cfg.folders);
+  chosenDeviceIDs = lib.getAttrs folderDevices deviceIDs;
 
 in with lib; {
   options.within.syncthing = {
@@ -30,11 +33,6 @@ in with lib; {
       description = "address to run syncthing gui on";
     };
 
-    devices = mkOption {
-      type = with types; listOf str;
-      default = [ ];
-      description = "hostnames of devices to sync with";
-    };
     deviceIDFile = mkOption {
       type = with types; nullOr path;
       default = null;
@@ -45,7 +43,7 @@ in with lib; {
     };
 
     folders = mkOption {
-      default = [ ];
+      default = { };
       description = "folders to sync with";
       type = types.attrsOf (types.submodule ({ name, ... }: {
         options = {
@@ -79,7 +77,7 @@ in with lib; {
             type = with types; listOf str;
             default = [ ];
             description =
-              "devices to sync folder with. Must be contained in devices";
+              "devices to sync folder with. Devices must be defined in deviceIDFile";
           };
         };
       }));
