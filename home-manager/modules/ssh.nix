@@ -25,19 +25,14 @@ in with lib; {
       controlMaster = "auto";
       controlPath = "~/.ssh/sockets/%r@%n:%p";
       matchBlocks = recursiveUpdate {
+        pc = {
+          hostname = "aaron-pc";
+          user = "aaron";
+          port = 25566;
+        };
         laptop = {
           hostname = "aaron-laptop";
           user = "aaron";
-          port = 25566;
-        };
-        public-server = {
-          hostname = "public-server";
-          user = "aaron";
-          port = 25566;
-        };
-        public-server-root = {
-          hostname = "public-server";
-          user = "root";
           port = 25566;
         };
       } additionalHosts;
