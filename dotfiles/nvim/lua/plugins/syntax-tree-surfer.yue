@@ -1,0 +1,59 @@
+export config = ->
+  import "helper"
+
+  import "syntax-tree-surfer" as sts
+
+  sts.setup({
+  })
+
+  -- jump
+  vim.keymap.set("n", "gsf", (->
+    sts.targeted_jump({"function", "function_definition", "function_signature"})), desc: "Function")
+  vim.keymap.set("n", "gsi", (->
+    sts.targeted_jump({"if_statement", "elseif_statement"})), desc: "If")
+  vim.keymap.set("n", "gse", (->
+    sts.targeted_jump({"else_clause", "else_statement", "elseif_statement"})), desc: "Else")
+  vim.keymap.set("n", "gso", (->
+    sts.targeted_jump({"for_statement"})), desc: "For")
+  vim.keymap.set("n", "gsw", (->
+    sts.targeted_jump({"while_statement"})), desc: "While")
+  vim.keymap.set("n", "gss", (->
+    sts.targeted_jump({"switch_statement"})), desc: "Switch")
+  vim.keymap.set("n", "gsv", (->
+    sts.targeted_jump({"variable_declaration", "local_variable_declaration"})), desc: "Variable")
+
+  -- swap
+  -- master node
+  vim.keymap.set("n", "<leader>ssM", ->
+    vim.opt.opfunc = "v:lua.STSSwapUpNormal_Dot"
+    return "g@l",
+    {silent: true, expr: true, desc: "Next master"})
+  vim.keymap.set("n", "<leader>ssm", ->
+    vim.opt.opfunc = "v:lua.STSSwapDownNormal_Dot"
+    return "g@l",
+    {silent: true, expr: true, desc: "Prev master"})
+
+  -- current node
+  vim.keymap.set("n", "<leader>sss", ->
+    vim.opt.opfunc = "v:lua.STSSwapCurrentNodeNextNormal_Dot"
+    return "g@l",
+    {silent: true, expr: true, desc: "Next"})
+  vim.keymap.set("n", "<leader>ssS", ->
+    vim.opt.opfunc = "v:lua.STSSwapCurrentNodePrevNormal_Dot"
+    return "g@l",
+    {silent: true, expr: true, desc: "Prev"})
+
+  helper.registerPluginWk({
+    map:
+      g:
+        s:
+          name: "Jump syntax tree"
+  })
+  helper.registerPluginWk({
+    prefix: "<leader>"
+    map:
+      s:
+        name: "Swap",
+        s:
+          name: "Syntax tree surfer"
+  })
