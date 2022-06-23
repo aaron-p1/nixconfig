@@ -10,6 +10,12 @@ in with lib; {
       description = "IPv4 to run blocky on";
     };
 
+    httpPort = mkOption {
+      type = with types; nullOr str;
+      default = null;
+      description = "http address to listen on";
+    };
+
     bootstrapDns = mkOption {
       type = types.str;
       default = "9.9.9.9";
@@ -35,21 +41,30 @@ in with lib; {
       default = { };
       description = "domains to ip mappings";
     };
+
+    prometheus = mkOption {
+      type = types.bool;
+      default = false;
+      description = "enable prometheus monitoring. Needs httpPort";
+    };
   };
 
   config = mkIf cfg.enable {
+    assertions = [{
+      assertion = cfg.prometheus -> cfg.httpPort != null;
+      message = "httpPort needed if prometheus is enabled";
+    }];
+
     services.blocky = {
       enable = true;
 
       # https://0xerr0r.github.io/blocky/configuration
       settings = {
-        inherit (cfg) bootstrapDns;
+        inherit (cfg) bootstrapDns httpPort;
         port = "${cfg.ip}:53";
         upstream.default = cfg.nameservers;
         customDNS.mapping = cfg.mapDomains;
-        conditional.mapping = {
-          "." = "192.168.178.1";
-        };
+        conditional.mapping = { "." = "192.168.178.1"; };
         blocking = {
           blackLists.default = cfg.blockLists;
           clientGroupsBlock.default = [ "default" ];
@@ -57,6 +72,7 @@ in with lib; {
           downloadCooldown = "4s";
         };
         logLevel = "warn";
+        prometheus.enable = cfg.prometheus;
       };
     };
   };

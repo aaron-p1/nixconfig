@@ -1,12 +1,14 @@
 { lib, ... }: {
   imports = [
     ./graphics
+    ./monitoring
     ./networking
 
     ./bluetooth.nix
     ./boot.nix
     ./containers.nix
     ./locale.nix
+    ./mysql.nix
     ./nix.nix
     ./ssh.nix
     ./pam.nix
