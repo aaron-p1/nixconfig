@@ -74,4 +74,6 @@
 
     local.nix-autobahn
   ];
+
+  home.stateVersion = "18.09";
 }
