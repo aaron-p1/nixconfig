@@ -68,7 +68,7 @@ in with lib; {
         blocking = {
           blackLists.default = cfg.blockLists;
           clientGroupsBlock.default = [ "default" ];
-          downloadAttempts = -1;
+          downloadAttempts = 0;
           downloadCooldown = "4s";
         };
         logLevel = "warn";
