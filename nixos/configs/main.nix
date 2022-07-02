@@ -138,5 +138,8 @@
   boot.tmpOnTmpfs = true;
   boot.tmpOnTmpfsSize = "100%";
 
-  services.journald.extraConfig = "SystemMaxUse=1G";
+  services = {
+    journald.extraConfig = "SystemMaxUse=1G";
+    smartd.enable = true;
+  };
 }
