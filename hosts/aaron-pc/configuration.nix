@@ -34,7 +34,8 @@
     file = 20;
   };
 
-  hardware.nvidia.package = pkgs.local.nvidia_x11 config.boot.kernelPackages;
+  hardware.nvidia.package =
+    pkgs.local.nvidia-patched config.boot.kernelPackages.nvidiaPackages.stable;
   services.xserver.videoDrivers = [ "nvidia" ];
 
   within = {
