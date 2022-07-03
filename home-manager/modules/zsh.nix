@@ -17,7 +17,7 @@ in with lib; {
 
         o = "xdg-open";
 
-        nvimgit = "nvim +Git +only +'bdelete 1'";
+        nvimgit = "nvim +Git +'bdelete 1'";
 
         ns = "NIXPKGS_ALLOW_UNFREE=1 nix shell --impure";
         nr = "NIXPKGS_ALLOW_UNFREE=1 nix run --impure";

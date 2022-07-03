@@ -13,7 +13,7 @@ in with lib; {
       nerdfonts
 
       (pkgs.writeShellScriptBin "update-neovim-packer" ''
-        nix shell "nixpkgs#"{python3,gnumake,unzip,gcc} --command nvim "+PackerSync"
+        nix shell "nixpkgs#"{python3,gnumake,unzip,gcc} --command nvim +PackerSync
       '')
     ];
 

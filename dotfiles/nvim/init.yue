@@ -177,7 +177,17 @@ psetup({
   )
   config:
     display:
-      open_fn: putil.float,
+      open_fn: ->
+        getResponse = ->
+          true, vim.api.nvim_get_current_win(), vim.api.nvim_get_current_buf()
+
+        curBuf = vim.api.nvim_get_current_buf()
+        if (vim.api.nvim_buf_get_name(curBuf) == "" and
+          vim.fn.getbufvar(curBuf, "&modified") == 0)
+          return getResponse()
+
+        vim.cmd('tabnew')
+        return getResponse()
 })
 
 vim.g.mapleader = "\\"
