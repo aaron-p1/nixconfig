@@ -32,6 +32,9 @@ in with lib; {
         isDefault = true;
         settings = {
           "browser.aboutConfig.showWarning" = false;
+          "browser.download.always_ask_before_handling_new_types" = true;
+          "browser.download.improvements_to_download_panel" = false;
+          "browser.download.start_downloads_in_tmp_dir" = true;
           "browser.newtabpage.enabled" = false;
           "browser.search.isUS" = false;
           "browser.search.region" = "DE";
