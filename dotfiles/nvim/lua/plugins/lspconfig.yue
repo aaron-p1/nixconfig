@@ -34,6 +34,14 @@ servers =
   -- R
   * server: "r_language_server"
 
+formatting_preferences =
+  nix: "null-ls"
+
+format_buffer = (bufnr) ->
+  ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+
+  return vim.lsp.buf.format(async: true, name: formatting_preferences[ft])
+
 export on_attach = (client, bufnr) ->
   import "helper"
   import "telescope.builtin" as tb
@@ -80,7 +88,7 @@ export on_attach = (client, bufnr) ->
   buf_keymap("n", "<Leader>lwr", "Remove folder", vl.remove_workspace_folder)
 
   -- edit
-  buf_keymap("n", "<Leader>lf", "Format", -> vl.format(async: true))
+  buf_keymap("n", "<Leader>lf", "Format", -> format_buffer(bufnr))
   buf_keymap("n", "<Leader>lc", "Code action", vl.code_action)
   buf_keymap("v", "<Leader>lc", "Code action", vl.range_code_action)
   buf_keymap("n", "<Leader>lr", "Rename", vl.rename)
