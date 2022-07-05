@@ -1,5 +1,8 @@
 { config, lib, ... }:
-let cfg = config.within.networking.blocky;
+let
+  cfg = config.within.networking.blocky;
+
+  blockLists = cfg.blockLists ++ cfg.blockListFile;
 in with lib; {
   options.within.networking.blocky = {
     enable = mkEnableOption "blocky";
@@ -35,6 +38,11 @@ in with lib; {
       ];
       description = "lists to enable blocking on";
     };
+    blockListFile = mkOption {
+      type = with types; listOf path;
+      default = [ ];
+      description = "list of paths to blocklist file";
+    };
 
     mapDomains = mkOption {
       type = with types; attrsOf str;
@@ -66,7 +74,7 @@ in with lib; {
         customDNS.mapping = cfg.mapDomains;
         conditional.mapping = { "." = "192.168.178.1"; };
         blocking = {
-          blackLists.default = cfg.blockLists;
+          blackLists.default = blockLists;
           clientGroupsBlock.default = [ "default" ];
           downloadAttempts = 0;
           downloadCooldown = "4s";
