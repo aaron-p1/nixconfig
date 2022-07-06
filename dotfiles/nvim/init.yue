@@ -230,6 +230,7 @@ helper.setOptions(vim.o, {
 
   timeoutlen: 500,
 
+  diffopt: "internal,filler,closeoff,vertical",
   completeopt: "menuone,noselect",
 
   omnifunc: "syntaxcomplete#Complete",
