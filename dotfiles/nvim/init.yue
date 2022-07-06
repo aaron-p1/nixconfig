@@ -39,8 +39,8 @@ psetup({
     u("AndrewRadev/splitjoin.vim", keys: {"gS", "gJ"})
     u("norcalli/nvim-colorizer.lua", file: "colorizer")
     u("lukas-reineke/indent-blankline.nvim", file: "indent-blankline")
-    u("windwp/nvim-autopairs", {file: "autopairs", after: {"nvim-cmp"}})
-    u("windwp/nvim-ts-autotag")
+    u("windwp/nvim-autopairs", {file: "autopairs", after: "nvim-cmp"})
+    u("windwp/nvim-ts-autotag", after: "nvim-treesitter")
 
     -- config
     u("editorconfig/editorconfig-vim", file: "editorconfig")
@@ -54,21 +54,22 @@ psetup({
     u("nvim-treesitter/nvim-treesitter", {
       file: "treesitter"
       run: ":TSUpdate"
-      wants: {"nvim-ts-autotag"}
     })
     u("nvim-treesitter/nvim-treesitter-textobjects", {
       file: "treesitter-textobjects"
       requires: "nvim-treesitter/nvim-treesitter"
-      after: {"which-key.nvim", "nvim-treesitter"}
+      after:
+        * "which-key.nvim"
+        * "nvim-treesitter"
     })
     u("nvim-treesitter/playground", {
       file: "treesitter-playground"
       requires: "nvim-treesitter/nvim-treesitter"
-      after: {"nvim-treesitter"}
+      after: "nvim-treesitter"
     })
     u("ziontee113/syntax-tree-surfer", {
       file: "syntax-tree-surfer"
-      after: {"nvim-treesitter"}
+      after: "nvim-treesitter"
     })
 
     -- syntax
@@ -88,22 +89,26 @@ psetup({
     u("lewis6991/gitsigns.nvim", {
       file: "gitsigns"
       requires: {"nvim-lua/plenary.nvim"}
-      after: {"vim-fugitive"}
+      after: "vim-fugitive"
     })
 
     -- file manager
     u("kyazdani42/nvim-tree.lua", {
       file: "tree"
       requires: {"kyazdani42/nvim-web-devicons"}
-      after: {"which-key.nvim"}
+      after: "which-key.nvim"
     })
 
     -- fuzzy finder
     u("nvim-telescope/telescope.nvim", {
       file: "telescope"
       requires: {{"nvim-lua/popup.nvim"}, {"nvim-lua/plenary.nvim"}}
-      wants: {"trouble.nvim", "telescope-fzf-native.nvim",
-        "telescope-symbols.nvim", "telescope-ui-select.nvim"}
+      after:
+        * "telescope-fzf-native.nvim"
+        * "telescope-symbols.nvim"
+        * "telescope-ui-select.nvim"
+        * "trouble.nvim"
+        * "which-key.nvim"
     })
     u("nvim-telescope/telescope-fzf-native.nvim", run: "make")
     u("nvim-telescope/telescope-ui-select.nvim")
@@ -111,22 +116,31 @@ psetup({
     u("nvim-telescope/telescope-dap.nvim", {
       file: "telescope-dap"
       requires: {"nvim-telescope/telescope.nvim", "mfussenegger/nvim-dap"}
-      after: {"telescope.nvim", "nvim-dap"}
+      after:
+        * "telescope.nvim"
+        * "nvim-dap"
     })
 
     -- snippets
-    u("L3MON4D3/LuaSnip", file: "luasnip")
+    u("L3MON4D3/LuaSnip", {
+      file: "luasnip"
+      after: "which-key.nvim"
+    })
 
     -- lsp
     u("neovim/nvim-lspconfig", {
       file: "lspconfig"
-      wants: {"telescope.nvim", "which-key.nvim", "lsp_signature.nvim", "nvim-cmp"}
+      after:
+        * "lsp_signature.nvim"
+        * "nvim-cmp"
+        * "telescope.nvim"
+        * "which-key.nvim"
     })
     u("mfussenegger/nvim-jdtls") -- java
     u("jose-elias-alvarez/null-ls.nvim", {
       file: "null-ls"
       requires: {"nvim-lua/plenary.nvim"}
-      after: {"nvim-lspconfig"}
+      after: "nvim-lspconfig"
     })
     u("hrsh7th/nvim-cmp", file: "cmp")
     u("hrsh7th/cmp-buffer")
@@ -139,7 +153,7 @@ psetup({
     u("tzachar/cmp-tabnine", {
       file: "cmp-tabnine"
       run: "./install.sh"
-      after: {"nvim-cmp"}
+      after: "nvim-cmp"
     })
     u("ray-x/lsp_signature.nvim")
 
@@ -147,7 +161,7 @@ psetup({
     u("folke/trouble.nvim", {
       file: "trouble"
       requires: "kyazdani42/nvim-web-devicons"
-      wants: {"which-key.nvim"}
+      after: "which-key.nvim"
     })
 
     -- dap
@@ -158,12 +172,12 @@ psetup({
     u("theHamsta/nvim-dap-virtual-text", {
       file: "dap-virtual-text"
       requires: {"mfussenegger/nvim-dap"}
-      after: {"nvim-dap"}
+      after: "nvim-dap"
     })
     u("rcarriga/nvim-dap-ui", {
       file: "dap-ui"
       requires: {"mfussenegger/nvim-dap"}
-      after: {"nvim-dap"}
+      after: "nvim-dap"
     })
 
     u("vim-test/vim-test")
@@ -171,7 +185,10 @@ psetup({
     -- tex
     u("lervag/vimtex", file: "vimtex")
 
-    u("jalvesaq/Nvim-R", file: "r")
+    u("jalvesaq/Nvim-R", {
+      file: "r"
+      after: "which-key.nvim"
+    })
 
     use_rocks("fun")
   )

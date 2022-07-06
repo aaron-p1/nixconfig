@@ -3,7 +3,9 @@
 export registerPluginWk = (config) ->
   assert(config.map ~= nil, "Map cannot be nil")
 
-  return if not package.loaded["which-key"]
+  if not package.loaded["which-key"]
+    print("Warning: which-key not loaded during registering. #{vim.inspect(config)}")
+    return
 
   import "which-key" as wk
 
