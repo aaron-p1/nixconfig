@@ -22,7 +22,7 @@ Check:
 Broken Stuff:
   nixos:
     nix develop copying files:
-      workaround: filter source
+      workaround: filter source not working
       https://github.com/NixOS/nix/issues/3121
     grafana cannot delete provisioned datasources:
       https://github.com/grafana/grafana/issues/12875
