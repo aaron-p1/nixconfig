@@ -55,7 +55,10 @@
       };
     };
 
-    syncthing.folders.thl.devices = [ "aaron-laptop" ];
+    syncthing.folders = {
+      thl.devices = [ "aaron-laptop" ];
+      work.devices = [ "aaron-laptop" ];
+    };
   };
 
   virtualisation.libvirtd = {

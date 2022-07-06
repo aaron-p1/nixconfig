@@ -41,7 +41,8 @@
         dns = "none";
       };
 
-      blocky.blockListFile = [ ../../secrets/inline-secrets/blocked-domains.txt ];
+      blocky.blockListFile =
+        [ ../../secrets/inline-secrets/blocked-domains.txt ];
     };
 
     # ../modules/users.nix
@@ -97,12 +98,22 @@
       guiAddress = "${config.within.networking.localDomains.syncthing}:8000";
       deviceIDFile = ../../secrets/inline-secrets/syncthing-device-ids.json;
 
-      folders.thl = {
-        path = "/home/aaron/Documents/thl";
-        ignorePerms = false;
-        versioning = {
-          type = "simple";
-          params.keep = "3";
+      folders = {
+        thl = {
+          path = "/home/aaron/Documents/thl";
+          ignorePerms = false;
+          versioning = {
+            type = "simple";
+            params.keep = "3";
+          };
+        };
+        work = {
+          path = "/home/aaron/Documents/work/";
+          ignorePerms = false;
+          versioning = {
+            type = "simple";
+            params.keep = "3";
+          };
         };
       };
     };
