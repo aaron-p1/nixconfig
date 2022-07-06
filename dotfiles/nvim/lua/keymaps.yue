@@ -1,0 +1,48 @@
+-- close tab
+close_tab = ->
+  count = if vim.v.count == 0 then 1 else vim.v.count
+
+  go_prev = vim.api.nvim_tabpage_get_number(0) + count <= #vim.api.nvim_list_tabpages()
+
+  try
+    for _ = 1, count, 1
+      vim.cmd("tabclose")
+
+  if (go_prev and vim.api.nvim_tabpage_get_number(0) > 1)
+    vim.cmd("tabprevious")
+
+-- compare Remote
+compare_remotes = {
+  exo: "scp://exo//var/www/html/exomind/",
+}
+
+compareRemotes = (remote) ->
+  local_path = vim.api.nvim_eval([[system('realpath --relative-base=' . getcwd() . ' ' . expand('%:p'))]])
+
+  if local_path::sub(1, 1) == "/"
+    vim.cmd("echoerr 'Not a Project File: #{local_path}'")
+    return
+
+  remote_path = compare_remotes[remote] .. local_path
+  vim.cmd("tab split")
+  vim.cmd("vertical diffsplit #{remote_path}")
+
+export default ->
+  kms = vim.keymap.set
+
+  -- alt + Esc for leaving terminal
+  kms("t", "<A-Esc>", "<C-\\><C-N>")
+
+  -- diff maps
+  vim.keymap.set("n", "<Leader>du", "<Cmd>diffupdate<CR>", {silent: true})
+  vim.keymap.set("n", "<Leader>dt", "<Cmd>diffthis<CR>", {silent: true})
+
+  -- noh
+  vim.keymap.set("n", "<Leader>n", "<Cmd>nohlsearch<CR>", {silent: true})
+
+  -- tab maps
+  vim.keymap.set("n", "<Leader>tc", close_tab, desc: "Tab close")
+  vim.keymap.set("n", "<Leader>to", "<Cmd>tabonly<CR>", {silent: true})
+
+  -- compare Remote
+  vim.keymap.set("n", "<Leader>rexo", (-> compareRemotes("exo")), desc: "Exo")

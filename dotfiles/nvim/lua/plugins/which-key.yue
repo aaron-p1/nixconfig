@@ -9,6 +9,8 @@ export config = ->
     map:
       t:
         name: "Tab"
+      d:
+        name: "Diff"
       r:
         name: "Compare Remote Files"
         e:
