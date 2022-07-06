@@ -127,12 +127,14 @@ export config = ->
   for lspdef in *servers do
     if type(lspdef) == "table"
       server = lspdef.server
-      lspdef.server = nil
+      -- copy to avoid changing servers
+      options = {k, v for k, v in pairs lspdef}
+      options.server = nil
 
-      lspdef.on_attach = on_attach if not lspdef.on_attach
-      lspdef.capabilities = capabilities if not lspdef.capabilities
+      options.on_attach = on_attach if not options.on_attach
+      options.capabilities = capabilities if not options.capabilities
 
-      nvim_lsp[server].setup(lspdef)
+      nvim_lsp[server].setup(options)
     else
       nvim_lsp[lspdef].setup({
         on_attach: on_attach
