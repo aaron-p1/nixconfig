@@ -11,21 +11,42 @@ close_tab = ->
   if (go_prev and vim.api.nvim_tabpage_get_number(0) > 1)
     vim.cmd("tabprevious")
 
--- compare Remote
-compare_remotes = {
-  exo: "scp://exo//var/www/html/exomind/",
-}
+get_comparable_remotes = ->
+  remotes_file = vim.api.nvim_get_runtime_file("extra/secrets/comparable_remotes.json", false)[1]
 
-compareRemotes = (remote) ->
-  local_path = vim.api.nvim_eval([[system('realpath --relative-base=' . getcwd() . ' ' . expand('%:p'))]])
+  return {} if remotes_file == nil
+
+  result = {}
+  try
+    file_content = vim.fn.readfile(remotes_file)
+    result = vim.fn.json_decode(file_content)
+  catch err
+    print(yue.traceback(err))
+
+  return result
+
+-- compare Remote
+comparable_remotes = get_comparable_remotes()
+
+compare_remotes = ->
+  local_path = vim.fn.system("realpath --relative-base='#{vim.fn.getcwd()}' '#{vim.fn.expand("%:p")}'")
+
+  -- remove pending \n
+  local_path = local_path::sub(1, -2) if (local_path::sub(-1, -1) == "\n")
 
   if local_path::sub(1, 1) == "/"
     vim.cmd("echoerr 'Not a Project File: #{local_path}'")
     return
 
-  remote_path = compare_remotes[remote] .. local_path
-  vim.cmd("tab split")
-  vim.cmd("vertical diffsplit #{remote_path}")
+  cr_keys = [k for k, v in pairs comparable_remotes]
+  vim.ui.select(cr_keys, {
+    prompt: "Select remote to compare #{local_path} to"
+  }, (choice) ->
+    return if choice == nil
+
+    remote_path = comparable_remotes[choice] .. local_path
+    vim.cmd("tab split")
+    vim.cmd("vertical diffsplit #{remote_path}"))
 
 export default ->
   kms = vim.keymap.set
@@ -45,4 +66,4 @@ export default ->
   vim.keymap.set("n", "<Leader>to", "<Cmd>tabonly<CR>", {silent: true})
 
   -- compare Remote
-  vim.keymap.set("n", "<Leader>rexo", (-> compareRemotes("exo")), desc: "Exo")
+  vim.keymap.set("n", "<Leader>cr", compare_remotes, desc: "Remote File")

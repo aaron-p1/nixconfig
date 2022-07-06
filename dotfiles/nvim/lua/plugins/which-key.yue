@@ -11,11 +11,6 @@ export config = ->
         name: "Tab"
       d:
         name: "Diff"
-      r:
-        name: "Compare Remote Files"
-        e:
-          name: "E"
-          x:
-            name: "Ex"
-            o: "Exo"
+      c:
+        name: "Compare"
   })
