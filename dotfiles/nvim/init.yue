@@ -111,12 +111,10 @@ psetup({
       after:
         * "telescope-fzf-native.nvim"
         * "telescope-symbols.nvim"
-        * "telescope-ui-select.nvim"
         * "trouble.nvim"
         * "which-key.nvim"
     })
     u("nvim-telescope/telescope-fzf-native.nvim", run: "make")
-    u("nvim-telescope/telescope-ui-select.nvim")
     u("nvim-telescope/telescope-symbols.nvim")
     u("nvim-telescope/telescope-dap.nvim", {
       file: "telescope-dap"
@@ -124,6 +122,10 @@ psetup({
       after:
         * "telescope.nvim"
         * "nvim-dap"
+    })
+    u("stevearc/dressing.nvim", {
+      file: "dressing"
+      after: "telescope.nvim"
     })
 
     -- snippets

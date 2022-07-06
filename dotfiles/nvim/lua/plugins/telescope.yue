@@ -28,16 +28,9 @@ export config = ->
         override_generic_sorter: true
         override_file_sorter: true
         case_mode: "smart_case"
-      "ui-select":
-        tt.get_dropdown({
-          layout_config:
-            width: (_, max_columns, _) -> math.min(max_columns, math.max(math.floor(max_columns * 0.80), 80))
-            height: (_, _, max_rows) -> math.min(max_rows, math.max(math.floor(max_rows * 0.90), 15))
-        }),
   })
 
   t.load_extension("fzf")
-  t.load_extension("ui-select")
 
   -- file
   vim.keymap.set("n", "<Leader>fa",
