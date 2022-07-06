@@ -83,8 +83,13 @@ psetup({
     -- git
     u("tpope/vim-fugitive", {
       file: "fugitive"
-      cmd: {"Git", "Gpull", "Gfetch", "Gstatus", "Glog",
-        "Gdiffsplit", "Gwrite", "Gread", "GRename", "GMove"}
+      cmd: {"Git", "GBrowse", "Gdiffsplit",
+        "Gwrite", "Gread", "Gedit", "GRename", "GMove"}
+    })
+    u("tpope/vim-rhubarb", after: "vim-fugitive")
+    u("shumphrey/fugitive-gitlab.vim", {
+      file: "fugitive-gitlab"
+      after: "vim-fugitive"
     })
     u("lewis6991/gitsigns.nvim", {
       file: "gitsigns"
