@@ -42,7 +42,6 @@ in with lib; {
         - window_name: nvim
           panes:
           - shell_command:
-            - sleep 0.1
             - nvimgit
         - window_name: zsh
         - window_name: man home-manager
