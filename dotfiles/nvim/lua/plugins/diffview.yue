@@ -1,0 +1,23 @@
+export config = ->
+  import "diffview" as dv
+  import "diffview.actions" as da
+
+  dv.setup({
+    file_panel:
+      win_config:
+        position: "right"
+    keymaps:
+      disable_defaults: true
+      view:
+        "<tab>": da.select_next_entry
+        "<s-tab>": da.select_prev_entry
+      file_panel:
+        "<cr>": da.focus_entry
+        "<tab>": da.select_next_entry
+        "<s-tab>": da.select_prev_entry
+        i: da.listing_style
+        R: da.refresh_files
+    hooks:
+      diff_buf_read: ->
+        vim.opt_local.wrap = false
+  })
