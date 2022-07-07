@@ -18,6 +18,15 @@ export default ->
     callback: -> vim.highlight.on_yank({timeout: 300})
   })
 
+  group_limit = cgr("File Limit", {clear: true})
+  cau("BufWinEnter", {
+    group: group_limit
+    callback: ->
+      return if vim.fn.line2byte(vim.fn.line("$") + 1) < 1024*1024
+
+      vim.cmd("syntax clear")
+  })
+
   -- scp files
   group_my_scp = cgr("MyScp", {clear: true})
   cau("BufNewFile,BufRead,BufLeave", {
