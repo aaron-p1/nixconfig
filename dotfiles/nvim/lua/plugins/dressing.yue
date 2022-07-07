@@ -11,6 +11,9 @@ export config = ->
     input:
       insert_only: false
       winblend: 0
+      min_width:
+        * 70
+        * 0.2
     select:
       backend:
         * "telescope"
