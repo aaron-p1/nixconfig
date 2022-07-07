@@ -45,8 +45,8 @@ compare_remotes = ->
     return if choice == nil
 
     remote_path = comparable_remotes[choice] .. local_path
-    vim.cmd("tab split")
-    vim.cmd("vertical diffsplit #{remote_path}"))
+    vim.cmd("silent tab split")
+    vim.cmd("silent vertical diffsplit #{remote_path}"))
 
 export default ->
   kms = vim.keymap.set
