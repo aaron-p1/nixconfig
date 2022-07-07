@@ -1,0 +1,56 @@
+import "helper"
+
+namespace = vim.api.nvim_create_namespace("PluginLinks")
+commentHighlight = vim.api.nvim_get_hl_id_by_name("Comment")
+
+prevExtmarkCount = 0
+
+-- line is one indexed
+create_extmark = (id, line, plugin) ->
+  plugin_link = helper.startsWith(plugin, "http") and
+    plugin or
+    "https://github.com/#{plugin}"
+
+  vim.api.nvim_buf_set_extmark(0, namespace, line - 1, 0, {
+    id: id
+    virt_text:
+      * {plugin_link, commentHighlight}
+    virt_text_win_col: 75
+  })
+
+
+update_extmarks = ->
+  success, fun = try require("fun")
+
+  if (not success)
+    vim.cmd("echoerr Fun not available in plugin-links")
+    return
+
+  lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+
+  newIdMaps = fun.iter(lines)
+    ::enumerate()
+    ::filter((num, line) -> line::match("^%s*u%(") ~= nil)
+    ::map((num, line) -> num, line::match("^[^\"]*\"([^\"]*/[^\"]*)\""))
+    ::filter((num, plugin) -> plugin ~= nil)
+    ::map((num, plugin) -> {num, plugin})
+    ::totable()
+
+  newExtmarkCount = #newIdMaps
+  for id = newExtmarkCount + 1, prevExtmarkCount, 1
+    vim.api.nvim_buf_del_extmark(0, namespace, id)
+
+  prevExtmarkCount = newExtmarkCount
+
+  fun.iter(newIdMaps)
+    ::enumerate()
+    ::each((id, line) -> create_extmark(id, line[1], line[2]))
+
+export setup = ->
+  group_plugin_links = vim.api.nvim_create_augroup("PluginLinks", {clear: true})
+  vim.api.nvim_create_autocmd({"BufRead", "TextChanged", "TextChangedI"}, {
+    group: group_plugin_links
+    pattern: "init.yue"
+    callback: update_extmarks
+  })
+

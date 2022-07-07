@@ -1,5 +1,8 @@
 export default ->
   import "helper"
+  import "features.plugin-links" as pl
+
+  pl.setup()
 
   cgr = vim.api.nvim_create_augroup
   cau = vim.api.nvim_create_autocmd
@@ -18,7 +21,7 @@ export default ->
     callback: -> vim.highlight.on_yank({timeout: 300})
   })
 
-  group_limit = cgr("File Limit", {clear: true})
+  group_limit = cgr("FileLimit", {clear: true})
   cau("BufWinEnter", {
     group: group_limit
     callback: ->
