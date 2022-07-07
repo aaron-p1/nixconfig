@@ -54,6 +54,7 @@ export config = ->
         * "--exclude=.git"
     })), desc: "Files")
   vim.keymap.set("n", "<Leader>fr", tb.live_grep, desc: "Live grep")
+  vim.keymap.set("n", "<Leader>ft", tb.grep_string, desc: "Grep string")
   -- vim
   vim.keymap.set("n", "<Leader>fb", tb.buffers, desc: "Buffers")
   vim.keymap.set("n", "<Leader>fm", tb.marks, desc: "Marks")
@@ -67,8 +68,6 @@ export config = ->
   vim.keymap.set("n", "<Leader>fgc", tb.git_commits, desc: "Commits")
   vim.keymap.set("n", "<Leader>fgb", tb.git_bcommits, desc: "BCommits")
   vim.keymap.set("n", "<Leader>fgt", tb.git_stash, desc: "Stash")
-  -- treesitter
-  vim.keymap.set("n", "<Leader>ft", tb.treesitter, desc: "Treesitter nodes")
 
   --symbols
   vim.keymap.set("n", "<Leader>fs", tb.symbols, desc: "Symbols")
