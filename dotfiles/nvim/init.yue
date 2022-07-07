@@ -79,6 +79,7 @@ psetup({
 
     -- helper
     u("folke/which-key.nvim", file: "which-key")
+    u("deris/vim-shot-f")
 
     -- git
     u("tpope/vim-fugitive", {
