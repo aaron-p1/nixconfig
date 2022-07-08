@@ -11,48 +11,13 @@ close_tab = ->
   if (go_prev and vim.api.nvim_tabpage_get_number(0) > 1)
     vim.cmd("tabprevious")
 
-get_comparable_remotes = ->
-  remotes_file = vim.api.nvim_get_runtime_file("extra/secrets/comparable_remotes.json", false)[1]
-
-  return {} if remotes_file == nil
-
-  result = {}
-  try
-    file_content = vim.fn.readfile(remotes_file)
-    result = vim.fn.json_decode(file_content)
-  catch err
-    print(yue.traceback(err))
-
-  return result
-
--- compare Remote
-comparable_remotes = get_comparable_remotes()
-
-compare_remotes = ->
-  local_path = vim.fn.system("realpath --relative-base='#{vim.fn.getcwd()}' '#{vim.fn.expand("%:p")}'")
-
-  -- remove pending \n
-  local_path = local_path::sub(1, -2) if (local_path::sub(-1, -1) == "\n")
-
-  if local_path::sub(1, 1) == "/"
-    vim.cmd("echoerr 'Not a Project File: #{local_path}'")
-    return
-
-  cr_keys = [k for k, v in pairs comparable_remotes]
-  vim.ui.select(cr_keys, {
-    prompt: "Select remote to compare #{local_path} to"
-  }, (choice) ->
-    return if choice == nil
-
-    remote_path = comparable_remotes[choice] .. local_path
-    vim.cmd("silent tab split")
-    vim.cmd("silent vertical diffsplit #{remote_path}"))
-
 export default ->
-  kms = vim.keymap.set
+  import "features.compare-remotes" as cr
+
+  cr.setup()
 
   -- alt + Esc for leaving terminal
-  kms("t", "<A-Esc>", "<C-\\><C-N>")
+  vim.keymap.set("t", "<A-Esc>", "<C-\\><C-N>")
 
   -- diff maps
   vim.keymap.set("n", "<Leader>du", "<Cmd>diffupdate<CR>", {silent: true})
@@ -64,6 +29,3 @@ export default ->
   -- tab maps
   vim.keymap.set("n", "<Leader>tc", close_tab, desc: "Tab close")
   vim.keymap.set("n", "<Leader>to", "<Cmd>tabonly<CR>", {silent: true})
-
-  -- compare Remote
-  vim.keymap.set("n", "<Leader>cr", compare_remotes, desc: "Remote File")
