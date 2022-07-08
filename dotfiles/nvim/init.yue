@@ -12,7 +12,7 @@ import "packer.util" as putil
 u = (url, opts = {}, disable = false) ->
   addOpts = opts
 
-  if opts.file
+  if (opts.file)
     addOpts.setup = "require('plugins.#{opts.file}').setup()" if opts.setup
     addOpts.config = "require('plugins.#{opts.file}').config()" if not opts.setup or opts.config
 
@@ -25,6 +25,8 @@ u = (url, opts = {}, disable = false) ->
 psetup({
   (->
     u("wbthomason/packer.nvim")
+
+    u("lewis6991/impatient.nvim")
 
     -- color scheme
     u("morhetz/gruvbox", file: "gruvbox")
@@ -221,6 +223,8 @@ psetup({
         vim.cmd('tabnew')
         return getResponse()
 })
+
+require("impatient")
 
 vim.g.mapleader = "\\"
 vim.g.maplocalleader = "|"
