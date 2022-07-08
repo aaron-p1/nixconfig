@@ -70,7 +70,9 @@ psetup({
     })
     u("ziontee113/syntax-tree-surfer", {
       file: "syntax-tree-surfer"
-      after: "nvim-treesitter"
+      after:
+        * "which-key.nvim"
+        * "nvim-treesitter"
     })
 
     -- syntax
