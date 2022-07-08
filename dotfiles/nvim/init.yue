@@ -266,6 +266,8 @@ helper.setOptions(vim.o, {
   omnifunc: "syntaxcomplete#Complete",
 
   showbreak: "─→",
+  "list",
+  listchars: "tab:──,trail:❯,nbsp:˰",
   -- indent
   tabstop: 4,
   shiftwidth: 4,
