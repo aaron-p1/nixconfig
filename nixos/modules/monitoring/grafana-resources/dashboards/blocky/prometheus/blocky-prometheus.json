@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1655973259875,
+  "iteration": 1657300495259,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -86,7 +86,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.0",
+      "pluginVersion": "9.0.2",
       "targets": [
         {
           "datasource": {
@@ -145,7 +145,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.0",
+      "pluginVersion": "9.0.2",
       "targets": [
         {
           "datasource": {
@@ -221,7 +221,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "9.0.0",
+      "pluginVersion": "9.0.2",
       "targets": [
         {
           "datasource": {
@@ -291,7 +291,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.0",
+      "pluginVersion": "9.0.2",
       "targets": [
         {
           "datasource": {
@@ -351,7 +351,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.0",
+      "pluginVersion": "9.0.2",
       "targets": [
         {
           "datasource": {
@@ -411,6 +411,7 @@
           },
           "mappings": [],
           "max": 1,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -688,7 +689,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.0",
+      "pluginVersion": "9.0.2",
       "targets": [
         {
           "datasource": {
