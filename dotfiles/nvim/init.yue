@@ -34,7 +34,7 @@ psetup({
     -- small text utilities
     u("numToStr/Comment.nvim", file: "comment")
     u("tpope/vim-surround")
-    u("tpope/vim-unimpaired")
+    u("tpope/vim-unimpaired", file: "unimpaired")
     u("tpope/vim-repeat")
     u("tpope/vim-abolish")
     u("tpope/vim-characterize")
@@ -284,11 +284,6 @@ helper.setOptions(vim.o, {
   -- scrolling
   scrolljump: -10,
   scrolloff: 8,
-  -- spelling
-  spelllang: "de",
-  spellfile: "~/.config/nvim/spell/de.utf-8.add",
-  -- dict completion
-  dictionary: "/usr/share/dict/ngerman,/usr/share/dict/usa",
 })
 
 vim.cmd("language en_US.utf8")
