@@ -4,9 +4,6 @@ export config = ->
   tsc.setup({
     highlight:
       enable: true -- false will disable the whole extension
-      disable: (lang, bufnr) ->
-        byte_size = vim.api.nvim_buf_get_offset(bufnr, vim.api.nvim_buf_line_count(bufnr))
-        return byte_size < 1024 * 1024
     indent:
       enable: true
     autotag:
