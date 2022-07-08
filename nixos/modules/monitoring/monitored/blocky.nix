@@ -83,6 +83,7 @@ in with lib; {
           url = mysqlSocket;
           user = "grafana";
           inherit database;
+          jsonData.timezone = "+00:00";
           editable = true; # see afterupdate
         }];
       };
