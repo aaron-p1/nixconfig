@@ -31,7 +31,7 @@ export config = ->
 
       -- View
       buf_keymap("n", "<Leader>ghp", gs.preview_hunk, desc: "Preview")
-      buf_keymap("n", "<Leader>gbl", (-> gs.blame_line(true)), desc: "Line")
+      buf_keymap("n", "<Leader>gbl", (-> gs.blame_line(full: true)), desc: "Line")
 
       buf_keymap({"o", "x"}, "ih", ga.select_hunk, desc: "In hunk")
 
