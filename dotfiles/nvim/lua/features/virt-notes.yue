@@ -1,0 +1,123 @@
+namespace = vim.api.nvim_create_namespace("VirtNotes")
+noteHighlight = vim.api.nvim_get_hl_id_by_name("WildMenu")
+
+notespath = vim.fn.stdpath("data") .. "/virt_notes"
+
+get_filename = ->
+  filename = vim.fn.expand("%:p")::gsub("/", "_")
+  return "#{notespath}/#{filename}.txt"
+
+persist_notes = ->
+  success, fun = try require("fun")
+
+  if (not success)
+    vim.cmd("echoerr Fun not available in virt-notes")
+    return
+
+  return if vim.fn.expand("%:p") == ""
+
+  notes = vim.api.nvim_buf_get_extmarks(0, namespace, 0, -1, {details: true})
+
+  content = fun.iter(notes)
+    ::map((note) -> "#{note[2]} #{note[4].virt_text[1][1]}")
+    ::totable()
+
+  vim.fn.writefile(content, get_filename())
+
+set_extmark = (text, line, id) ->
+    vim.api.nvim_buf_set_extmark(0, namespace, line, 0, {
+      id: id
+      virt_text:
+        * {text, noteHighlight}
+    })
+
+load_notes = ->
+  success, fun = try require("fun")
+
+  if (not success)
+    vim.cmd("echoerr Fun not available in virt-notes")
+    return
+
+  return if vim.fn.expand("%:p") == ""
+
+  success, content = try vim.fn.readfile(get_filename())
+
+  return if not success
+
+  fun.iter(content)
+    ::map((line) -> line::match("^([^ ]*) (.*)"))
+    ::each((linenr, note) -> set_extmark(note, tonumber(linenr)))
+
+
+get_line = -> vim.api.nvim_win_get_cursor(0)[1] - 1
+
+get_extmarks = (line) ->
+  vim.api.nvim_buf_get_extmarks(0, namespace, {line, 0}, {line, 0}, {details: true})
+
+-- [id, row, col, details]
+select_notes_on_current_line = (callback) ->
+  notes = get_extmarks(get_line())
+
+  return if (#notes == 0)
+  return callback(notes[1]) if (#notes == 1)
+
+  vim.ui.select(notes, {
+    prompt: "Select extmark"
+    format_item: (note) -> note[4].virt_text[1][1]
+  }, (note) ->
+    return if note == nil
+    callback(note))
+
+
+add_note = ->
+  line = get_line()
+
+  vim.ui.input({
+    prompt: "Add note: "
+  }, (note) ->
+    return if note == nil
+    set_extmark(note, line)
+    persist_notes())
+
+edit_note = ->
+  select_notes_on_current_line((note) ->
+    vim.ui.input({
+      prompt: "Edit note: "
+      default: note[4].virt_text[1][1]
+    }, (new_note) ->
+      return if new_note == nil
+      set_extmark(new_note, note[2], note[1]))
+      persist_notes())
+
+remove_note = ->
+  select_notes_on_current_line((note) ->
+    vim.api.nvim_buf_del_extmark(0, namespace, note[1])
+    persist_notes())
+
+remove_all_notes = ->
+  notes = get_extmarks(get_line())
+
+  return if (#notes == 0)
+
+  for note in *notes
+    vim.api.nvim_buf_del_extmark(0, namespace, note[1])
+
+  persist_notes()
+
+export setup = ->
+  vim.fn.mkdir(notespath, "p")
+
+  vim.keymap.set("n", "<leader>va", add_note)
+  vim.keymap.set("n", "<leader>ve", edit_note)
+  vim.keymap.set("n", "<leader>vdd", remove_note)
+  vim.keymap.set("n", "<leader>vda", remove_all_notes)
+
+  group = vim.api.nvim_create_augroup("VirtNotes", {clear: true})
+  vim.api.nvim_create_autocmd({"BufRead"}, {
+    group: group
+    callback: load_notes
+  })
+  vim.api.nvim_create_autocmd({"BufWrite"}, {
+    group: group
+    callback: persist_notes
+  })

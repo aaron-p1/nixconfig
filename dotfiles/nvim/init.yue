@@ -290,3 +290,5 @@ vim.cmd("language en_US.utf8")
 
 require("keymaps")()
 require("autocmd")()
+
+require("features.virt-notes").setup()
