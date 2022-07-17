@@ -29,10 +29,7 @@
   };
 
   # ../../nixos/modules/swap.nix
-  within.swap = {
-    zram = true;
-    file = 20;
-  };
+  within.swap.file = 20;
 
   hardware.nvidia.package =
     pkgs.local.nvidia-patched config.boot.kernelPackages.nvidiaPackages.stable;

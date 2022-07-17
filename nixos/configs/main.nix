@@ -2,6 +2,9 @@
   imports = [ ../modules ];
 
   within = {
+    # ../modules/swap.nix
+    swap.zram = 80;
+
     # ../modules/nix.nix
     nix = {
       enable = true;
@@ -12,7 +15,7 @@
     # ../modules/locale.nix
     locale.enable = true;
 
-    # ../modules/networking.nix
+    # ../modules/networking/default.nix
     networking = {
       enable = true;
 

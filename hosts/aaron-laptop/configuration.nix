@@ -18,10 +18,7 @@
     loopbackPrefixLength = 64;
   };
 
-  within.swap = {
-    zram = true;
-    file = 20;
-  };
+  within.swap.file = 20;
 
   services.xserver.videoDrivers = [ "nvidia" ];
 

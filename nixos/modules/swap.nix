@@ -2,7 +2,11 @@
 let cfg = config.within.swap;
 in with lib; {
   options.within.swap = {
-    zram = mkEnableOption "zram swap";
+    zram = mkOption {
+      type = types.int;
+      default = 0;
+      description = "zram swap size in percent";
+    };
     file = mkOption {
       type = types.int;
       default = 0;
@@ -11,7 +15,12 @@ in with lib; {
   };
 
   config = mkMerge [
-    (mkIf cfg.zram { zramSwap.enable = true; })
+    (mkIf (cfg.zram != 0) {
+      zramSwap = {
+        enable = true;
+        memoryPercent = cfg.zram;
+      };
+    })
 
     (mkIf (cfg.file > 0) {
       swapDevices = [{
