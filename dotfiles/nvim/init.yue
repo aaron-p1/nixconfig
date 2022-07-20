@@ -262,6 +262,8 @@ helper.setOptions(vim.o, {
   -- ! don't use tmp file
   "noshelltemp",
 
+  mouse: "",
+
   background: "dark",
 
   timeoutlen: 500,
