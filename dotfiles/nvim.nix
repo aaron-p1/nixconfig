@@ -1,14 +1,18 @@
 { lib, fd, ripgrep, nodePackages, local, sumneko-lua-language-server, rnix-lsp
-, nixfmt, shellcheck, shellharden, statix, stylua, nodejs, stdenv, findutils, rsync }:
+, nixfmt, shellcheck, shellharden, statix, stylua, nodejs, stdenv, findutils
+, rsync }:
 let
   inherit (builtins) attrValues;
   inherit (lib) mapAttrsToList;
 
-  dependencies = {
-    # ---- telescope
-    "fd" = fd;
-    "rg" = ripgrep;
+  addPath = [
+    # telescope cmp-fuzzy-path
+    fd
+    # telescope
+    ripgrep
+  ];
 
+  dependencies = {
     # ---- lspconfig
     "intelephense" = nodePackages.intelephense;
     "luals" = sumneko-lua-language-server;
@@ -37,7 +41,7 @@ in stdenv.mkDerivation {
   src = ./nvim;
 
   nativeBuildInputs = [ findutils local.yuescript rsync ];
-  buildInputs = attrValues dependencies;
+  buildInputs = attrValues dependencies ++ addPath;
 
   replacements = mapAttrsToList (k: v: "s=@${k}@=${v}=g") dependencies;
 
@@ -45,6 +49,8 @@ in stdenv.mkDerivation {
     yue -t result .
 
     rsync --verbose --recursive --filter='- *.yue' --filter='- /result' ./ result
+
+    sed -i "s=@ADDPATH@=${lib.makeBinPath addPath}=g" result/init.lua
 
     for rep in $replacements
     do

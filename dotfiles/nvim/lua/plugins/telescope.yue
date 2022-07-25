@@ -12,14 +12,6 @@ export config = ->
           "<leader>ot": trouble.open_with_trouble
         n:
           "<leader>ot": trouble.open_with_trouble
-      vimgrep_arguments:
-        * "@rg@/bin/rg"
-        * "--color=never"
-        * "--no-heading"
-        * "--with-filename"
-        * "--line-number"
-        * "--column"
-        * "--smart-case"
       preview:
         filesize_limit: 1 -- 1 MB
     extensions:
@@ -36,7 +28,7 @@ export config = ->
   vim.keymap.set("n", "<Leader>fa",
     (-> tb.find_files({
       find_command:
-        * "@fd@/bin/fd"
+        * "fd"
         * "--type=file"
         * "--size=-1M"
         * "--hidden"
@@ -46,7 +38,7 @@ export config = ->
   vim.keymap.set("n", "<Leader>ff",
     (-> tb.find_files({
       find_command:
-        * "@fd@/bin/fd"
+        * "fd"
         * "--type=file"
         * "--size=-1M"
         * "--hidden"

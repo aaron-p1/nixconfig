@@ -9,6 +9,8 @@ import "helper"
 import "packer" as {:use, :use_rocks, startup: psetup}
 import "packer.util" as putil
 
+vim.env.PATH ..= ":@ADDPATH@"
+
 u = (url, opts = {}, disable = false) ->
   addOpts = opts
 
