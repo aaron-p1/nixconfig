@@ -1,14 +1,30 @@
 export config = ->
   import "cmp"
+  import "cmp.config.compare" as cc
 
   cmp.setup({
     sources: {
+      {name: "npm"},
       {name: "nvim_lsp", max_item_count: 32},
       {name: "luasnip"},
-      {name: "path"},
+      {name: "fuzzy_path"},
       {name: "calc"},
       {name: "cmp_tabnine"},
+      {name: "digraphs", keyword_length: 2},
       {name: "buffer"},
+    },
+    sorting: {
+      priority_weight: 2
+      comparators:
+        * require("cmp_fuzzy_path.compare")
+        * cc.offset
+        * cc.exact
+        * cc.score
+        * cc.recently_used
+        * cc.kind
+        * cc.sort_text
+        * cc.length
+        * cc.order
     },
     snippet: {
       expand: (args) ->
@@ -50,12 +66,14 @@ export config = ->
         orig_menu = vim_item.menu
         -- set a name for each source
         vim_item.menu = ({
-          buffer: "[B]",
-          path: "[P]",
-          calc: "[C]",
-          luasnip: "[SNIP]",
+          npm: "[NPM]",
           nvim_lsp: "[LSP]",
+          luasnip: "[SNIP]",
+          fuzzy_path: "[P]",
+          calc: "[C]",
           cmp_tabnine: "[T9]",
+          digraphs: "[DG]",
+          buffer: "[B]",
           omni: "[OMNI]",
         })[entry.source.name]
 
@@ -75,9 +93,10 @@ export config = ->
 
   cmp.setup.cmdline(":", {
     sources: cmp.config.sources({
-      {name: "path"},
+      {name: "fuzzy_path"},
     }, {
       {name: "cmdline"},
+      {name: "cmdline_history", max_item_count: 4},
     }),
   })
 
@@ -88,7 +107,7 @@ export config = ->
         sources: {
           {name: 'omni'},
           {name: 'luasnip'},
-          {name: 'path'},
+          {name: 'fuzzy_path'},
           {name: 'calc'},
           {name: 'cmp_tabnine'},
           {name: 'buffer'},
