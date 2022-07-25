@@ -27,7 +27,7 @@ export default {
   s("ifn", t("private function ")),
   s(
     "fn",
-    fmta("<> function <>(<>)\n{\n\t<>\n}", {
+    fmta("<> function <>(<>)<><>\n{\n\t<>\n}", {
       c(1, {
         t("public"),
         t("protected"),
@@ -35,6 +35,8 @@ export default {
       }),
       i(2, "functionname"),
       i(3),
+      n(4, ": "),
+      i(4),
       i(0),
     }),
     {
