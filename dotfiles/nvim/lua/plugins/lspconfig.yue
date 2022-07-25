@@ -60,6 +60,22 @@ export on_attach = (client, bufnr) ->
     hint_prefix: "→ "
   })
 
+  if (client.name ~= "null-ls" and client.server_capabilities.documentHighlightProvider)
+    hgroup = vim.api.nvim_create_augroup("lsp_document_highlight", {clear: true})
+    vim.api.nvim_clear_autocmds({buffer: bufnr, group: hgroup})
+    vim.api.nvim_create_autocmd("CursorHold", {
+      buffer: bufnr,
+      group: hgroup,
+      callback: vl.document_highlight,
+      desc: "Document Highlight",
+    })
+    vim.api.nvim_create_autocmd("CursorMoved", {
+      buffer: bufnr,
+      group: hgroup,
+      callback: vl.clear_references,
+      desc: "Clear All the References",
+    })
+
   -- jump to
   buf_keymap("n", "gdd", "This window", tb.lsp_definitions)
   buf_keymap("n", "gdv", "Vertical split", ->
