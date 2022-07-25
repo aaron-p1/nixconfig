@@ -31,7 +31,7 @@ psetup({
     u("lewis6991/impatient.nvim")
 
     -- color scheme
-    u("morhetz/gruvbox", file: "gruvbox")
+    u("ellisonleao/gruvbox.nvim", file: "gruvbox")
 
     -- small text utilities
     u("numToStr/Comment.nvim", file: "comment")
