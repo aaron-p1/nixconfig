@@ -10,7 +10,7 @@ export config = ->
       {name: "fuzzy_path"},
       {name: "calc"},
       {name: "cmp_tabnine"},
-      {name: "digraphs", keyword_length: 2},
+      {name: "digraphs", max_item_count: 4},
       {name: "buffer"},
     },
     sorting: {
