@@ -185,6 +185,10 @@ psetup({
       run: "./install.sh"
       after: "nvim-cmp"
     })
+    -- DEPENDENCIES: nodejs
+    u("github/copilot.vim", {
+      file: "copilot"
+    })
     u("ray-x/lsp_signature.nvim")
 
     -- diagnostics

@@ -42,6 +42,7 @@ export config = ->
         i: cmp.mapping.abort(),
         c: cmp.mapping.close(),
       }),
+      "<M-e>": cmp.mapping.close(),
       "<C-u>": cmp.mapping.scroll_docs(-4),
       "<C-d>": cmp.mapping.scroll_docs(4),
       "<C-n>": cmp.mapping(
@@ -76,6 +77,7 @@ export config = ->
           digraphs: "[DG]",
           buffer: "[B]",
           omni: "[OMNI]",
+          copilot: "[COP]",
         })[entry.source.name]
 
         vim_item.menu = vim_item.menu .. ": " .. orig_menu if orig_menu != nil

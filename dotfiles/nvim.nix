@@ -10,6 +10,8 @@ let
     fd
     # telescope
     ripgrep
+    # copilot
+    nodejs
   ];
 
   dependencies = {
