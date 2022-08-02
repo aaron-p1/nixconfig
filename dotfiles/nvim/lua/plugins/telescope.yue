@@ -24,6 +24,7 @@ export config = ->
 
   t.load_extension("fzf")
 
+  -- DEPENDENCIES: fd
   -- file
   vim.keymap.set("n", "<Leader>fa",
     (-> tb.find_files({
@@ -35,6 +36,7 @@ export config = ->
         * "--strip-cwd-prefix"
         * "--no-ignore"
     })), desc: "All files")
+  -- DEPENDENCIES: fd
   vim.keymap.set("n", "<Leader>ff",
     (-> tb.find_files({
       find_command:
@@ -45,8 +47,12 @@ export config = ->
         * "--strip-cwd-prefix"
         * "--exclude=.git"
     })), desc: "Files")
+  -- DEPENDENCIES: ripgrep
   vim.keymap.set("n", "<Leader>fr", tb.live_grep, desc: "Live grep")
-  vim.keymap.set("n", "<Leader>ft", tb.grep_string, desc: "Grep string")
+  -- DEPENDENCIES: ripgrep
+  vim.keymap.set("n", "<Leader>ft", (-> tb.grep_string({
+    additional_args: -> {"--hidden"}
+  })), desc: "Grep string")
   -- vim
   vim.keymap.set("n", "<Leader>fb", tb.buffers, desc: "Buffers")
   vim.keymap.set("n", "<Leader>fm", tb.marks, desc: "Marks")
