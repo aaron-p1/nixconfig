@@ -66,7 +66,6 @@
     qalculate-gtk
     flameshot
     gImageReader
-    gtg
     ark
     obsidian
     element-desktop
