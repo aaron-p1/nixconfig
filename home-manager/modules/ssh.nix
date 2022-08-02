@@ -24,6 +24,7 @@ in with lib; {
       enable = true;
       controlMaster = "auto";
       controlPath = "~/.ssh/sockets/%r@%n:%p";
+      controlPersist = "8h";
       matchBlocks = recursiveUpdate {
         pc = {
           hostname = "aaron-pc";
