@@ -32,7 +32,7 @@ export default ->
 
   -- scp files
   group_my_scp = cgr("MyScp", {clear: true})
-  cau("BufNewFile,BufRead,BufLeave", {
+  cau("BufLeave", {
     group: group_my_scp
     pattern: "scp://*"
     callback: -> vim.bo.bufhidden = "delete"
