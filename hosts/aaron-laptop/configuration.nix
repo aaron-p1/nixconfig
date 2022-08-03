@@ -51,6 +51,11 @@
     };
   };
 
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = { package = pkgs.qemu_kvm; };
+  };
+
   programs.chromium.enable = true;
 
   # This value determines the NixOS release from which the default
