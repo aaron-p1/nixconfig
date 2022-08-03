@@ -1,0 +1,20 @@
+export config = ->
+  import "helper"
+
+  import "iswap" as i
+
+  i.setup({
+    keys: "abcdefghijklmnopqrstuvwxyz"
+    grey: "disable"
+    autoswap: true
+  })
+
+  vim.keymap.set("n", "<leader>ss", i.iswap_with)
+  helper.registerPluginWk({
+    prefix: "<leader>"
+    map:
+      s:
+        name: "Swap",
+        s:
+          name: "iswap"
+  })

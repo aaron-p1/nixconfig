@@ -72,8 +72,8 @@ psetup({
       requires: "nvim-treesitter/nvim-treesitter"
       after: "nvim-treesitter"
     })
-    u("ziontee113/syntax-tree-surfer", {
-      file: "syntax-tree-surfer"
+    u("mizlan/iswap.nvim", {
+      file: "iswap"
       after:
         * "which-key.nvim"
         * "nvim-treesitter"
