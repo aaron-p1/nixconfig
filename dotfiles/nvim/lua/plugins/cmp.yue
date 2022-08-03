@@ -8,7 +8,7 @@ export config = ->
       {name: "nvim_lsp", max_item_count: 32},
       {name: "luasnip"},
       -- DEPENDENCIES: fd
-      {name: "fuzzy_path", options: {fd_timeout_msec: 5000, fd_cmd: {"fd", "-d", "4", "-p"}}},
+      {name: "fuzzy_path", options: {fd_timeout_msec: 1000, fd_cmd: {"fd", "-d", "4", "-p"}}},
       {name: "calc"},
       {name: "cmp_tabnine"},
       {name: "digraphs", max_item_count: 4},
