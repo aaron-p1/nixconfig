@@ -57,6 +57,7 @@ export default {
     }
   ),
   s("fnn", fmta("fn (<>) =>> <>", { i(1), i(0) })),
+  s("phpdoc", fmta("/**\n * <>\n */", { i(0) })),
   -- For
   s(
     "fo",
