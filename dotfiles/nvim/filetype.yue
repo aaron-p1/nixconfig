@@ -11,3 +11,4 @@ ft_from_pattern = (ft, pattern) ->
   })
 
 ft_from_pattern("dosini", ".env{,.example}")
+ft_from_pattern("dockerfile", "*.dockerfile")
