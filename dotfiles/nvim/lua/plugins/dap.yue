@@ -21,7 +21,8 @@ export config = ->
 
   dap.adapters.php = {
     type: "executable",
-    command: "@nodejs@/bin/node",
+    -- DEPENDENCIES: nodejs
+    command: "node",
     args: {"@phpdebug@/libexec/php-debug/deps/php-debug/out/phpDebug.js"},
   }
 

@@ -2,31 +2,24 @@ servers =
   -- dart
   * server: "dartls"
   -- html
-  * server: "html"
-    cmd: {"@vscodelsp@/bin/vscode-html-language-server", "--stdio"}
+  * server: "html" -- DEPENDENCIES: nodePackages.vscode-langservers-extracted
     filetypes: {"html", "blade"}
   -- css
-  * server: "cssls"
-    cmd: {"@vscodelsp@/bin/vscode-css-language-server", "--stdio"}
+  * server: "cssls" -- DEPENDENCIES: nodePackages.vscode-langservers-extracted
   -- php
-  * server: "intelephense"
-    cmd: {"@intelephense@/bin/intelephense", "--stdio"}
+  * server: "intelephense" -- DEPENDENCIES: nodePackages.intelephense
   -- json
-  * server: "jsonls"
-    cmd: {"@vscodelsp@/bin/vscode-json-language-server", "--stdio"}
+  * server: "jsonls" -- DEPENDENCIES: nodePackages.vscode-langservers-extracted
   -- yaml
-  * server: "yamlls"
-    cmd: {"@yamlls@/bin/yaml-language-server", "--stdio"}
+  * server: "yamlls" -- DEPENDENCIES: nodePackages.yaml-language-server
   -- vue
   * server: "vuels"
   -- haskell
   * server: "hls"
   -- nix
-  * server: "rnix"
-    cmd: {"@rnix@/bin/rnix-lsp"}
+  * server: "rnix" -- DEPENDENCIES: rnix-lsp
   -- elixir
   * server: "elixirls"
-    filetypes: {"elixir", "eelixir", "heex"}
   -- python
   * server: "pyright"
   -- javascript
@@ -163,10 +156,10 @@ export config = ->
   table.insert(runtime_path, "lua/?.lua")
   table.insert(runtime_path, "lua/?/init.lua")
 
+  -- DEPENDENCIES: sumneko-lua-language-server
   nvim_lsp.sumneko_lua.setup({
     on_attach: on_attach
     capabilities: capabilities
-    cmd: {"@luals@/bin/lua-language-server"}
     settings:
       Lua:
         runtime:

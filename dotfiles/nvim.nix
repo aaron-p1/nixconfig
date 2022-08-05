@@ -12,29 +12,23 @@ let
     ripgrep
     # copilot
     nodejs
+    # null-ls
+    statix
+    nixfmt
+    shellcheck
+    shellharden
+    stylua
+    # lspconfig
+    nodePackages.intelephense
+    sumneko-lua-language-server
+    rnix-lsp
+    nodePackages.vscode-langservers-extracted
+    nodePackages.yaml-language-server
   ];
 
   dependencies = {
-    # ---- lspconfig
-    "intelephense" = nodePackages.intelephense;
-    "luals" = sumneko-lua-language-server;
-    "rnix" = rnix-lsp;
-    "vscodelsp" = nodePackages.vscode-langservers-extracted;
-    "yamlls" = nodePackages.yaml-language-server;
-
-    # ---- null-ls
-    # nix
-    "nixfmt" = nixfmt;
-    "statix" = statix;
-    # shell
-    "shellcheck" = shellcheck;
-    "shellharden" = shellharden;
-    # lua
-    "stylua" = stylua;
-
     # ---- dap
     "phpdebug" = local.vscode-php-debug;
-    "nodejs" = nodejs;
   };
 in stdenv.mkDerivation {
   pname = "dotfiles-nvim";

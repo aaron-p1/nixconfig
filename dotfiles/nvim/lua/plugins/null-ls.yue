@@ -16,14 +16,14 @@ export config = ->
       -- web languages
       * formatting.prettier
       -- shell
-      * diagnostics.shellcheck.with({command: "@shellcheck@/bin/shellcheck"})
-      * formatting.shellharden.with({command: "@shellharden@/bin/shellharden"})
+      * diagnostics.shellcheck -- DEPENDENCIES: shellcheck
+      * formatting.shellharden -- DEPENDENCIES: shellharden
       -- lua
-      * formatting.stylua.with({command: "@stylua@/bin/stylua"})
+      * formatting.stylua -- DEPENDENCIES: stylua
       -- nix
-      * diagnostics.statix.with({command: "@statix@/bin/statix"})
-      * formatting.nixfmt.with({command: "@nixfmt@/bin/nixfmt"})
-      * code_actions.statix.with({command: "@statix@/bin/statix"})
+      * diagnostics.statix -- DEPENDENCIES: statix
+      * formatting.nixfmt -- DEPENDENCIES: nixfmt
+      * code_actions.statix -- DEPENDENCIES: statix
       -- elixir
       * diagnostics.credo
       * formatting.surface
