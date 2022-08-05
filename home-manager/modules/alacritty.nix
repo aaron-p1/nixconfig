@@ -14,7 +14,34 @@ in with lib; {
         };
         font.size = 9;
         mouse.hide_when_typing = true;
-        hints.alphabet = "abcdefghjklmnopqrstuvwxyz";
+        hints = {
+          alphabet = "abcdefghjklmnopqrstuvwxyz";
+          enabled = [
+            {
+              regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\\u0000-\\u001F\\u007F-\\u009F<>\"\\\\s{-}\\\\^⟨⟩`]+";
+              hyperlinks = true;
+              command = "xdg-open";
+              post_processing = true;
+              mouse = {
+                enabled = true;
+                mods = "None";
+              };
+              binding = {
+                key = "U";
+                mods = "Control|Shift";
+              };
+            }
+            {
+              regex = "(/|[.]/|[.][.]/|\\\\S+/)\\\\S+";
+              action = "Copy";
+              post_processing = true;
+              binding = {
+                key = "P";
+                mods = "Control|Shift";
+              };
+            }
+          ];
+        };
         key_bindings = [{
           key = "F11";
           action = "ToggleFullscreen";
