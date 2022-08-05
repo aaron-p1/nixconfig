@@ -4,79 +4,105 @@ noteHighlight = vim.api.nvim_get_hl_id_by_name("WildMenu")
 notespath = vim.fn.stdpath("data") .. "/virt_notes"
 
 get_filename = ->
+  return if vim.fn.expand("%:p") == ""
+
   filename = vim.fn.expand("%:p")::gsub("/", "_")
   return "#{notespath}/#{filename}.txt"
 
+get_bufnr = -> vim.api.nvim_get_current_buf()
+
 get_line = -> vim.api.nvim_win_get_cursor(0)[1] - 1
 
-get_extmarks = (line) ->
-  if (line == nil)
-    return vim.api.nvim_buf_get_extmarks(0, namespace, 0, -1, {details: true})
-  vim.api.nvim_buf_get_extmarks(0, namespace, {line, 0}, {line, 0}, {details: true})
+remove_protocol = (filename) ->
+  return vim.fn.substitute(filename,  "^\\(\\w\\+:__\\)\\?", "", "")
 
-get_extmark_by_id = (id) ->
-  note = vim.api.nvim_buf_get_extmark_by_id(0, namespace, id, {details: true})
+get_extmarks = (bufnr, line) ->
+  if (line == nil)
+    return vim.api.nvim_buf_get_extmarks(bufnr, namespace, 0, -1, {details: true})
+  vim.api.nvim_buf_get_extmarks(bufnr, namespace, {line, 0}, {line, 0}, {details: true})
+
+get_extmark_by_id = (bufnr, id) ->
+  note = vim.api.nvim_buf_get_extmark_by_id(bufnr, namespace, id, {details: true})
   return nil if #note == 0
   return {id, note[1], note[2], note[3]}
 
-set_extmark = (text, line, id) ->
-    vim.api.nvim_buf_set_extmark(0, namespace, line, 0, {
+set_extmark = (bufnr, text, line, id) ->
+    vim.api.nvim_buf_set_extmark(bufnr, namespace, line, 0, {
       id: id
       virt_text:
         * {text, noteHighlight}
     })
 
-remove_all_extmarks = (line) ->
-  notes = get_extmarks(line)
+remove_all_extmarks = (bufnr, line) ->
+  notes = get_extmarks(bufnr, line)
 
   for note in *notes
-    vim.api.nvim_buf_del_extmark(0, namespace, note[1])
+    vim.api.nvim_buf_del_extmark(bufnr, namespace, note[1])
 
-persist_notes = ->
+persist_notes = (bufnr, filename) ->
   success, fun = try require("fun")
 
   if (not success)
     vim.cmd("echoerr Fun not available in virt-notes")
     return
 
-  return if vim.fn.expand("%:p") == ""
+  return if filename == nil
 
-  notes = vim.api.nvim_buf_get_extmarks(0, namespace, 0, -1, {details: true})
+  notes = vim.api.nvim_buf_get_extmarks(bufnr, namespace, 0, -1, {details: true})
 
-  content = fun.iter(notes)
+  note_content = fun.iter(notes)
     ::map((note) -> "#{note[2]} #{note[4].virt_text[1][1]}")
     ::totable()
 
-  filename = get_filename()
-
-  if #content == 0
+  if #note_content == 0
     vim.fn.delete(filename)
     return
 
+  -- add filename on first line
+  content = fun.chain({vim.fn.expand("%:p")}, note_content)::totable()
+
   vim.fn.writefile(content, filename)
 
-load_notes = ->
+get_notes_from_file = (filename) ->
+  default = {{}, nil}
+  return default if filename == nil
+  return default if vim.fn.filereadable(filename) == 0
+  content = vim.fn.readfile(filename)
+  return default if #content <= 1
+
+  src_file = content[1]
+  table.remove(content, 1)
+
+  result = vim.tbl_map(
+    ((line) -> {line::match("^([^ ]*) (.*)")}),
+    content
+  )
+
+  return {
+    vim.tbl_map(
+      ((entry) -> {tonumber(entry[1]), entry[2]}),
+      result
+    ),
+    src_file
+  }
+
+load_notes = (bufnr, filename) ->
   success, fun = try require("fun")
 
   if (not success)
     vim.cmd("echoerr Fun not available in virt-notes")
     return
 
-  return if vim.fn.expand("%:p") == ""
+  return if filename == nil
 
-  success, content = try vim.fn.readfile(get_filename())
+  remove_all_extmarks(bufnr)
 
-  return if not success
-
-  remove_all_extmarks()
-
-  fun.iter(content)
-    ::map((line) -> line::match("^([^ ]*) (.*)"))
-    ::each((linenr, note) -> set_extmark(note, tonumber(linenr)))
+  fun.iter(get_notes_from_file(filename)[1])
+    ::each((entry) -> set_extmark(bufnr, entry[2], entry[1]))
 
 -- [id, row, col, details]
-select_notes_on_current_line = (callback) ->
-  notes = get_extmarks(get_line())
+select_notes_on_current_line = (bufnr, callback) ->
+  notes = get_extmarks(bufnr, get_line())
 
   return if (#notes == 0)
   return callback(notes[1]) if (#notes == 1)
@@ -88,65 +114,146 @@ select_notes_on_current_line = (callback) ->
     return if note == nil
     callback(note))
 
+get_project_files = ->
+  cwd = vim.fn.getcwd()
+
+  return {} if cwd == ""
+
+  clean_cwd = cwd::gsub("/", "_")
+
+  return vim.tbl_filter(
+    ((file) ->
+      clean_path = remove_protocol(file)
+      print(clean_path)
+      return vim.startswith(clean_path, clean_cwd)),
+    vim.fn.readdir(notespath)
+  )
+
+get_notes_from_files = ->
+  files = get_project_files()
+
+  if #files == 0
+    return {}
+
+  entries = vim.tbl_map(
+    (file) ->
+      filename = "#{notespath}/#{file}"
+
+      file_entries = get_notes_from_file(filename)
+      -- add filename
+      return vim.tbl_map(((entry) -> {file_entries[2], entry}), file_entries[1]),
+    files
+  )
+
+  return vim.fn.reduce(entries, (acc, val) -> vim.fn.extend(acc, val))
+
 
 add_note = ->
+  filename = get_filename()
+  bufnr = get_bufnr()
   line = get_line()
 
   vim.ui.input({
     prompt: "Add note: "
   }, (note) ->
     return if note == nil
-    set_extmark(note, line)
-    persist_notes())
+    set_extmark(bufnr, note, line)
+    persist_notes(bufnr, filename) if filename ~= nil)
 
 edit_note = ->
-  select_notes_on_current_line((note) ->
+  filename = get_filename()
+  bufnr = get_bufnr()
+
+  select_notes_on_current_line(bufnr, (note) ->
     vim.ui.input({
       prompt: "Edit note: "
       default: note[4].virt_text[1][1]
     }, (new_note) ->
       return if new_note == nil
-      set_extmark(new_note, note[2], note[1]))
-      persist_notes())
+      set_extmark(bufnr, new_note, note[2], note[1])
+      persist_notes(bufnr, filename) if filename ~= nil))
 
 remove_note = ->
-  select_notes_on_current_line((note) ->
-    vim.api.nvim_buf_del_extmark(0, namespace, note[1])
-    persist_notes())
+  filename = get_filename()
+  bufnr = get_bufnr()
+
+  select_notes_on_current_line(bufnr, (note) ->
+    vim.api.nvim_buf_del_extmark(bufnr, namespace, note[1])
+    persist_notes(bufnr, filename) if filename ~= nil)
 
 remove_all_notes = ->
-  remove_all_extmarks(get_line())
+  filename = get_filename()
+  bufnr = get_bufnr()
 
-  persist_notes()
+  remove_all_extmarks(bufnr, get_line())
+
+  persist_notes(bufnr, filename) if filename ~= nil
+
+remove_all_notes_in_file = ->
+  filename = get_filename()
+  bufnr = get_bufnr()
+
+  remove_all_extmarks(bufnr)
+
+  persist_notes(bufnr, filename) if filename ~= nil
 
 saved_note_id = {}
 
 move_note = ->
-  bufnr = vim.api.nvim_get_current_buf()
+  bufnr = get_bufnr()
 
-  select_notes_on_current_line((note) ->
+  select_notes_on_current_line(bufnr, (note) ->
     saved_note_id[bufnr] = note[1]
     print("Moving note: '#{note[4].virt_text[1][1]}'"))
 
 paste_note = ->
-  bufnr = vim.api.nvim_get_current_buf()
+  filename = get_filename()
+  bufnr = get_bufnr()
   id = saved_note_id[bufnr]
 
   if (id == nil)
     print("No note selected")
     return
 
-  note = get_extmark_by_id(id)
+  note = get_extmark_by_id(bufnr, id)
   if (note == nil)
     print("No note selected")
     return
 
-  vim.api.nvim_buf_set_extmark(0, namespace, get_line(), 0, {
+  vim.api.nvim_buf_set_extmark(bufnr, namespace, get_line(), 0, {
     id: id
     virt_text: note[4].virt_text
   })
 
-  persist_notes()
+  persist_notes(bufnr, filename) if filename ~= nil
+
+get_notes_in_project = ->
+  import "telescope.pickers" as p
+  import "telescope.finders" as f
+  import "telescope.config" as {values: config}
+  import "telescope.themes" as t
+
+  opts = {}
+
+  cwd = vim.fn.getcwd()
+
+  p.new(opts, {
+    prompt_title: "Notes in project"
+    finder: f.new_table({
+      results: get_notes_from_files()
+      entry_maker: (entry) ->
+        path = remove_protocol(entry[1])::sub(#cwd + 2)
+        return {
+          value: entry[2]
+          display: "#{path} | #{entry[2][2]}"
+          ordinal: "#{path} #{entry[2][1]} #{entry[2][2]}"
+          path: entry[1]
+          lnum: entry[2][1] + 1
+        }
+    })
+    sorter: config.generic_sorter(opts)
+    previewer: config.grep_previewer(opts),
+  })::find()
 
 export setup = ->
   vim.fn.mkdir(notespath, "p")
@@ -155,16 +262,19 @@ export setup = ->
   vim.keymap.set("n", "<leader>ve", edit_note, desc: "Edit note")
   vim.keymap.set("n", "<leader>vdd", remove_note, desc: "Delete note on line")
   vim.keymap.set("n", "<leader>vda", remove_all_notes, desc: "Delete all notes on line")
+  vim.keymap.set("n", "<leader>vdf", remove_all_notes_in_file, desc: "Delete all notes in file")
 
   vim.keymap.set("n", "<leader>vx", move_note, desc: "Move note")
   vim.keymap.set("n", "<leader>vp", paste_note, desc: "Paste note")
 
+  vim.keymap.set("n", "<leader>fv", get_notes_in_project, desc: "Virtal notes")
+
   group = vim.api.nvim_create_augroup("VirtNotes", {clear: true})
   vim.api.nvim_create_autocmd({"BufRead"}, {
     group: group
-    callback: load_notes
+    callback: -> load_notes(get_bufnr(), get_filename())
   })
   vim.api.nvim_create_autocmd({"BufWrite"}, {
     group: group
-    callback: persist_notes
+    callback: -> persist_notes(get_bufnr(), get_filename())
   })
