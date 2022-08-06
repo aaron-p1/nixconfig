@@ -56,6 +56,8 @@
   services.kdeconnect.enable = true;
 
   home.packages = with pkgs; [
+    gnumake
+
     hunspell
     hunspellDicts.en_US
     hunspellDicts.de_DE
