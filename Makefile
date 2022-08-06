@@ -28,4 +28,7 @@ update:
 listChanges:
 	ls -d1 /nix/var/nix/profiles/system-*-link | sort -V | tail -n 2 | xargs nix store diff-closures | less
 
-.PHONY: default existing new ${rebuildCmds} update listChanges
+fixDependencies:
+	nix shell nixpkgs#git-crypt --command direnv reload
+
+.PHONY: default existing new ${rebuildCmds} update listChanges fixDependencies
