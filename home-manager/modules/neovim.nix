@@ -8,13 +8,8 @@ in with lib; {
     # then for each input replace @varName@: --subst-var-by <varName> <s>
     home.packages = with pkgs; [
       neovim-nightly
-      xsel
       # nvim tree
       nerdfonts
-
-      (pkgs.writeShellScriptBin "update-neovim-packer" ''
-        nix shell "nixpkgs#"{python3,gnumake,unzip,gcc} --command nvim +PackerSync
-      '')
     ];
 
     xdg.configFile."nvim" = {

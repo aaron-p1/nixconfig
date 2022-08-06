@@ -1,11 +1,18 @@
-{ lib, fd, ripgrep, nodePackages, local, sumneko-lua-language-server, rnix-lsp
-, nixfmt, shellcheck, shellharden, statix, stylua, nodejs, stdenv, findutils
-, rsync }:
+{ lib, xsel, python3, gnumake, unzip, gcc, fd, ripgrep, nodePackages, local
+, sumneko-lua-language-server, rnix-lsp, nixfmt, shellcheck, shellharden, statix
+, stylua, nodejs, stdenv, findutils, rsync }:
 let
   inherit (builtins) attrValues;
   inherit (lib) mapAttrsToList;
 
   addPath = [
+    # core
+    xsel
+    # packer
+    python3
+    gnumake
+    unzip
+    gcc
     # telescope cmp-fuzzy-path
     fd
     # telescope
