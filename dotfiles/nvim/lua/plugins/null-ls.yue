@@ -20,6 +20,8 @@ export config = ->
       * formatting.shellharden -- DEPENDENCIES: shellharden
       -- lua
       * formatting.stylua -- DEPENDENCIES: stylua
+      -- fennel
+      * formatting.fnlfmt -- DEPENDENCIES: fnlfmt
       -- nix
       * diagnostics.statix -- DEPENDENCIES: statix
       * formatting.nixfmt -- DEPENDENCIES: nixfmt

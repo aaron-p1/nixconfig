@@ -307,7 +307,9 @@ helper.setOptions(vim.o, {
 
 vim.cmd("language en_US.utf8")
 
-require("keymaps")()
-require("autocmd")()
+require("keymaps").setup()
+require("autocmd").setup()
 
+require("features.compare-remotes").setup()
+require("features.plugin-links").setup()
 require("features.virt-notes").setup()

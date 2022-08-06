@@ -1,6 +1,6 @@
 { lib, xsel, python3, gnumake, unzip, gcc, fd, ripgrep, nodePackages, local
 , sumneko-lua-language-server, rnix-lsp, nixfmt, shellcheck, shellharden, statix
-, stylua, nodejs, stdenv, findutils, rsync }:
+, stylua, fnlfmt, nodejs, stdenv, findutils, fennel, parallel, rsync }:
 let
   inherit (builtins) attrValues;
   inherit (lib) mapAttrsToList;
@@ -25,6 +25,7 @@ let
     shellcheck
     shellharden
     stylua
+    fnlfmt
     # lspconfig
     nodePackages.intelephense
     sumneko-lua-language-server
@@ -43,15 +44,22 @@ in stdenv.mkDerivation {
 
   src = ./nvim;
 
-  nativeBuildInputs = [ findutils local.yuescript rsync ];
+  nativeBuildInputs = [ findutils local.yuescript fennel parallel rsync ];
   buildInputs = attrValues dependencies ++ addPath;
 
   replacements = mapAttrsToList (k: v: "s=@${k}@=${v}=g") dependencies;
 
   buildPhase = ''
+    # yue
     yue -t result .
 
-    rsync --verbose --recursive --filter='- *.yue' --filter='- /result' ./ result
+    # fennel
+    find . -name '*.fnl' \
+      | parallel mkdir -p 'result/{//}' '&&' \
+      fennel --globals vim --correlate -c '{}' '>' 'result/{.}.lua'
+
+    rsync --verbose --recursive --filter='- *.yue' --filter='- *.fnl' \
+      --filter='- /result' ./ result
 
     sed -i "s=@ADDPATH@=${lib.makeBinPath addPath}=g" result/init.lua
 

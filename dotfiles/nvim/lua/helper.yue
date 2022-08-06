@@ -25,6 +25,19 @@ export setOptions = (optapi, opts) ->
 
 export startsWith = (str, start) -> str::sub(1, #start) == start
 export endsWith = (str, ending) -> ending == "" or str::sub(-#ending) == ending
+export remove_suffix = (str, suffix) ->
+  if suffix ~= "" and str::sub(-#suffix) == suffix
+    str::sub(1, -#suffix - 1)
+  else
+    str
+
+export remove_index = (list, index) ->
+  if index < 1 or index > #list
+    return list
+  else
+    result = table.move(list, 1, index - 1, 1, {})
+    table.move(list, index + 1, #list, #result + 1, result)
+    return result
 
 export chain = (...) ->
   fnchain = {...}
