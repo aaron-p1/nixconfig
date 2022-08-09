@@ -6,7 +6,7 @@
                           (nvim_create_autocmd [:BufRead :BufNewFile]
                                                {:group augroup
                                                 : pattern
-                                                :command (.. :setfiletype ft)}))]
+                                                :command (.. "setfiletype " ft)}))]
     (ft-from-pattern :dosini ".env{,.example}")
     (ft-from-pattern :dockerfile :*.dockerfile)))
 
