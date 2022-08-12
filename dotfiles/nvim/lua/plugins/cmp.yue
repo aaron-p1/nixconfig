@@ -7,8 +7,7 @@ export config = ->
       {name: "npm"},
       {name: "nvim_lsp", max_item_count: 32},
       {name: "luasnip"},
-      -- DEPENDENCIES: fd
-      {name: "fuzzy_path", options: {fd_timeout_msec: 1000, fd_cmd: {"fd", "-d", "4", "-p"}}},
+      {name: "path"},
       {name: "calc"},
       {name: "cmp_tabnine"},
       {name: "digraphs", max_item_count: 4},
@@ -17,7 +16,6 @@ export config = ->
     sorting: {
       priority_weight: 2
       comparators:
-        * require("cmp_fuzzy_path.compare")
         * cc.offset
         * cc.exact
         * cc.score
@@ -71,7 +69,7 @@ export config = ->
           npm: "[NPM]",
           nvim_lsp: "[LSP]",
           luasnip: "[SNIP]",
-          fuzzy_path: "[P]",
+          path: "[P]",
           calc: "[C]",
           cmp_tabnine: "[T9]",
           digraphs: "[DG]",
@@ -96,7 +94,7 @@ export config = ->
 
   cmp.setup.cmdline(":", {
     sources: cmp.config.sources({
-      {name: "fuzzy_path"},
+      {name: "path"},
     }, {
       {name: "cmdline"},
       {name: "cmdline_history", max_item_count: 4},
@@ -110,7 +108,7 @@ export config = ->
         sources: {
           {name: 'omni'},
           {name: 'luasnip'},
-          {name: 'fuzzy_path'},
+          {name: 'path'},
           {name: 'calc'},
           {name: 'cmp_tabnine'},
           {name: 'buffer'},

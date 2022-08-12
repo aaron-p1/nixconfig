@@ -163,13 +163,7 @@ psetup({
     })
     u("hrsh7th/nvim-cmp", file: "cmp")
     u("hrsh7th/cmp-buffer")
-    u("tzachar/fuzzy.nvim", {
-      requires: {"nvim-telescope/telescope-fzf-native.nvim"}
-    })
-    u("tzachar/cmp-fuzzy-path", {
-      requires: {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'}
-    })
-    -- u("hrsh7th/cmp-path")
+    u("hrsh7th/cmp-path")
     u("hrsh7th/cmp-calc")
     u("hrsh7th/cmp-cmdline")
     u("dmitmel/cmp-cmdline-history")
