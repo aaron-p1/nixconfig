@@ -11,6 +11,12 @@ export config = ->
 
   nls.setup({
     sources:
+      -- editorconfig
+      -- DEPENDENCIES: editorconfig-checker
+      * diagnostics.editorconfig_checker.with({
+        command: "editorconfig-checker"
+        method: nls.methods.DIAGNOSTICS_ON_SAVE
+      })
       -- text / markdown
       * hover.dictionary
       -- web languages

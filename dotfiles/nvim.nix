@@ -1,6 +1,7 @@
 { lib, xsel, python3, gnumake, unzip, gcc, fd, ripgrep, nodePackages, local
-, sumneko-lua-language-server, rnix-lsp, nixfmt, shellcheck, shellharden, statix
-, stylua, fnlfmt, nodejs, stdenv, findutils, fennel, parallel, rsync }:
+, sumneko-lua-language-server, rnix-lsp, nixfmt, shellcheck, shellharden
+, editorconfig-checker, statix, stylua, fnlfmt, nodejs, stdenv, findutils
+, fennel, parallel, rsync }:
 let
   inherit (builtins) attrValues;
   inherit (lib) mapAttrsToList;
@@ -20,6 +21,7 @@ let
     # copilot
     nodejs
     # null-ls
+    editorconfig-checker
     statix
     nixfmt
     shellcheck
