@@ -29,6 +29,7 @@ servers =
 
 formatting_preferences =
   nix: "null-ls"
+  html: "null-ls"
 
 format_buffer = (bufnr) ->
   ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
