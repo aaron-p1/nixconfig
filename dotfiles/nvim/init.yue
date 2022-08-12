@@ -80,7 +80,10 @@ psetup({
     })
 
     -- syntax
-    u("sheerun/vim-polyglot")
+    u("sheerun/vim-polyglot", {
+      file: "polyglot"
+      setup: true
+    })
     u("dylon/vim-antlr")
     u("pigpigyyy/Yuescript-vim")
 
