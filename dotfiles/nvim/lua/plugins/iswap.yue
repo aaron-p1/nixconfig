@@ -9,12 +9,10 @@ export config = ->
     autoswap: true
   })
 
-  vim.keymap.set("n", "<leader>ss", i.iswap_with)
+  vim.keymap.set("n", "<leader>ss", i.iswap_with, desc: "ISwap")
   helper.registerPluginWk({
     prefix: "<leader>"
     map:
       s:
         name: "Swap",
-        s:
-          name: "iswap"
   })
