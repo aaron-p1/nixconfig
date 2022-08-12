@@ -31,10 +31,10 @@ formatting_preferences =
   nix: "null-ls"
   html: "null-ls"
 
-format_buffer = (bufnr) ->
+format_buffer = (bufnr, async = true) ->
   ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
 
-  return vim.lsp.buf.format(async: true, name: formatting_preferences[ft])
+  return vim.lsp.buf.format(async: async, name: formatting_preferences[ft])
 
 export on_attach = (client, bufnr) ->
   import "helper"
@@ -94,12 +94,13 @@ export on_attach = (client, bufnr) ->
   buf_keymap("n", "<C-K>", "Signature", vl.signature_help)
 
   buf_keymap("n", "<Leader>lwl", "List",
-    -> print(vim.inspect(vl.list_workspace_folders)))
+    -> print(vim.inspect(vl.list_workspace_folders())))
   buf_keymap("n", "<Leader>lwa", "Add folder", vl.add_workspace_folder)
   buf_keymap("n", "<Leader>lwr", "Remove folder", vl.remove_workspace_folder)
 
   -- edit
-  buf_keymap("n", "<Leader>lf", "Format", -> format_buffer(bufnr))
+  buf_keymap("n", "<Leader>lf", "Format async", -> format_buffer(bufnr))
+  buf_keymap("n", "<Leader>lF", "Format sync", -> format_buffer(bufnr, false))
   buf_keymap("n", "<Leader>lc", "Code action", vl.code_action)
   buf_keymap("v", "<Leader>lc", "Code action", vl.range_code_action)
   buf_keymap("n", "<Leader>lr", "Rename", vl.rename)
