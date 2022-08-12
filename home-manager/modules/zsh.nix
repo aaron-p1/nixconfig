@@ -29,8 +29,7 @@ in with lib; {
         FZF_BASE = "${pkgs.fzf}/share/fzf";
 
         # vi mode plugin
-        VI_MODE_RESET_PROMPT_ON_MODE_CHANGE = true;
-        MODE_INDICATOR = "%B%F{white}<%b<<%f";
+        VI_MODE_SET_CURSOR = true;
         WD_CONFIG = "${config.xdg.configHome}/warprc";
       };
       initExtra = ''
