@@ -1,3 +1,3 @@
-(local {: setOptions} (require :helper))
+(local {: set_options} (require :helper))
 
-(setOptions vim.bo {:expandtab true :shiftwidth 2})
+(set_options vim.bo {:expandtab true :shiftwidth 2})

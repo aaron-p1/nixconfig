@@ -1,13 +1,13 @@
-(local {:setOptions set-options} (require :helper))
-
 (local {: nvim_create_augroup : nvim_create_autocmd} vim.api)
+
+(local {: set_options} (require :helper))
 
 (fn setup []
   ;; disable numbers in terminal mode
   (let [augroup (nvim_create_augroup :Terminal {:clear true})]
     (nvim_create_autocmd :TermOpen
                          {:group augroup
-                          :callback #(set-options vim.o
+                          :callback #(set_options vim.o
                                                   {:number false
                                                    :relativenumber false})}))
   ;; highlight on yank
@@ -20,6 +20,6 @@
     (nvim_create_autocmd :BufRead
                          {:group augroup
                           :pattern "scp://*"
-                          :callback #(set-options vim.bo {:bufhidden :delete})})))
+                          :callback #(set_options vim.bo {:bufhidden :delete})})))
 
 {: setup}

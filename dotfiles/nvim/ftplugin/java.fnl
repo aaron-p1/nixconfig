@@ -1,5 +1,4 @@
-; TODO convert to kebab-case
-(local {:registerPluginWk register-plugin-wk} (require :helper))
+(local {: map_keys : register_plugin_wk} (require :helper))
 
 (local {:on_attach general-on-attach :getCapabilities get-capabilities}
        (require :plugins.lspconfig))
@@ -7,7 +6,7 @@
 (local jdtls (require :jdtls))
 (local jsetup (require :jdtls.setup))
 
-(local additional-keymaps
+(fn get-keymaps [bufnr]
        [[:n :<Leader>llo jdtls.organize_imports {:desc "Organize imports"}]
         [:n :<Leader>llv jdtls.organize_variable {:desc "Extract variable"}]
         [:v
@@ -27,17 +26,12 @@
            (jdtls.extract_method true))
          {:desc "Extract method"}]])
 
-(fn map-keys [bufnr]
-  (each [_ map (ipairs additional-keymaps)]
-    (vim.keymap.set (. map 1) (. map 2) (. map 3)
-                    (vim.fn.extend (. map 4) {:buffer bufnr}))))
-
 ; TODO debugging support
 (fn on-attach [client bufnr]
   (general-on-attach client bufnr)
   (jsetup.add_commands)
-  (map-keys bufnr)
-  (register-plugin-wk {:prefix :<Leader>
+  (map_keys get-keymaps bufnr)
+  (register_plugin_wk {:prefix :<Leader>
                        :buffer bufnr
                        :map {:l {:l {:name :Java}}}}))
 

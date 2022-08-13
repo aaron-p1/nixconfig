@@ -23,7 +23,7 @@
 
 (local {:set kset} vim.keymap)
 
-(local {:remove_index remove-index} (require :helper))
+(local {: remove_index} (require :helper))
 
 (local namespace (nvim_create_namespace :VirtNotes))
 (local note-highlight (nvim_get_hl_id_by_name :WildMenu))
@@ -73,7 +73,7 @@
 (lambda parse-notes-file [lines]
   "Needs to have at least one line with filename"
   (let [src-file (. lines 1)
-        note-lines (remove-index lines 1)
+        note-lines (remove_index lines 1)
         entries (vim.tbl_map #[(string.match $1 "^([^ ]*) (.*)")] note-lines)]
     [(vim.tbl_map #[(tonumber (. $1 1)) (. $1 2)] entries) src-file]))
 
@@ -205,9 +205,9 @@
   (mkdir notes-path :p)
   (kset :n :<Leader>va add-note {:desc :Add})
   (kset :n :<Leader>ve edit-note {:desc :Edit})
-  (kset :n :<Leader>vdd remove-note {:desc "Delete on line"})
-  (kset :n :<Leader>vda remove-all-notes {:desc "Delete all on line"})
-  (kset :n :<Leader>vdf remove-all-notes-in-file {:desc "Delete all in file"})
+  (kset :n :<Leader>vdd remove-note {:desc "On line"})
+  (kset :n :<Leader>vda remove-all-notes {:desc "All on line"})
+  (kset :n :<Leader>vdf remove-all-notes-in-file {:desc "All in file"})
   (kset :n :<Leader>vx move-note {:desc :Move})
   (kset :n :<Leader>vp paste-note {:desc :Paste})
   (kset :n :<Leader>fv get-notes-in-project {:desc "Virtual notes"})

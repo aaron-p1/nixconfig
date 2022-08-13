@@ -1,8 +1,0 @@
-export config = ->
-  import "pounce" as p
-
-  p.setup({
-    accept_keys: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  })
-
-  vim.keymap.set("n", "<Leader>p", p.pounce, desc: "Jump to line")

@@ -46,21 +46,18 @@ in stdenv.mkDerivation {
 
   src = ./nvim;
 
-  nativeBuildInputs = [ findutils local.yuescript fennel parallel rsync ];
+  nativeBuildInputs = [ findutils fennel parallel rsync ];
   buildInputs = attrValues dependencies ++ addPath;
 
   replacements = mapAttrsToList (k: v: "s=@${k}@=${v}=g") dependencies;
 
   buildPhase = ''
-    # yue
-    yue -t result .
-
     # fennel
     find . -name '*.fnl' \
       | parallel mkdir -p 'result/{//}' '&&' \
       fennel --globals vim --correlate -c '{}' '>' 'result/{.}.lua'
 
-    rsync --verbose --recursive --filter='- *.yue' --filter='- *.fnl' \
+    rsync --verbose --recursive --filter='- *.fnl' \
       --filter='- /result' ./ result
 
     sed -i "s=@ADDPATH@=${lib.makeBinPath addPath}=g" result/init.lua

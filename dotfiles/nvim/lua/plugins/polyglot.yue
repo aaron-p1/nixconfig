@@ -1,3 +1,0 @@
-export setup = ->
-  if (vim.fn.filereadable(vim.fn.getcwd() .. "/.editorconfig") == 1)
-    vim.g.polyglot_disabled = {"autoindent"}

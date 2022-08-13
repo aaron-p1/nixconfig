@@ -1,6 +1,0 @@
-export config = ->
-  domain_file = vim.api.nvim_get_runtime_file("extra/secrets/gitlab-domains.txt", false)[1]
-
-  if (domain_file)
-    file_content = vim.fn.readfile(domain_file)
-    vim.g.fugitive_gitlab_domains = file_content

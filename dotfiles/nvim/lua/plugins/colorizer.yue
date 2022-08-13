@@ -1,7 +1,0 @@
-export config = ->
-  import "colorizer" as c
-
-  c.setup({"*"}, {
-    css: true,
-    css_fn: true
-  })

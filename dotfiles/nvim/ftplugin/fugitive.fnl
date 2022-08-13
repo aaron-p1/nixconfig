@@ -1,5 +1,4 @@
-; TODO convert to kebab-case
-(local {:registerPluginWk register-plugin-wk} (require :helper))
+(local {: register_plugin_wk} (require :helper))
 
 (local log-count 50)
 
@@ -12,7 +11,7 @@
     (vim.keymap.set :n (.. :<Leader>g key) (.. "<Cmd>Git " command :<CR>)
                     {:buffer true})))
 
-(register-plugin-wk {:prefix :<Leader>
+(register_plugin_wk {:prefix :<Leader>
                      :buffer 0
                      :map {:g {:name :Git
                                :p :Pull

@@ -1,4 +1,4 @@
-(local {:startsWith starts-with} (require :helper))
+(local {: startswith} vim)
 
 (local {: nvim_create_namespace
         : nvim_get_hl_id_by_name
@@ -11,12 +11,14 @@
         : nvim_get_current_buf} vim.api)
 
 (local default-url "https://github.com/")
+(local line-pattern "^%s*%(u ")
+(local plug-name-pattern "^[^:]*:([^ %)]+)")
 
 (local namespace (nvim_create_namespace :PluginLinks))
 (local comment-highlight (nvim_get_hl_id_by_name :Comment))
 
 (fn create-extmark [bufnr id line plugin column]
-  (let [plugin-link (if (starts-with plugin :http) plugin
+  (let [plugin-link (if (startswith plugin :http) plugin
                         (.. default-url plugin))]
     (nvim_buf_set_extmark bufnr namespace (- line 1) 0
                           {: id
@@ -27,10 +29,10 @@
   (let [lines (icollect [k line (ipairs (nvim_buf_get_lines bufnr 0 -1 false))]
                 [k line])]
     (->> lines
-         (vim.tbl_filter #(not= (string.match (. $1 2) "^%s*u%([^)]") nil))
+         (vim.tbl_filter #(not= (string.match (. $1 2) line-pattern) nil))
          (vim.tbl_map #(let [[num line] $1]
                          [num
-                          (string.match line "^[^\"]*\"([^\"]*/[^\"]*)\"")
+                          (string.match line plug-name-pattern)
                           (length line)]))
          (vim.tbl_filter #(not= (. $1 2) nil)))))
 
@@ -50,7 +52,7 @@
   (let [augroup (nvim_create_augroup :PluginLinks {:clear true})]
     (nvim_create_autocmd [:BufRead :TextChanged :TextChangedI]
                          {:group augroup
-                          :pattern :init.yue
+                          :pattern :init.fnl
                           :callback #(update-extmarks (nvim_get_current_buf))})))
 
 {: setup}

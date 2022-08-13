@@ -1,3 +1,3 @@
-(local {: setOptions} (require :helper))
+(local {: set_options} (require :helper))
 
-(setOptions vim.bo {:suffixesadd ".php"})
+(set_options vim.bo {:suffixesadd ".php"})

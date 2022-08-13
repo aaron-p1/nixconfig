@@ -1,4 +1,6 @@
-(local {:remove_suffix remove-suffix :startsWith starts-with} (require :helper))
+(local {: startswith} vim)
+
+(local {: remove_suffix} (require :helper))
 
 (local remotes-file :extra/secrets/comparable_remotes.json)
 
@@ -43,8 +45,8 @@
         filename (vim.fn.expand "%:p")
         local-path (-> (vim.fn.system (.. "realpath --relative-base='" cwd
                                           "' '" filename "'"))
-                       (remove-suffix "\n"))]
-    (if (starts-with local-path "/")
+                       (remove_suffix "\n"))]
+    (if (startswith local-path "/")
         (vim.cmd (.. "echoerr 'Not a project file: " local-path "'"))
         (open-remote-selection local-path))))
 
