@@ -1,4 +1,4 @@
-(local {: startswith : endswith : tbl_extend} vim)
+(local {: startswith : endswith : tbl_filter : tbl_extend} vim)
 
 ;;; Util functions
 (lambda remove-prefix [str prefix]
@@ -15,6 +15,13 @@
   (icollect [key val (ipairs list)]
     (if (not= key index) val)))
 
+(lambda index-of [table elem]
+  (accumulate [result nil key val (pairs table) :until (not= nil result)]
+    (if (= elem val) key)))
+
+(lambda filter [table func]
+  (tbl_filter func table))
+
 (lambda copy [table]
   (collect [key val (pairs table)]
     key
@@ -27,6 +34,24 @@
 (lambda flatten [table]
   (accumulate [result [] _ v (pairs table)]
     (concat result v)))
+
+(lambda map [table func]
+  (collect [key val (pairs table)]
+    (match (func val key)
+      (k v) (values k v)
+      v (values key v))))
+
+(lambda flatmap [table func]
+  (flatten (map table func)))
+
+(lambda group-by [table func ?map]
+  (accumulate [result {} key val (pairs table)]
+    (let [new-key (func val key)
+          mapped-val (if (= nil ?map) val (?map val key))
+          new-val (match (. result new-key)
+                    nil [mapped-val]
+                    old (concat old [mapped-val]))]
+      (tbl_extend :force result {new-key new-val}))))
 
 (fn chain [...]
   (let [fnchain [...]]
@@ -56,9 +81,14 @@
 {:remove_prefix remove-prefix
  :remove_suffix remove-suffix
  :remove_index remove-index
+ :index_of index-of
+ : filter
  : copy
  : concat
  : flatten
+ : map
+ : flatmap
+ :group_by group-by
  : chain
  :set_options set-options
  :map_keys map-keys
