@@ -13,6 +13,10 @@ in with lib; {
   };
 
   config = mkIf cfg.enable {
+    # warning: Enabling both boot.enableContainers & virtualisation.containers
+    #          on system.stateVersion < 22.05 is unsupported.
+    boot.enableContainers = mkDefault (versionAtLeast config.system.stateVersion "22.05");
+
     virtualisation = {
       containers = {
         enable = true;
