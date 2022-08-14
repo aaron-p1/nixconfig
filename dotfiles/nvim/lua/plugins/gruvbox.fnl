@@ -12,11 +12,19 @@
             :invert_intend_guides false
             :inverse true
             :contrast ""
-            :overrides {:TelescopeMatching {:link :GruvboxRedBold}
+            :overrides {; telescope
+                        :TelescopeMatching {:link :GruvboxRedBold}
                         :TelescopeSelection {:bg colors.dark2}
+                        ; dressing
+                        :FloatBorder {:link :TelescopeBorder}
+                        :FloatTitle {:link :TelescopeTitle}
+                        ; cmp
                         :CmpItemAbbrMatch {:link :GruvboxRedBold}
                         :CmpItemAbbrMatchFuzzy {:link :GruvboxYellow}
-                        :CopilotSuggestion {:fg "#00FF88" :italic true}}})
+                        ; copilot
+                        :CopilotSuggestion {:fg "#00FF88" :italic true}
+                        ; virt-notes
+                        :VirtNote {:fg colors.bright_blue :bg colors.dark2}}})
   (vim.cmd "colorscheme gruvbox"))
 
 {: config}

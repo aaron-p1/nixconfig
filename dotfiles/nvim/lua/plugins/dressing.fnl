@@ -19,8 +19,6 @@
   (local d (require :dressing))
   (local t (require :telescope))
   (local tt (require :telescope.themes))
-  (nvim_set_hl 0 :FloatBorder {:link :TelescopeBorder})
-  (nvim_set_hl 0 :FloatTitle {:link :TelescopeTitle})
   (let [dropdown-config {:layout_config {:width get-select-float-width
                                          :height get-select-float-height}}]
     (d.setup {:input {:insert_only false :winblend 0 :min_width [70 0.2]}
