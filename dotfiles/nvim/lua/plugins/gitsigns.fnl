@@ -4,14 +4,12 @@
   [; Navigation
    [:n
     "[c"
-    #(if (= nil vim.o.diff) "<Cmd>Gitsigns prev_hunk<CR>" "[c")
-    {:desc "Prev hunk"}]
-   ; ]]
-   ; [[
+    #(if vim.o.diff "[c" "<Cmd>Gitsigns prev_hunk<CR>")
+    {:expr true :desc "Prev hunk"}]
    [:n
     "]c"
-    #(if (= nil vim.o.diff) "<Cmd>Gitsigns prev_hunk<CR>" "]c")
-    {:desc "Next hunk"}]
+    #(if vim.o.diff "]c" "<Cmd>Gitsigns next_hunk<CR>")
+    {:expr true :desc "Next hunk"}]
    ; Staging
    [:n :<Leader>ghs gs.stage_hunk {:desc :Stage}]
    [:v
