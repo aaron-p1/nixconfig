@@ -76,6 +76,8 @@
    ; ][
    [:n "]d" vd.goto_next {:desc "Next diagnostic"}]
    [:n :<Leader>ld vd.open_float {:desc "Show diagnostic"}]
+   [:n :<Leader>ltd #(vd.enable bufnr) {:desc "Enable diagnostics"}]
+   [:n :<Leader>ltD #(vd.disable bufnr) {:desc "Disable diagnostics"}]
    ; show info
    [:n :K vl.hover {:desc :Hover}]
    [:n :<C-K> vl.signature_help {:desc :Signature}]
@@ -118,7 +120,9 @@
     (add-highlighting bufnr))
   (register_plugin_wk {:prefix :<Leader>
                        :buffer bufnr
-                       :map {:l {:name :LSP :w {:name :Workspace}}}})
+                       :map {:l {:name :LSP
+                                 :w {:name :Workspace}
+                                 :t {:name :Toggle}}}})
   (register_plugin_wk {:prefix :g :buffer bufnr :map {:d {:name :Definitions}}}))
 
 (fn get-capabilities []
