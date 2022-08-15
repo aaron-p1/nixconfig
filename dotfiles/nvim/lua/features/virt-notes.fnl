@@ -125,7 +125,9 @@
 
 (lambda set-extmark [bufnr text line ?id]
   (nvim_buf_set_extmark bufnr namespace line 0
-                        {:id ?id :virt_text [[text note-highlight]]}))
+                        {:id ?id
+                         :hl_mode :combine
+                         :virt_text [[text note-highlight]]}))
 
 (lambda remove-all-extmarks [bufnr ?line]
   (each [_ note (ipairs (get-extmarks bufnr ?line))]
