@@ -14,10 +14,10 @@
                (i 3)
                (n 4 ": ")
                (i 4)
-               (i 0)] {:condition conds.line_begin}))
+               (i 0)]) {:condition conds.line_begin})
  (s :fn (fmta "function (<>) <><><>{\n\t<>\n}"
-              [(i 1) (n 2 "use (") (i 2) (n 2 ") ") (i 0)]
-              {:condition #(not (conds.line_begin $...))}))
+              [(i 1) (n 2 "use (") (i 2) (n 2 ") ") (i 0)])
+    {:condition #(not (conds.line_begin $...))})
  (s :fnn (fmta "fn (<>) =>> <>" [(i 1) (i 0)]))
  (s :phpdoc (fmta "/**\n * <>\n */" (i 0)))
  ; for
