@@ -48,7 +48,7 @@
              (u :ellisonleao/gruvbox.nvim {:file :gruvbox})
              ;; small text utilities
              (u :numToStr/Comment.nvim {:file :comment})
-             (u :tpope/vim-surround)
+             (u :kylechui/nvim-surround {:file :surround})
              (u :tpope/vim-unimpaired {:file :unimpaired})
              (u :tpope/vim-repeat)
              (u :tpope/vim-abolish)
