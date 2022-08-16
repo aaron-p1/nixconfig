@@ -1,32 +1,49 @@
 (local {: nvim_replace_termcodes
         : nvim_win_get_cursor
         : nvim_buf_get_lines
-        : nvim_buf_set_lines} vim.api)
+        : nvim_buf_set_lines
+        : nvim_create_augroup
+        : nvim_create_autocmd} vim.api)
+
+(var line-text [])
+
+(fn _G.copilot_get_text [line?]
+  "Get copilot text and delete line after if duplicate"
+  (let [result (vim.fn.copilot#TextQueuedForInsertion)
+        [first-result & result-lines] (vim.split result "\n")
+        last-result (. result-lines (length result-lines)) ;; row is 1 indexed
+        [row col] (nvim_win_get_cursor 0)
+        [line-after] (nvim_buf_get_lines 0 row (+ row 1) false)]
+    (when (= line-after last-result)
+      (nvim_buf_set_lines 0 row (+ row 1) false {}))
+    (set line-text (if line? result-lines []))
+    (if line? first-result result)))
+
+(fn _G.copilot_get_next_line []
+  (let [[line & other] line-text]
+    (set line-text other)
+    (if line line "")))
+
+(lambda accept-custom [termcode line?]
+  (let [next-line-expr "<CR><C-U><C-R><C-O>=v:lua.copilot_get_next_line()<CR>"
+        fn-replacement (.. "v:lua.copilot_get_text(v:" (if line? :true :false)
+                           ")")]
+    (if (and line? (not= 0 (length line-text)))
+        (nvim_replace_termcodes next-line-expr true true true)
+        (string.gsub (vim.fn.copilot#Accept termcode)
+                     "copilot#TextQueuedForInsertion%(%)" fn-replacement))))
 
 (fn config []
   (set vim.g.copilot_no_tab_map true)
   (set vim.g.copilot_assume_mapped true)
   (let [map :<C-o>
-        termcode (nvim_replace_termcodes :<C-o> true false true)]
-    (vim.keymap.set :i map
-                    #(string.gsub ((. vim.fn "copilot#Accept") termcode)
-                                  "copilot#TextQueuedForInsertion%(%)"
-                                  "v:lua.copilot_get_text()")
-                    {:noremap true
-                     :silent true
-                     :expr true
-                     :replace_keycodes false}))
-
-  (fn _G.copilot_get_text []
-    "Get copilot text and delete line after if duplcate"
-    (let [result ((. vim.fn "copilot#TextQueuedForInsertion"))
-          [_ & result-lines] (vim.split result "\n" {:trimempty true})
-          last-result (. result-lines (length result-lines))
-          ;; row is 1 indexed
-          [row col] (nvim_win_get_cursor 0)
-          [line-after] (nvim_buf_get_lines 0 row (+ row 1) false)]
-      (when (= line-after last-result)
-        (nvim_buf_set_lines 0 row (+ row 1) false {}))
-      result)))
+        line-map :<A-o>
+        termcode (nvim_replace_termcodes map true false true)
+        line-termcode (nvim_replace_termcodes line-map true false true)
+        opts {:noremap true :silent true :expr true :replace_keycodes false}]
+    (vim.keymap.set :i map #(accept-custom termcode false) opts)
+    (vim.keymap.set :i line-map #(accept-custom termcode true) opts))
+  (let [group (nvim_create_augroup :CopilotSuggestionReset {:clear true})]
+    (nvim_create_autocmd :InsertLeave {: group :callback #(set line-text [])})))
 
 {: config}
