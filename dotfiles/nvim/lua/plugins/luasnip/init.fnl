@@ -2,7 +2,7 @@
 
 (local {:set kset} vim.keymap)
 
-(local {: register_plugin_wk} (require :helper))
+(local {: register_plugin_wk : replace_tc} (require :helper))
 
 (fn config []
   (local ls (require :luasnip))
@@ -18,8 +18,9 @@
   (kset [:i :s] :<C-J> #(ls.jump -1) {:desc :Prev})
   (kset [:i :s] :<C-L> #(ls.jump 1) {:desc :Next})
   (kset :n :<Leader>i ls.unlink_current {:desc "Unlink snip"})
-  (kset [:i :s] :<C-E> #(if (ls.choice_active) :<Plug>luasnip-next-choice
-                            :<C-E>)
+  (kset [:i :s] :<C-E> #(if (ls.choice_active)
+                            (replace_tc :<Plug>luasnip-next-choice)
+                            (replace_tc :<C-E>))
         {:expr true :remap true :desc "Next choice"})
   (register_plugin_wk {:prefix :<Leader>
                        :map {:r {:name :Reload :p {:name :Plugin}}}})

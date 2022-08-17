@@ -1,4 +1,5 @@
 (local {: startswith : endswith : tbl_filter : tbl_extend} vim)
+(local {: nvim_replace_termcodes} vim.api)
 
 ;;; Util functions
 (lambda remove-prefix [str prefix]
@@ -60,6 +61,9 @@
                 [(val (unpack args))])))))
 
 ;;; vim utils
+(lambda replace-tc [str]
+  (nvim_replace_termcodes str true true true))
+
 (lambda set-options [opt-api opts]
   (each [key val (pairs opts)]
     (if (= :number (type key))
@@ -90,6 +94,7 @@
  : flatmap
  :group_by group-by
  : chain
+ :replace_tc replace-tc
  :set_options set-options
  :map_keys map-keys
  :register_plugin_wk register-plugin-wk}
