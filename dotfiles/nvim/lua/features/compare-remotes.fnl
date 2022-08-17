@@ -31,7 +31,7 @@
 
 (fn open-remote-selection [local-path]
   (vim.ui.select remotes
-                 {:prompt (.. "Select remote to compare " local-path :to)
+                 {:prompt (.. "Select remote to compare " local-path " against")
                   :format_item (fn [remote]
                                  (. remote 1))}
                  (fn [choice]
