@@ -35,6 +35,10 @@ in with lib; {
       oci-containers.backend = "podman";
     };
 
+    # fix service not finding newuidmap and newgidmap
+    # https://github.com/NixOS/nixpkgs/issues/138423#issuecomment-947888673
+    systemd.user.services.podman.path = optional cfg.podman "/run/wrappers";
+
     environment.systemPackages = optional cfg.podman pkgs.podman-compose;
   };
 }
