@@ -2,7 +2,7 @@
 
 (local {:snippet s
         :snippet_node sn
-        :indent_snippet_nodes isn
+        :indent_snippet_node isn
         :text_node t
         :insert_node i
         :function_node f
@@ -11,7 +11,7 @@
         :restore_node r
         &as ls} (require :luasnip))
 
-(local {:lambda l : rep :lpartial p :match m :nonempty n :dynamic_lambda dl}
+(local {:lambda l : rep :partial p :match m :nonempty n :dynamic_lambda dl}
        (require :luasnip.extras))
 
 (local {: fmt : fmta} (require :luasnip.extras.fmt))
