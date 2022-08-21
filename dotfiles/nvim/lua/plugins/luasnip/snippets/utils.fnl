@@ -14,6 +14,7 @@
 (local {:lambda l : rep :partial p :match m :nonempty n :dynamic_lambda dl}
        (require :luasnip.extras))
 
+(local {: postfix} (require :luasnip.extras.postfix))
 (local {: fmt : fmta} (require :luasnip.extras.fmt))
 
 (local events (require :luasnip.util.events))
@@ -74,6 +75,7 @@
  : m
  : n
  : dl
+ :pf postfix
  : fmt
  : fmta
  ; ai
