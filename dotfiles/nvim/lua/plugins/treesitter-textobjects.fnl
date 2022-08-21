@@ -4,12 +4,20 @@
   (local tsc (require :nvim-treesitter.configs))
   (tsc.setup {:textobjects {:select {:enable true
                                      :lookahead true
-                                     :keymaps {:af "@function.outer"
+                                     :include_surrounding_whitespace true
+                                     :keymaps {; custom
+                                               :aF "@fnwithdoc.outer"
+                                               :ae "@element.outer"
+                                               :ie "@element.inner"
+                                               ; builtin
+                                               :af "@function.outer"
                                                :if "@function.inner"
                                                :aa "@parameter.outer"
                                                :ai "@parameter.inner"
                                                :al "@loop.outer"
                                                :il "@loop.inner"
+                                               :ao "@conditional.outer"
+                                               :io "@conditional.inner"
                                                :ac "@comment.outer"}}
                             :move {:enable true
                                    :set_jumps true
