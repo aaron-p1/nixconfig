@@ -1,13 +1,13 @@
-(local {: s : f} (require :plugins.luasnip.snippets.utils))
+(local {: s : p} (require :plugins.luasnip.snippets.utils))
 
 ;; Make sure to not pass an invalid command, as io.popen() may write over nvim-text.
-(lambda run-in-shell [_ _ command]
+(lambda run-in-shell [command]
   (with-open [stdout (io.popen command :r)]
     (icollect [line (stdout:lines)]
       line)))
 
 (lambda shell-snippet [trig command]
-  (s trig (f run-in-shell [] {:user_args [command]})))
+  (s trig (p run-in-shell command)))
 
 [(shell-snippet :uuidgen :uuidgen)
  (shell-snippet :date "date --iso-8601")
