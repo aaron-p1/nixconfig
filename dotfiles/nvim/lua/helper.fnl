@@ -16,6 +16,33 @@
   (icollect [key val (ipairs list)]
     (if (not= key index) val)))
 
+(lambda remove-from-end [list count]
+  (var count (- (length list) count))
+  (icollect [_ val (ipairs list) :until (= 0 count)]
+    (do
+      (set count (- count 1))
+      val)))
+
+(lambda range [n1 ?n2 ?step]
+  (let [start (if ?n2 n1 0)
+        end (if ?n2 ?n2 n1)
+        step (if ?step ?step (if (> start end) -1 1))]
+    (values #(if (> (* end step) (* (+ $2 step) step))
+                 (+ $2 step)) end (- start step))))
+
+(lambda ripairs [list]
+  (values (fn [l index]
+            (var result nil)
+            (var resulti nil)
+            (for [i (- index 1) 1 -1 :until (not= nil result)]
+              (set result (. l i))
+              (set resulti i))
+            (values resulti result)) list (+ 1 (length list))))
+
+(lambda reverse [list]
+  (icollect [_ val (ripairs list)]
+    val))
+
 (lambda index-of [table elem]
   (accumulate [result nil key val (pairs table) :until (not= nil result)]
     (if (= elem val) key)))
@@ -29,7 +56,7 @@
     val))
 
 (lambda concat [list1 list2]
-  (icollect [_ val (pairs list2) :into (copy list1)]
+  (icollect [_ val (ipairs list2) :into (copy list1)]
     val))
 
 (lambda flatten [table]
@@ -85,6 +112,10 @@
 {:remove_prefix remove-prefix
  :remove_suffix remove-suffix
  :remove_index remove-index
+ :remove_from_end remove-from-end
+ : range
+ : ripairs
+ : reverse
  :index_of index-of
  : filter
  : copy
