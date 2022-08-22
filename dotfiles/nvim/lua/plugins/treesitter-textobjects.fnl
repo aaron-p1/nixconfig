@@ -11,6 +11,8 @@
                                                :ie "@element.inner"
                                                :i= "@assignexpression.inner"
                                                :a= "@assignexpression.outer"
+                                               :ix "@expression.inner"
+                                               :ax "@expression.outer"
                                                ; builtin
                                                :af "@function.outer"
                                                :if "@function.inner"

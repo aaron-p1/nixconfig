@@ -18,6 +18,81 @@
   right: (_) @assignexpression.inner
   (#make-range! "assignexpression.outer" @_start @assignexpression.inner))
 
+(binary_expression
+  left: (_) @expression.inner .
+  [
+    "*"
+    "%"
+    "+"
+    "-"
+    "."
+    ">>"
+    "<<"
+    ">"
+    "<"
+    ">="
+    "<="
+    "=="
+    "==="
+    "!="
+    "!=="
+    "<>"
+    "<=>"
+    "&"
+    "^"
+    "|"
+    "&&"
+    "||"
+    "??"
+    "instanceof"
+  ] @_end
+  (#make-range! "expression.outer" @expression.inner @_end))
+(binary_expression
+  [
+    "*"
+    "%"
+    "+"
+    "-"
+    "."
+    ">>"
+    "<<"
+    ">"
+    "<"
+    ">="
+    "<="
+    "=="
+    "==="
+    "!="
+    "!=="
+    "<>"
+    "<=>"
+    "&"
+    "^"
+    "|"
+    "&&"
+    "||"
+    "??"
+    "instanceof"
+  ] @_start .
+  right: (_) @expression.inner
+  (#make-range! "expression.outer" @_start @expression.inner))
+(binary_expression
+  right: (_) @expression.inner)
+(exponentiation_expression
+  left: (_) @expression.inner .
+  "**" @_end
+  (#make-range! "expression.outer" @expression.inner @_end))
+(exponentiation_expression
+  "**" @_start .
+  right: (_) @expression.inner
+  (#make-range! "expression.outer" @_start @expression.inner))
+(conditional_expression
+  condition: (_) @expression.inner)
+(conditional_expression
+  body: (_) @expression.inner)
+(conditional_expression
+  alternative: (_) @expression.inner)
+
 (if_statement
   condition: (parenthesized_expression
     (_) @conditional.inner))
