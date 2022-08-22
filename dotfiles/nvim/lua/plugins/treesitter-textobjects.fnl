@@ -3,7 +3,7 @@
 (fn config []
   (local tsc (require :nvim-treesitter.configs))
   (tsc.setup {:textobjects {:select {:enable true
-                                     :lookahead true
+                                     :lookahead false
                                      :include_surrounding_whitespace true
                                      :keymaps {; custom
                                                :aF "@fnwithdoc.outer"
