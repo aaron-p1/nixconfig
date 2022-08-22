@@ -190,6 +190,7 @@
 
 (set vim.g.mapleader "\\")
 (set vim.g.maplocalleader "|")
+(set vim.g.netrw_use_errorwindow 0)
 
 (set_options vim.o {; hidden changed buffers
                     :hidden true
