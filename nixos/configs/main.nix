@@ -157,5 +157,7 @@
   services = {
     journald.extraConfig = "SystemMaxUse=1G";
     smartd.enable = true;
+    # for yubikey pgp configuration
+    pcscd.enable = true;
   };
 }
