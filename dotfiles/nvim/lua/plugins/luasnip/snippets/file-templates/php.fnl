@@ -12,7 +12,7 @@
       (let [namespace-sections (tbl_map #(string.gsub $1 "^%l" string.upper)
                                         (split path "/"))]
         (accumulate [ns nil _ section (ipairs namespace-sections)]
-          (if (= nil ns) section (.. sn "\\" section))))))
+          (if (= nil ns) section (.. ns "\\" section))))))
 
 (lambda get-sibling-php-file [file]
   "Takes file path and returns file path"
@@ -34,7 +34,7 @@
   (sn nil [(t ["" "namespace "]) (i 1 namespace) (t [";" ""])]))
 
 (fn get-namespace-snip []
-  (let [file (expand "%")
+  (let [file (expand "%:.:h")
         namespace (match (sibling->namespace file)
                     nil (path->namespace file)
                     ns ns)]
