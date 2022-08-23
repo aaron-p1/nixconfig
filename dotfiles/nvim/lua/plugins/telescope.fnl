@@ -42,6 +42,7 @@
   (kset :n :<Leader>fb tb.buffers {:desc :Buffers})
   (kset :n :<Leader>fm tb.marks {:desc :Marks})
   (kset :n :<Leader>fcr tb.current_buffer_fuzzy_find {:desc "Fuzzy find"})
+  (kset :n :<Leader>fh tb.help_tags {:desc "Help tags"})
   ;; lsp
   (kset :n :<Leader>flr tb.lsp_references {:desc :References})
   (kset :n :<Leader>fls tb.lsp_document_symbols {:desc "Document symbols"})
