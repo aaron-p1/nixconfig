@@ -40,7 +40,7 @@
                 ; R
                 {:server :r_language_server}])
 
-(local formatting-preferences {:nix :null-ls :html :null-ls})
+(local formatting-preferences {:nix :null-ls :html :null-ls :json :null-ls})
 
 (lambda format-buffer [bufnr ?async]
   (let [async (if (= nil ?async) true ?async)
