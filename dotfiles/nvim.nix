@@ -1,6 +1,6 @@
 { lib, xsel, python3, gnumake, unzip, gcc, tree-sitter, fd, ripgrep
 , nodePackages, local, sumneko-lua-language-server, rnix-lsp, nixfmt, shellcheck
-, shellharden, editorconfig-checker, statix, stylua, fnlfmt, nodejs, stdenv
+, shellharden, editorconfig-checker, statix, stylua, fnlfmt, nodejs-16_x, stdenv
 , findutils, fennel, parallel, rsync }:
 let
   inherit (builtins) attrValues;
@@ -20,7 +20,7 @@ let
     # telescope
     ripgrep
     # copilot
-    nodejs
+    nodejs-16_x
     # null-ls
     editorconfig-checker
     statix
@@ -39,7 +39,7 @@ let
 
   dependencies = {
     # ---- dap
-    "phpdebug" = local.vscode-php-debug;
+    # "phpdebug" = local.vscode-php-debug;
   };
 in stdenv.mkDerivation {
   pname = "dotfiles-nvim";

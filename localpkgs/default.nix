@@ -18,6 +18,4 @@ final: prev: {
     nvidia-patched = nvidia_x11:
       prev.callPackage ./overrides/nvidia-patched { inherit nvidia_x11 nvlax; };
   };
-
-  zathuraPkgs = import ./overrides/zathura-pkgs { inherit final prev; };
 }
