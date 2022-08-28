@@ -2,7 +2,7 @@
   (#match? @sql "^(SELECT|INSERT|UPDATE|DROP)"))
 
 ((string_value) @regex
-  (#lua-match? @regex "^%^"))
+  (#lua-match? @regex "^/?%^"))
 
 ((comment) @comment
   (#match? @comment "^/(/|\\*[^*])"))
