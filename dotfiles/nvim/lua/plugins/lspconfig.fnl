@@ -1,3 +1,5 @@
+(local {: tbl_deep_extend} vim)
+
 (local {: nvim_buf_get_option
         : nvim_buf_set_option
         : nvim_command
@@ -6,12 +8,11 @@
         : nvim_create_autocmd
         : nvim_get_runtime_file} vim.api)
 
-(local {: extend} vim.fn)
-
 (local vl vim.lsp.buf)
 (local vd vim.diagnostic)
 
 (local {: map_keys : register_plugin_wk} (require :helper))
+(local {: get-profile-config} (require :profiles))
 
 (local servers [; dart
                 {:server :dartls}
@@ -131,15 +132,17 @@
 
 (lambda configure-servers [nvim-lsp capabilities]
   (each [_ lspdef (ipairs servers)]
-    ;; define each iteration because extend mutates tables
     (let [default-options {:on_attach on-attach : capabilities}]
       (match lspdef
-        {: server &as options} (let [server-config (. nvim-lsp server)]
-                                 (server-config.setup (extend default-options
-                                                              options)))
+        {:server server-name &as options} (let [server (. nvim-lsp server-name)
+                                          p-conf (or (get-profile-config server-name) {})
+                                          config (tbl_deep_extend :force
+                                                                  default-options
+                                                                  options p-conf)]
+                                      (server.setup config))
         {&as options} (print "Error in lspconfig: " (vim.inspect options))
-        server (let [server-config (. nvim-lsp server)]
-                 (server-config.setup default-options))))))
+        server-name (let [server-config (. nvim-lsp server-name)]
+                      (server-config.setup default-options))))))
 
 (lambda configure-lua [nvim-lsp capabilities]
   (let [runtime-path (vim.split package.path ";")
