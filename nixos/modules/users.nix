@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, options, pkgs, ... }:
 let cfg = config.within.users;
 in with lib; {
   options.within.users = mkOption {
@@ -20,19 +20,7 @@ in with lib; {
             description = "U2F Keys";
           };
 
-          resticBackup = {
-            enable = mkEnableOption "Restic Backup";
-
-            paths = mkOption {
-              type = with types; listOf str;
-              description = "Restic backup paths";
-            };
-
-            repository = mkOption {
-              type = types.str;
-              description = "Restic repository";
-            };
-          };
+          resticBackups = options.services.restic.backups;
         };
       }));
     default = { };
@@ -44,7 +32,7 @@ in with lib; {
       (mapAttrsToList (n: v: concatStringsSep ":" ([ n ] ++ v.u2fKeys))
         (filterAttrs (n: v: length v.u2fKeys > 0) cfg));
 
-    anyRestic = any (v: v.resticBackup.enable) (attrValues cfg);
+    anyRestic = any (v: attrNames v.resticBackups != [ ]) (attrValues cfg);
   in {
     users.users = mapAttrs' (name: config:
       nameValuePair name {
@@ -62,23 +50,13 @@ in with lib; {
     environment.etc =
       mkMerge [ (mkIf (u2fText != "") { "u2f-mappings".text = u2fText; }) ];
 
-    services.restic.backups = mapAttrs' (name: config:
-      nameValuePair "localbackup-${name}" {
-        user = name;
-        initialize = true;
-        passwordFile = "/etc/secrets/restic_local";
-        inherit (config.resticBackup) paths repository;
-        timerConfig = {
-          OnCalendar =
-            "0/3:00"; # every 3 hours (systemd-analyze --iterations=5 "0/3:00")
-        };
-        pruneOpts = [
-          "--keep-daily 7"
-          "--keep-weekly 5"
-          "--keep-monthly 12"
-          "--keep-yearly 75"
-        ];
-      }) (filterAttrs (n: v: v.resticBackup.enable) cfg);
+    services.restic.backups = let
+      backupsNestedList = mapAttrsToList (userName: userConfig:
+        mapAttrsToList (backupName: backupConfig: {
+          name = "${userName}-${backupName}";
+          value = backupConfig // { user = userName; };
+        }) userConfig.resticBackups) cfg;
+    in listToAttrs (flatten backupsNestedList);
 
     environment.systemPackages = optional anyRestic pkgs.restic;
   };
