@@ -1,4 +1,4 @@
-(local {: startswith : endswith : tbl_filter : tbl_extend} vim)
+(local {: startswith : endswith : tbl_filter : tbl_extend : tbl_keys} vim)
 (local {: nvim_replace_termcodes} vim.api)
 
 ;;; Util functions
@@ -43,12 +43,20 @@
   (icollect [_ val (ripairs list)]
     val))
 
+(lambda is-empty [table]
+  (accumulate [result true _ _ (pairs table) :until (not result)]
+    false))
+
 (lambda index-of [table elem]
   (accumulate [result nil key val (pairs table) :until (not= nil result)]
     (if (= elem val) key)))
 
 (lambda filter [table func]
   (tbl_filter func table))
+
+(lambda any [table func]
+  (accumulate [result false key val (pairs table) :until result]
+    (func val key)))
 
 (lambda copy [table]
   (collect [key val (pairs table)]
@@ -116,8 +124,10 @@
  : range
  : ripairs
  : reverse
+ :is_empty is-empty
  :index_of index-of
  : filter
+ : any
  : copy
  : concat
  : flatten

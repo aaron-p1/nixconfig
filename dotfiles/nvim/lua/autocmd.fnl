@@ -1,6 +1,23 @@
-(local {: nvim_create_augroup : nvim_create_autocmd} vim.api)
+(local {: nvim_buf_line_count
+        : nvim_buf_get_offset
+        : nvim_create_augroup
+        : nvim_create_autocmd} vim.api)
 
 (local {: set_options} (require :helper))
+
+;; 512K
+(local huge-file-size (* 1024 512))
+
+(lambda fix-huge-file [{:buf bufnr}]
+  (let [line-count (nvim_buf_line_count bufnr)
+        buffer-size (nvim_buf_get_offset bufnr line-count)]
+    (if (> buffer-size huge-file-size)
+        (do
+          (vim.opt.eventignore:append :FileType)
+          (set vim.wo.wrap false)
+          (set vim.bo.swapfile false)
+          (set vim.bo.undolevels -1))
+        (vim.opt.eventignore:remove :FileType))))
 
 (fn setup []
   ;; disable numbers in terminal mode
@@ -20,6 +37,9 @@
     (nvim_create_autocmd :BufRead
                          {:group augroup
                           :pattern "scp://*"
-                          :callback #(set_options vim.bo {:bufhidden :delete})})))
+                          :callback #(set_options vim.bo {:bufhidden :delete})}))
+  ;; huge files fix
+  (let [augroup (nvim_create_augroup :FixHugeFiles {:clear true})]
+    (nvim_create_autocmd :BufRead {:group augroup :callback fix-huge-file})))
 
 {: setup}
