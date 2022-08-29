@@ -133,9 +133,12 @@
                  :after [:lsp_signature.nvim
                          :nvim-cmp
                          :telescope.nvim
-                         :which-key.nvim]})
-             (u :mfussenegger/nvim-jdtls)
+                         :which-key.nvim
+                         :schemastore.nvim]})
+             ;; json
+             (u :b0o/schemastore.nvim)
              ;; java
+             (u :mfussenegger/nvim-jdtls)
              (u :jose-elias-alvarez/null-ls.nvim
                 {:file :null-ls
                  :requires [:nvim-lua/plenary.nvim]

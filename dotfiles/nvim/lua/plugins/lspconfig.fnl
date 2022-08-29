@@ -11,8 +11,10 @@
 (local vl vim.lsp.buf)
 (local vd vim.diagnostic)
 
-(local {: map_keys : register_plugin_wk} (require :helper))
+(local {: map_keys : register_plugin_wk : concat} (require :helper))
 (local {: get-profile-config} (require :profiles))
+
+(local {:json {:schemas json-schemas}} (require :schemastore))
 
 (local servers [; dart
                 {:server :dartls}
@@ -23,7 +25,11 @@
                 ; php
                 {:server :intelephense}
                 ; json
-                {:server :jsonls}
+                {:server :jsonls
+                 :settings {:json {:validate {:enable true}
+                                   :schemas (concat (json-schemas)
+                                                    (get-profile-config :json-schemas
+                                                                        []))}}}
                 ; yaml
                 {:server :yamlls}
                 ; vue
@@ -135,11 +141,14 @@
     (let [default-options {:on_attach on-attach : capabilities}]
       (match lspdef
         {:server server-name &as options} (let [server (. nvim-lsp server-name)
-                                          p-conf (or (get-profile-config server-name) {})
-                                          config (tbl_deep_extend :force
-                                                                  default-options
-                                                                  options p-conf)]
-                                      (server.setup config))
+                                                p-conf (get-profile-config :lsp-config
+                                                                           {}
+                                                                           server-name)
+                                                config (tbl_deep_extend :force
+                                                                        default-options
+                                                                        options
+                                                                        p-conf)]
+                                            (server.setup config))
         {&as options} (print "Error in lspconfig: " (vim.inspect options))
         server-name (let [server-config (. nvim-lsp server-name)]
                       (server-config.setup default-options))))))
