@@ -1,3 +1,5 @@
+(local {: nvim_list_bufs} vim.api)
+
 (fn config []
   (local cmp (require :cmp))
   (local cc (require :cmp.config.compare))
@@ -12,7 +14,8 @@
                         {:name :calc}
                         {:name :cmp_tabnine}
                         {:name :digraphs :max_item_count 4}
-                        {:name :buffer}]
+                        {:name :buffer
+                         :options {:get_bufnrs #(nvim_list_bufs)}}]
               :sorting {:priority_weight 2
                         :comparators [cc.offset
                                       cc.exact
