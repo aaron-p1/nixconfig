@@ -103,7 +103,7 @@
    [:n :<Leader>lr vl.rename {:desc :Rename}]])
 
 (lambda add-highlighting [bufnr]
-  (let [group (nvim_create_augroup :lsp_document_highlight {:clear false})]
+  (let [group (nvim_create_augroup :lsp_document_highlight {:clear true})]
     (nvim_clear_autocmds {:buffer bufnr : group})
     (nvim_create_autocmd :CursorHold
                          {:buffer bufnr
