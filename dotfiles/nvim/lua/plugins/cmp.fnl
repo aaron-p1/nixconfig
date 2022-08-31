@@ -1,10 +1,11 @@
 (local {: nvim_list_bufs} vim.api)
 
+(local {:mapping cm :config co &as cmp} (require :cmp))
+
+(local cc (require :cmp.config.compare))
+(local lspkind (require :lspkind))
+
 (fn config []
-  (local cmp (require :cmp))
-  (local cc (require :cmp.config.compare))
-  (local lspkind (require :lspkind))
-  (local {:mapping cm :config co} cmp)
   (cmp.setup {:sources [{:name :nmp}
                         {:name :nvim_lsp :max_item_count 32}
                         {:name :luasnip}
@@ -15,7 +16,7 @@
                         {:name :cmp_tabnine}
                         {:name :digraphs :max_item_count 4}
                         {:name :buffer
-                         :options {:get_bufnrs #(nvim_list_bufs)}}]
+                         :option {:get_bufnrs #(nvim_list_bufs)}}]
               :sorting {:priority_weight 2
                         :comparators [cc.offset
                                       cc.exact
