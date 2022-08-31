@@ -27,6 +27,6 @@
       :fileMatch [:available-levels.json]}
      {:url (.. schema-path :level.schema.json) :fileMatch [:levels/*.json]}
      {:url (.. schema-path :textures.schema.json)
-      :fileMatch [:textures/**.json]}]))
+      :fileMatch [:textures/**/*.json]}]))
 
 {: get-profile-config}
