@@ -4,6 +4,7 @@
         : nvim_create_autocmd} vim.api)
 
 (local {: set_options} (require :helper))
+(local {: get-profile-config} (require :profiles))
 
 ;; 512K
 (local huge-file-size (* 1024 512))
@@ -20,6 +21,7 @@
         (vim.opt.eventignore:remove :FileType))))
 
 (fn setup []
+  (get-profile-config :autocmd)
   ;; disable numbers in terminal mode
   (let [augroup (nvim_create_augroup :Terminal {:clear true})]
     (nvim_create_autocmd :TermOpen

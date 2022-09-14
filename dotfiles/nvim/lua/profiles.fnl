@@ -1,3 +1,5 @@
+(local {: nvim_create_augroup : nvim_create_autocmd} vim.api)
+
 (local {: getcwd} vim.fn)
 
 (local {: map} (require :helper))
@@ -15,6 +17,13 @@
 ;;;; Configuration functions
 
 ;;; webt
+
+(fn config.webt-game.autocmd []
+  (let [augroup (nvim_create_augroup :WebtGotoFile {:clear true})]
+    (nvim_create_autocmd :FileType
+                         {:group augroup
+                          :pattern :json
+                          :callback #(set vim.bo.includeexpr "'web/' . v:fname")})))
 
 (fn config.webt-game.json-schemas []
   (let [cwd (getcwd)
