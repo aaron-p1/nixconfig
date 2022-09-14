@@ -155,8 +155,6 @@
              (u :hrsh7th/cmp-nvim-lsp)
              (u :dmitmel/cmp-digraphs)
              (u :David-Kunz/cmp-npm {:requires [:nvim-lua/plenary.nvim]})
-             (u :tzachar/cmp-tabnine
-                {:file :cmp-tabnine :run :./install.sh :after :nvim-cmp})
              ;; DEPENDENCIES: nodejs
              (u :github/copilot.vim {:file :copilot})
              (u :ray-x/lsp_signature.nvim)

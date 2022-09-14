@@ -13,7 +13,6 @@
                          :options {:fd_timeout_msec 1000
                                    :fd_cmd [:fd :-d :4 :-p]}}
                         {:name :calc}
-                        {:name :cmp_tabnine}
                         {:name :digraphs :max_item_count 4}
                         {:name :buffer
                          :option {:get_bufnrs #(nvim_list_bufs)}}]
