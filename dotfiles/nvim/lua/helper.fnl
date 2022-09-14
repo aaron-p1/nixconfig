@@ -1,5 +1,16 @@
 (local {: startswith : endswith : tbl_filter : tbl_extend : tbl_keys} vim)
-(local {: nvim_replace_termcodes} vim.api)
+
+(local {: nvim_replace_termcodes
+        : nvim_win_get_cursor
+        : nvim_get_mode
+        : nvim_buf_get_lines
+        : nvim_buf_get_text
+        : nvim_buf_set_text
+        : nvim_buf_set_lines} vim.api)
+
+(local {:get dget} vim.diagnostic)
+
+(local {: get_parser} vim.treesitter)
 
 ;;; Util functions
 (lambda remove-prefix [str prefix]
@@ -50,6 +61,11 @@
 (lambda index-of [table elem]
   (accumulate [result nil key val (pairs table) :until (not= nil result)]
     (if (= elem val) key)))
+
+(lambda find-index [list func ?from-end]
+  (let [iter (if ?from-end ripairs ipairs)]
+    (accumulate [result nil key val (iter list) :until (not= nil result)]
+      (if (func val) key))))
 
 (lambda filter [table func]
   (tbl_filter func table))
@@ -112,6 +128,40 @@
     (let [[mode key cmd opts] map]
       (vim.keymap.set mode key cmd (tbl_extend :force opts {:buffer bufnr})))))
 
+(lambda get-cursor-lang []
+  (let [[row col] (nvim_win_get_cursor 0)
+        real-row (- row 1)
+        cursor-pos [real-row col real-row col]
+        (parser-found? parser) (pcall get_parser 0)]
+    (if parser-found?
+        (: (parser:language_for_range cursor-pos) :lang)
+        nil)))
+
+(lambda in-mode? [mode]
+  (let [{:mode cur-mode} (nvim_get_mode)]
+    (= mode cur-mode)))
+
+(lambda replace-when-diag [bufnr diag-match line-match replacement]
+  "Replace first nonempty line before diag when diagnostic matches diag-match"
+  (let [diags (dget bufnr)
+        max-prev-lines 5]
+    (each [_ diag (ipairs (filter diags #(string.match $1.message diag-match)))]
+      (let [row diag.lnum
+            col diag.col
+            [until-col] (nvim_buf_get_text bufnr row 0 row col {})]
+        (if (not (until-col:match "^%s*$"))
+            (let [new-line (string.gsub until-col line-match replacement)]
+              (nvim_buf_set_text bufnr row 0 row col [new-line]))
+            (let [start-line (math.max 0 (- row max-prev-lines))
+                  lines (nvim_buf_get_lines bufnr start-line row false)
+                  to-edit (find-index lines #(not ($1:match "^%s*$")) true)]
+              (when (not= nil to-edit)
+                (let [new-line (string.gsub (. lines to-edit) line-match
+                                            replacement)
+                      line-num (+ start-line to-edit -1)]
+                  (nvim_buf_set_lines bufnr line-num (+ line-num 1) false
+                                      [new-line])))))))))
+
 ;;; plugin utils
 (lambda register-plugin-wk [config]
   (local wk (require :which-key))
@@ -126,6 +176,7 @@
  : reverse
  :is_empty is-empty
  :index_of index-of
+ : find-index
  : filter
  : any
  : copy
@@ -138,4 +189,7 @@
  :replace_tc replace-tc
  :set_options set-options
  :map_keys map-keys
+ :get_cursor_lang get-cursor-lang
+ : in-mode?
+ : replace-when-diag
  :register_plugin_wk register-plugin-wk}
