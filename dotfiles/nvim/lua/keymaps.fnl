@@ -42,7 +42,7 @@
   (kset :n :<Leader>tc close-tab {:desc "Tab close"})
   (kset :n :<Leader>to :<Cmd>tabonly<CR> {:silent true})
   ;; replace text object
-  (kset :n :gp "<Cmd>:set operatorfunc=v:lua.replace_selection<CR>g@"
+  (kset :n :gp "<Cmd>set operatorfunc=v:lua.replace_selection<CR>g@"
         {:silent true}))
 
 {: setup}
