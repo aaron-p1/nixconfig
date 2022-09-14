@@ -31,7 +31,10 @@
                           c.statix
                           ; elixir
                           d.credo
-                          f.surface]
+                          f.surface
+                          ; python
+                          d.flake8
+                          f.autopep8]
                 :on_attach lsplugin.on_attach
                 :capabilities (lsplugin.getCapabilities)})))
 
