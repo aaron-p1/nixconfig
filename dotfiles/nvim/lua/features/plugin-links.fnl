@@ -1,14 +1,15 @@
-(local {: startswith} vim)
-
-(local {: nvim_create_namespace
-        : nvim_get_hl_id_by_name
-        : nvim_buf_get_lines
-        : nvim_buf_get_extmarks
-        : nvim_buf_set_extmark
-        : nvim_buf_del_extmark
-        : nvim_create_augroup
-        : nvim_create_autocmd
-        : nvim_get_current_buf} vim.api)
+(local {: startswith
+        : tbl_filter
+        : tbl_map
+        :api {: nvim_create_namespace
+              : nvim_get_hl_id_by_name
+              : nvim_buf_get_lines
+              : nvim_buf_get_extmarks
+              : nvim_buf_set_extmark
+              : nvim_buf_del_extmark
+              : nvim_create_augroup
+              : nvim_create_autocmd
+              : nvim_get_current_buf}} vim)
 
 (local default-url "https://github.com/")
 (local line-pattern "^%s*%(u ")
@@ -29,12 +30,10 @@
   (let [lines (icollect [k line (ipairs (nvim_buf_get_lines bufnr 0 -1 false))]
                 [k line])]
     (->> lines
-         (vim.tbl_filter #(not= (string.match (. $1 2) line-pattern) nil))
-         (vim.tbl_map #(let [[num line] $1]
-                         [num
-                          (string.match line plug-name-pattern)
-                          (length line)]))
-         (vim.tbl_filter #(not= (. $1 2) nil)))))
+         (tbl_filter #(not= (string.match (. $1 2) line-pattern) nil))
+         (tbl_map #(let [[num line] $1]
+                     [num (string.match line plug-name-pattern) (length line)]))
+         (tbl_filter #(not= (. $1 2) nil)))))
 
 (fn update-extmarks [bufnr]
   (let [plugin-lines (get-plugin-lines bufnr)

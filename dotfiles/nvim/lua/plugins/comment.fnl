@@ -1,5 +1,6 @@
+(local {: setup} (require :Comment))
+
 (fn config []
-  (local c (require :Comment))
-  (c.setup))
+  (setup))
 
 {: config}

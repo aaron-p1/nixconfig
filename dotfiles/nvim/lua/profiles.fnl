@@ -1,6 +1,6 @@
-(local {: split} vim)
-(local {: nvim_create_augroup : nvim_create_autocmd} vim.api)
-(local {: getcwd} vim.fn)
+(local {: split
+        :api {: nvim_create_augroup : nvim_create_autocmd}
+        :fn {: getcwd}} vim)
 
 (local {: map : concat :is_empty is-empty} (require :helper))
 

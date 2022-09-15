@@ -1,8 +1,8 @@
 (local {: nvim_buf_set_text : nvim_tabpage_get_number : nvim_list_tabpages}
        vim.api)
 
+(local {: tabclose : tabprevious} vim.cmd)
 (local {: getreg} vim.fn)
-
 (local {:set kset} vim.keymap)
 
 (local {: get-operator-range} (require :helper))
@@ -17,9 +17,9 @@
         go-prev? (<= (+ count (nvim_tabpage_get_number 0))
                      (length (nvim_list_tabpages)))]
     (pcall #(for [_ 1 count 1]
-              (vim.cmd :tabclose)))
+              (tabclose)))
     (when (and go-prev? (< 1 (nvim_tabpage_get_number 0)))
-      (vim.cmd :tabprevious))))
+      (tabprevious))))
 
 (fn setup []
   ;; alt + Esc for leaving terminal

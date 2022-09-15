@@ -1,6 +1,9 @@
+(local {:set kset} vim.keymap)
+
+(local {: setup : pounce} (require :pounce))
+
 (fn config []
-  (local p (require :pounce))
-  (p.setup {:accept_keys :ABCDEFGHIJKLMNOPQRSTUVWXYZ})
-  (vim.keymap.set :n :<Leader>p p.pounce {:desc "Jump to line"}))
+  (setup {:accept_keys :ABCDEFGHIJKLMNOPQRSTUVWXYZ})
+  (kset :n :<Leader>p pounce {:desc "Jump to line"}))
 
 {: config}

@@ -1,36 +1,43 @@
-(local {: nvim_buf_get_mark} vim.api)
-
-(local {:set kset} vim.keymap)
+(local {:api {: nvim_buf_get_mark} :keymap {:set kset}} vim)
 
 (local {: register_plugin_wk} (require :helper))
 
-(local dv (require :diffview))
-(local da (require :diffview.actions))
+(local {: file_history : setup} (require :diffview))
+(local {: select_next_entry
+        : select_prev_entry
+        : focus_entry
+        : listing_style
+        : refresh_files
+        : select_entry
+        : options
+        : open_commit_log
+        : goto_file_tab
+        : copy_hash
+        : close} (require :diffview.actions))
 
 (fn _G.diffview_file_history []
   (let [[start-line] (nvim_buf_get_mark 0 "[")
         [end-line] (nvim_buf_get_mark 0 "]")]
-    (dv.file_history [start-line end-line])))
+    (file_history [start-line end-line])))
 
 (fn config []
-  (dv.setup {:file_panel {:win_config {:position :right}}
-             :keymaps {:disable_defaults true
-                       :view {:<Tab> da.select_next_entry
-                              :<S-Tab> da.select_prev_entry}
-                       :file_panel {:<CR> da.focus_entry
-                                    :<Tab> da.select_next_entry
-                                    :<S-Tab> da.select_prev_entry
-                                    :i da.listing_style
-                                    :R da.refresh_files}
-                       :file_history_panel {:<CR> da.select_entry
-                                            :g! da.options
-                                            :L da.open_commit_log
-                                            :<Tab> da.select_next_entry
-                                            :<S-Tab> da.select_prev_entry
-                                            :gf da.goto_file_tab
-                                            :gy da.copy_hash}
-                       :option_panel {:<Tab> da.select_entry :q da.close}}
-             :hooks {:diff_buf_read #(set vim.opt_local.wrap false)}})
+  (setup {:file_panel {:win_config {:position :right}}
+          :keymaps {:disable_defaults true
+                    :view {:<Tab> select_next_entry :<S-Tab> select_prev_entry}
+                    :file_panel {:<CR> focus_entry
+                                 :<Tab> select_next_entry
+                                 :<S-Tab> select_prev_entry
+                                 :i listing_style
+                                 :R refresh_files}
+                    :file_history_panel {:<CR> select_entry
+                                         :g! options
+                                         :L open_commit_log
+                                         :<Tab> select_next_entry
+                                         :<S-Tab> select_prev_entry
+                                         :gf goto_file_tab
+                                         :gy copy_hash}
+                    :option_panel {:<Tab> select_entry :q close}}
+          :hooks {:diff_buf_read #(set vim.opt_local.wrap false)}})
   (kset :n :<Leader>gdf "<Cmd>DiffviewFileHistory %<CR>"
         {:silent true :desc "Current file history"})
   (kset [:n :v] :<Leader>gdF :<Cmd>DiffviewFileHistory<CR>

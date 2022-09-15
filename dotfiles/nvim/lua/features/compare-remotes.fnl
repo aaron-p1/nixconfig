@@ -1,9 +1,12 @@
-(local {: tbl_extend : startswith} vim)
-(local {: nvim_get_runtime_file : nvim_get_current_tabpage} vim.api)
-(local {: split : diffsplit : echoerr} vim.cmd)
-(local {: readfile : getcwd : expand} vim.fn)
-(local {:decode jdecode} vim.json)
-(local {:set kset} vim.keymap)
+(local {: tbl_extend
+        : startswith
+        :api {: nvim_get_runtime_file
+              : nvim_tabpage_get_number
+              : nvim_get_current_tabpage}
+        :cmd {: split : diffsplit : echoerr}
+        :fn {: readfile : getcwd : expand}
+        :json {:decode jdecode}
+        :keymap {:set kset}} vim)
 
 (local {: map} (require :helper))
 (local {: profiles} (require :profiles))
@@ -35,7 +38,7 @@
                                          name)}
                  (fn [choice]
                    (when (not= choice nil)
-                     (let [tab (nvim_get_current_tabpage)
+                     (let [tab (nvim_tabpage_get_number (nvim_get_current_tabpage))
                            [_ remote-prefix] choice
                            remote-path (.. remote-prefix local-path)]
                        (split {:mods {: tab :silent true}})

@@ -1,6 +1,7 @@
-(local {: tbl_extend : tbl_map : endswith} vim)
-
-(local {: extend : stdpath : readdir : fnamemodify} vim.fn)
+(local {: tbl_extend
+        : tbl_map
+        : endswith
+        :fn {: extend : stdpath : readdir : fnamemodify}} vim)
 
 (local {: flatten} (require :helper))
 (local {: add_snippets} (require :luasnip))

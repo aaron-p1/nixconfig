@@ -1,7 +1,7 @@
-(local {: nvim_create_autocmd} vim.api)
+(local {:api {: nvim_create_autocmd} : bo :cmd {: setfiletype}} vim)
 
 (nvim_create_autocmd [:BufRead :BufNewFile]
                      {:pattern ".env{,.example}"
                       :callback (fn []
-                                  (vim.cmd "setfiletype dosini")
-                                  (set vim.bo.commentstring "# %s"))})
+                                  (setfiletype :dosini)
+                                  (set bo.commentstring "# %s"))})

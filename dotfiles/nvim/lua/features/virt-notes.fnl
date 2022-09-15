@@ -1,30 +1,28 @@
-(local {: startswith : ui} vim)
-
-(local {: nvim_create_namespace
-        : nvim_get_hl_id_by_name
-        : nvim_set_hl
-        : nvim_get_current_buf
-        : nvim_win_get_cursor
-        : nvim_buf_get_extmarks
-        : nvim_buf_get_extmark_by_id
-        : nvim_buf_set_extmark
-        : nvim_buf_del_extmark
-        : nvim_create_autocmd
-        : nvim_create_augroup} vim.api)
-
-(local {: stdpath
-        : expand
-        : substitute
-        : delete
-        : writefile
-        : extend
-        : readfile
-        : getcwd
-        : readdir
-        : reduce
-        : mkdir} vim.fn)
-
-(local {:set kset} vim.keymap)
+(local {: startswith
+        : ui
+        :api {: nvim_create_namespace
+              : nvim_get_hl_id_by_name
+              : nvim_set_hl
+              : nvim_get_current_buf
+              : nvim_win_get_cursor
+              : nvim_buf_get_extmarks
+              : nvim_buf_get_extmark_by_id
+              : nvim_buf_set_extmark
+              : nvim_buf_del_extmark
+              : nvim_create_autocmd
+              : nvim_create_augroup}
+        :fn {: stdpath
+             : expand
+             : substitute
+             : delete
+             : writefile
+             : extend
+             : readfile
+             : getcwd
+             : readdir
+             : reduce
+             : mkdir}
+        :keymap {:set kset}} vim)
 
 (local {: index_of
         : flatmap

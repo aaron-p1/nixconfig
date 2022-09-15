@@ -1,6 +1,4 @@
-(local {: startswith} vim)
-
-(local {:set kset} vim.keymap)
+(local {: startswith :keymap {:set kset}} vim)
 
 (local {: register_plugin_wk : replace_tc} (require :helper))
 

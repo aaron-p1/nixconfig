@@ -1,7 +1,8 @@
-(local {: nvim_buf_line_count
-        : nvim_buf_get_offset
-        : nvim_create_augroup
-        : nvim_create_autocmd} vim.api)
+(local {:api {: nvim_buf_line_count
+              : nvim_buf_get_offset
+              : nvim_create_augroup
+              : nvim_create_autocmd}
+        :highlight {:on_yank h-on-yank}} vim)
 
 (local {: set_options} (require :helper))
 (local {: get-profile-config} (require :profiles))
@@ -32,8 +33,7 @@
   ;; highlight on yank
   (let [augroup (nvim_create_augroup :YankHighlight {:clear true})]
     (nvim_create_autocmd :TextYankPost
-                         {:group augroup
-                          :callback #(vim.highlight.on_yank {:timeout 300})}))
+                         {:group augroup :callback #(h-on-yank {:timeout 300})}))
   ;; delete hidden scp files
   (let [augroup (nvim_create_augroup :HiddenScp {:clear true})]
     (nvim_create_autocmd :BufRead

@@ -1,11 +1,9 @@
-(local {: startswith} vim)
-
-(local {: nvim_buf_get_lines
-        : nvim_buf_set_lines
-        : nvim_create_augroup
-        : nvim_create_autocmd} vim.api)
-
-(local {:set kset} vim.keymap)
+(local {: startswith
+        :api {: nvim_buf_get_lines
+              : nvim_buf_set_lines
+              : nvim_create_augroup
+              : nvim_create_autocmd}
+        :keymap {:set kset}} vim)
 
 (local {: register_plugin_wk} (require :helper))
 

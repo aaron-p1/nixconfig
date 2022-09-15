@@ -1,17 +1,19 @@
-(local {: startswith : endswith : tbl_filter : tbl_extend : tbl_keys} vim)
-
-(local {: nvim_replace_termcodes
-        : nvim_win_get_cursor
-        : nvim_get_mode
-        : nvim_buf_get_lines
-        : nvim_buf_get_text
-        : nvim_buf_set_text
-        : nvim_buf_get_mark
-        : nvim_buf_set_lines} vim.api)
-
-(local {:get dget} vim.diagnostic)
-
-(local {: get_parser} vim.treesitter)
+(local {: startswith
+        : endswith
+        : tbl_filter
+        : tbl_extend
+        : tbl_keys
+        :api {: nvim_replace_termcodes
+              : nvim_win_get_cursor
+              : nvim_get_mode
+              : nvim_buf_get_lines
+              : nvim_buf_get_text
+              : nvim_buf_set_text
+              : nvim_buf_get_mark
+              : nvim_buf_set_lines}
+        :diagnostic {:get dget}
+        :keymap {:set kset}
+        :treesitter {: get_parser}} vim)
 
 ;;; Util functions
 (lambda remove-prefix [str prefix]
@@ -127,7 +129,7 @@
 (lambda map-keys [get-keys-fn bufnr ...]
   (each [_ map (ipairs (get-keys-fn bufnr ...))]
     (let [[mode key cmd opts] map]
-      (vim.keymap.set mode key cmd (tbl_extend :force opts {:buffer bufnr})))))
+      (kset mode key cmd (tbl_extend :force opts {:buffer bufnr})))))
 
 (lambda get-operator-range [motion-type]
   "Get 0-indexed range of operator motion"

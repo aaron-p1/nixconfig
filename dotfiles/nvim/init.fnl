@@ -1,11 +1,10 @@
-(local {: tbl_extend : cmd} vim)
-
-(local {: nvim_get_current_win
-        : nvim_get_current_buf
-        : nvim_buf_get_name
-        : nvim_buf_get_option} vim.api)
-
-(local {: stdpath : isdirectory : system} vim.fn)
+(local {: tbl_extend
+        : cmd
+        :api {: nvim_get_current_win
+              : nvim_get_current_buf
+              : nvim_buf_get_name
+              : nvim_buf_get_option}
+        :fn {: stdpath : isdirectory : system}} vim)
 
 (set vim.env.PATH (.. vim.env.PATH ":@ADDPATH@"))
 

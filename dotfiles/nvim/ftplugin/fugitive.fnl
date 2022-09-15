@@ -1,3 +1,5 @@
+(local {:set kset} vim.keymap)
+
 (local {: register_plugin_wk} (require :helper))
 
 (local log-count 50)
@@ -8,8 +10,7 @@
             :l (.. "log -" log-count)
             :L (.. "log -" (* log-count 2))}]
   (each [key command (pairs maps)]
-    (vim.keymap.set :n (.. :<Leader>g key) (.. "<Cmd>Git " command :<CR>)
-                    {:buffer true})))
+    (kset :n (.. :<Leader>g key) (.. "<Cmd>Git " command :<CR>) {:buffer true})))
 
 (register_plugin_wk {:prefix :<Leader>
                      :buffer 0

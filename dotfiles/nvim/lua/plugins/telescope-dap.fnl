@@ -1,5 +1,6 @@
+(local {: load_extension} (require :telescope))
+
 (fn config []
-  (local t (require :telescope))
-  (t.load_extension :dap))
+  (load_extension :dap))
 
 {: config}

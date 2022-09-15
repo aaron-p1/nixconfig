@@ -1,8 +1,9 @@
-(local {: tbl_map : split : endswith : startswith} vim)
-
-(local {: fnamemodify : readfile : expand} vim.fn)
-
-(local fs vim.fs)
+(local {: tbl_map
+        : split
+        : endswith
+        : startswith
+        :fs {: dir}
+        :fn {: fnamemodify : readfile : expand}} vim)
 
 (local {: s : sn : i : t : d : fmta : read_template_file : o_file_start}
        (require :plugins.luasnip.snippets.utils))
@@ -18,7 +19,7 @@
   "Takes file path and returns file path"
   (let [path (fnamemodify file ":h")
         fname (fnamemodify file ":t")]
-    (accumulate [f nil n t (fs.dir path) :until (not= nil f)]
+    (accumulate [f nil n t (dir path) :until (not= nil f)]
       (if (and (endswith n :.php) (= t :file) (not= fname n))
           (.. path "/" n)))))
 

@@ -1,6 +1,4 @@
-(local {: nvim_buf_get_text : nvim_buf_set_text} vim.api)
-
-(local {:set kset} vim.keymap)
+(local {:api {: nvim_buf_get_text : nvim_buf_set_text} :keymap {:set kset}} vim)
 
 (local {: get-operator-range} (require :helper))
 

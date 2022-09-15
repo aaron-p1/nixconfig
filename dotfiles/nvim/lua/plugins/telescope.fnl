@@ -2,58 +2,70 @@
 
 (local {: register_plugin_wk} (require :helper))
 
+(local {: setup : load_extension} (require :telescope))
+(local {: open_with_trouble} (require :trouble.providers.telescope))
+(local {: find_files
+        : live_grep
+        : grep_string
+        : buffers
+        : marks
+        : current_buffer_fuzzy_find
+        : help_tags
+        : lsp_references
+        : lsp_document_symbols
+        : lsp_implementations
+        : lsp_definitions
+        : git_commits
+        : git_bcommits
+        : git_stash
+        : symbols} (require :telescope.builtin))
+
 (fn config []
-  (local t (require :telescope))
-  (local trouble (require :trouble.providers.telescope))
-  (local tt (require :telescope.themes))
-  (local tb (require :telescope.builtin))
-  (t.setup {:defaults {:mappings {:i {:<Leader>ot trouble.open_with_trouble}
-                                  :n {:<Leader>ot trouble.open_with_trouble}}
-                       :preview {:filesize_limit 1}}
-            :extensions {:fzf {:fuzzy true
-                               :override_generic_sorter true
-                               :override_file_sorter true
-                               :case_mode :smart_case}}})
-  (t.load_extension :fzf)
+  (setup {:defaults {:mappings {:i {:<Leader>ot open_with_trouble}
+                                :n {:<Leader>ot open_with_trouble}}
+                     :preview {:filesize_limit 1}}
+          :extensions {:fzf {:fuzzy true
+                             :override_generic_sorter true
+                             :override_file_sorter true
+                             :case_mode :smart_case}}})
+  (load_extension :fzf)
   ;; DEPENDENCIES: fd
   (kset :n :<Leader>fa
-        #(tb.find_files {:find_command [:fd
-                                        :--type=file
-                                        :--size=-1M
-                                        :--hidden
-                                        :--strip-cwd-prefix
-                                        :--no-ignore]})
-        {:desc "All files"})
+        #(find_files {:find_command [:fd
+                                     :--type=file
+                                     :--size=-1M
+                                     :--hidden
+                                     :--strip-cwd-prefix
+                                     :--no-ignore]}) {:desc "All files"})
   ;; DEPENDENCIES: fd
   (kset :n :<Leader>ff
-        #(tb.find_files {:find_command [:fd
-                                        :--type=file
-                                        :--size=-1M
-                                        :--hidden
-                                        :--strip-cwd-prefix
-                                        :--exclude=.git]})
-        {:desc :Files})
+        #(find_files {:find_command [:fd
+                                     :--type=file
+                                     :--size=-1M
+                                     :--hidden
+                                     :--strip-cwd-prefix
+                                     :--exclude=.git]}) {:desc :Files})
   ;; DEPENDENCIES: ripgrep
-  (kset :n :<Leader>fr tb.live_grep {:desc "Live grep"})
+  (kset :n :<Leader>fr live_grep {:desc "Live grep"})
   ;; DEPENDENCIES: ripgrep
-  (kset :n :<Leader>ft #(tb.grep_string {:additional_args #[:--hidden]})
+  (kset :n :<Leader>ft #(grep_string {:additional_args #[:--hidden]})
         {:desc "Grep string"})
   ;; vim
-  (kset :n :<Leader>fb tb.buffers {:desc :Buffers})
-  (kset :n :<Leader>fm tb.marks {:desc :Marks})
-  (kset :n :<Leader>fcr tb.current_buffer_fuzzy_find {:desc "Fuzzy find"})
-  (kset :n :<Leader>fh tb.help_tags {:desc "Help tags"})
+  (kset :n :<Leader>fb buffers {:desc :Buffers})
+  (kset :n :<Leader>fm marks {:desc :Marks})
+  (kset :n :<Leader>fcr current_buffer_fuzzy_find {:desc "Fuzzy find"})
+  (kset :n :<Leader>fh help_tags {:desc "Help tags"})
   ;; lsp
-  (kset :n :<Leader>flr tb.lsp_references {:desc :References})
-  (kset :n :<Leader>fls tb.lsp_document_symbols {:desc "Document symbols"})
-  (kset :n :<Leader>fli tb.lsp_implementations {:desc :Implementations})
-  (kset :n :<Leader>fld tb.lsp_definitions {:desc :Definitions})
+  (kset :n :<Leader>flr lsp_references {:desc :References})
+  (kset :n :<Leader>fls lsp_document_symbols {:desc "Document symbols"})
+  (kset :n :<Leader>fli lsp_implementations {:desc :Implementations})
+  (kset :n :<Leader>fld lsp_definitions {:desc :Definitions})
   ;; git
-  (kset :n :<Leader>fgc tb.git_commits {:desc :Commits})
-  (kset :n :<Leader>fgb tb.git_bcommits {:desc :BCommits})
-  (kset :n :<Leader>fgt tb.git_stash {:desc :Stash})
+  (kset :n :<Leader>fgc git_commits {:desc :Commits})
+  (kset :n :<Leader>fgb git_bcommits {:desc :BCommits})
+  (kset :n :<Leader>fgt git_stash {:desc :Stash})
   ;; symbols
-  (kset :n :<Leader>fs tb.symbols {:desc :Symbols})
+  (kset :n :<Leader>fs symbols {:desc :Symbols})
   (register_plugin_wk {:prefix :<Leader>
                        :map {:f {:name :Telescope
                                  :c {:name "Current buffer"}

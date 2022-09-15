@@ -1,7 +1,12 @@
 (local {:set kset} vim.keymap)
 
-(local dc (require :dial.config))
-(local dm (require :dial.map))
+(local {: augends} (require :dial.config))
+(local {: inc_normal
+        : dec_normal
+        : inc_visual
+        : dec_visual
+        : inc_gvisual
+        : dec_gvisual} (require :dial.map))
 (local {:integer {:alias {:decimal_int int-dec
                           :hex int-hex
                           :octal int-oct
@@ -26,29 +31,29 @@
 (local col-lower (col.new {:case :lower}))
 
 (fn config []
-  (dc.augends:register_group {:default [; builtin
-                                        int-dec
-                                        int-hex
-                                        int-oct
-                                        int-bin
-                                        date-iso
-                                        date-de
-                                        date-de-short
-                                        date-time
-                                        date-time-short
-                                        const-bool
-                                        const-alpha
-                                        const-Alpha
-                                        semver
-                                        ; custom
-                                        const-cond
-                                        const-cond-short
-                                        col-lower]})
-  (kset :n :<C-A> (dm.inc_normal) {})
-  (kset :n :<C-X> (dm.dec_normal) {})
-  (kset :v :<C-A> (dm.inc_visual) {})
-  (kset :v :<C-X> (dm.dec_visual) {})
-  (kset :v :g<C-A> (dm.inc_gvisual) {})
-  (kset :v :g<C-X> (dm.dec_gvisual) {}))
+  (augends:register_group {:default [; builtin
+                                     int-dec
+                                     int-hex
+                                     int-oct
+                                     int-bin
+                                     date-iso
+                                     date-de
+                                     date-de-short
+                                     date-time
+                                     date-time-short
+                                     const-bool
+                                     const-alpha
+                                     const-Alpha
+                                     semver
+                                     ; custom
+                                     const-cond
+                                     const-cond-short
+                                     col-lower]})
+  (kset :n :<C-A> (inc_normal) {})
+  (kset :n :<C-X> (dec_normal) {})
+  (kset :v :<C-A> (inc_visual) {})
+  (kset :v :<C-X> (dec_visual) {})
+  (kset :v :g<C-A> (inc_gvisual) {})
+  (kset :v :g<C-X> (dec_gvisual) {}))
 
 {: config}

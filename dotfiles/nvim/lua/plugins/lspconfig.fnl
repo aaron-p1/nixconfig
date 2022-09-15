@@ -1,18 +1,36 @@
-(local {: tbl_deep_extend} vim)
-
-(local {: nvim_buf_get_option
-        : nvim_buf_set_option
-        : nvim_command
-        : nvim_create_augroup
-        : nvim_clear_autocmds
-        : nvim_create_autocmd
-        : nvim_get_runtime_file} vim.api)
-
-(local vl vim.lsp.buf)
-(local vd vim.diagnostic)
+(local {: tbl_deep_extend
+        : split
+        :api {: nvim_buf_get_option
+              : nvim_buf_set_option
+              : nvim_command
+              : nvim_create_augroup
+              : nvim_clear_autocmds
+              : nvim_create_autocmd
+              : nvim_get_runtime_file}
+        :lsp {:buf {: format
+                    : declaration
+                    : type_definition
+                    : hover
+                    : signature_help
+                    : list_workspace_folders
+                    : add_workspace_folder
+                    : remove_workspace_folder
+                    : code_action
+                    : range_code_action
+                    : rename
+                    : document_highlight
+                    : clear_references}
+              :protocol {: make_client_capabilities}}
+        :diagnostic {:goto_prev d-prev
+                     :goto_next d-next
+                     :open_float d-float
+                     :enable d-enable
+                     :disable d-disable}} vim)
 
 (local {: map_keys : register_plugin_wk : concat} (require :helper))
 (local {: get-profile-config} (require :profiles))
+
+(local nvim-lsp (require :lspconfig))
 
 (local {:json {:schemas json-schemas}} (require :schemastore))
 
@@ -52,7 +70,7 @@
 (lambda format-buffer [bufnr ?async]
   (let [async (if (= nil ?async) true ?async)
         ft (nvim_buf_get_option bufnr :filetype)]
-    (vim.lsp.buf.format {: async :name (?. formatting-preferences ft)})))
+    (format {: async :name (?. formatting-preferences ft)})))
 
 (lambda get-keymaps [bufnr tb]
   [; jump to
@@ -75,32 +93,32 @@
       (nvim_command "tab split")
       (tb.lsp_definitions))
     {:desc "Tab split"}]
-   [:n :gD vl.declaration {:desc :Declaration}]
+   [:n :gD declaration {:desc :Declaration}]
    [:n :gi tb.lsp_implementations {:desc :Implementations}]
    [:n :gr tb.lsp_references {:desc :References}]
-   [:n :<Leader>lD vl.type_definition {:desc "Type definition"}]
-   [:n "[d" vd.goto_prev {:desc "Prev diagnostic"}]
+   [:n :<Leader>lD type_definition {:desc "Type definition"}]
+   [:n "[d" d-prev {:desc "Prev diagnostic"}]
    ; ][
-   [:n "]d" vd.goto_next {:desc "Next diagnostic"}]
-   [:n :<Leader>ld vd.open_float {:desc "Show diagnostic"}]
-   [:n :<Leader>ltd #(vd.enable bufnr) {:desc "Enable diagnostics"}]
-   [:n :<Leader>ltD #(vd.disable bufnr) {:desc "Disable diagnostics"}]
+   [:n "]d" d-next {:desc "Next diagnostic"}]
+   [:n :<Leader>ld d-float {:desc "Show diagnostic"}]
+   [:n :<Leader>ltd #(d-enable bufnr) {:desc "Enable diagnostics"}]
+   [:n :<Leader>ltD #(d-disable bufnr) {:desc "Disable diagnostics"}]
    ; show info
-   [:n :K vl.hover {:desc :Hover}]
-   [:n :<C-K> vl.signature_help {:desc :Signature}]
+   [:n :K hover {:desc :Hover}]
+   [:n :<C-K> signature_help {:desc :Signature}]
    [:n
     :<Leader>lwl
-    #(print (vim.inspect (vl.list_workspace_folders)))
+    #(print (vim.inspect (list_workspace_folders)))
     {:desc :List}]
-   [:n :<Leader>lwa vl.add_workspace_folder {:desc "Add folder"}]
-   [:n :<Leader>lwr vl.remove_workspace_folder {:desc "Remove folder"}]
+   [:n :<Leader>lwa add_workspace_folder {:desc "Add folder"}]
+   [:n :<Leader>lwr remove_workspace_folder {:desc "Remove folder"}]
    ; edit
    [:n :<Leader>lf #(format-buffer bufnr) {:desc "Format async"}]
    [:n :<Leader>lF #(format-buffer bufnr false) {:desc "Format sync"}]
    ; bufnr
-   [:n :<Leader>lc vl.code_action {:desc "Code action"}]
-   [:v :<Leader>lc vl.range_code_action {:desc "Code action"}]
-   [:n :<Leader>lr vl.rename {:desc :Rename}]])
+   [:n :<Leader>lc code_action {:desc "Code action"}]
+   [:v :<Leader>lc range_code_action {:desc "Code action"}]
+   [:n :<Leader>lr rename {:desc :Rename}]])
 
 (lambda add-highlighting [bufnr]
   (let [group (nvim_create_augroup :lsp_document_highlight {:clear false})]
@@ -108,12 +126,12 @@
     (nvim_create_autocmd :CursorHold
                          {:buffer bufnr
                           : group
-                          :callback vl.document_highlight
+                          :callback document_highlight
                           :desc "Document highlight"})
     (nvim_create_autocmd :CursorMoved
                          {:buffer bufnr
                           : group
-                          :callback vl.clear_references
+                          :callback clear_references
                           :desc "Clear all the references"})))
 
 (lambda on-attach [client bufnr]
@@ -134,9 +152,9 @@
 
 (fn get-capabilities []
   (local cnl (require :cmp_nvim_lsp))
-  (cnl.update_capabilities (vim.lsp.protocol.make_client_capabilities)))
+  (cnl.update_capabilities (make_client_capabilities)))
 
-(lambda configure-servers [nvim-lsp capabilities]
+(lambda configure-servers [capabilities]
   (each [_ lspdef (ipairs servers)]
     (let [default-options {:on_attach on-attach : capabilities}]
       (match lspdef
@@ -153,8 +171,8 @@
         server-name (let [server-config (. nvim-lsp server-name)]
                       (server-config.setup default-options))))))
 
-(lambda configure-lua [nvim-lsp capabilities]
-  (let [runtime-path (vim.split package.path ";")
+(lambda configure-lua [capabilities]
+  (let [runtime-path (split package.path ";")
         lsp-settings {:Lua {:runtime {:version :LuaJIT :path runtime-path}
                             :diagnostics {:globals [:vim]}
                             :workspace {:library (nvim_get_runtime_file "" true)}
@@ -166,9 +184,8 @@
                                  :settings lsp-settings})))
 
 (fn config []
-  (local nvim-lsp (require :lspconfig))
   (let [capabilities (get-capabilities)]
-    (configure-servers nvim-lsp capabilities)
-    (configure-lua nvim-lsp capabilities)))
+    (configure-servers capabilities)
+    (configure-lua capabilities)))
 
 {:on_attach on-attach :getCapabilities get-capabilities : config}

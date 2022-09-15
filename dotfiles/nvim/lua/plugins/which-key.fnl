@@ -1,8 +1,9 @@
 (local {: register_plugin_wk} (require :helper))
 
+(local {: setup} (require :which-key))
+
 (fn config []
-  (local wk (require :which-key))
-  (wk.setup {:disable {:filetypes [:TelescopePrompt :DressingInput]}})
+  (setup {:disable {:filetypes [:TelescopePrompt :DressingInput]}})
   (register_plugin_wk {:prefix :<Leader>
                        :map {:t {:name :Tab}
                              :d {:name :Diff}
