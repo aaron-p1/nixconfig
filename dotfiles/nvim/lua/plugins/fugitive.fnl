@@ -40,6 +40,12 @@
     (nvim_create_autocmd :BufWrite
                          {: group
                           :pattern :COMMIT_EDITMSG
-                          :callback save-commit-msg})))
+                          :callback save-commit-msg}))
+  (nvim_create_autocmd :BufRead
+                       {:pattern "fugitive://*"
+                        :callback #(kset :n :<Leader>ge :<Cmd>Gtabedit<CR>
+                                         {:buffer true
+                                          :silent true
+                                          :desc "Open in working tree"})}))
 
 {: config}
