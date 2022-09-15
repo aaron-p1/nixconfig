@@ -55,7 +55,7 @@
              (u :tpope/vim-characterize)
              (u :monaqa/dial.nvim {:file :dial})
              (u :AndrewRadev/splitjoin.vim {:keys [:gS :gJ]})
-             (u :norcalli/nvim-colorizer.lua {:file :colorizer})
+             (u :NvChad/nvim-colorizer.lua {:file :colorizer})
              (u :lukas-reineke/indent-blankline.nvim {:file :indent-blankline})
              (u :windwp/nvim-autopairs {:file :autopairs :after :nvim-cmp})
              (u :windwp/nvim-ts-autotag {:after :nvim-treesitter})
