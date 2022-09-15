@@ -23,6 +23,7 @@ let
     nodejs-16_x
     # null-ls
     editorconfig-checker
+    nodePackages.prettier
     statix
     nixfmt
     shellcheck
