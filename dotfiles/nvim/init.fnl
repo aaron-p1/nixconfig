@@ -59,6 +59,8 @@
              (u :windwp/nvim-autopairs {:file :autopairs :after :nvim-cmp})
              (u :windwp/nvim-ts-autotag {:after :nvim-treesitter})
              (u :rlane/pounce.nvim {:file :pounce})
+             (u :nvim-pack/nvim-spectre
+                {:requires [:nvim-lua/plenary.nvim] :file :spectre})
              ;; config
              (u :editorconfig/editorconfig-vim {:file :editorconfig})
              ;; status line
