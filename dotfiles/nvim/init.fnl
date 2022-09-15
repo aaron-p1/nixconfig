@@ -250,7 +250,8 @@
                       :autocmd
                       :features.compare-remotes
                       :features.plugin-links
-                      :features.virt-notes])
+                      :features.virt-notes
+                      :features.swap-textobjects])
 
 (each [_ mod-name (ipairs setup-modules)]
   (let [mod (require mod-name)]

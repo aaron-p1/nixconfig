@@ -1,23 +1,14 @@
-(local {: nvim_buf_get_mark
-        : nvim_buf_get_lines
-        : nvim_buf_set_text
-        : nvim_tabpage_get_number
-        : nvim_list_tabpages} vim.api)
+(local {: nvim_buf_set_text : nvim_tabpage_get_number : nvim_list_tabpages}
+       vim.api)
 
 (local {: getreg} vim.fn)
 
 (local {:set kset} vim.keymap)
 
+(local {: get-operator-range} (require :helper))
+
 (fn _G.replace_selection [motion-type]
-  (let [charwise? (= motion-type :char)
-        [start-mark-row start-mark-col] (nvim_buf_get_mark 0 "[")
-        [end-mark-row end-mark-col] (nvim_buf_get_mark 0 "]")
-        start-row (- start-mark-row 1)
-        end-row (- end-mark-row 1)
-        [end-line] (nvim_buf_get_lines 0 end-row (+ end-row 1) false)
-        end-line-length (length end-line)
-        start-col (if charwise? start-mark-col 0)
-        end-col (if charwise? (+ end-mark-col 1) end-line-length)
+  (let [[start-row start-col end-row end-col] (get-operator-range motion-type)
         register-content (getreg :0 1 true)]
     (nvim_buf_set_text 0 start-row start-col end-row end-col register-content)))
 

@@ -6,6 +6,7 @@
         : nvim_buf_get_lines
         : nvim_buf_get_text
         : nvim_buf_set_text
+        : nvim_buf_get_mark
         : nvim_buf_set_lines} vim.api)
 
 (local {:get dget} vim.diagnostic)
@@ -128,6 +129,18 @@
     (let [[mode key cmd opts] map]
       (vim.keymap.set mode key cmd (tbl_extend :force opts {:buffer bufnr})))))
 
+(lambda get-operator-range [motion-type]
+  "Get 0-indexed range of operator motion"
+  (let [charwise? (= motion-type :char)
+        [start-mark-row start-mark-col] (nvim_buf_get_mark 0 "[")
+        [end-mark-row end-mark-col] (nvim_buf_get_mark 0 "]")
+        start-row (- start-mark-row 1)
+        end-row (- end-mark-row 1)]
+    (if charwise? [start-row start-mark-col end-row (+ 1 end-mark-col)]
+        (let [[end-line] (nvim_buf_get_lines 0 end-row (+ end-row 1) false)
+              end-line-length (length end-line)]
+          [start-row 0 end-row end-line-length]))))
+
 (lambda get-cursor-lang []
   (let [[row col] (nvim_win_get_cursor 0)
         real-row (- row 1)
@@ -189,6 +202,7 @@
  :replace_tc replace-tc
  :set_options set-options
  :map_keys map-keys
+ : get-operator-range
  :get_cursor_lang get-cursor-lang
  : in-mode?
  : replace-when-diag
