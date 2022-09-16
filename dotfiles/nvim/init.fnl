@@ -136,6 +136,8 @@
                          :telescope.nvim
                          :which-key.nvim
                          :schemastore.nvim]})
+             (u :kosayoda/nvim-lightbulb
+                {:file :lightbulb :requires [:antoinemadec/FixCursorHold.nvim]})
              ;; json
              (u :b0o/schemastore.nvim)
              ;; java
