@@ -1,3 +1,5 @@
+;; extends
+
 (
   (comment) @_start .
   (method_declaration) @_end

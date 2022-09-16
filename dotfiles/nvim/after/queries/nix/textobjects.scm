@@ -1,3 +1,5 @@
+;; extends
+
 (list_expression
   element: (_) @element.inner @element.outer
 )

@@ -1,3 +1,5 @@
+;; extends
+
 ((string_value) @sql
   (#match? @sql "^(SELECT|INSERT|UPDATE|DROP)"))
 
