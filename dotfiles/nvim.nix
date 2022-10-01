@@ -4,7 +4,7 @@
 , findutils, fennel, parallel, rsync }:
 let
   inherit (builtins) attrValues;
-  inherit (lib) mapAttrsToList;
+  inherit (lib) concatStringsSep mapAttrsToList;
 
   addPath = [
     # core
@@ -51,13 +51,15 @@ in stdenv.mkDerivation {
   nativeBuildInputs = [ findutils fennel parallel rsync ];
   buildInputs = attrValues dependencies ++ addPath;
 
+  luaGlobals = concatStringsSep "," [ "vim" "unpack" ];
+
   replacements = mapAttrsToList (k: v: "s=@${k}@=${v}=g") dependencies;
 
   buildPhase = ''
     # fennel
     find . -name '*.fnl' \
       | parallel mkdir -p 'result/{//}' '&&' \
-      fennel --globals vim --correlate -c '{}' '>' 'result/{.}.lua'
+      fennel --globals "$luaGlobals" --correlate -c '{}' '>' 'result/{.}.lua'
 
     rsync --verbose --recursive --filter='- *.fnl' \
       --filter='- /result' ./ result
