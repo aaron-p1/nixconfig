@@ -117,7 +117,6 @@
    [:n :<Leader>lF #(format-buffer bufnr false) {:desc "Format sync"}]
    ; bufnr
    [:n :<Leader>lc code_action {:desc "Code action"}]
-   [:v :<Leader>lc range_code_action {:desc "Code action"}]
    [:n :<Leader>lr rename {:desc :Rename}]])
 
 (lambda add-highlighting [bufnr]

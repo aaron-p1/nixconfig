@@ -1,5 +1,8 @@
 { inputs, ... }:
 final: prev: {
+  # lief
+  lief = import ./overrides/lief { inherit prev final; };
+
   local = rec {
     nix-autobahn = prev.callPackage ./pkgs/nix-autobahn/default.nix { };
 
@@ -13,7 +16,7 @@ final: prev: {
     ff2mpv-native-client = prev.callPackage ./pkgs/ff2mpv-native-client { };
 
     # Nvidia
-    nvlax = prev.callPackage ./pkgs/nvlax { };
+    nvlax = prev.callPackage ./pkgs/nvlax { inherit (final) lief; };
     # patched with https://github.com/keylase/nvidia-patch
     nvidia-patched = nvidia_x11:
       prev.callPackage ./overrides/nvidia-patched { inherit nvidia_x11 nvlax; };
