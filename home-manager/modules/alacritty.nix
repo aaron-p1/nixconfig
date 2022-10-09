@@ -1,9 +1,11 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let cfg = config.within.alacritty;
 in with lib; {
   options.within.alacritty = { enable = mkEnableOption "Alacritty"; };
 
   config = mkIf cfg.enable {
+    home.packages = with pkgs; [ (nerdfonts.override { fonts = [ "Hack" ]; }) ];
+
     programs.alacritty = {
       enable = true;
 
@@ -12,13 +14,17 @@ in with lib; {
           lines = 28;
           columns = 100;
         };
-        font.size = 9;
+        font = {
+          size = 9;
+          normal = { family = "Hack Nerd Font"; };
+        };
         mouse.hide_when_typing = true;
         hints = {
           alphabet = "abcdefghjklmnopqrstuvwxyz";
           enabled = [
             {
-              regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\\u0000-\\u001F\\u007F-\\u009F<>\"\\\\s{-}\\\\^⟨⟩`]+";
+              regex = ''
+                (ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-\u009F<>"\\s{-}\\^⟨⟩`]+'';
               hyperlinks = true;
               command = "xdg-open";
               post_processing = true;
