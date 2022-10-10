@@ -8,6 +8,7 @@
         :fn {: stdpath : isdirectory : system : readdir}} vim)
 
 (local {: set_options} (require :helper))
+(local {: has-profile} (require :profiles))
 
 (set vim.env.PATH (.. vim.env.PATH ":@ADDPATH@"))
 
@@ -73,7 +74,9 @@
              (u :editorconfig/editorconfig-vim {:file :editorconfig})
              ;; status line
              (u :nvim-lualine/lualine.nvim
-                {:file :lualine :requires [:kyazdani42/nvim-web-devicons]})
+                {:file :lualine
+                 :requires [:kyazdani42/nvim-web-devicons
+                            :SantinoKeupp/lualine-cmake4vim.nvim]})
              (u :nvim-treesitter/nvim-treesitter
                 {:file :treesitter :run ":TSUpdate"})
              (u :nvim-treesitter/nvim-treesitter-textobjects
@@ -127,6 +130,10 @@
                          :which-key.nvim]})
              (u :nvim-telescope/telescope-fzf-native.nvim {:run :make})
              (u :nvim-telescope/telescope-symbols.nvim)
+             (u :SantinoKeupp/telescope-cmake4vim.nvim
+                {:file :telescope-cmake4vim
+                 :cond #((. (require :profiles) :has-profile) :cmake)
+                 :after [:telescope.nvim]})
              (u :nvim-telescope/telescope-dap.nvim
                 {:file :telescope-dap
                  :requires [:nvim-telescope/telescope.nvim
@@ -150,6 +157,10 @@
                  :requires [:antoinemadec/FixCursorHold.nvim]})
              ;; json
              (u :b0o/schemastore.nvim)
+             ;; cmake
+             (u :ilyachur/cmake4vim
+                {:file :cmake4vim
+                 :cond #((. (require :profiles) :has-profile) :cmake)})
              ;; java
              (u :mfussenegger/nvim-jdtls)
              (u :jose-elias-alvarez/null-ls.nvim
@@ -263,8 +274,9 @@
                       :autocmd
                       :features.compare-remotes
                       :features.plugin-links
-                      :features.virt-notes
-                      :features.swap-textobjects])
+                      :features.run-profile
+                      :features.swap-textobjects
+                      :features.virt-notes])
 
 (each [_ mod-name (ipairs setup-modules)]
   (let [mod (require mod-name)]

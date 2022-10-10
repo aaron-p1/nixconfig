@@ -34,7 +34,13 @@
 
 (local {:json {:schemas json-schemas}} (require :schemastore))
 
-(local servers [; dart
+(local servers [; c
+                {:server :cmake}
+                {:server :clangd
+                 :cmd [:env
+                       (.. :CPATH= (or vim.env.NVIM_CLANGD_INCLUDE ""))
+                       :clangd]}
+                ; dart
                 {:server :dartls}
                 ; html
                 {:server :html :filetypes [:html :blade]}
@@ -151,7 +157,8 @@
 
 (fn get-capabilities []
   (local cnl (require :cmp_nvim_lsp))
-  (cnl.update_capabilities (make_client_capabilities)))
+  (tbl_deep_extend :force (cnl.update_capabilities (make_client_capabilities))
+                   {:offsetEncoding [:utf-16]}))
 
 (lambda configure-servers [capabilities]
   (each [_ lspdef (ipairs servers)]

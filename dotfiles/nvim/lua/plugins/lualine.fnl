@@ -29,7 +29,7 @@
           :extensions [:fugitive :nvim-tree :quickfix]
           :sections {:lualine_a [:mode]
                      :lualine_b [:filename]
-                     :lualine_c [:diagnostics]
+                     :lualine_c [:diagnostics :cmake4vim]
                      :lualine_x [:diff :branch]
                      :lualine_y [:encoding :filetype]
                      :lualine_z [:progress :location]}

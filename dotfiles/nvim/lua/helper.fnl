@@ -70,6 +70,10 @@
     (accumulate [result nil key val (iter list) :until (not= nil result)]
       (if (func val) key))))
 
+(lambda contains [table elem]
+  (accumulate [result false _ val (pairs table) :until result]
+    (= elem val)))
+
 (lambda filter [table func]
   (tbl_filter func table))
 
@@ -192,6 +196,7 @@
  :is_empty is-empty
  :index_of index-of
  : find-index
+ : contains
  : filter
  : any
  : copy

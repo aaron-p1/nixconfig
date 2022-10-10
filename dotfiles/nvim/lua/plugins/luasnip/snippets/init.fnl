@@ -12,6 +12,7 @@
 (local group-assignments
        {:all [:all]
         :json [:json]
+        :cmake [:cmake]
         :php [:php :c_like :laravel]
         :blade [:blade :html]
         :html [:html :javascript :c_like]
