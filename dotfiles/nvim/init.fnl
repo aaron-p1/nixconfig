@@ -1,10 +1,13 @@
 (local {: tbl_extend
+        : validate
         : cmd
         :api {: nvim_get_current_win
               : nvim_get_current_buf
               : nvim_buf_get_name
               : nvim_buf_get_option}
-        :fn {: stdpath : isdirectory : system}} vim)
+        :fn {: stdpath : isdirectory : system : readdir}} vim)
+
+(local {: set_options} (require :helper))
 
 (set vim.env.PATH (.. vim.env.PATH ":@ADDPATH@"))
 
@@ -18,9 +21,14 @@
              "https://github.com/wbthomason/packer.nvim"
              install-path])))
 
-(local {: set_options} (require :helper))
-(local {: use : use_rocks :startup psetup} (require :packer))
+(local {: use : use_rocks :set_handler phandle :startup psetup}
+       (require :packer))
+
 (local putil (require :packer.util))
+
+(local {: handle-patches} (require :plugins.packer))
+
+(phandle :patches handle-patches)
 
 (lambda plug-config-str [plugin function]
   (.. "require('plugins." plugin "')." function "()"))
@@ -137,7 +145,9 @@
                          :which-key.nvim
                          :schemastore.nvim]})
              (u :kosayoda/nvim-lightbulb
-                {:file :lightbulb :requires [:antoinemadec/FixCursorHold.nvim]})
+                {:patches :change-lightbulb-char.patch
+                 :file :lightbulb
+                 :requires [:antoinemadec/FixCursorHold.nvim]})
              ;; json
              (u :b0o/schemastore.nvim)
              ;; java
@@ -156,7 +166,7 @@
              (u :saadparwaiz1/cmp_luasnip)
              (u :hrsh7th/cmp-omni)
              (u :hrsh7th/cmp-nvim-lsp)
-             (u :dmitmel/cmp-digraphs)
+             (u :dmitmel/cmp-digraphs {:patches :add-prefix.patch})
              (u :David-Kunz/cmp-npm {:requires [:nvim-lua/plenary.nvim]})
              ;; DEPENDENCIES: nodejs
              (u :github/copilot.vim {:file :copilot})
