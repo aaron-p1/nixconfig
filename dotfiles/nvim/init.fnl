@@ -143,6 +143,8 @@
                 {:file :dressing :after :telescope.nvim})
              ;; snippets
              (u :L3MON4D3/LuaSnip {:file :luasnip :after :which-key.nvim})
+             (u :rafamadriz/friendly-snippets
+                {:file :friendly-snippets :after [:LuaSnip]})
              ;; lsp
              (u :neovim/nvim-lspconfig
                 {:file :lspconfig
