@@ -16,10 +16,9 @@
   (kset [:i :s] :<C-J> #(ls.jump -1) {:desc :Prev})
   (kset [:i :s] :<C-L> #(ls.jump 1) {:desc :Next})
   (kset :n :<Leader>i ls.unlink_current {:desc "Unlink snip"})
-  (kset [:i :s] :<C-E> #(if (ls.choice_active)
-                            (replace_tc :<Plug>luasnip-next-choice)
-                            (replace_tc :<C-E>))
-        {:expr true :remap true :desc "Next choice"})
+  (kset [:i :s] :<C-E> #(if (ls.choice_active) :<Plug>luasnip-next-choice
+                            :<C-E>)
+        {:expr true :desc "Next choice"})
   (register_plugin_wk {:prefix :<Leader>
                        :map {:r {:name :Reload :p {:name :Plugin}}}})
   (ls.config.set_config {:updateevents "TextChanged,TextChangedI"
