@@ -261,6 +261,7 @@
                     :list true
                     :listchars "tab:──,trail:❯,nbsp:˰"
                     ; indent
+                    :expandtab true
                     :tabstop 4
                     :shiftwidth 4
                     ; folding
