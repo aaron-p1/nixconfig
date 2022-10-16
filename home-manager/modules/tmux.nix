@@ -34,20 +34,28 @@ in with lib; {
       }];
     };
 
+    # https://tmuxp.git-pull.com/configuration/index.html
     xdg.configFile."tmuxp/nixconfig.yml" = {
-      text = ''
-        session_name: nixconfig
-        start_directory: ${config.home.homeDirectory}/Documents/nixos/nixconfig
-        windows:
-        - window_name: nvim
-          panes:
-          - shell_command:
-            - nvimgit
-        - window_name: zsh
-        - window_name: man home-manager
-          panes:
-          - man home-configuration.nix
-      '';
+      text = builtins.toJSON {
+        session_name = "nixconfig";
+        start_directory =
+          "${config.home.homeDirectory}/Documents/nixos/nixconfig";
+        windows = [
+          {
+            window_name = "nvim";
+            panes = [ "nvimgit" ];
+          }
+          { window_name = "zsh"; }
+          {
+            window_name = "man nixos";
+            panes = [ "man configuration.nix" ];
+          }
+          {
+            window_name = "man home-manager";
+            panes = [ "man home-configuration.nix" ];
+          }
+        ];
+      };
     };
 
     home.packages = [ pkgs.local.gotmux ];
