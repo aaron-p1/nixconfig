@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# error if EDITOR not defined
+[ -z "$EDITOR" ] && {
+  echo "EDITOR not defined" 1>&2
+  exit 1
+}
+
+# error if XDG_CONFIG_HOME not defined
+[ -z "$XDG_CONFIG_HOME" ] && {
+  echo "XDG_CONFIG_HOME not defined" 1>&2
+  exit 1
+}
+
+[ -z "$1" ] && {
+  echo "Usage: $0 {config}" 1>&2
+  exit 1
+}
+
+path="$XDG_CONFIG_HOME/tmuxp/$1.yaml"
+
+$EDITOR "$path"

@@ -1,4 +1,4 @@
-#!/usr/env bash
+#!/usr/bin/env bash
 
 _gotmux() {
   local files
@@ -11,3 +11,4 @@ _gotmux() {
 }
 
 complete -F _gotmux gotmux
+complete -F _gotmux etmux

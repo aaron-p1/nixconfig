@@ -1,35 +1,40 @@
-{ stdenv, tmuxp, installShellFiles, lib }:
+{ stdenv, bash, tmuxp, installShellFiles, makeWrapper, lib }:
 stdenv.mkDerivation {
   pname = "gotmux";
-  version = "1.0.0";
+  version = "1.1.0";
 
   src = ./.;
 
-  buildInputs = [ tmuxp ];
-
-  nativeBuildInputs = [ installShellFiles ];
+  buildInputs = [ bash tmuxp ];
+  nativeBuildInputs = [ makeWrapper installShellFiles ];
 
   patchPhase = ''
-    patchShebangs gotmux
-    patchShebangs completions/gotmux.bash
-
-    substituteInPlace gotmux --replace tmuxp "${tmuxp}/bin/tmuxp"
-    substituteInPlace completions/gotmux.bash --replace tmuxp "${tmuxp}/bin/tmuxp"
-    substituteInPlace completions/gotmux.zsh --replace tmuxp "${tmuxp}/bin/tmuxp"
+    substituteInPlace completions/gotmux.bash \
+      --replace tmuxp ${tmuxp}/bin/tmuxp
+    substituteInPlace completions/gotmux.zsh \
+      --replace tmuxp ${tmuxp}/bin/tmuxp
   '';
 
   installPhase = ''
+    runHook preInstall
+
     mkdir -p $out/bin
 
-    cp -v gotmux $out/bin/gotmux
+    cp gotmux $out/bin/gotmux
+    cp etmux $out/bin/etmux
+    cp ntmux $out/bin/ntmux
 
-    chmod +x $out/bin/gotmux
+    wrapProgram $out/bin/gotmux \
+      --prefix PATH : ${lib.makeBinPath [ tmuxp ]}
+    wrapProgram $out/bin/etmux \
+      --prefix PATH : ${lib.makeBinPath [ tmuxp ]}
 
     runHook postInstall
   '';
 
   postInstall = ''
-    installShellCompletion completions/gotmux.{bash,zsh}
+    installShellCompletion --cmd gotmux completions/gotmux.{bash,zsh}
+    installShellCompletion --cmd etmux completions/gotmux.{bash,zsh}
   '';
 
   meta = with lib; {

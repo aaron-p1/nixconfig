@@ -1,4 +1,4 @@
-#compdef gotmux
+#compdef gotmux etmux=gotmux
 
 _gotmux() {
   integer ret=1
