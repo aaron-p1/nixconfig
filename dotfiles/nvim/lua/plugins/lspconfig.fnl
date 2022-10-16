@@ -157,7 +157,7 @@
 
 (fn get-capabilities []
   (local cnl (require :cmp_nvim_lsp))
-  (tbl_deep_extend :force (cnl.update_capabilities (make_client_capabilities))
+  (tbl_deep_extend :force (cnl.default_capabilities)
                    {:offsetEncoding [:utf-16]}))
 
 (lambda configure-servers [capabilities]
