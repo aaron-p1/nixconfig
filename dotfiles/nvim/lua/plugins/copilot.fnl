@@ -39,6 +39,7 @@
 (fn config []
   (set vim.g.copilot_no_tab_map true)
   (set vim.g.copilot_assume_mapped true)
+  (set vim.g.copilot_filetypes {:TelescopePrompt false :DressingInput false})
   (let [map :<C-o>
         line-map :<A-o>
         termcode (nvim_replace_termcodes map true false true)
