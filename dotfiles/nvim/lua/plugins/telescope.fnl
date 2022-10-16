@@ -10,6 +10,7 @@
         : buffers
         : marks
         : current_buffer_fuzzy_find
+        : filetypes
         : help_tags
         : lsp_references
         : lsp_document_symbols
@@ -54,6 +55,7 @@
   (kset :n :<Leader>fb buffers {:desc :Buffers})
   (kset :n :<Leader>fm marks {:desc :Marks})
   (kset :n :<Leader>fcr current_buffer_fuzzy_find {:desc "Fuzzy find"})
+  (kset :n :<Leader>fy filetypes {:desc "Set filetype"})
   (kset :n :<Leader>fh help_tags {:desc "Help tags"})
   ;; lsp
   (kset :n :<Leader>flr lsp_references {:desc :References})
