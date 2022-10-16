@@ -53,6 +53,6 @@
         (open-remote-selection local-path))))
 
 (fn setup []
-  (kset :n :<Leader>cr compare-remotes {:desc "Remote File"}))
+  (kset :n :<Leader>cr compare-remotes {:desc "Compare remote File"}))
 
 {: setup}

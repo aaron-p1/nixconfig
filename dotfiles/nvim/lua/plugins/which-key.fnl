@@ -7,7 +7,8 @@
   (register_plugin_wk {:prefix :<Leader>
                        :map {:t {:name :Tab}
                              :d {:name :Diff}
-                             :c {:name :Compare}
+                             :c {:name "Create special buffer"
+                                 :s {:name "Scratch buffer" :l :Lua}}
                              :v {:name "Virtual comments" :d {:name :Delete}}}}))
 
 {: config}

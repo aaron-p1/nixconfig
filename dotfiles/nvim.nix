@@ -51,7 +51,7 @@ in stdenv.mkDerivation {
   nativeBuildInputs = [ findutils fennel parallel rsync ];
   buildInputs = attrValues dependencies ++ addPath;
 
-  luaGlobals = concatStringsSep "," [ "vim" "unpack" ];
+  luaGlobals = concatStringsSep "," [ "vim" "unpack" "loadstring" ];
 
   replacements = mapAttrsToList (k: v: "s=@${k}@=${v}=g") dependencies;
 

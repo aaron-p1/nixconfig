@@ -278,6 +278,7 @@
                       :features.compare-remotes
                       :features.plugin-links
                       :features.run-profile
+                      :features.scratch-buffer
                       :features.swap-textobjects
                       :features.virt-notes])
 
