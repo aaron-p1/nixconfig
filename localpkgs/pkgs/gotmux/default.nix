@@ -20,9 +20,7 @@ stdenv.mkDerivation {
 
     mkdir -p $out/bin
 
-    cp gotmux $out/bin/gotmux
-    cp etmux $out/bin/etmux
-    cp ntmux $out/bin/ntmux
+    install gotmux etmux ntmux $out/bin
 
     wrapProgram $out/bin/gotmux \
       --prefix PATH : ${lib.makeBinPath [ tmuxp ]}
