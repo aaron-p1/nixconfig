@@ -11,9 +11,12 @@
 
 (local config (map existing-profiles #(values $1 {})))
 
+(local no-merge [nil #$])
 (local merge-lists [[] #(concat $1 $2)])
 
-(local config-merge-fn {:autocmd [nil #$] :json-schemas merge-lists})
+(local config-merge-fn {:startup no-merge
+                        :autocmds no-merge
+                        :json-schemas merge-lists})
 
 (lambda has-profile [profile]
   (contains profiles profile))
@@ -44,7 +47,7 @@
 
 ;;; webt
 
-(fn config.webt-game.autocmd []
+(fn config.webt-game.autocmds []
   (let [augroup (nvim_create_augroup :WebtGotoFile {:clear true})]
     (nvim_create_autocmd :FileType
                          {:group augroup

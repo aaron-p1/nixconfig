@@ -22,7 +22,7 @@
         (vim.opt.eventignore:remove :FileType))))
 
 (fn setup []
-  (get-profile-config :autocmd)
+  (get-profile-config :autocmds)
   ;; disable numbers in terminal mode
   (let [augroup (nvim_create_augroup :Terminal {:clear true})]
     (nvim_create_autocmd :TermOpen
