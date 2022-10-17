@@ -6,6 +6,7 @@
 (local {:set kset} vim.keymap)
 
 (local {: get-operator-range} (require :helper))
+(local {: get-profile-config} (require :profiles))
 
 (fn _G.replace_selection [motion-type]
   (let [[start-row start-col end-row end-col] (get-operator-range motion-type)
@@ -22,6 +23,7 @@
       (tabprevious))))
 
 (fn setup []
+  (get-profile-config :keymaps)
   ;; alt + Esc for leaving terminal
   (kset :t :<A-Esc> "<C-\\><C-N>")
   ;; diff maps

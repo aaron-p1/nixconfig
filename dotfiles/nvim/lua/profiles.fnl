@@ -16,6 +16,7 @@
 
 (local config-merge-fn {:startup no-merge
                         :autocmds no-merge
+                        :keymaps no-merge
                         :json-schemas merge-lists})
 
 (lambda has-profile [profile]
@@ -44,6 +45,18 @@
       (execute-profile-config profile config-name nil (unpack additional-args)))))
 
 ;;;; Configuration functions
+
+;;; Available functions for configuration
+;; vim
+;; - startup
+;; - autocmds
+;; - keymaps
+;; lspconfig
+;; - lsp-config
+;; - json-schemas
+
+;;; cmake
+(set config.cmake (require :profiles.cmake))
 
 ;;; webt
 

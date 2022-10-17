@@ -78,6 +78,11 @@
     (accumulate [result nil key val (iter list) :until (not= nil result)]
       (if (func val) key))))
 
+(lambda find [list func ?from-end]
+  (let [iter (if ?from-end ripairs ipairs)]
+    (accumulate [result nil key val (iter list) :until (not= nil result)]
+      (if (func val) val))))
+
 (lambda contains [table elem]
   (accumulate [result false _ val (pairs table) :until result]
     (= elem val)))
@@ -230,6 +235,7 @@
  :is_empty is-empty
  :index_of index-of
  : find-index
+ : find
  : contains
  : filter
  : any
