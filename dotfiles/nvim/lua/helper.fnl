@@ -3,6 +3,7 @@
         : tbl_filter
         : tbl_extend
         : tbl_keys
+        : tbl_deep_extend
         :api {: nvim_replace_termcodes
               : nvim_win_get_cursor
               : nvim_get_mode
@@ -10,10 +11,17 @@
               : nvim_buf_get_text
               : nvim_buf_set_text
               : nvim_buf_get_mark
-              : nvim_buf_set_lines}
+              : nvim_buf_set_lines
+              : nvim_tabpage_get_number
+              : nvim_get_current_win
+              : nvim_set_current_win}
         :diagnostic {:get dget}
         :keymap {:set kset}
-        :treesitter {: get_parser}} vim)
+        :treesitter {: get_parser}
+        :cmd {: split}} vim)
+
+;;; Functions for opening files
+(local open-win {})
 
 ;;; Util functions
 (lambda remove-prefix [str prefix]
@@ -181,6 +189,32 @@
                   (nvim_buf_set_lines bufnr line-num (+ line-num 1) false
                                       [new-line])))))))))
 
+(lambda new-win-with-opts [open-fn opts]
+  (let [prev-win (nvim_get_current_win)]
+    (open-fn)
+    (let [new-win (nvim_get_current_win)]
+      (when (= false opts.focus)
+        (nvim_set_current_win prev-win))
+      new-win)))
+
+(lambda build-split-args [opts]
+  {:args [opts.file] :range [opts.size]})
+
+(lambda new-split-with-opts [opts extra-split-args]
+  (let [split-args (build-split-args opts)
+        all-args (tbl_deep_extend :force split-args extra-split-args)]
+    (new-win-with-opts #(split all-args) opts)))
+
+(lambda open-win.hor [opts]
+  (new-split-with-opts opts {}))
+
+(lambda open-win.ver [opts]
+  (new-split-with-opts opts {:mods {:vertical true}}))
+
+(lambda open-win.tab [opts]
+  (let [tabnr (or opts.tabnr (nvim_tabpage_get_number 0))]
+    (new-split-with-opts opts {:mods {:tab tabnr}})))
+
 ;;; plugin utils
 (lambda register-plugin-wk [config]
   (local wk (require :which-key))
@@ -213,4 +247,5 @@
  :get_cursor_lang get-cursor-lang
  : in-mode?
  : replace-when-diag
+ : open-win
  :register_plugin_wk register-plugin-wk}
