@@ -1,4 +1,5 @@
 (local {: env
+        :loop uv
         : ui
         : schedule
         : tbl_extend
@@ -69,8 +70,11 @@
   (kset :n :r #(func {:same-buf true}) {:buffer bufnr}))
 
 (fn configure [?opts]
-  (run-term build-dir cmd-cmake [(.. :-DCMAKE_BUILD_TYPE= build-type) ".."]
-            ?opts))
+  (let [opts (tbl_extend :force (or ?opts {})
+                         {:on-exit #(uv.fs_symlink :build/compile_commands.json
+                                                   :compile_commands.json)})]
+    (run-term build-dir cmd-cmake [(.. :-DCMAKE_BUILD_TYPE= build-type) ".."]
+              opts)))
 
 (fn build [?opts]
   (run-term build-dir cmd-build [] ?opts))
