@@ -10,6 +10,15 @@
   (#make-range! "element.inner" @_start @_end)
 )
 
+(formals
+  "," @_start .
+  (formal) @element.inner
+  (#make-range! "element.outer" @_start @element.inner))
+(formals
+  . (formal) @element.inner
+  . ","? @_end
+  (#make-range! "element.outer" @element.inner @_end))
+
 (binding
   "=" @_start
   expression: (_) @assignexpression.inner
