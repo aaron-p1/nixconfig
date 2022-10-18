@@ -46,6 +46,15 @@ in with lib; {
                 mods = "Control|Shift";
               };
             }
+            {
+              regex = "sha256-\\\\S{44}";
+              action = "Copy";
+              post_processing = false;
+              binding = {
+                key = "H";
+                mods = "Control|Shift";
+              };
+            }
           ];
         };
         key_bindings = [{
