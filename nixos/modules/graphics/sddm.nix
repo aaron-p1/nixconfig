@@ -7,7 +7,10 @@ in with lib; {
     services.xserver = {
       enable = true;
 
-      displayManager.sddm = { enable = true; };
+      displayManager.sddm = {
+        enable = true;
+        autoNumlock = true;
+      };
     };
   };
 }
