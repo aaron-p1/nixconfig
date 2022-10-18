@@ -4,6 +4,8 @@ final: prev: {
   lief = import ./overrides/lief { inherit prev final; };
 
   local = rec {
+    create-project = prev.callPackage ./pkgs/create-project { };
+
     nix-autobahn = prev.callPackage ./pkgs/nix-autobahn/default.nix { };
 
     gotmux = prev.callPackage ./pkgs/gotmux { };

@@ -73,6 +73,7 @@
     element-desktop
     bitwarden
 
+    local.create-project
     local.nix-autobahn
   ];
 
