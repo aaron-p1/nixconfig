@@ -236,6 +236,11 @@
                     :splitright true
                     ; save undo history
                     :undofile true
+                    ; spell
+                    :spell true
+                    :spelllang :en
+                    :spellfile (.. (vim.fn.stdpath :config)
+                                   :/spell/en.utf-8.add)
                     ; cursor line
                     :cursorline true
                     ; ! don't use tmp file
