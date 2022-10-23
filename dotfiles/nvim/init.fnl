@@ -1,6 +1,6 @@
 (local {: tbl_extend
         : validate
-        : cmd
+        :cmd {: tabnew :language set-language}
         :api {: nvim_get_current_win
               : nvim_get_current_buf
               : nvim_buf_get_name
@@ -12,7 +12,6 @@
 
 (set vim.env.PATH (.. vim.env.PATH ":@ADDPATH@"))
 
-;;; Install packer
 (let [install-path (.. (stdpath :data) :/site/pack/packer/start/packer.nvim)]
   (when (not= 1 (isdirectory install-path))
     (print "Installing packer...")
@@ -200,7 +199,7 @@
                                              bufmod (nvim_buf_get_option bufnr
                                                                          :modified)]
                                          (when (or (not= "" bufname) bufmod)
-                                           (cmd :tabnew))
+                                           (tabnew))
                                          (values true (nvim_get_current_win)
                                                  (nvim_get_current_buf))))}}})
 
@@ -261,7 +260,7 @@
                     :scrolljump -10
                     :scrolloff 8})
 
-(cmd "language en_US.utf8")
+(set-language :en_US.utf8)
 
 (local setup-modules [:keymaps
                       :autocmd
