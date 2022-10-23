@@ -22,6 +22,8 @@ in with lib; {
 
         ns = "NIXPKGS_ALLOW_UNFREE=1 nix shell --impure";
         nr = "NIXPKGS_ALLOW_UNFREE=1 nix run --impure";
+
+        oro = "nvim ~/Documents/private/orgmode/optimize.org";
       };
       sessionVariables = {
         LANG = "en_US.UTF-8";

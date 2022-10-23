@@ -150,6 +150,11 @@
                 {:patches :change-lightbulb-char.patch
                  :file :lightbulb
                  :requires [:antoinemadec/FixCursorHold.nvim]})
+             ;; orgmode
+             (u :nvim-orgmode/orgmode
+                {:file :orgmode
+                 :requires [:nvim-treesitter/nvim-treesitter]
+                 :after :which-key.nvim})
              ;; json
              (u :b0o/schemastore.nvim)
              ;; java

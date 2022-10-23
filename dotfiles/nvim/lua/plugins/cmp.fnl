@@ -19,6 +19,7 @@
 
 (fn config []
   (setup {:sources [{:name :nmp}
+                    {:name :orgmode}
                     {:name :nvim_lsp :max_item_count 32}
                     {:name :luasnip}
                     {:name :path
