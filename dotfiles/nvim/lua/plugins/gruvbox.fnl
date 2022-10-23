@@ -15,7 +15,9 @@
           :invert_intend_guides false
           :inverse true
           :contrast ""
-          :overrides {; telescope
+          :overrides {; spell
+                      :SpellBad {:link :GruvboxYellowUnderline}
+                      ; telescope
                       :TelescopeMatching {:link :GruvboxRedBold}
                       :TelescopeSelection {:bg dark2}
                       ; dressing
