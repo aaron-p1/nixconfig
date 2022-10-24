@@ -15,7 +15,13 @@
     tmux.enable = true;
 
     # ../modules/alacritty.nix
-    alacritty.enable = true;
+    alacritty = {
+      enable = true;
+      shortcuts = {
+        nixconfig = true;
+        oro = true;
+      };
+    };
 
     # ../modules/direnv.nix
     direnv.enable = true;

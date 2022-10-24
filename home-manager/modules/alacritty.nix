@@ -1,7 +1,16 @@
 { config, lib, pkgs, ... }:
-let cfg = config.within.alacritty;
+let
+  cfg = config.within.alacritty;
+
+  inherit (builtins) listToAttrs;
 in with lib; {
-  options.within.alacritty = { enable = mkEnableOption "Alacritty"; };
+  options.within.alacritty = {
+    enable = mkEnableOption "Alacritty";
+    shortcuts = {
+      nixconfig = mkEnableOption "Nixconfig";
+      oro = mkEnableOption "Oro";
+    };
+  };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [ (nerdfonts.override { fonts = [ "Hack" ]; }) ];
@@ -63,5 +72,30 @@ in with lib; {
         }];
       };
     };
+
+    xdg.desktopEntries = let
+      alacrittyPath = "${pkgs.alacritty}";
+
+      aBin = alacrittyPath + "/bin/alacritty";
+      aFullscreen = "-o window.startup_mode=Fullscreen";
+      icon = alacrittyPath + "/share/icons/hicolor/scalable/apps/Alacritty.svg";
+
+    in listToAttrs (map ({ name, shortName, command, settings ? { } }: {
+      name = shortName;
+      value = {
+        inherit name icon settings;
+        exec = "${aBin} ${aFullscreen} -e ${command}";
+      };
+    }) (optional cfg.shortcuts.nixconfig {
+      name = "Nixconfig";
+      shortName = "nixconfig";
+      command = "gotmux nixconfig";
+    } ++ optional cfg.shortcuts.oro {
+      name = "Orgmode optimize";
+      shortName = "oro";
+      command = let inherit (config.xdg.userDirs) documents;
+      in "nvim ${documents}/private/orgmode/optimize.org";
+      settings.Keywords = "oro";
+    }));
   };
 }
