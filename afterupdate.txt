@@ -27,7 +27,7 @@ Broken Stuff:
     grafana cannot delete provisioned datasources:
       https://github.com/grafana/grafana/issues/12875
       for now:
-        editable = true; and delete manually
+        deleteDatasources option
     podman user service notfinding newuidmap:
       https://github.com/NixOS/nixpkgs/issues/138423
       workaround:

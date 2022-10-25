@@ -76,7 +76,7 @@ in with lib; {
             }
           ];
         };
-        grafana.provision.datasources = [{
+        grafana.provision.datasources.settings.datasources = [{
           name = "Blocky";
           uid = "mysqlblocky";
           type = "mysql";
@@ -84,7 +84,6 @@ in with lib; {
           user = "grafana";
           inherit database;
           jsonData.timezone = "+00:00";
-          editable = true; # see afterupdate
         }];
       };
     })

@@ -6,9 +6,9 @@ let
 
   domain = head (split ":[[:digit:]]*$" cfg.listenAddr);
   inherit (config.within.networking) localDomains;
-  addr =
+  http_addr =
     if domain == "localhost" then "127.0.0.1" else localDomains."${domain}";
-  port = lib.toInt (head (match ".*:([[:digit:]]+)" cfg.listenAddr));
+  http_port = lib.toInt (head (match ".*:([[:digit:]]+)" cfg.listenAddr));
 in with lib; {
   options.within.monitoring.grafana = {
     enable = mkEnableOption "Grafana";
@@ -65,11 +65,11 @@ in with lib; {
         message = "Domain '${domain}' missing in localDomains";
       }
       {
-        assertion = addr != null;
+        assertion = http_addr != null;
         message = "Address missing";
       }
       {
-        assertion = port != null;
+        assertion = http_port != null;
         message = "Port missing";
       }
     ];
@@ -77,45 +77,41 @@ in with lib; {
     services.grafana = {
       enable = true;
 
-      inherit domain addr port;
+      settings.server = { inherit domain http_addr http_port; };
 
       declarativePlugins = cfg.plugins;
       provision = {
         enable = true;
-        datasources = let ds = cfg.datasources;
-        in concatLists [
-          (optional ds.prometheus.enable {
-            name = "Prometheus";
-            uid = "systemprom";
-            type = "prometheus";
-            url = let prom = config.services.prometheus;
-            in "http://${prom.listenAddress}:${toString prom.port}";
-            access = "proxy"; # "Server" in GUI
-            editable = true; # see afterupdate
-          })
-        ];
-        dashboards = let ds = cfg.datasources;
-        in concatLists [
-          (optional ds.prometheus.enable {
-            name = "System";
-            type = "file";
-            folder = "system";
-            updateIntervalSeconds = 10;
-            disableDeletion = false;
-            options = {
-              path = ./grafana-resources/dashboards/system;
-              foldersFromFilesStructure = false;
-            };
-          })
-          (mapAttrsToList (name: val: {
-            type = "file";
-            inherit name;
-            inherit (val) folder;
-            updateIntervalSeconds = 10;
-            disableDeletion = false;
-            options = { inherit (val) path foldersFromFilesStructure; };
-          }) cfg.dashboards)
-        ];
+
+        datasources.settings.datasources = let ds = cfg.datasources;
+        in optional ds.prometheus.enable {
+          name = "Prometheus";
+          uid = "systemprom";
+          type = "prometheus";
+          url = let prom = config.services.prometheus;
+          in "http://${prom.listenAddress}:${toString prom.port}";
+          access = "proxy"; # "Server" in GUI
+        };
+
+        dashboards.settings.providers = let ds = cfg.datasources;
+        in (optional ds.prometheus.enable {
+          name = "System";
+          type = "file";
+          folder = "system";
+          updateIntervalSeconds = 10;
+          disableDeletion = false;
+          options = {
+            path = ./grafana-resources/dashboards/system;
+            foldersFromFilesStructure = false;
+          };
+        }) ++ (mapAttrsToList (name: val: {
+          type = "file";
+          inherit name;
+          inherit (val) folder;
+          updateIntervalSeconds = 10;
+          disableDeletion = false;
+          options = { inherit (val) path foldersFromFilesStructure; };
+        }) cfg.dashboards);
       };
     };
   };
