@@ -3,7 +3,17 @@
 
   within = {
     # ../modules/xdg.nix
-    xdg.enable = true;
+    xdg = {
+      enable = true;
+      desktopEntries = {
+        enable = true;
+        terminal = {
+          nixconfig = true;
+          oro = true;
+        };
+        links.nixpkgs = true;
+      };
+    };
 
     # ../modules/ssh.nix
     ssh.enable = true;
@@ -15,13 +25,7 @@
     tmux.enable = true;
 
     # ../modules/alacritty.nix
-    alacritty = {
-      enable = true;
-      shortcuts = {
-        nixconfig = true;
-        oro = true;
-      };
-    };
+    alacritty.enable = true;
 
     # ../modules/direnv.nix
     direnv.enable = true;
