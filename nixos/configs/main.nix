@@ -129,7 +129,13 @@
 
   hardware.keyboard.zsa.enable = true;
 
-  programs = { dconf.enable = true; };
+  programs = {
+    ausweisapp = {
+      enable = true;
+      openFirewall = true;
+    };
+    dconf.enable = true;
+  };
 
   environment = {
     systemPackages = with pkgs; [
