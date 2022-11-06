@@ -1,4 +1,5 @@
-{ lib, stdenv, fetchFromGitHub, makeWrapper, findutils, fzf, nix-index, nix-ld }:
+{ lib, stdenv, fetchFromGitHub, makeWrapper, findutils, fzf, nix-index, nix-ld
+}:
 stdenv.mkDerivation rec {
   pname = "nix-autobahn";
   version = "2022-03-22";

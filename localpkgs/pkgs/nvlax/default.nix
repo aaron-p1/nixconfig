@@ -55,8 +55,5 @@ in stdenv.mkDerivation rec {
   '';
 
   # Remove CPM from cmakelists
-  patches = [
-    ./fixup-cmakelists.patch
-    ./fixup-pointer-access.patch
-  ];
+  patches = [ ./fixup-cmakelists.patch ./fixup-pointer-access.patch ];
 }
