@@ -50,7 +50,7 @@
         (save-range bufnr motion-type))))
 
 (fn setup []
-  (kset :n :gs "<Cmd>set operatorfunc=v:lua.swap_textobjects<CR>g@")
+  (kset [:n :v] :gs "<Cmd>set operatorfunc=v:lua.swap_textobjects<CR>g@")
   (kset :n :<Leader>sd #(clear-range (nvim_get_current_buf))
         {:desc "Clear swap source"}))
 
