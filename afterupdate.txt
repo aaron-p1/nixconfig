@@ -32,6 +32,11 @@ Broken Stuff:
       https://github.com/NixOS/nixpkgs/issues/138423
       workaround:
         https://github.com/NixOS/nixpkgs/issues/138423#issuecomment-947888673
+    latte-dock not getting plasma version:
+      environment.cpp:63 spawned process crashing
+      maybe because segfault when plasmashell --version
+      workaround:
+        hard code version via patch
 
   home-manager:
     firefox:

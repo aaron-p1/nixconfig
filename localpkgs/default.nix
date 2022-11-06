@@ -1,5 +1,7 @@
 { inputs, ... }:
 final: prev: {
+  latte-dock = import ./overrides/latte-dock { inherit prev; };
+
   local = rec {
     create-project = prev.callPackage ./pkgs/create-project { };
 
