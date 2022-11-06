@@ -37,6 +37,7 @@
 
 (fn config []
   (setup {:update_debounce 300
+          :diff_opts {:linematch 60}
           :on_attach (fn [bufnr]
                        (map_keys get-keymaps bufnr)
                        (register_plugin_wk {:prefix :<Leader>

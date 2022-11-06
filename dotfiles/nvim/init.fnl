@@ -253,7 +253,7 @@
                     :mouse ""
                     :background :dark
                     :timeoutlen 500
-                    :diffopt "internal,filler,closeoff,vertical"
+                    :diffopt "internal,filler,closeoff,vertical,linematch:102"
                     :completeopt "menuone,noselect"
                     :omnifunc "syntaxcomplete#Complete"
                     :showbreak "─→"
