@@ -41,8 +41,5 @@ Broken Stuff:
   dotfiles:
 
   localpkgs:
-    lief not building:
-      https://github.com/NixOS/nixpkgs/pull/191863
-      workaround:
-        update to 1.12.2
+
 --------------------------------------------------------------------------------
