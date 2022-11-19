@@ -214,61 +214,65 @@
 (set vim.g.maplocalleader "|")
 (set vim.g.netrw_use_errorwindow 0)
 
-(set_options vim.o {; hidden changed buffers
-                    :hidden true
-                    ; show chars bottom left
-                    :showcmd true
-                    ; highlight search
-                    :hlsearch true
-                    ; hsow position in file
-                    :ruler true
-                    ; confirm closing unsaved files
-                    :confirm true
-                    ; line numbers
-                    :number true
-                    :relativenumber true
-                    ; don't break line inside word
-                    :linebreak true
-                    ; jump while searching
-                    :incsearch true
-                    ; search case
-                    :ignorecase true
-                    :smartcase true
-                    ; gui colors
-                    :termguicolors true
-                    ; split buffers bottom right
-                    :splitbelow true
-                    :splitright true
-                    ; save undo history
-                    :undofile true
-                    ; spell
-                    :spell true
-                    :spelllang :en
-                    :spellfile (.. (vim.fn.stdpath :config)
-                                   :/spell/en.utf-8.add)
-                    ; cursor line
-                    :cursorline true
-                    ; ! don't use tmp file
-                    :shelltemp false
-                    :mouse ""
-                    :background :dark
-                    :timeoutlen 500
-                    :diffopt "internal,filler,closeoff,vertical,linematch:102"
-                    :completeopt "menuone,noselect"
-                    :omnifunc "syntaxcomplete#Complete"
-                    :showbreak "─→"
-                    :list true
-                    :listchars "tab:──,trail:❯,nbsp:˰"
-                    ; indent
-                    :expandtab true
-                    :tabstop 4
-                    :shiftwidth 4
-                    ; folding
-                    :foldmethod :indent
-                    :foldlevelstart 99
-                    ; scrolling
-                    :scrolljump -10
-                    :scrolloff 8})
+(set_options vim.opt {; hidden changed buffers
+                      :hidden true
+                      ; show chars bottom left
+                      :showcmd true
+                      ; highlight search
+                      :hlsearch true
+                      ; show position in file
+                      :ruler true
+                      ; confirm closing unsaved files
+                      :confirm true
+                      ; line numbers
+                      :number true
+                      :relativenumber true
+                      ; don't break line inside word
+                      :linebreak true
+                      ; jump while searching
+                      :incsearch true
+                      ; search case
+                      :ignorecase true
+                      :smartcase true
+                      ; GUI colors
+                      :termguicolors true
+                      ; split buffers bottom right
+                      :splitbelow true
+                      :splitright true
+                      ; save undo history
+                      :undofile true
+                      ; spell
+                      :spell true
+                      :spelllang :en
+                      :spellfile (.. (vim.fn.stdpath :config)
+                                     :/spell/en.utf-8.add)
+                      ; cursor line
+                      :cursorline true
+                      ; ! Don't use tmp file
+                      :shelltemp false
+                      :mouse ""
+                      :background :dark
+                      :timeoutlen 500
+                      :diffopt [:internal
+                                :filler
+                                :closeoff
+                                :vertical
+                                "linematch:102"]
+                      :completeopt [:menuone :noselect]
+                      :omnifunc "syntaxcomplete#Complete"
+                      :showbreak "─→"
+                      :list true
+                      :listchars {:tab "──" :trail "❯" :nbsp "˰"}
+                      ; indent
+                      :expandtab true
+                      :tabstop 4
+                      :shiftwidth 4
+                      ; folding
+                      :foldmethod :indent
+                      :foldlevelstart 99
+                      ; scrolling
+                      :scrolljump -10
+                      :scrolloff 8})
 
 (set-language :en_US.utf8)
 
