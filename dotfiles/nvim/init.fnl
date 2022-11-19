@@ -243,6 +243,7 @@
                       :undofile true
                       ; spell
                       :spell true
+                      :spelloptions [:camel :noplainbuffer]
                       :spelllang :en
                       :spellfile (.. (vim.fn.stdpath :config)
                                      :/spell/en.utf-8.add)
