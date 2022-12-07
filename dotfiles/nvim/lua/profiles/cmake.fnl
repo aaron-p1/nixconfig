@@ -10,6 +10,7 @@
               : nvim_buf_delete
               : nvim_win_close
               : nvim_win_get_buf
+              : nvim_win_call
               : nvim_create_autocmd}
         :fn {: mkdir : shellescape}
         :cmd {: edit}
@@ -42,32 +43,31 @@
   (when ?exit-cb
     (?exit-cb vim.v.event.status bufnr)))
 
-(lambda open-same-buf [term-string]
-  (let [winnr (nvim_get_current_win)
-        bufnr (nvim_win_get_buf winnr)]
-    (edit term-string)
-    (nvim_buf_delete bufnr {})
-    winnr))
+(lambda open-in-win [winnr term-string]
+  (nvim_win_call winnr #(edit term-string))
+  winnr)
 
 (lambda run-term [cwd cmd args ?opts]
-  (when (and cur-output-win (not (?. ?opts :same-buf)))
+  (when (and cur-output-win (not (?. ?opts :winnr)))
     (when (nvim_win_is_valid cur-output-win)
       (nvim_win_close cur-output-win true))
     (set cur-output-win nil))
   (create-dir cwd)
-  (let [term-string (make-term-string cwd cmd args)
-        same-buf (?. ?opts :same-buf)
-        winnr (if same-buf (open-same-buf term-string)
+  (let [opts (or ?opts {})
+        term-string (make-term-string cwd cmd args)
+        winnr (if opts.winnr (open-in-win opts.winnr term-string)
                   (w-hor {:file term-string :focus false :size term-height}))
         bufnr (nvim_win_get_buf winnr)]
     (set cur-output-win winnr)
     (nvim_buf_set_option bufnr :bufhidden :wipe)
     (nvim_create_autocmd :TermClose
                          {:buffer bufnr
-                          :callback (partial after-cmd-cb (?. ?opts :on-exit))})))
+                          :callback (partial after-cmd-cb opts.on-exit)})))
 
 (lambda add-rerun-map [func _ bufnr]
-  (kset :n :r #(func {:same-buf true}) {:buffer bufnr}))
+  (kset :n :r (fn []
+                (let [winnr (nvim_get_current_win)]
+                  (func {: winnr}))) {:buffer bufnr}))
 
 (fn configure [?opts]
   (let [opts (tbl_extend :force (or ?opts {})
@@ -93,14 +93,15 @@
                       (set target input)
                       (run (tbl_extend :force opts {:target input}))))))))
 
+(lambda run-on-exit [rerun-cb exit-code]
+  (when (= 0 exit-code)
+    (schedule (partial run-target
+                       {:on-exit (partial add-rerun-map rerun-cb)
+                        :winnr cur-output-win}))))
+
 (fn build-run-target [?opts]
-  (let [on-exit (fn [exit-code]
-                  (when (= 0 exit-code)
-                    (schedule (partial run-target
-                                       {:on-exit (partial add-rerun-map
-                                                          build-run-target)
-                                        :same-buf (?. ?opts :same-buf)}))))]
-    (build (tbl_extend :force (or ?opts {}) {: on-exit}))))
+  (build (tbl_extend :force (or ?opts {})
+                     {:on-exit (partial run-on-exit build-run-target)})))
 
 (lambda create-source-header [name]
   (create-dir :include)
