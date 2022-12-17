@@ -22,7 +22,7 @@
   (let [dropdown-config {:layout_config {:width get-select-float-width
                                          :height get-select-float-height}}]
     (setup {:input {:insert_only false
-                    :winblend 0
+                    :win_options {:winblend 0}
                     :min_width [70 0.2]
                     :get_config #(if $1.center {:relative :editor} nil)}
             :select {:backend [:telescope :builtin]
