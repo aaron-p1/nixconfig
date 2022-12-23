@@ -78,6 +78,7 @@
     qalculate-gtk
     flameshot
     gImageReader
+    feh
     ark
     obsidian
     element-desktop
