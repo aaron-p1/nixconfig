@@ -14,7 +14,8 @@
               : nvim_buf_set_lines
               : nvim_tabpage_get_number
               : nvim_get_current_win
-              : nvim_set_current_win}
+              : nvim_set_current_win
+              : nvim_get_runtime_file}
         :diagnostic {:get dget}
         :keymap {:set kset}
         :treesitter {: get_parser}
@@ -220,6 +221,17 @@
   (let [tabnr (or opts.tabnr (nvim_tabpage_get_number 0))]
     (new-split-with-opts opts {:mods {:tab tabnr}})))
 
+;; fnlfmt: skip
+(lambda read-secret-file [filename]
+  (let [secret-file (.. :extra/secrets/ filename)]
+    (match-try (nvim_get_runtime_file secret-file false)
+      [file] (with-open [fd (io.input file)]
+        (fd:read :*a))
+      (catch
+        [] (do
+             (print (.. "Could not find " filename))
+             nil)))))
+
 ;;; plugin utils
 (lambda register-plugin-wk [config]
   (local wk (require :which-key))
@@ -254,4 +266,5 @@
  : in-mode?
  : replace-when-diag
  : open-win
+ : read-secret-file
  :register_plugin_wk register-plugin-wk}
