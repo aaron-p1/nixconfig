@@ -28,7 +28,7 @@ Broken Stuff:
       https://github.com/grafana/grafana/issues/12875
       for now:
         deleteDatasources option
-    podman user service notfinding newuidmap:
+    podman user service not finding newuidmap:
       https://github.com/NixOS/nixpkgs/issues/138423
       workaround:
         https://github.com/NixOS/nixpkgs/issues/138423#issuecomment-947888673
