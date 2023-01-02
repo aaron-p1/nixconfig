@@ -27,6 +27,20 @@ in with lib; {
         # Defaults
       };
 
+      mimeApps = {
+        enable = true;
+        defaultApplications = {
+          # Images
+          "image/png" = "feh.desktop";
+          "image/jpeg" = "feh.desktop";
+          "image/gif" = "feh.desktop";
+          "image/bmp" = "feh.desktop";
+          "image/tiff" = "feh.desktop";
+          # Documents
+          "application/pdf" = "zathura.desktop";
+        };
+      };
+
       desktopEntries = let
         terminalCfg = cfg.desktopEntries.terminal;
 
