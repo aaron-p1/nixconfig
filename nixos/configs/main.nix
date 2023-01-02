@@ -155,7 +155,7 @@
     };
   };
 
-  fonts.fonts = with pkgs; [ corefonts ];
+  fonts.fonts = with pkgs; [ corefonts source-han-serif ];
 
   boot.tmpOnTmpfs = true;
   boot.tmpOnTmpfsSize = "100%";
