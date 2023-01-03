@@ -72,6 +72,7 @@
       plasma = {
         enable = true;
         kdeConnect = true;
+        inputMethod.japanese = true;
       };
     };
 
