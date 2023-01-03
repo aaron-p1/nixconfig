@@ -28,6 +28,72 @@
 
 (local {: handle-patches} (require :plugins.packer))
 
+(set vim.g.mapleader "\\")
+(set vim.g.maplocalleader "|")
+(set vim.g.netrw_use_errorwindow 0)
+
+(set_options vim.opt {; hidden changed buffers
+                      :hidden true
+                      ; show chars bottom left
+                      :showcmd true
+                      ; highlight search
+                      :hlsearch true
+                      ; show position in file
+                      :ruler true
+                      ; confirm closing unsaved files
+                      :confirm true
+                      ; line numbers
+                      :number true
+                      :relativenumber true
+                      ; don't break line inside word
+                      :linebreak true
+                      ; jump while searching
+                      :incsearch true
+                      ; search case
+                      :ignorecase true
+                      :smartcase true
+                      ; GUI colors
+                      :termguicolors true
+                      ; split buffers bottom right
+                      :splitbelow true
+                      :splitright true
+                      ; save undo history
+                      :undofile true
+                      ; spell
+                      :spell true
+                      :spelloptions [:camel :noplainbuffer]
+                      :spelllang [:en :de]
+                      :spellfile (.. spelldir :/custom.utf-8.add)
+                      ; cursor line
+                      :cursorline true
+                      ; ! Don't use tmp file
+                      :shelltemp false
+                      :mouse ""
+                      :background :dark
+                      :timeoutlen 500
+                      :diffopt [:internal
+                                :filler
+                                :closeoff
+                                :vertical
+                                "linematch:102"]
+                      :completeopt [:menuone :noselect]
+                      :omnifunc "syntaxcomplete#Complete"
+                      :showbreak "─→"
+                      :list true
+                      :listchars {:tab "──" :trail "❯" :nbsp "˰"}
+                      ; indent
+                      :expandtab true
+                      :tabstop 4
+                      :shiftwidth 4
+                      ; folding
+                      :foldmethod :indent
+                      :foldlevelstart 99
+                      ; scrolling
+                      :scrolljump -10
+                      :scrolloff 8})
+
+(set-language :en_US.utf8)
+
 (phandle :patches handle-patches)
 
 (lambda plug-config-str [plugin function]
@@ -213,73 +279,6 @@
                                                  (nvim_get_current_buf))))}}})
 
 (require :impatient)
-
-(set vim.g.mapleader "\\")
-(set vim.g.maplocalleader "|")
-(set vim.g.netrw_use_errorwindow 0)
-
-(set_options vim.opt {; hidden changed buffers
-                      :hidden true
-                      ; show chars bottom left
-                      :showcmd true
-                      ; highlight search
-                      :hlsearch true
-                      ; show position in file
-                      :ruler true
-                      ; confirm closing unsaved files
-                      :confirm true
-                      ; line numbers
-                      :number true
-                      :relativenumber true
-                      ; don't break line inside word
-                      :linebreak true
-                      ; jump while searching
-                      :incsearch true
-                      ; search case
-                      :ignorecase true
-                      :smartcase true
-                      ; GUI colors
-                      :termguicolors true
-                      ; split buffers bottom right
-                      :splitbelow true
-                      :splitright true
-                      ; save undo history
-                      :undofile true
-                      ; spell
-                      :spell true
-                      :spelloptions [:camel :noplainbuffer]
-                      :spelllang :en
-                      :spellfile (.. (vim.fn.stdpath :config)
-                                     :/spell/en.utf-8.add)
-                      ; cursor line
-                      :cursorline true
-                      ; ! Don't use tmp file
-                      :shelltemp false
-                      :mouse ""
-                      :background :dark
-                      :timeoutlen 500
-                      :diffopt [:internal
-                                :filler
-                                :closeoff
-                                :vertical
-                                "linematch:102"]
-                      :completeopt [:menuone :noselect]
-                      :omnifunc "syntaxcomplete#Complete"
-                      :showbreak "─→"
-                      :list true
-                      :listchars {:tab "──" :trail "❯" :nbsp "˰"}
-                      ; indent
-                      :expandtab true
-                      :tabstop 4
-                      :shiftwidth 4
-                      ; folding
-                      :foldmethod :indent
-                      :foldlevelstart 99
-                      ; scrolling
-                      :scrolljump -10
-                      :scrolloff 8})
-
-(set-language :en_US.utf8)
 
 (local setup-modules [:keymaps
                       :autocmd
