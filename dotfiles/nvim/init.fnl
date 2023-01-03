@@ -5,7 +5,7 @@
               : nvim_get_current_buf
               : nvim_buf_get_name
               : nvim_buf_get_option}
-        :fn {: stdpath : isdirectory : system : readdir}} vim)
+        :fn {: stdpath : isdirectory : system : mkdir}} vim)
 
 (local {: set_options} (require :helper))
 (local {: has-profile} (require :profiles))
@@ -27,6 +27,10 @@
 (local putil (require :packer.util))
 
 (local {: handle-patches} (require :plugins.packer))
+
+(local spelldir (.. (stdpath :data) :/spell))
+
+(mkdir spelldir :p)
 
 (set vim.g.mapleader "\\")
 (set vim.g.maplocalleader "|")
