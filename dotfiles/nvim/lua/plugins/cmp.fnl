@@ -25,7 +25,7 @@
                     {:name :path
                      :options {:fd_timeout_msec 1000 :fd_cmd [:fd :-d :4 :-p]}}
                     {:name :calc}
-                    {:name :digraphs :max_item_count 4}
+                    {:name :digraphs :max_item_count 32}
                     {:name :buffer :option {:get_bufnrs #(nvim_list_bufs)}}]
           :sorting {:priority_weight 2
                     :comparators [cc.offset
