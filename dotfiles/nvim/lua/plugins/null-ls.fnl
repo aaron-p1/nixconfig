@@ -1,3 +1,7 @@
+(local {:api {: nvim_buf_get_option}} vim)
+
+(local {: all} (require :helper))
+
 (local {: setup
         :methods {:DIAGNOSTICS_ON_SAVE d-on-save}
         :builtins {:diagnostics d :formatting f :code_actions c :hover h}}
@@ -5,6 +9,12 @@
 
 (local {:on_attach lsp-attach :getCapabilities lsp-capabilities}
        (require :plugins.lspconfig))
+
+(local disable-filetypes [:NvimTree])
+
+(lambda should-attach [bufnr]
+  (let [buf-ft (nvim_buf_get_option bufnr :filetype)]
+    (all disable-filetypes #(not= buf-ft $))))
 
 (fn config []
   (setup {:sources [; editorconfig
@@ -39,6 +49,7 @@
                     ; python
                     d.flake8
                     f.autopep8]
+          :should_attach should-attach
           :on_attach lsp-attach
           :capabilities (lsp-capabilities)}))
 

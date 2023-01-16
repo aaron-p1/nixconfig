@@ -95,6 +95,10 @@
   (accumulate [result false key val (pairs table) :until result]
     (func val key)))
 
+(lambda all [table func]
+  (accumulate [result true key val (pairs table) &until (not result)]
+    (func val key)))
+
 (lambda copy [table]
   (collect [key val (pairs table)]
     key
@@ -251,6 +255,7 @@
  : contains
  : filter
  : any
+ : all
  : copy
  : concat
  : flatten
