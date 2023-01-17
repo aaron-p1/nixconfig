@@ -288,6 +288,7 @@
 (local setup-modules [:keymaps
                       :autocmd
                       :features.compare-remotes
+                      :features.macro-insert-paste
                       :features.plugin-links
                       :features.run-profile
                       :features.scratch-buffer
