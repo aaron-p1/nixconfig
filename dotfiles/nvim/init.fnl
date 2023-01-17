@@ -188,6 +188,7 @@
                 {:file :tree
                  :requires [:kyazdani42/nvim-web-devicons]
                  :after :which-key.nvim})
+             (u :stevearc/oil.nvim {:file :oil})
              ;; fuzzy finder
              (u :nvim-telescope/telescope.nvim
                 {:file :telescope
