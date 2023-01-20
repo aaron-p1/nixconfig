@@ -249,9 +249,6 @@
              (u :David-Kunz/cmp-npm {:requires [:nvim-lua/plenary.nvim]})
              ;; DEPENDENCIES: nodejs
              (u :github/copilot.vim {:file :copilot})
-             (u :dense-analysis/neural
-                {:file :neural
-                 :requires [:MunifTanjim/nui.nvim :ElPiloto/significant.nvim]})
              (u :ray-x/lsp_signature.nvim)
              ;; diagnostics
              (u :folke/trouble.nvim
