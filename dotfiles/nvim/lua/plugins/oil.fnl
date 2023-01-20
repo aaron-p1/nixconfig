@@ -10,6 +10,7 @@
 (fn config []
   (setup {:columns [:icon :permissions :size]
           :view_options {:show_hidden true}
-          :keymaps {:<C-t> select-tab}}))
+          :keymaps {:<C-t> select-tab}
+          :silence_scp_warning true}))
 
 {: config}
