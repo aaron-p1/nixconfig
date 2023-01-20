@@ -14,7 +14,6 @@
 (local namespace (nvim_create_namespace :MacroInsertPaste))
 
 (local key-c-o (nvim_replace_termcodes :<C-o> true false true))
-(local key-c-r (nvim_replace_termcodes :<C-r> true false true))
 (local key-esc (nvim_replace_termcodes :<Esc> true false true))
 
 (local key-right (nvim_replace_termcodes :<Right> true false true))
@@ -47,13 +46,13 @@
         (setreg macro-register new-macro)
         (normal {1 (.. :q current-upper) :bang true})))))
 
+(fn start-macro [use-insert-paste?]
+  (set insert-paste? use-insert-paste?)
+  "q")
+
 (fn setup []
-  (kset :n :<Leader>q (fn []
-                        (set insert-paste? true)
-                        (nvim_feedkeys :q :n false)))
-  (kset :n :q (fn []
-                (set insert-paste? false)
-                (nvim_feedkeys :q :n false)))
+  (kset :n :<Leader>q #(start-macro true) {:expr true})
+  (kset :n :q #(start-macro false) {:expr true})
   (let [group (nvim_create_augroup :MacroInsertPaste {})]
     (nvim_create_autocmd :ModeChanged
                          {: group :pattern "*:i" :callback insert-enter})
