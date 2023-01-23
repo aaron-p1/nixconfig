@@ -29,7 +29,9 @@
                          {:group augroup
                           :callback #(set_options vim.o
                                                   {:number false
-                                                   :relativenumber false})}))
+                                                   :relativenumber false
+                                                   :cursorline false
+                                                   :spell false})}))
   ;; highlight on yank
   (let [augroup (nvim_create_augroup :YankHighlight {:clear true})]
     (nvim_create_autocmd :TextYankPost
