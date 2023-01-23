@@ -1,9 +1,10 @@
-(local {: nvim_buf_set_text : nvim_tabpage_get_number : nvim_list_tabpages}
-       vim.api)
-
-(local {: tabclose : tabprevious} vim.cmd)
-(local {: getreg} vim.fn)
-(local {:set kset} vim.keymap)
+(local {:api {: nvim_buf_set_text
+              : nvim_tabpage_get_number
+              : nvim_list_tabpages
+              : nvim_get_current_tabpage}
+        :cmd {: tabclose : tabprevious : split}
+        :fn {: getreg}
+        :keymap {:set kset}} vim)
 
 (local {: get-operator-range} (require :helper))
 (local {: get-profile-config} (require :profiles))
@@ -34,6 +35,16 @@
   ;; tab maps
   (kset :n :<Leader>tc close-tab {:desc "Tab close"})
   (kset :n :<Leader>to :<Cmd>tabonly<CR> {:silent true})
+  ;; term
+  (let [file-name (.. "term://" vim.o.shell)
+        get-tab-number (fn []
+                         (let [tab-id (nvim_get_current_tabpage)]
+                           (nvim_tabpage_get_number tab-id)))]
+    (kset :n :<Leader>ctx #(split file-name) {:desc "Term horizontal"})
+    (kset :n :<Leader>ctv #(split {1 file-name :mods {:vertical true}})
+          {:desc "Term vertical"})
+    (kset :n :<Leader>ctt #(split {1 file-name :mods {:tab (get-tab-number)}})
+          {:desc "Term tab"}))
   ;; replace text object
   (kset :n :gp "<Cmd>set operatorfunc=v:lua.replace_selection<CR>g@"
         {:silent true}))
