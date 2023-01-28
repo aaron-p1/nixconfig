@@ -7,7 +7,8 @@ in with lib; {
   options.within.alacritty = { enable = mkEnableOption "Alacritty"; };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ (nerdfonts.override { fonts = [ "Hack" ]; }) ];
+    home.packages = with pkgs;
+      [ (nerdfonts.override { fonts = [ "FiraCode" ]; }) ];
 
     programs.alacritty = {
       enable = true;
@@ -19,7 +20,7 @@ in with lib; {
         };
         font = {
           size = 9;
-          normal = { family = "Hack Nerd Font"; };
+          normal = { family = "FiraCode Nerd Font"; };
         };
         mouse.hide_when_typing = true;
         hints = {
