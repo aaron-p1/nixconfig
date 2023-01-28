@@ -97,9 +97,6 @@
             gnumake
             rsync
             git-crypt
-
-            # lsp
-            sumneko-lua-language-server
           ];
         };
       });
