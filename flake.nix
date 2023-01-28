@@ -97,6 +97,7 @@
             gnumake
             rsync
             git-crypt
+            jq
           ];
         };
       });
