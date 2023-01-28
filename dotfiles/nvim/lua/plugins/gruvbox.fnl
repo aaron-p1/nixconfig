@@ -46,7 +46,7 @@
   (set vim.g.terminal_color_14 "#70c0b1")
   (set vim.g.terminal_color_15 "#eaeaea")
   (let [group (nvim_create_augroup :TerminalColors {})]
-    (nvim_set_hl term-hl-ns :Normal {:bg "#1D1F21"})
+    (nvim_set_hl term-hl-ns :Normal {:fg "#c5c8c6" :bg "#1D1F21"})
     (nvim_create_autocmd :BufEnter {: group :callback set-term-hl-ns})))
 
 (fn config []
