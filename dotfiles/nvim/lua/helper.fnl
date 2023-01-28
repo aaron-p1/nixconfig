@@ -23,6 +23,7 @@
 
 ;;; Functions for opening files
 (local open-win {})
+(local open-term {})
 
 ;;; Util functions
 (lambda remove-prefix [str prefix]
@@ -225,6 +226,21 @@
   (let [tabnr (or opts.tabnr (nvim_tabpage_get_number 0))]
     (new-split-with-opts opts {:mods {:tab tabnr}})))
 
+(lambda new-term [cmd opts]
+  (let [name (.. "term://" cmd)
+        split-opts (tbl_deep_extend :keep {1 name} opts)]
+    (split split-opts)))
+
+(lambda open-term.hor [cmd]
+  (new-term cmd {}))
+
+(lambda open-term.ver [cmd]
+  (new-term cmd {:mods {:vertical true}}))
+
+(lambda open-term.tab [cmd]
+  (let [tabnr (nvim_tabpage_get_number 0)]
+    (new-term cmd {:mods {:tab tabnr}})))
+
 ;; fnlfmt: skip
 (lambda read-secret-file [filename]
   (let [secret-file (.. :extra/secrets/ filename)]
@@ -271,5 +287,6 @@
  : in-mode?
  : replace-when-diag
  : open-win
+ : open-term
  : read-secret-file
  :register_plugin_wk register-plugin-wk}
