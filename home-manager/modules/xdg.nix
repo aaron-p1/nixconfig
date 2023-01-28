@@ -38,6 +38,7 @@ in with lib; {
           "image/tiff" = "feh.desktop";
           # Documents
           "application/pdf" = "zathura.desktop";
+          "text/csv" = "neovim.desktop";
           "text/html" = "firefox.desktop";
         };
       };
