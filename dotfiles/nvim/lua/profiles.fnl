@@ -1,13 +1,21 @@
-(local {: split
-        :api {: nvim_create_augroup : nvim_create_autocmd}
-        :fn {: getcwd}} vim)
+(local {: split :keymap {:set kset}} vim)
 
-(local {: map : concat : contains :is_empty is-empty} (require :helper))
+(local {: map
+        : concat
+        : contains
+        :is_empty is-empty
+        :open-term {:hor open-term-h :ver open-term-v :tab open-term-t}}
+       (require :helper))
 
 (local profile-string (or vim.env.NVIM_PROFILES ""))
 (local profiles (split profile-string "," {:plain true :trimempty true}))
 
-(local existing-profiles [:webt-game :cmake])
+;; profiles that do something
+(local existing-profiles [:cmake
+                          :podman-compose
+                          :laravel
+                          :sail
+                          :tenancy-for-laravel])
 
 (local config (map existing-profiles #(values $1 {})))
 
@@ -44,6 +52,22 @@
     (each [_ profile (ipairs profiles)]
       (execute-profile-config profile config-name nil (unpack additional-args)))))
 
+;;;; Util functions
+
+(lambda add-term-keymaps [key cmd desc]
+  (kset :n (.. key :x) #(open-term-h cmd) {:desc (.. desc " horizontal")})
+  (kset :n (.. key :v) #(open-term-v cmd) {:desc (.. desc " vertical")})
+  (kset :n (.. key :t) #(open-term-t cmd) {:desc (.. desc " tab")}))
+
+(lambda get-compose-cmd [env-infix ?cmd]
+  (let [env-prefix :NVIM_PROFILE_
+        env-suffixes {:options :_CONTAINER_OPTIONS :container :_CONTAINER}
+        container-options-env (.. env-prefix env-infix env-suffixes.options)
+        container-env (.. env-prefix env-infix env-suffixes.container)
+        container-options (or (. vim.env container-options-env) "")
+        container (or (. vim.env container-env) "")]
+    (.. "podman-compose exec " container-options " " container " " (or ?cmd ""))))
+
 ;;;; Configuration functions
 
 ;;; Available functions for configuration
@@ -56,28 +80,36 @@
 ;; - json-schemas
 
 ;;; cmake
+
 (set config.cmake (require :profiles.cmake))
 
-;;; webt
+;;; laravel
 
-(fn config.webt-game.autocmds []
-  (let [augroup (nvim_create_augroup :WebtGotoFile {:clear true})]
-    (nvim_create_autocmd :FileType
-                         {:group augroup
-                          :pattern :json
-                          :callback #(set vim.bo.includeexpr "'web/' . v:fname")})))
+;; ENV:
+;; - NVIM_PROFILE_SHELL_CONTAINER
+;; - NVIM_PROFILE_SHELL_CONTAINER_OPTIONS
+;; - NVIM_PROFILE_TINKER_CONTAINER
+;; - NVIM_PROFILE_TINKER_CONTAINER_OPTIONS
 
-(fn config.webt-game.json-schemas []
-  (let [cwd (getcwd)
-        schema-path (.. cwd :/web/assets/json/json-schemas/)]
-    [{:url (.. schema-path :config.schema.json)
-      :fileMatch [:default-config.json]}
-     {:url (.. schema-path :keymap-presets.schema.json)
-      :fileMatch [:keymap-presets.json]}
-     {:url (.. schema-path :level-list.schema.json)
-      :fileMatch [:available-levels.json]}
-     {:url (.. schema-path :level.schema.json) :fileMatch [:levels/*.json]}
-     {:url (.. schema-path :textures.schema.json)
-      :fileMatch [:textures/**/*.json]}]))
+(fn config.laravel.keymaps []
+  (let [sail? (has-profile :sail)
+        podman-compose? (has-profile :podman-compose)
+        php-tinker-cmd "php artisan tinker"
+        tinker-cmd (if sail? "sail tinker"
+                       podman-compose? (get-compose-cmd :TINKER php-tinker-cmd)
+                       php-tinker-cmd)]
+    (add-term-keymaps :<Leader>cpt tinker-cmd :Tinker)
+    (when (or sail? podman-compose?)
+      (let [shell-cmd (if sail? "sail shell" (get-compose-cmd :SHELL :bash))]
+        (add-term-keymaps :<Leader>cps shell-cmd :Shell)))
+    (when (has-profile :tenancy-for-laravel)
+      (let [tinker-tenant-artisan-cmd " artisan tenants:run tinker"
+            php-tinker-tenant-cmd (.. :php tinker-tenant-artisan-cmd)
+            tinker-tenant-cmd (if sail? (.. :sail tinker-tenant-artisan-cmd)
+                                  podman-compose?
+                                  (get-compose-cmd :TINKER
+                                                   php-tinker-tenant-cmd)
+                                  php-tinker-tenant-cmd)]
+        (add-term-keymaps :<Leader>cpT tinker-tenant-cmd "Tenant tinker")))))
 
 {: profiles : has-profile : get-profile-config : run-profile-config}
