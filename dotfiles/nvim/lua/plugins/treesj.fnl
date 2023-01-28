@@ -8,8 +8,8 @@
   (let [opts {:buffer bufnr}
         ft (nvim_buf_get_option bufnr :filetype)
         [split-action join-action] (if (. langs ft) [split join]
-                                       [:<Cmd>SplitjoinJoin<Cr>
-                                        :<Cmd>SplitjoinSplit<Cr>])]
+                                       [:<Cmd>SplitjoinSplit<Cr>
+                                        :<Cmd>SplitjoinJoin<Cr>])]
     (kset :n :gS split-action opts)
     (kset :n :gJ join-action opts)))
 
