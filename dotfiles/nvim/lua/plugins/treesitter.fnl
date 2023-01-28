@@ -5,7 +5,8 @@
 (local {: setup} (require :nvim-treesitter.configs))
 
 (fn config []
-  (setup {:highlight {:enable true
+  (setup {:ensure_installed :all
+          :highlight {:enable true
                       :disable (fn [lang bufnr]
                                  (let [lines (nvim_buf_get_lines bufnr 0 -1
                                                                  false)]
