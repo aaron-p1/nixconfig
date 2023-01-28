@@ -192,7 +192,9 @@
              ;; fuzzy finder
              (u :nvim-telescope/telescope.nvim
                 {:file :telescope
-                 :requires [:nvim-lua/popup.nvim :nvim-lua/plenary.nvim]
+                 :requires [:nvim-lua/popup.nvim
+                            :nvim-lua/plenary.nvim
+                            :benfowler/telescope-luasnip.nvim]
                  :after [:telescope-fzf-native.nvim
                          :telescope-symbols.nvim
                          :trouble.nvim

@@ -30,6 +30,7 @@
                              :override_file_sorter true
                              :case_mode :smart_case}}})
   (load_extension :fzf)
+  (load_extension :luasnip)
   ;; DEPENDENCIES: fd
   (kset :n :<Leader>fa
         #(find_files {:find_command [:fd
