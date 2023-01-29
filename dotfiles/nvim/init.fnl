@@ -121,6 +121,9 @@
 (psetup {1 (fn []
              (u :wbthomason/packer.nvim)
              (u :lewis6991/impatient.nvim)
+             ;; local plugins
+             ;; ~/Documents/private/repos/compare-remotes.nvim
+             (u :aaron-p1/compare-remotes.nvim {:file :compare-remotes})
              ;; color scheme
              (u :ellisonleao/gruvbox.nvim {:file :gruvbox})
              ;; small text utilities
@@ -286,7 +289,6 @@
 
 (local setup-modules [:keymaps
                       :autocmd
-                      :features.compare-remotes
                       :features.macro-insert-paste
                       :features.plugin-links
                       :features.run-profile
