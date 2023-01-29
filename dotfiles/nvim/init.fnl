@@ -10,7 +10,7 @@
 (local {: set_options} (require :helper))
 (local {: has-profile} (require :profiles))
 
-(set vim.env.PATH (.. vim.env.PATH ":@ADDPATH@"))
+(set vim.env.PATH (.. vim.env.PATH ":@addPath@"))
 
 (let [install-path (.. (stdpath :data) :/site/pack/packer/start/packer.nvim)]
   (when (not= 1 (isdirectory install-path))
