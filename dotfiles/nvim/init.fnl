@@ -140,6 +140,11 @@
              (u :lukas-reineke/indent-blankline.nvim {:file :indent-blankline})
              (u :windwp/nvim-autopairs {:file :autopairs :after :nvim-cmp})
              (u :windwp/nvim-ts-autotag {:after :nvim-treesitter})
+             (u :andymass/vim-matchup
+                {:file :matchup
+                 :setup true
+                 :config true
+                 :after :nvim-treesitter})
              (u :rlane/pounce.nvim {:file :pounce})
              (u :nvim-pack/nvim-spectre
                 {:requires [:nvim-lua/plenary.nvim] :file :spectre})
