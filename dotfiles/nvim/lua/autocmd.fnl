@@ -27,7 +27,7 @@
   (let [augroup (nvim_create_augroup :Terminal {:clear true})]
     (nvim_create_autocmd :TermOpen
                          {:group augroup
-                          :callback #(set_options vim.o
+                          :callback #(set_options vim.opt_local
                                                   {:number false
                                                    :relativenumber false
                                                    :cursorline false
