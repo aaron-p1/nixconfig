@@ -40,6 +40,7 @@ in with lib; {
           "application/pdf" = "zathura.desktop";
           "text/csv" = "neovim.desktop";
           "text/html" = "firefox.desktop";
+          "text/plain" = "neovim.desktop";
         };
       };
 
