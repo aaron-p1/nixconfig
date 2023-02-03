@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# if XDG_DATA_HOME is not set, fail
+if [ -z "$XDG_DATA_HOME" ]; then
+    echo "XDG_DATA_HOME is not set"
+    exit 1
+fi
+
+# get api key and fail if not set
+API_KEY=$(cat "$XDG_DATA_HOME"/openai-key.txt)
+if [ -z "$API_KEY" ]; then
+    echo "API_KEY in $XDG_DATA_HOME/openai-key.txt is not set"
+    exit 1
+fi
+
+question="$*"
+model="text-davinci-003"
+
+prompt=$(tr -d "\n" <<< "
+Give me a bash command that best answers the following prompt
+and list the used programs with package name in ubuntu:\n
+$question\n\n
+Command: \$")
+
+data=$(cat <<EOF
+{
+  "prompt": "$prompt",
+  "max_tokens": 256,
+  "model": "$model"
+}
+EOF
+)
+
+response=$(curl -s -X POST -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $API_KEY" \
+  -d "$data" \
+  https://api.openai.com/v1/completions)
+
+jq -r '.choices[0].text' <<< "$response" | sed 's/^ *//'

@@ -86,6 +86,7 @@
 
     local.create-project
     local.nix-autobahn
+    local.ask
   ];
 
   home.stateVersion = "18.09";
