@@ -1,6 +1,6 @@
 (local {:api {: nvim_buf_get_mark} :keymap {:set kset}} vim)
 
-(local {: register_plugin_wk} (require :helper))
+(local {:register wk-register} (require :plugins.which-key))
 
 (local {: file_history : setup} (require :diffview))
 (local {: select_next_entry
@@ -45,7 +45,6 @@
   (kset :n :<Leader>gdr
         "<Cmd>set operatorfunc=v:lua.diffview_file_history<CR>g@"
         {:silent true :desc "Ranged file history"})
-  (register_plugin_wk {:prefix :<Leader>
-                       :map {:g {:name :Git :d {:name :Diffview}}}}))
+  (wk-register {:prefix :<Leader> :map {:g {:name :Git :d {:name :Diffview}}}}))
 
 {: config}

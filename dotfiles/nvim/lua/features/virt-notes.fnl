@@ -33,6 +33,8 @@
         : filter
         : remove_prefix} (require :helper))
 
+(local {:register wk-register} (require :plugins.which-key))
+
 (local namespace (nvim_create_namespace :VirtNotes))
 (local note-highlight (nvim_get_hl_id_by_name :VirtNote))
 (local notes-path (.. (stdpath :data) :/virt_notes))
@@ -311,6 +313,8 @@
   (kset :n :<Leader>vx a.move-note {:desc :Move})
   (kset :n :<Leader>vp a.paste-note {:desc :Paste})
   (kset :n :<Leader>fv a.get-notes-in-project {:desc "Virtual notes"})
+  (wk-register {:prefix :<Leader>
+                :map {:v {:name "Virtual notes" :d {:name :Delete}}}})
   (let [group (nvim_create_augroup :VirtNotes {:clear true})]
     (nvim_create_autocmd :BufRead
                          {: group

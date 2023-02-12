@@ -1,14 +1,22 @@
-(local {: register_plugin_wk} (require :helper))
+(var setup-run? false)
+(var to-register [])
 
-(local {: setup} (require :which-key))
+(lambda really-register [config]
+  (let [{:register wk-register} (require :which-key)]
+    (wk-register config.map {:prefix (or config.prefix "")
+                             :buffer config.buffer})))
+
+(lambda register [config]
+  (if setup-run?
+      (really-register config)
+      (table.insert to-register config)))
 
 (fn config []
-  (setup {:disable {:filetypes [:TelescopePrompt :DressingInput]}})
-  (register_plugin_wk {:prefix :<Leader>
-                       :map {:t {:name :Tab}
-                             :d {:name :Diff}
-                             :c {:name "Create special buffer"
-                                 :s {:name "Scratch buffer" :l :Lua}}
-                             :v {:name "Virtual comments" :d {:name :Delete}}}}))
+  (let [{: setup} (require :which-key)]
+    (setup {:disable {:filetypes [:TelescopePrompt :DressingInput]}}))
+  (set setup-run? true)
+  (each [_ config (ipairs to-register)]
+    (really-register config))
+  (set to-register []))
 
-{: config}
+{: config : register}

@@ -162,13 +162,12 @@
              (u :nvim-treesitter/nvim-treesitter-textobjects
                 {:file :treesitter-textobjects
                  :requires :nvim-treesitter/nvim-treesitter
-                 :after [:which-key.nvim :nvim-treesitter]})
+                 :after :nvim-treesitter})
              (u :nvim-treesitter/playground
                 {:file :treesitter-playground
                  :requires :nvim-treesitter/nvim-treesitter
                  :after :nvim-treesitter})
-             (u :mizlan/iswap.nvim
-                {:file :iswap :after [:which-key.nvim :nvim-treesitter]})
+             (u :mizlan/iswap.nvim {:file :iswap :after :nvim-treesitter})
              ;; syntax
              (u :sheerun/vim-polyglot {:file :polyglot :setup true})
              (u :dylon/vim-antlr)
@@ -199,7 +198,7 @@
              (u :kyazdani42/nvim-tree.lua
                 {:file :tree
                  :requires [:kyazdani42/nvim-web-devicons]
-                 :after [:which-key.nvim :telescope.nvim]})
+                 :after :telescope.nvim})
              (u :stevearc/oil.nvim {:file :oil})
              ;; fuzzy finder
              (u :nvim-telescope/telescope.nvim
@@ -209,8 +208,7 @@
                             :benfowler/telescope-luasnip.nvim]
                  :after [:telescope-fzf-native.nvim
                          :telescope-symbols.nvim
-                         :trouble.nvim
-                         :which-key.nvim]})
+                         :trouble.nvim]})
              (u :nvim-telescope/telescope-fzf-native.nvim {:run :make})
              (u :nvim-telescope/telescope-symbols.nvim)
              (u :nvim-telescope/telescope-dap.nvim
@@ -221,7 +219,7 @@
              (u :stevearc/dressing.nvim
                 {:file :dressing :after :telescope.nvim})
              ;; snippets
-             (u :L3MON4D3/LuaSnip {:file :luasnip :after :which-key.nvim})
+             (u :L3MON4D3/LuaSnip {:file :luasnip})
              (u :rafamadriz/friendly-snippets
                 {:file :friendly-snippets :after [:LuaSnip]})
              ;; lsp
@@ -230,7 +228,6 @@
                  :after [:lsp_signature.nvim
                          :nvim-cmp
                          :telescope.nvim
-                         :which-key.nvim
                          :schemastore.nvim]})
              (u :kosayoda/nvim-lightbulb
                 {:patches :change-lightbulb-char.patch
@@ -238,9 +235,7 @@
                  :requires [:antoinemadec/FixCursorHold.nvim]})
              ;; orgmode
              (u :nvim-orgmode/orgmode
-                {:file :orgmode
-                 :requires [:nvim-treesitter/nvim-treesitter]
-                 :after :which-key.nvim})
+                {:file :orgmode :requires [:nvim-treesitter/nvim-treesitter]})
              ;; json
              (u :b0o/schemastore.nvim)
              ;; java
@@ -266,9 +261,7 @@
              (u :ray-x/lsp_signature.nvim)
              ;; diagnostics
              (u :folke/trouble.nvim
-                {:file :trouble
-                 :requires :kyazdani42/nvim-web-devicons
-                 :after :which-key.nvim})
+                {:file :trouble :requires :kyazdani42/nvim-web-devicons})
              ;; dap
              (u :mfussenegger/nvim-dap {:file :dap :keys [:<F5> :<F8>]})
              (u :theHamsta/nvim-dap-virtual-text
@@ -282,7 +275,7 @@
              (u :vim-test/vim-test)
              ;; tex
              (u :lervag/vimtex {:file :vimtex})
-             (u :jalvesaq/Nvim-R {:file :r :after :which-key.nvim})
+             (u :jalvesaq/Nvim-R {:file :r})
              (use_rocks :fun))
          :config {:display {:open_fn (fn []
                                        (let [bufnr (nvim_get_current_buf)

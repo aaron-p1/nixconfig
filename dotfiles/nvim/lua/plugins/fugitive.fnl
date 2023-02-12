@@ -5,7 +5,7 @@
               : nvim_create_autocmd}
         :keymap {:set kset}} vim)
 
-(local {: register_plugin_wk} (require :helper))
+(local {:register wk-register} (require :plugins.which-key))
 
 (var old-msg [])
 
@@ -28,8 +28,7 @@
 
 (fn config []
   (kset :n :<Leader>gbb "<Cmd>Git blame<CR>" {:silent true :desc "Whole file"})
-  (register_plugin_wk {:prefix :<Leader>
-                       :map {:g {:name :Git :b {:name :Blame}}}})
+  (wk-register {:prefix :<Leader> :map {:g {:name :Git :b {:name :Blame}}}})
   (let [group (nvim_create_augroup :FugitiveCommitMsg {:clear true})]
     (nvim_create_autocmd :User
                          {: group

@@ -19,6 +19,8 @@
 (local {: map : find :open-win {:hor w-hor :ver w-ver :tab w-tab}}
        (require :helper))
 
+(local {:register wk-register} (require :plugins.which-key))
+
 (local term-height 16)
 
 (local cmd-cmake :cmake)
@@ -124,6 +126,7 @@
   (kset :n :<Leader>er run-target {:desc :Run})
   (kset :n :<Leader>eR build-run-target {:desc "Build & Run"})
   (kset :n :<Leader>cc create-source-header-cb
-        {:desc "Create source with header"}))
+        {:desc "Create source with header"})
+  (wk-register {:prefix :<Leader> :map {:e {:name :Run}}}))
 
 {: keymaps}

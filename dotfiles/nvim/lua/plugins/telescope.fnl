@@ -1,6 +1,6 @@
 (local {:set kset} vim.keymap)
 
-(local {: register_plugin_wk} (require :helper))
+(local {:register wk-register} (require :plugins.which-key))
 
 (local {: setup : load_extension} (require :telescope))
 (local {: open_with_trouble} (require :trouble.providers.telescope))
@@ -74,10 +74,10 @@
   (kset :n :<Leader>fgt git_stash {:desc :Stash})
   ;; symbols
   (kset :n :<Leader>fs symbols {:desc :Symbols})
-  (register_plugin_wk {:prefix :<Leader>
-                       :map {:f {:name :Telescope
-                                 :c {:name "Current buffer"}
-                                 :l {:name :Lsp}
-                                 :g {:name :Git}}}}))
+  (wk-register {:prefix :<Leader>
+                :map {:f {:name :Telescope
+                          :c {:name "Current buffer"}
+                          :l {:name :Lsp}
+                          :g {:name :Git}}}}))
 
 {: config}

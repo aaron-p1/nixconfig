@@ -11,6 +11,7 @@
        (require :helper))
 
 (local {: get-profile-config} (require :profiles))
+(local {:register wk-register} (require :plugins.which-key))
 
 (fn _G.replace_selection [motion-type]
   (let [[start-row start-col end-row end-col] (get-operator-range motion-type)
@@ -44,6 +45,13 @@
   (kset :n :<Leader>ctt #(open-term-t vim.o.shell) {:desc "Term tab"})
   ;; replace text object
   (kset :n :gp "<Cmd>set operatorfunc=v:lua.replace_selection<CR>g@"
-        {:silent true}))
+        {:silent true})
+  (wk-register {:prefix :<Leader>
+                :map {:d {:name :Diff}
+                      :t {:name :Tab}
+                      :c {:name "Create buffer"
+                          :t {:name :Terminal
+                              :t {:name "Shell here"}
+                              :s {:name "Shell home"}}}}}))
 
 {: setup}

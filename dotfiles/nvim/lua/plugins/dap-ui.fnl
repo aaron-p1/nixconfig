@@ -1,6 +1,6 @@
 (local {:set kset} vim.keymap)
 
-(local {: register_plugin_wk} (require :helper))
+(local {:register wk-register} (require :plugins.which-key))
 
 (local {: setup : toggle : eval} (require :dapui))
 
@@ -18,6 +18,6 @@
           :floating {:max_height nil :max_width nil}})
   (kset :n :<Leader>dd toggle {:desc "Toggle UI"})
   (kset [:n :v] :<Leader>de eval {:desc "Toggle eval"})
-  (register_plugin_wk {:prefix :<Leader> :map {:d {:name :dap}}}))
+  (wk-register {:prefix :<Leader> :map {:d {:name :dap}}}))
 
 {: config}

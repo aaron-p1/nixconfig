@@ -3,6 +3,8 @@
 (local {: contains :open-win {:hor w-hor :ver w-ver :tab w-tab}}
        (require :helper))
 
+(local {:register wk-register} (require :plugins.which-key))
+
 (local header-exts [:h :hpp :hh])
 (local source-exts [:cpp])
 
@@ -26,8 +28,10 @@
         (goto-extensions source-exts open-fn)
         (goto-extensions header-exts open-fn))))
 
-(kset :n :<LocalLeader>eos #(goto-related w-hor) {:buffer 0 :desc :Horizontal})
+(kset :n :<LocalLeader>ox #(goto-related w-hor) {:buffer 0 :desc :Horizontal})
+(kset :n :<LocalLeader>ov #(goto-related w-ver) {:buffer 0 :desc :Vertical})
+(kset :n :<LocalLeader>ot #(goto-related w-tab) {:buffer 0 :desc :Tab})
 
-(kset :n :<LocalLeader>eov #(goto-related w-ver) {:buffer 0 :desc :Vertical})
-
-(kset :n :<LocalLeader>eot #(goto-related w-tab) {:buffer 0 :desc :Tab})
+(wk-register {:buffer 0
+              :prefix :<LocalLeader>
+              :map {:o {:name "Open related"}}})

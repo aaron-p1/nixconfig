@@ -5,7 +5,7 @@
         :fn {: filereadable}
         :keymap {:set kset}} vim)
 
-(local {: register_plugin_wk} (require :helper))
+(local {:register wk-register} (require :plugins.which-key))
 
 (local {: live_grep} (require :telescope.builtin))
 
@@ -59,6 +59,6 @@
                                       (kset :n :<Leader>bf
                                             open-and-find-fugitive
                                             {:buffer bufnr :desc "Find file"}))}))
-  (register_plugin_wk {:prefix :<Leader> :map {:b {:name "Nvim tree"}}}))
+  (wk-register {:prefix :<Leader> :map {:b {:name "Nvim tree"}}}))
 
 {: config}

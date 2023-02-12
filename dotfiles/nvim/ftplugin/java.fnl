@@ -1,6 +1,7 @@
 (local {: expand : getcwd} vim.fn)
 
-(local {: map_keys : register_plugin_wk} (require :helper))
+(local {: map_keys} (require :helper))
+(local {:register wk-register} (require :plugins.which-key))
 
 (local {:on_attach general-on-attach :getCapabilities get-capabilities}
        (require :plugins.lspconfig))
@@ -33,9 +34,7 @@
   (general-on-attach client bufnr)
   (jsetup.add_commands)
   (map_keys get-keymaps bufnr)
-  (register_plugin_wk {:prefix :<Leader>
-                       :buffer bufnr
-                       :map {:l {:l {:name :Java}}}}))
+  (wk-register {:buffer bufnr :prefix :<Leader> :map {:l {:l {:name :Java}}}}))
 
 (let [config {:cmd [:jdt-language-server
                     :-data

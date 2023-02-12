@@ -27,8 +27,9 @@
                      :enable d-enable
                      :disable d-disable}} vim)
 
-(local {: map_keys : register_plugin_wk : concat} (require :helper))
+(local {: map_keys : concat} (require :helper))
 (local {: get-profile-config} (require :profiles))
+(local {:register wk-register} (require :plugins.which-key))
 
 (local nvim-lsp (require :lspconfig))
 
@@ -148,12 +149,10 @@
   (when (and (not= :null-ls client.name)
              client.server_capabilities.documentHighlightProvider)
     (add-highlighting bufnr))
-  (register_plugin_wk {:prefix :<Leader>
-                       :buffer bufnr
-                       :map {:l {:name :LSP
-                                 :w {:name :Workspace}
-                                 :t {:name :Toggle}}}})
-  (register_plugin_wk {:prefix :g :buffer bufnr :map {:d {:name :Definitions}}}))
+  (wk-register {:buffer bufnr
+                :prefix :<Leader>
+                :map {:l {:name :LSP :w {:name :Workspace} :t {:name :Toggle}}}})
+  (wk-register {:buffer bufnr :prefix :g :map {:d {:name :Definitions}}}))
 
 (fn get-capabilities []
   (local cnl (require :cmp_nvim_lsp))

@@ -48,11 +48,12 @@
 
 (fn start-macro [use-insert-paste?]
   (set insert-paste? use-insert-paste?)
-  "q")
+  :q)
 
 (fn setup []
-  (kset :n :<Leader>q #(start-macro true) {:expr true})
-  (kset :n :q #(start-macro false) {:expr true})
+  (kset :n :<Leader>q #(start-macro true)
+        {:expr true :desc "Macro insert paste"})
+  (kset :n :q #(start-macro false) {:expr true :desc "Start macro"})
   (let [group (nvim_create_augroup :MacroInsertPaste {})]
     (nvim_create_autocmd :ModeChanged
                          {: group :pattern "*:i" :callback insert-enter})

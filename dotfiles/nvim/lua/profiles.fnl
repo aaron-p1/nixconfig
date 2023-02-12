@@ -7,6 +7,8 @@
         :open-term {:hor open-term-h :ver open-term-v :tab open-term-t}}
        (require :helper))
 
+(local {:register wk-register} (require :plugins.which-key))
+
 (local profile-string (or vim.env.NVIM_PROFILES ""))
 (local profiles (split profile-string "," {:plain true :trimempty true}))
 
@@ -99,9 +101,12 @@
                        podman-compose? (get-compose-cmd :TINKER php-tinker-cmd)
                        php-tinker-cmd)]
     (add-term-keymaps :<Leader>cpt tinker-cmd :Tinker)
+    (wk-register {:prefix :<Leader>c
+                  :map {:p {:name :Plugin :t {:name :Tinker}}}})
     (when (or sail? podman-compose?)
       (let [shell-cmd (if sail? "sail shell" (get-compose-cmd :SHELL :bash))]
         (add-term-keymaps :<Leader>cps shell-cmd :Shell)))
+        (wk-register {:prefix :<Leader>cp :map {:s {:name :Shell}}})))
     (when (has-profile :tenancy-for-laravel)
       (let [tinker-tenant-artisan-cmd " artisan tenants:run tinker"
             php-tinker-tenant-cmd (.. :php tinker-tenant-artisan-cmd)
@@ -111,5 +116,6 @@
                                                    php-tinker-tenant-cmd)
                                   php-tinker-tenant-cmd)]
         (add-term-keymaps :<Leader>cpT tinker-tenant-cmd "Tenant tinker")))))
+        (wk-register {:prefix :<Leader>cp :map {:T {:name "Tenant tinker"}}})))))
 
 {: profiles : has-profile : get-profile-config : run-profile-config}

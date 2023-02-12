@@ -1,6 +1,7 @@
 (local {:set kset} vim.keymap)
 
-(local {: set_options : register_plugin_wk} (require :helper))
+(local {: set_options} (require :helper))
+(local {:register wk-register} (require :plugins.which-key))
 
 (local log-count 50)
 
@@ -14,11 +15,11 @@
   (each [key command (pairs maps)]
     (kset :n (.. :<Leader>g key) (.. "<Cmd>Git " command :<CR>) {:buffer true})))
 
-(register_plugin_wk {:prefix :<Leader>
-                     :buffer 0
-                     :map {:g {:name :Git
-                               :p :Pull
-                               :f :Fetch
-                               :P :Push
-                               :l (.. "Log " log-count)
-                               :L (.. "Log " (* log-count 2))}}})
+(wk-register {:buffer 0
+              :prefix :<Leader>
+              :map {:g {:name :Git
+                        :p :Pull
+                        :f :Fetch
+                        :P :Push
+                        :l (.. "Log " log-count)
+                        :L (.. "Log " (* log-count 2))}}})

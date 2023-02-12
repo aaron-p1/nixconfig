@@ -1,4 +1,4 @@
-(local {: register_plugin_wk} (require :helper))
+(local {:register wk-register} (require :plugins.which-key))
 
 (local {: setup} (require :nvim-treesitter.configs))
 
@@ -35,11 +35,11 @@
                                            :<Leader>sf "@function.outer"}
                                :swap_previous {:<Leader>sA "@parameter.inner"
                                                :<Leader>sF "@function.outer"}}}})
-  (register_plugin_wk {:prefix :<Leader>
-                       :map {:s {:name :Swap
-                                 :a "Argument forwards"
-                                 :A "Argument backwards"
-                                 :f "Function forward"
-                                 :F "Function backwards"}}}))
+  (wk-register {:prefix :<Leader>
+                :map {:s {:name :Swap
+                          :a "Argument forwards"
+                          :A "Argument backwards"
+                          :f "Function forward"
+                          :F "Function backwards"}}}))
 
 {: config}

@@ -1,6 +1,7 @@
 (local {: startswith :keymap {:set kset}} vim)
 
-(local {: register_plugin_wk : replace_tc} (require :helper))
+(local {: replace_tc} (require :helper))
+(local {:register wk-register} (require :plugins.which-key))
 
 (fn config []
   (local ls (require :luasnip))
@@ -19,8 +20,7 @@
   (kset [:i :s] :<C-E> #(if (ls.choice_active) :<Plug>luasnip-next-choice
                             :<C-E>)
         {:expr true :desc "Next choice"})
-  (register_plugin_wk {:prefix :<Leader>
-                       :map {:r {:name :Reload :p {:name :Plugin}}}})
+  (wk-register {:prefix :<Leader> :map {:r {:name :Reload :p {:name :Plugin}}}})
   (ls.config.set_config {:updateevents "TextChanged,TextChangedI"
                          :region_check_events :InsertEnter
                          :ext_opts {tcn {:active {:virt_text [["●"

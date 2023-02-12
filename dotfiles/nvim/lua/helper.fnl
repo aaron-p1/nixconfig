@@ -25,7 +25,7 @@
 (local open-win {})
 (local open-term {})
 
-;;; Util functions
+;;; Utility functions
 (lambda remove-prefix [str prefix]
   (if (and (not= "" prefix) (startswith str prefix))
       (str:sub (+ 1 (length prefix)) (length str))
@@ -137,7 +137,7 @@
       (unpack (accumulate [args [...] _ val (ipairs fnchain)]
                 [(val (unpack args))])))))
 
-;;; vim utils
+;;; vim utilities
 (lambda replace-tc [str]
   (nvim_replace_termcodes str true true true))
 
@@ -252,11 +252,6 @@
              (print (.. "Could not find " filename))
              nil)))))
 
-;;; plugin utils
-(lambda register-plugin-wk [config]
-  (local wk (require :which-key))
-  (wk.register config.map {:prefix (or config.prefix "") :buffer config.buffer}))
-
 {:remove_prefix remove-prefix
  :remove_suffix remove-suffix
  :remove_index remove-index
@@ -288,5 +283,4 @@
  : replace-when-diag
  : open-win
  : open-term
- : read-secret-file
- :register_plugin_wk register-plugin-wk}
+ : read-secret-file}

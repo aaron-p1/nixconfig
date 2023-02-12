@@ -1,6 +1,7 @@
 (local {: line} vim.fn)
 
-(local {: map_keys : register_plugin_wk} (require :helper))
+(local {: map_keys} (require :helper))
+(local {:register wk-register} (require :plugins.which-key))
 
 (local {: stage_hunk
         : undo_stage_hunk
@@ -9,6 +10,7 @@
         : preview_hunk
         : blame_line
         : setup} (require :gitsigns))
+
 (local {: select_hunk} (require :gitsigns.actions))
 
 (lambda get-keymaps [bufnr]
@@ -40,10 +42,10 @@
           :diff_opts {:linematch 60}
           :on_attach (fn [bufnr]
                        (map_keys get-keymaps bufnr)
-                       (register_plugin_wk {:prefix :<Leader>
-                                            :buffer bufnr
-                                            :map {:g {:name :Git
-                                                      :h {:name :Hunk}
-                                                      :b {:name :Blame}}}}))}))
+                       (wk-register {:buffer bufnr
+                                     :prefix :<Leader>
+                                     :map {:g {:name :Git
+                                               :h {:name :Hunk}
+                                               :b {:name :Blame}}}}))}))
 
 {: config}
