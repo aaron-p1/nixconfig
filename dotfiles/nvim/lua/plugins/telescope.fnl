@@ -6,6 +6,7 @@
 (local {: open_with_trouble} (require :trouble.providers.telescope))
 (local {: resume
         : find_files
+        : git_files
         : live_grep
         : grep_string
         : buffers
@@ -49,6 +50,8 @@
                                      :--hidden
                                      :--strip-cwd-prefix
                                      :--exclude=.git]}) {:desc :Files})
+  (kset :n :<Leader>fe #(git_files {:git_command [:git :diff :--name-only]})
+        {:desc "Git changed files"})
   ;; DEPENDENCIES: ripgrep
   (kset :n :<Leader>fr live_grep {:desc "Live grep"})
   ;; DEPENDENCIES: ripgrep
