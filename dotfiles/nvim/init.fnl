@@ -124,6 +124,8 @@
              ;; local plugins
              ;; ~/Documents/private/repos/compare-remotes.nvim
              (u :aaron-p1/compare-remotes.nvim {:file :compare-remotes})
+             ;; "~/Documents/private/repos/match-visual.nvim"
+             (u :aaron-p1/match-visual.nvim {:file :match-visual})
              ;; color scheme
              (u :ellisonleao/gruvbox.nvim {:file :gruvbox})
              ;; small text utilities
