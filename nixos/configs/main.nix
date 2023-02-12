@@ -170,5 +170,6 @@
     smartd.enable = true;
     # for yubikey pgp configuration
     pcscd.enable = true;
+    flatpak.enable = true;
   };
 }
