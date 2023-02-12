@@ -44,6 +44,8 @@
                       :hlsearch true
                       ; show position in file
                       :ruler true
+                      ; conceal
+                      :conceallevel 2
                       ; confirm closing unsaved files
                       :confirm true
                       ; line numbers
