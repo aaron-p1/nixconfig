@@ -1,8 +1,10 @@
 (local {:set kset} vim.keymap)
 
-(local {: register_plugin_wk} (require :helper))
+(local {: set_options : register_plugin_wk} (require :helper))
 
 (local log-count 50)
+
+(set_options vim.opt_local {:foldmethod :syntax})
 
 (let [maps {:p :pull
             :f :fetch
