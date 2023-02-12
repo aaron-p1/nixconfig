@@ -5,7 +5,7 @@
         :fs {: dir}
         :fn {: fnamemodify : readfile : expand}} vim)
 
-(local {: s : sn : i : t : d : fmta : read_template_file : o_file_start}
+(local {: s : sn : i : t : d : fmta : read_template_file : c : o_file_start}
        (require :plugins.luasnip.snippets.utils))
 
 (lambda path->namespace [path]
@@ -35,17 +35,22 @@
   (sn nil [(t ["" "namespace "]) (i 1 namespace) (t [";" ""])]))
 
 (fn get-namespace-snip []
-  (let [file (expand "%:.:h")
+  (let [file (expand "%:.")
+        path (fnamemodify file ":h")
         namespace (match (sibling->namespace file)
-                    nil (path->namespace file)
+                    nil (path->namespace path)
                     ns ns)]
     (if (= nil namespace) (sn nil (t "")) (namespace->snip namespace))))
 
 (fn get-class-name-snip []
   (sn nil (i 1 (expand "%:t:r"))))
 
-[(s :initclass (fmta (read_template_file :php-class.php)
-                     [(d 1 get-namespace-snip [])
-                      (d 2 get-class-name-snip [])
-                      (i 3)
-                      (i 0)]) o_file_start)]
+[(s :init (fmta (read_template_file :php-class.php)
+                [(d 1 get-namespace-snip [])
+                 (c 2 [(t :class)
+                       (t :trait)
+                       (t :interface)
+                       (t "abstract class")])
+                 (d 3 get-class-name-snip [])
+                 (i 4)
+                 (i 0)]) o_file_start)]
