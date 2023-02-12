@@ -41,6 +41,7 @@
   (kset :n :<Leader>to :<Cmd>tabonly<CR> {:silent true})
   ;; term
   (add-term-keymaps :<Leader>ctt vim.o.shell)
+  (add-term-keymaps :<Leader>cts (.. "~//" vim.o.shell))
   ;; replace text object
   (kset :n :gp "<Cmd>set operatorfunc=v:lua.replace_selection<CR>g@"
         {:silent true})
