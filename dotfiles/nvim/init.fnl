@@ -297,6 +297,7 @@
 (local setup-modules [:keymaps
                       :autocmd
                       :features.macro-insert-paste
+                      :features.paste-plugin-link
                       :features.plugin-links
                       :features.run-profile
                       :features.scratch-buffer
