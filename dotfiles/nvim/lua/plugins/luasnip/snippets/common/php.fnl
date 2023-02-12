@@ -4,6 +4,11 @@
 [; common
  (s :th (t :$this->))
  (s :ei (fmta "elseif (<>) {\n\t<>\n}" [(i 1 :true) (i 0)]))
+ ; keywords
+ (s :pu (t :public))
+ (s :po (t :protected))
+ (s :pi (t :private))
+ (s :ab (t :abstract))
  ; functions
  (s :ufn (t "public function "))
  (s :ofn (t "protected function "))
