@@ -19,8 +19,7 @@
 (fn config []
   (setup {:sources [; editorconfig
                     ; DEPENDENCIES: editorconfig-checker
-                    (d.editorconfig_checker.with {:command :editorconfig-checker
-                                                  :method d-on-save})
+                    (d.editorconfig_checker.with {:method d-on-save})
                     ; text / markdown
                     h.dictionary
                     ; web languages
