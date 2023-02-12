@@ -4,7 +4,8 @@
 
 (local {: setup : load_extension} (require :telescope))
 (local {: open_with_trouble} (require :trouble.providers.telescope))
-(local {: find_files
+(local {: resume
+        : find_files
         : live_grep
         : grep_string
         : buffers
@@ -31,6 +32,7 @@
                              :case_mode :smart_case}}})
   (load_extension :fzf)
   (load_extension :luasnip)
+  (kset :n :<C-S-T> resume {:desc "Resume last search"})
   ;; DEPENDENCIES: fd
   (kset :n :<Leader>fa
         #(find_files {:find_command [:fd
