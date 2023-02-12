@@ -1,5 +1,9 @@
-(local {:api {: nvim_buf_get_name} :fn {: filereadable} :keymap {:set kset}}
-       vim)
+(local {:api {: nvim_buf_get_name
+              : nvim_get_current_line
+              : nvim_create_augroup
+              : nvim_create_autocmd}
+        :fn {: filereadable}
+        :keymap {:set kset}} vim)
 
 (local {: register_plugin_wk} (require :helper))
 
@@ -18,11 +22,12 @@
 (lambda always-open [action node]
   (open-file action node.absolute_path))
 
-(fn open-and-find-file []
-  (let [fname (nvim_buf_get_name 0)]
-    (when (and fname (= 1 (filereadable fname)))
+(fn open-and-find-fugitive []
+  (let [line (nvim_get_current_line)
+        ?fname (string.match line "^. (.+)$")]
+    (when (and ?fname (= 1 (filereadable ?fname)))
       (open)
-      (find_file fname))))
+      (find_file ?fname))))
 
 (fn config []
   (setup {:disable_netrw false
@@ -43,9 +48,17 @@
                                     :action "Live grep"
                                     :action_cb live-grep-in-dir}]}}})
   (kset :n :<Leader>bb #(toggle) {:desc :Toggle})
-  (kset :n :<Leader>bf open-and-find-file {:desc "Find file"})
+  (kset :n :<Leader>bf #(open {:find_file true}) {:desc "Find file"})
   (kset :n :<Leader>b< #(resize :-20) {:desc "Resize -20"})
   (kset :n :<Leader>b> #(resize :+20) {:desc "Resize +20"})
+  (let [group (nvim_create_augroup :FugitiveNvimTree {})]
+    (nvim_create_autocmd :FileType
+                         {: group
+                          :pattern :fugitive
+                          :callback (fn [{:buf bufnr}]
+                                      (kset :n :<Leader>bf
+                                            open-and-find-fugitive
+                                            {:buffer bufnr :desc "Find file"}))}))
   (register_plugin_wk {:prefix :<Leader> :map {:b {:name "Nvim tree"}}}))
 
 {: config}
