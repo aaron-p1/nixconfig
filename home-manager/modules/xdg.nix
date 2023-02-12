@@ -29,18 +29,23 @@ in with lib; {
 
       mimeApps = {
         enable = true;
-        defaultApplications = {
+        defaultApplications = let
+          feh = "feh.desktop";
+          firefox = "firefox.desktop";
+          nvim = "nvim.desktop";
+          zathura = "org.pwmt.zathura.desktop";
+        in {
           # Images
-          "image/png" = "feh.desktop";
-          "image/jpeg" = "feh.desktop";
-          "image/gif" = "feh.desktop";
-          "image/bmp" = "feh.desktop";
-          "image/tiff" = "feh.desktop";
+          "image/png" = feh;
+          "image/jpeg" = feh;
+          "image/gif" = feh;
+          "image/bmp" = feh;
+          "image/tiff" = feh;
           # Documents
-          "application/pdf" = "zathura.desktop";
-          "text/csv" = "neovim.desktop";
-          "text/html" = "firefox.desktop";
-          "text/plain" = "neovim.desktop";
+          "application/pdf" = zathura;
+          "text/csv" = nvim;
+          "text/html" = firefox;
+          "text/plain" = nvim;
         };
       };
 
