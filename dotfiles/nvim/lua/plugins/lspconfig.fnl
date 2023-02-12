@@ -184,9 +184,9 @@
                             :telemetry {:enable false}}}]
     (table.insert runtime-path :lua/?.lua)
     (table.insert runtime-path :lua/?/init.lua)
-    (nvim-lsp.sumneko_lua.setup {:on_attach on-attach
-                                 : capabilities
-                                 :settings lsp-settings})))
+    (nvim-lsp.lua_ls.setup {:on_attach on-attach
+                            : capabilities
+                            :settings lsp-settings})))
 
 (fn config []
   (let [capabilities (get-capabilities)]
