@@ -160,7 +160,7 @@
     };
   };
 
-  fonts.fonts = with pkgs; [ corefonts source-han-serif ];
+  fonts.fonts = with pkgs; [ corefonts source-han-sans ];
 
   boot.tmpOnTmpfs = true;
   boot.tmpOnTmpfsSize = "100%";
