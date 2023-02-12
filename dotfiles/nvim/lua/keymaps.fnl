@@ -7,8 +7,8 @@
         :keymap {:set kset}} vim)
 
 (local {: get-operator-range
-        :open-term {:hor open-term-h :ver open-term-v :tab open-term-t}}
-       (require :helper))
+        :open-term {:hor open-term-h :ver open-term-v :tab open-term-t}
+        : add-term-keymaps} (require :helper))
 
 (local {: get-profile-config} (require :profiles))
 (local {:register wk-register} (require :plugins.which-key))
@@ -40,9 +40,7 @@
   (kset :n :<Leader>tc close-tab {:desc "Tab close"})
   (kset :n :<Leader>to :<Cmd>tabonly<CR> {:silent true})
   ;; term
-  (kset :n :<Leader>ctx #(open-term-h vim.o.shell) {:desc "Term horizontal"})
-  (kset :n :<Leader>ctv #(open-term-v vim.o.shell) {:desc "Term vertical"})
-  (kset :n :<Leader>ctt #(open-term-t vim.o.shell) {:desc "Term tab"})
+  (add-term-keymaps :<Leader>ctt vim.o.shell)
   ;; replace text object
   (kset :n :gp "<Cmd>set operatorfunc=v:lua.replace_selection<CR>g@"
         {:silent true})

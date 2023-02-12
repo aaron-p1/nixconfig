@@ -241,6 +241,15 @@
   (let [tabnr (nvim_tabpage_get_number 0)]
     (new-term cmd {:mods {:tab tabnr}})))
 
+(lambda add-term-keymaps [key cmd ?opts]
+  (let [opts (or ?opts {})]
+    (kset :n (.. key :x) #(open-term.hor cmd)
+          (tbl_extend :force opts {:desc :Horizontal}))
+    (kset :n (.. key :v) #(open-term.ver cmd)
+          (tbl_extend :force opts {:desc :Vertical}))
+    (kset :n (.. key :t) #(open-term.tab cmd)
+          (tbl_extend :force opts {:desc :Tab}))))
+
 ;; fnlfmt: skip
 (lambda read-secret-file [filename]
   (let [secret-file (.. :extra/secrets/ filename)]
@@ -283,4 +292,5 @@
  : replace-when-diag
  : open-win
  : open-term
+ : add-term-keymaps
  : read-secret-file}

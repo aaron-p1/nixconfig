@@ -1,10 +1,6 @@
 (local {: split :keymap {:set kset}} vim)
 
-(local {: map
-        : concat
-        : contains
-        :is_empty is-empty
-        :open-term {:hor open-term-h :ver open-term-v :tab open-term-t}}
+(local {: map : concat : contains :is_empty is-empty : add-term-keymaps}
        (require :helper))
 
 (local {:register wk-register} (require :plugins.which-key))
@@ -54,12 +50,7 @@
     (each [_ profile (ipairs profiles)]
       (execute-profile-config profile config-name nil (unpack additional-args)))))
 
-;;;; Util functions
-
-(lambda add-term-keymaps [key cmd desc]
-  (kset :n (.. key :x) #(open-term-h cmd) {:desc (.. desc " horizontal")})
-  (kset :n (.. key :v) #(open-term-v cmd) {:desc (.. desc " vertical")})
-  (kset :n (.. key :t) #(open-term-t cmd) {:desc (.. desc " tab")}))
+;;;; Utility functions
 
 (lambda get-compose-cmd [env-infix ?cmd]
   (let [env-prefix :NVIM_PROFILE_
@@ -100,12 +91,12 @@
         tinker-cmd (if sail? "sail tinker"
                        podman-compose? (get-compose-cmd :TINKER php-tinker-cmd)
                        php-tinker-cmd)]
-    (add-term-keymaps :<Leader>cpt tinker-cmd :Tinker)
+    (add-term-keymaps :<Leader>cpt tinker-cmd)
     (wk-register {:prefix :<Leader>c
                   :map {:p {:name :Plugin :t {:name :Tinker}}}})
     (when (or sail? podman-compose?)
       (let [shell-cmd (if sail? "sail shell" (get-compose-cmd :SHELL :bash))]
-        (add-term-keymaps :<Leader>cps shell-cmd :Shell)))
+        (add-term-keymaps :<Leader>cps shell-cmd)
         (wk-register {:prefix :<Leader>cp :map {:s {:name :Shell}}})))
     (when (has-profile :tenancy-for-laravel)
       (let [tinker-tenant-artisan-cmd " artisan tenants:run tinker"
@@ -115,7 +106,7 @@
                                   (get-compose-cmd :TINKER
                                                    php-tinker-tenant-cmd)
                                   php-tinker-tenant-cmd)]
-        (add-term-keymaps :<Leader>cpT tinker-tenant-cmd "Tenant tinker")))))
+        (add-term-keymaps :<Leader>cpT tinker-tenant-cmd)
         (wk-register {:prefix :<Leader>cp :map {:T {:name "Tenant tinker"}}})))))
 
 {: profiles : has-profile : get-profile-config : run-profile-config}
