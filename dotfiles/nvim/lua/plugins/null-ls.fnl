@@ -25,6 +25,13 @@
                     h.dictionary
                     ; web languages
                     f.prettier
+                    ; php
+                    ; DEPENDENCIES: php-cs-fixer
+                    (f.phpcsfixer.with {:args [:--allow-risky=yes
+                                               :--no-interaction
+                                               :--quiet
+                                               :fix
+                                               :$FILENAME]})
                     ; shell
                     ; DEPENDENCIES: shellcheck
                     d.shellcheck
