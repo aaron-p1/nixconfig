@@ -68,7 +68,7 @@
                       ; spell
                       :spell true
                       :spelloptions [:camel :noplainbuffer]
-                      :spelllang [:en :de]
+                      :spelllang [:en :de :cjk]
                       :spellfile (.. spelldir :/custom.utf-8.add)
                       ; cursor line
                       :cursorline true
