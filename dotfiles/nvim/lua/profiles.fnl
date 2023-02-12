@@ -9,7 +9,8 @@
 (local profiles (split profile-string "," {:plain true :trimempty true}))
 
 ;; profiles that do something
-(local existing-profiles [:cmake
+(local existing-profiles [:nixconfig
+                          :cmake
                           :podman-compose
                           :laravel
                           :sail
@@ -71,6 +72,13 @@
 ;; lspconfig
 ;; - lsp-config
 ;; - json-schemas
+
+;;; nixconfig
+
+(fn config.nixconfig.keymaps []
+  (add-term-keymaps :<Leader>cps "sudo make switch")
+  (wk-register {:prefix :<Leader>c
+                :map {:p {:name :Plugin :s {:name "Switch config"}}}}))
 
 ;;; cmake
 
