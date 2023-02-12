@@ -9,13 +9,13 @@
         :cmd {: colorscheme}} vim)
 
 (local {: setup} (require :gruvbox))
-(local {: dark0
-        : dark2
-        : bright_red
-        : bright_green
-        : bright_aqua
-        : bright_yellow
-        : bright_blue} (require :gruvbox.palette))
+(local {:colors {: dark0
+                 : dark2
+                 : bright_red
+                 : bright_green
+                 : bright_aqua
+                 : bright_yellow
+                 : bright_blue}} (require :gruvbox.palette))
 
 (local term-hl-ns (nvim_create_namespace :TerminalColors))
 
