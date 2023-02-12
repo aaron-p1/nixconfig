@@ -18,12 +18,15 @@ in with lib; {
       terminal = "tmux-256color";
 
       extraConfig = ''
-        set -as terminal-features ",alacritty:RGB"
+        set -as terminal-features "alacritty:RGB:extkeys"
 
         # Underline
         set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
         # Underline Color
         set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
+
+        # key sequences
+        set -s extended-keys always
 
         bind-key -N "Kills session" K confirm-before -p "Kill session?" kill-session
       '';
