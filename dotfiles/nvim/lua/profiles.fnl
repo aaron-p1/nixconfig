@@ -7,14 +7,15 @@
 
 (local profile-string (or vim.env.NVIM_PROFILES ""))
 (local profiles (split profile-string "," {:plain true :trimempty true}))
-
 ;; profiles that do something
+
 (local existing-profiles [:nixconfig
                           :cmake
                           :podman-compose
                           :laravel
                           :sail
-                          :tenancy-for-laravel])
+                          :tenancy-for-laravel
+                          :npm])
 
 (local config (map existing-profiles #(values $1 {})))
 
@@ -78,12 +79,11 @@
 (fn config.nixconfig.keymaps []
   (add-term-keymaps :<Leader>cps "sudo make switch")
   (wk-register {:prefix :<Leader>c
-                :map {:p {:name :Plugin :s {:name "Switch config"}}}}))
+                :map {:p {:name :Profile :s {:name "Switch config"}}}}))
 
 ;;; cmake
 
 (set config.cmake (require :profiles.cmake))
-
 ;;; laravel
 
 ;; ENV:
@@ -97,13 +97,13 @@
         podman-compose? (has-profile :podman-compose)
         php-tinker-cmd "php artisan tinker"
         tinker-cmd (if sail? "sail tinker"
-                       podman-compose? (get-compose-cmd :TINKER php-tinker-cmd)
+                       podman-compose? (get-compose-cmd :PHP php-tinker-cmd)
                        php-tinker-cmd)]
     (add-term-keymaps :<Leader>cpt tinker-cmd)
     (wk-register {:prefix :<Leader>c
-                  :map {:p {:name :Plugin :t {:name :Tinker}}}})
+                  :map {:p {:name :Profile :t {:name :Tinker}}}})
     (when (or sail? podman-compose?)
-      (let [shell-cmd (if sail? "sail shell" (get-compose-cmd :SHELL :bash))]
+      (let [shell-cmd (if sail? "sail shell" (get-compose-cmd :PHP :bash))]
         (add-term-keymaps :<Leader>cps shell-cmd)
         (wk-register {:prefix :<Leader>cp :map {:s {:name :Shell}}})))
     (when (has-profile :tenancy-for-laravel)
@@ -111,10 +111,25 @@
             php-tinker-tenant-cmd (.. :php tinker-tenant-artisan-cmd)
             tinker-tenant-cmd (if sail? (.. :sail tinker-tenant-artisan-cmd)
                                   podman-compose?
-                                  (get-compose-cmd :TINKER
-                                                   php-tinker-tenant-cmd)
+                                  (get-compose-cmd :PHP php-tinker-tenant-cmd)
                                   php-tinker-tenant-cmd)]
         (add-term-keymaps :<Leader>cpT tinker-tenant-cmd)
-        (wk-register {:prefix :<Leader>cp :map {:T {:name "Tenant tinker"}}})))))
+        (wk-register {:prefix :<Leader>cp :map {:T {:name "Tenant tinker"}}})))
+    (when (has-profile :npm)
+      (let [watch-cmd "npm run watch"
+            prod-cmd "npm run prod"]
+        (if sail?
+            (do
+              (add-term-keymaps :<Leader>cpw (.. "sail " watch-cmd))
+              (add-term-keymaps :<Leader>cpp (.. "sail " prod-cmd)))
+            podman-compose?
+            (do
+              (add-term-keymaps :<Leader>cpw (get-compose-cmd :PHP watch-cmd))
+              (add-term-keymaps :<Leader>cpp (get-compose-cmd :PHP prod-cmd)))
+            (do
+              (add-term-keymaps :<Leader>cpw watch-cmd)
+              (add-term-keymaps :<Leader>cpp prod-cmd)))
+        (wk-register {:prefix :<Leader>cp
+                      :map {:w {:name "Npm watch"} :p {:name "Npm prod"}}})))))
 
 {: profiles : has-profile : get-profile-config : run-profile-config}
