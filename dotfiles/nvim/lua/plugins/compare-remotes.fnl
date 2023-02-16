@@ -25,6 +25,7 @@
 (fn config []
   (setup {:remotes (collect-remotes)
           :project_file_schemes [:oil]
-          :scheme_replacements {:dir {:scp :oil-ssh}}}))
+          :scheme_replacements {:dir {:scp :oil-ssh}}
+          :mapping {:key :<Leader>cr}}))
 
 {: config}
