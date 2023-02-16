@@ -23,12 +23,15 @@
         [first-line] old-msg
         msg-start (if first-line (first-line:sub 1 10))]
     (when (and (= :commit first-arg) msg-start)
-      (kset :n :<Leader>gc put-commit-msg
+      (kset :n :<Leader>gp put-commit-msg
             {:buffer true :desc (.. "Paste " msg-start)}))))
 
 (fn config []
   (kset :n :<Leader>gbb "<Cmd>Git blame<CR>" {:silent true :desc "Whole file"})
-  (wk-register {:prefix :<Leader> :map {:g {:name :Git :b {:name :Blame}}}})
+  (kset :n :<Leader>gcc "<Cmd>Gvsplit @:%<CR>"
+        {:silent true :desc "Open before changes"})
+  (wk-register {:prefix :<Leader>
+                :map {:g {:name :Git :b {:name :Blame} :c {:name :Commit}}}})
   (let [group (nvim_create_augroup :FugitiveCommitMsg {:clear true})]
     (nvim_create_autocmd :User
                          {: group
