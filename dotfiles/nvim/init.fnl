@@ -298,6 +298,7 @@
                       :features.run-profile
                       :features.scratch-buffer
                       :features.swap-textobjects
+                      :features.training
                       :features.virt-notes])
 
 (each [_ mod-name (ipairs setup-modules)]
