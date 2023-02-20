@@ -16,17 +16,6 @@ in with lib; {
     programs.firefox = {
       enable = true;
 
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-        bitwarden
-        sponsorblock
-        multi-account-containers
-        privacy-badger
-        sidebery
-        ff2mpv
-        plasma-integration # deleted by mozilla: https://addons.mozilla.org/en-US/firefox/addon/plasma-integration/
-        ublock-origin
-      ];
-
       profiles.main = {
         id = 0;
         isDefault = true;
@@ -48,6 +37,16 @@ in with lib; {
           "media.ffmpeg.vaapi.enabled" = true;
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         };
+        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          bitwarden
+          sponsorblock
+          multi-account-containers
+          privacy-badger
+          sidebery
+          ff2mpv
+          plasma-integration
+          ublock-origin
+        ];
         userChrome = ''
           #main-window #TabsToolbar {
             height: inherit !important;

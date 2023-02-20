@@ -40,7 +40,7 @@ urlBefore := ${nixpkgsRepoFilesBefore}
 filePath := ${nixpkgsRLNotesFile}
 branch := ${nixpkgsBranch}
 flakeInputName := unstable
-showLine := ^##
+showLine := ^\#\#
 
 check-release-notes:
 	@# download old and new release notes to temporary folder

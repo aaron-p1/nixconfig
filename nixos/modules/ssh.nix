@@ -8,8 +8,10 @@ in with lib; {
       enable = true;
       ports = [ 25566 ];
       openFirewall = true;
-      permitRootLogin = "no";
-      passwordAuthentication = false;
+      settings = {
+        PermitRootLogin = "no";
+        PasswordAuthentication = false;
+      };
     };
   };
 }
