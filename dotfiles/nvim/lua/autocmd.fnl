@@ -1,14 +1,29 @@
-(local {:api {: nvim_buf_line_count
+(local {:api {: nvim_buf_delete
+              : nvim_buf_line_count
               : nvim_buf_get_offset
               : nvim_create_augroup
               : nvim_create_autocmd}
-        :highlight {:on_yank h-on-yank}} vim)
+        :cmd {: edit}
+        :fn {: substitute}
+        :highlight {:on_yank h-on-yank}
+        :keymap {:set kset}} vim)
 
 (local {: set_options} (require :helper))
 (local {: get-profile-config} (require :profiles))
 
-;; 512K
 (local huge-file-size (* 1024 512))
+
+(lambda remove-pid-from-term-title [title]
+  "term://dir//pid:cmd -> term://dir//cmd"
+  (substitute title "term://.\\{-}//\\zs\\d*:" "" ""))
+
+(lambda on-term-close [{: file :buf bufnr}]
+  (let [new-cmd (remove-pid-from-term-title file)]
+    (kset :n :r (fn []
+                  (edit new-cmd)
+                  (nvim_buf_delete bufnr {:force true}))
+          {:buffer bufnr})
+    (kset :n :q #(nvim_buf_delete bufnr {:force true}) {:buffer bufnr})))
 
 (lambda fix-huge-file [{:buf bufnr}]
   (let [line-count (nvim_buf_line_count bufnr)
@@ -31,7 +46,8 @@
                                                   {:number false
                                                    :relativenumber false
                                                    :cursorline false
-                                                   :spell false})}))
+                                                   :spell false})})
+    (nvim_create_autocmd :TermClose {:group augroup :callback on-term-close}))
   ;; highlight on yank
   (let [augroup (nvim_create_augroup :YankHighlight {:clear true})]
     (nvim_create_autocmd :TextYankPost
