@@ -64,10 +64,10 @@
           :overrides {; spell
                       :SpellBad {:link :GruvboxYellowUnderline}
                       ; diff - reverse does not work with indentblankline
-                      :DiffDelete {:bg bright_red :fg dark0 :reverse false}
-                      :DiffAdd {:bg bright_green :fg dark0 :reverse false}
-                      :DiffChange {:bg bright_aqua :fg dark0 :reverse false}
-                      :DiffText {:bg bright_yellow :fg dark0 :reverse false}
+                      :DiffDelete {:bg "#9a2a2a" :fg :NONE :reverse false}
+                      :DiffAdd {:bg "#284028" :fg :NONE :reverse false}
+                      :DiffChange {:bg "#284848" :fg :NONE :reverse false}
+                      :DiffText {:bg "#474728" :fg :NONE :reverse false}
                       ; telescope
                       :TelescopeMatching {:link :GruvboxRedBold}
                       :TelescopeSelection {:bg dark2}
