@@ -130,7 +130,7 @@
              (u :aaron-p1/match-visual.nvim {:file :match-visual})
              ;; color scheme
              (u :ellisonleao/gruvbox.nvim {:file :gruvbox})
-             (u :rcarriga/nvim-notify {:file :notify})
+             (u :rcarriga/nvim-notify {:file :notify :after :telescope.nvim})
              ;; small text utilities
              (u :numToStr/Comment.nvim {:file :comment})
              (u :kylechui/nvim-surround {:file :surround})
