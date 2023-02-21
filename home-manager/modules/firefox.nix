@@ -39,13 +39,18 @@ in with lib; {
         };
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
           bitwarden
-          sponsorblock
-          multi-account-containers
-          privacy-badger
-          sidebery
           ff2mpv
+          multi-account-containers
+          netflix-1080p
+          onepassword-password-manager
           plasma-integration
+          privacy-badger
+          return-youtube-dislikes
+          sidebery
+          sponsorblock
           ublock-origin
+          videospeed
+          vue-js-devtools
         ];
         userChrome = ''
           #main-window #TabsToolbar {
