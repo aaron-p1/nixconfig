@@ -12,9 +12,15 @@
 (local {:choiceNode choice-node :insertNode insert-node}
        (require :luasnip.util.types))
 
-(local {: from_cursor_pos} (require :luasnip.extras.filetype_functions))
+(local {: from_cursor_pos : from_filetype}
+       (require :luasnip.extras.filetype_functions))
 
 (local {: load_snippets} (require :plugins.luasnip.snippets))
+
+(fn get-filetype []
+  (match (from_cursor_pos)
+    [nil] (from_filetype)
+    fts fts))
 
 (fn config []
   (kset :n :<Leader>rpl
@@ -32,8 +38,8 @@
   (wk-register {:prefix :<Leader> :map {:r {:name :Reload :p {:name :Plugin}}}})
   (setup {:update_events [:TextChanged :TextChangedI]
           :region_check_events :InsertEnter
-          :ft_func from_cursor_pos
-          :load_ft_func from_cursor_pos
+          :ft_func get-filetype
+          :load_ft_func get-filetype
           :ext_opts {choice-node {:active {:virt_text [["●" :GruvboxOrange]]}}
                      insert-node {:active {:virt_text [["●" :GruvboxBlue]]}}}})
   (load_snippets))
