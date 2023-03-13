@@ -81,25 +81,7 @@
 
 (lambda get-keymaps [bufnr tb]
   [; jump to
-   [:n :gdd tb.lsp_definitions {:desc "This window"}]
-   [:n
-    :gdv
-    (fn []
-      (nvim_command :vsplit)
-      (tb.lsp_definitions))
-    {:desc "Vertical split"}]
-   [:n
-    :gdx
-    (fn []
-      (nvim_command :split)
-      (tb.lsp_definitions))
-    {:desc "Horizontal split"}]
-   [:n
-    :gdt
-    (fn []
-      (nvim_command "tab split")
-      (tb.lsp_definitions))
-    {:desc "Tab split"}]
+   [:n :gd #(tb.lsp_definitions {:jump_type :never}) {:desc "Definition"}]
    [:n :gD declaration {:desc :Declaration}]
    [:n :gi tb.lsp_implementations {:desc :Implementations}]
    [:n :gr tb.lsp_references {:desc :References}]
@@ -151,8 +133,7 @@
     (add-highlighting bufnr))
   (wk-register {:buffer bufnr
                 :prefix :<Leader>
-                :map {:l {:name :LSP :w {:name :Workspace} :t {:name :Toggle}}}})
-  (wk-register {:buffer bufnr :prefix :g :map {:d {:name :Definitions}}}))
+                :map {:l {:name :LSP :w {:name :Workspace} :t {:name :Toggle}}}}))
 
 (fn get-capabilities []
   (local cnl (require :cmp_nvim_lsp))
