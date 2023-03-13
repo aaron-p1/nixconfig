@@ -9,6 +9,7 @@
  (s :po (t :protected))
  (s :pi (t :private))
  (s :ab (t :abstract))
+ (s :st (t :static))
  ; functions
  (s :ufn (t "public function "))
  (s :ofn (t "protected function "))
