@@ -54,11 +54,11 @@ check-release-notes:
 	@# remove temporary folder
 	@rm -r ${tmpdir}
 
-check-home-manager-release-notes: urlBefore := ${homeManagerRepoFilesBefore}
-check-home-manager-release-notes: filePath := ${homeManagerRLNotesFile}
-check-home-manager-release-notes: branch := ${homeManagerBranch}
-check-home-manager-release-notes: flakeInputName := home-manager
-check-home-manager-release-notes: showLine := ^===
-check-home-manager-release-notes: check-release-notes
+check-release-notes-home-manager: urlBefore := ${homeManagerRepoFilesBefore}
+check-release-notes-home-manager: filePath := ${homeManagerRLNotesFile}
+check-release-notes-home-manager: branch := ${homeManagerBranch}
+check-release-notes-home-manager: flakeInputName := home-manager
+check-release-notes-home-manager: showLine := ^===
+check-release-notes-home-manager: check-release-notes
 
-.PHONY: default existing new ${rebuildCmds} update listChanges check-release-notes check-home-manager-release-notes
+.PHONY: default existing new ${rebuildCmds} update listChanges check-release-notes check-release-notes-home-manager
