@@ -79,7 +79,7 @@
 (fn open-and-find-fugitive []
   (let [line (nvim_get_current_line)
         ?fname (string.match line "^. (.+)$")]
-    (when (and ?fname (= 1 (filereadable ?fname)))
+    (when ?fname
       (open)
       (find_file ?fname))))
 
