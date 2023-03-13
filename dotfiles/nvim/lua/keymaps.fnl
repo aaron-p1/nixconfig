@@ -29,6 +29,8 @@
 
 (fn setup []
   (get-profile-config :keymaps)
+  ;; clear line
+  (kset :n :dD :0D {:desc "Clear line"})
   ;; alt + Esc for leaving terminal
   (kset :t :<A-Esc> "<C-\\><C-N>")
   ;; diff maps
