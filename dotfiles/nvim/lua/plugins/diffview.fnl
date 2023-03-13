@@ -45,6 +45,11 @@
   (kset :n :<Leader>gdr
         "<Cmd>set operatorfunc=v:lua.diffview_file_history<CR>g@"
         {:silent true :desc "Ranged file history"})
-  (wk-register {:prefix :<Leader> :map {:g {:name :Git :d {:name :Diffview}}}}))
+  (kset :n :<Leader>gdcf #(file_history nil [:--range=ORIG_HEAD..FETCH_HEAD])
+        {:silent true :desc :Fetched})
+  (kset :n :<Leader>gdch #(file_history nil [:--range=ORIG_HEAD..HEAD])
+        {:silent true :desc :Head})
+  (wk-register {:prefix :<Leader>
+                :map {:g {:name :Git :d {:name :Diffview :c {:name :Commits}}}}}))
 
 {: config}
