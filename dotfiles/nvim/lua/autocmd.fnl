@@ -1,6 +1,7 @@
 (local {:api {: nvim_buf_delete
               : nvim_buf_line_count
               : nvim_buf_get_offset
+              : nvim_chan_send
               : nvim_create_augroup
               : nvim_create_autocmd}
         :cmd {: edit}
@@ -16,6 +17,18 @@
 (lambda remove-pid-from-term-title [title]
   "term://dir//pid:cmd -> term://dir//cmd"
   (substitute title "term://.\\{-}//\\zs\\d*:" "" ""))
+
+(lambda send-to-terminal [input]
+  (let [job-id vim.b.terminal_job_id]
+    (if job-id (nvim_chan_send job-id input))))
+
+(lambda on-term-open [{:buf bufnr}]
+  (set_options vim.opt_local {:number false
+                              :relativenumber false
+                              :cursorline false
+                              :spell false})
+  (kset :n :cd #(send-to-terminal "\004") {:buffer bufnr :desc "Send <C-d>"})
+  (kset :n :cc #(send-to-terminal "\003") {:buffer bufnr :desc "Send <C-c>"}))
 
 (lambda on-term-close [{: file :buf bufnr}]
   (let [new-cmd (remove-pid-from-term-title file)]
@@ -40,13 +53,7 @@
   (get-profile-config :autocmds)
   ;; disable numbers in terminal mode
   (let [augroup (nvim_create_augroup :Terminal {:clear true})]
-    (nvim_create_autocmd :TermOpen
-                         {:group augroup
-                          :callback #(set_options vim.opt_local
-                                                  {:number false
-                                                   :relativenumber false
-                                                   :cursorline false
-                                                   :spell false})})
+    (nvim_create_autocmd :TermOpen {:group augroup :callback on-term-open})
     (nvim_create_autocmd :TermClose {:group augroup :callback on-term-close}))
   ;; highlight on yank
   (let [augroup (nvim_create_augroup :YankHighlight {:clear true})]
