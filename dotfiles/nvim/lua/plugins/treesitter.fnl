@@ -1,4 +1,5 @@
-(local {: nvim_buf_get_lines} vim.api)
+(local {:api {: nvim_buf_get_lines}
+        :treesitter {:language {:register ts-register}}} vim)
 
 (local {: any} (require :helper))
 
@@ -12,6 +13,7 @@
                                                                  false)]
                                    (any lines #(< vim.o.synmaxcol (length $1)))))}
           :indent {:enable true}
-          :autotag {:enable true :filetypes [:html :xml :blade :vue]}}))
+          :autotag {:enable true :filetypes [:html :xml :blade :vue]}})
+  (ts-register :yaml :yaml.docker-compose))
 
 {: config}
