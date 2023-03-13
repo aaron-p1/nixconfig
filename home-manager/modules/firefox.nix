@@ -41,7 +41,6 @@ in with lib; {
           bitwarden
           ff2mpv
           multi-account-containers
-          netflix-1080p
           onepassword-password-manager
           plasma-integration
           privacy-badger
