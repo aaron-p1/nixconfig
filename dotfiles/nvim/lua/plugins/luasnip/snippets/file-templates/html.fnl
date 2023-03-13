@@ -45,7 +45,7 @@
 (fn get-class-name-snip []
   (sn nil (i 1 (expand "%:t:r"))))
 
-[(s :init (fmta (read_template_file :php-class.php)
+[(s :initphp (fmta (read_template_file :php-class.php)
                 [(d 1 get-namespace-snip [])
                  (c 2 [(t :class)
                        (t :trait)
