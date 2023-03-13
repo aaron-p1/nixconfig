@@ -1,4 +1,4 @@
-(local {: line} vim.fn)
+(local {:fn {: line} :api {: nvim_buf_get_name}} vim)
 
 (local {: map_keys} (require :helper))
 (local {:register wk-register} (require :plugins.which-key))
@@ -37,15 +37,20 @@
    ; Selection
    [[:o :x] :ih select_hunk {:desc "In hunk"}]])
 
+(lambda disable-gitsigns [bufnr]
+  (let [file-path (nvim_buf_get_name bufnr)]
+    (string.match file-path :secrets)))
+
+(lambda attach [bufnr]
+  (map_keys get-keymaps bufnr)
+  (wk-register {:buffer bufnr
+                :prefix :<Leader>
+                :map {:g {:name :Git :h {:name :Hunk} :b {:name :Blame}}}}))
+
+(lambda on-attach [bufnr]
+  (if (disable-gitsigns bufnr) false (attach bufnr)))
+
 (fn config []
-  (setup {:update_debounce 300
-          :diff_opts {:linematch 60}
-          :on_attach (fn [bufnr]
-                       (map_keys get-keymaps bufnr)
-                       (wk-register {:buffer bufnr
-                                     :prefix :<Leader>
-                                     :map {:g {:name :Git
-                                               :h {:name :Hunk}
-                                               :b {:name :Blame}}}}))}))
+  (setup {:update_debounce 300 :diff_opts {:linematch 60} :on_attach on-attach}))
 
 {: config}
