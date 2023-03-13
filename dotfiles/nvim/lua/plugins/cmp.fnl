@@ -20,7 +20,7 @@
 (fn config []
   (setup {:sources [{:name :nmp}
                     {:name :orgmode}
-                    {:name :nvim_lsp :max_item_count 32}
+                    {:name :nvim_lsp}
                     {:name :luasnip}
                     {:name :path
                      :options {:fd_timeout_msec 1000 :fd_cmd [:fd :-d :4 :-p]}}
