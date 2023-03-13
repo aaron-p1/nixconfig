@@ -26,13 +26,18 @@
       (kset :n :<Leader>gp put-commit-msg
             {:buffer true :desc (.. "Paste " msg-start)}))))
 
+(lambda in-git-status [{:buf bufnr}]
+  (kset :n :R vim.fn.fugitive#ReloadStatus {:buffer bufnr}))
+
 (fn config []
   (kset :n :<Leader>gbb "<Cmd>Git blame<CR>" {:silent true :desc "Whole file"})
   (kset :n :<Leader>gcc "<Cmd>Gvsplit @:%<CR>"
         {:silent true :desc "Open before changes"})
   (wk-register {:prefix :<Leader>
                 :map {:g {:name :Git :b {:name :Blame} :c {:name :Commit}}}})
-  (let [group (nvim_create_augroup :FugitiveCommitMsg {:clear true})]
+  (let [group (nvim_create_augroup :FugitiveConfig {:clear true})]
+    (nvim_create_autocmd :FileType
+                         {: group :pattern :fugitive :callback in-git-status})
     (nvim_create_autocmd :User
                          {: group
                           :pattern :FugitiveEditor
