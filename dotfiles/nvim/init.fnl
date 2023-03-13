@@ -128,6 +128,9 @@
              (u :aaron-p1/compare-remotes.nvim {:file :compare-remotes})
              ;; "~/Documents/private/repos/match-visual.nvim"
              (u :aaron-p1/match-visual.nvim {:file :match-visual})
+             ;; "~/Documents/private/repos/virt-notes.nvim"
+             (u :aaron-p1/virt-notes.nvim
+                {:file :virt-notes :after :telescope.nvim})
              ;; color scheme
              (u :ellisonleao/gruvbox.nvim {:file :gruvbox})
              (u :rcarriga/nvim-notify {:file :notify :after :telescope.nvim})
@@ -298,8 +301,7 @@
                       :features.run-profile
                       :features.scratch-buffer
                       :features.swap-textobjects
-                      :features.training
-                      :features.virt-notes])
+                      :features.training])
 
 (each [_ mod-name (ipairs setup-modules)]
   (let [mod (require mod-name)]
