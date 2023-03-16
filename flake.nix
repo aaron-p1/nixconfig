@@ -17,10 +17,15 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "unstable";
     };
+
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "unstable";
+    };
   };
 
   outputs = { self, stable, unstable, nixpkgs, flake-utils, nixos-hardware, nur
-    , home-manager, neovim-nightly-overlay, ... }@inputs:
+    , home-manager, neovim-nightly-overlay, hyprland, ... }@inputs:
     let
       inherit (unstable) lib; # unstable for home manager
       overlays = [
@@ -41,6 +46,8 @@
             nixos-hardware.nixosModules.common-pc-ssd
             nixos-hardware.nixosModules.common-cpu-intel-cpu-only
 
+            hyprland.nixosModules.default
+
             ./nixos/configs/main.nix
             ./hosts/aaron-pc/configuration.nix
 
@@ -51,6 +58,8 @@
                 useUserPackages = true;
                 users.aaron = {
                   imports = [
+                    hyprland.homeManagerModules.default
+
                     ./home-manager/configs/main.nix
                     ./hosts/aaron-pc/home.nix
                   ];
@@ -70,6 +79,8 @@
             nixos-hardware.nixosModules.common-gpu-nvidia
             nixos-hardware.nixosModules.common-pc-ssd
 
+            hyprland.nixosModules.default
+
             ./nixos/configs/main.nix
             ./hosts/aaron-laptop/configuration.nix
 
@@ -80,6 +91,8 @@
                 useUserPackages = true;
                 users.aaron = {
                   imports = [
+                    hyprland.homeManagerModules.default
+
                     ./home-manager/configs/main.nix
                     ./hosts/aaron-laptop/home.nix
                   ];

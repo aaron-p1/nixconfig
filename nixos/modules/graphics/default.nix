@@ -1,1 +1,1 @@
-_: { imports = [ ./plasma.nix ./sddm.nix ./sway.nix ./xserver.nix ]; }
+_: { imports = [ ./hyprland.nix ./plasma.nix ./sddm.nix ./xserver.nix ]; }
