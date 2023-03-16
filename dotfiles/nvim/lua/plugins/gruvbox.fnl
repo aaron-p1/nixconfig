@@ -70,7 +70,7 @@
                       :DiffText {:bg "#474728" :fg :NONE :reverse false}
                       ; telescope
                       :TelescopeMatching {:link :GruvboxRedBold}
-                      :TelescopeSelection {:bg dark2}
+                      :TelescopeSelection {:fg :NONE :bg dark2 :bold false}
                       ; dressing
                       :FloatBorder {:link :TelescopeBorder}
                       :FloatTitle {:link :TelescopeTitle}
