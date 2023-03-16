@@ -293,7 +293,8 @@
 
 (require :impatient)
 
-(local setup-modules [:keymaps
+(local setup-modules [:overrides
+                      :keymaps
                       :autocmd
                       :features.macro-insert-paste
                       :features.paste-plugin-link
