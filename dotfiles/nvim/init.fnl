@@ -1,11 +1,14 @@
 (local {: tbl_extend
         : validate
-        :cmd {: tabnew :language set-language}
         :api {: nvim_get_current_win
               : nvim_get_current_buf
               : nvim_buf_get_name
               : nvim_buf_get_option}
-        :fn {: stdpath : isdirectory : system : mkdir}} vim)
+        :cmd {: tabnew :language set-language}
+        :fn {: stdpath : isdirectory : system : mkdir}
+        :loader {:enable enable-cached-loader}} vim)
+
+(enable-cached-loader)
 
 (local {: set_options} (require :helper))
 (local {: has-profile} (require :profiles))
@@ -122,7 +125,6 @@
 
 (psetup {1 (fn []
              (u :wbthomason/packer.nvim)
-             (u :lewis6991/impatient.nvim)
              ;; local plugins
              ;; "~/Documents/private/repos/compare-remotes.nvim"
              (u :aaron-p1/compare-remotes.nvim {:file :compare-remotes})
@@ -290,8 +292,6 @@
                                            (tabnew))
                                          (values true (nvim_get_current_win)
                                                  (nvim_get_current_buf))))}}})
-
-(require :impatient)
 
 (local setup-modules [:overrides
                       :keymaps
