@@ -158,8 +158,6 @@
              (u :rlane/pounce.nvim {:file :pounce})
              (u :nvim-pack/nvim-spectre
                 {:requires [:nvim-lua/plenary.nvim] :file :spectre})
-             ;; config
-             (u :editorconfig/editorconfig-vim {:file :editorconfig})
              ;; status line
              (u :nvim-lualine/lualine.nvim
                 {:file :lualine :requires [:kyazdani42/nvim-web-devicons]})
