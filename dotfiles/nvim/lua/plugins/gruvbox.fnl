@@ -10,6 +10,7 @@
 
 (local {: setup} (require :gruvbox))
 (local {:colors {: dark0
+                 : dark1
                  : dark2
                  : bright_red
                  : bright_green
@@ -67,6 +68,8 @@
                       :DiffAdd {:bg "#284028" :fg :NONE :reverse false}
                       :DiffChange {:bg "#284848" :fg :NONE :reverse false}
                       :DiffText {:bg "#474728" :fg :NONE :reverse false}
+                      ; Float
+                      :NormalFloat {:bg dark1}
                       ; telescope
                       :TelescopeMatching {:link :GruvboxRedBold}
                       :TelescopeSelection {:fg :NONE :bg dark2 :bold false}
