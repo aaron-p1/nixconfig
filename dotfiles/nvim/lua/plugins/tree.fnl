@@ -15,8 +15,11 @@
 (local {: get_selected_entry} (require :telescope.actions.state))
 
 (local {: setup : resize} (require :nvim-tree))
-(local {:tree {: open : find_file : toggle}} (require :nvim-tree.api))
-(local {: get_node_at_cursor : expand_or_collapse} (require :nvim-tree.lib))
+(local {:config {:mappings {: default_on_attach}}
+        :tree {: get_node_under_cursor : open : find_file : toggle}}
+       (require :nvim-tree.api))
+
+(local {: expand_or_collapse} (require :nvim-tree.lib))
 (local {:fn open-file} (require :nvim-tree.actions.node.open-file))
 
 (lambda get-telescope-path [?cwd]
@@ -40,8 +43,9 @@
   (map {:n :i} :<C-v> (partial open-telescope-selected cwd :vsplit))
   true)
 
-(lambda live-grep-in-dir [node]
-  (let [abs-path (if (= node.type :directory) node.absolute_path
+(lambda live-grep-in-dir []
+  (let [node (get_node_under_cursor)
+        abs-path (if (= node.type :directory) node.absolute_path
                      node.parent node.parent.absolute_path)]
     (when abs-path
       (live_grep {:cwd abs-path
@@ -53,13 +57,13 @@
          (t-close prompt-bufnr)
          (find_file (get-telescope-path))
          (normal {1 :zz :bang true})
-         (let [node (get_node_at_cursor)]
+         (let [node (get_node_under_cursor)]
            (if (not node.open) (expand_or_collapse node)))))
   (map {:n :i} :<C-x> (partial open-telescope-selected nil :split))
   (map {:n :i} :<C-v> (partial open-telescope-selected nil :vsplit))
   true)
 
-(lambda find-directory [node]
+(lambda find-directory []
   ;; DEPENDENCIES: fd
   (let [{:config explorer-config} (require :nvim-tree.explorer.filters)
         show-git-ignored? (not explorer-config.filter_git_ignored)
@@ -73,8 +77,9 @@
     (find_files {:find_command find-command
                  :attach_mappings attach-find-dir-mappings})))
 
-(lambda always-open [action node]
-  (open-file action node.absolute_path))
+(lambda always-open [action]
+  (let [node (get_node_under_cursor)]
+    (open-file action node.absolute_path)))
 
 (fn open-and-find-fugitive []
   (let [line (nvim_get_current_line)
@@ -83,27 +88,19 @@
       (open)
       (find_file ?fname))))
 
+(fn on-attach [buffer]
+  (lambda set-map [key cb desc]
+    (kset :n key cb {:desc (.. "nvim-tree: " desc) : buffer}))
+  (default_on_attach buffer)
+  (set-map :O #(always-open :edit) "Edit file and dir")
+  (set-map :<C-x> #(always-open :split) "Split file and dir")
+  (set-map :<C-v> #(always-open :vsplit) "Vsplit file and dir")
+  (set-map :<C-t> #(always-open :tabnew) "tabnew file and dir")
+  (set-map :<Leader>ff find-directory "Find directories")
+  (set-map :<Leader>fr live-grep-in-dir "Live grep"))
+
 (fn config []
-  (setup {:disable_netrw false
-          :hijack_netrw false
-          :view {:mappings {:list [{:key :O
-                                    :action "Edit file and dir"
-                                    :action_cb (partial always-open :edit)}
-                                   {:key :<C-x>
-                                    :action "Split file and dir"
-                                    :action_cb (partial always-open :split)}
-                                   {:key :<C-v>
-                                    :action "Vsplit file and dir"
-                                    :action_cb (partial always-open :vsplit)}
-                                   {:key :<C-t>
-                                    :action "tabnew file and dir"
-                                    :action_cb (partial always-open :tabnew)}
-                                   {:key :<Leader>ff
-                                    :action "Find directories"
-                                    :action_cb find-directory}
-                                   {:key :<Leader>fr
-                                    :action "Live grep"
-                                    :action_cb live-grep-in-dir}]}}})
+  (setup {:disable_netrw false :hijack_netrw false :on_attach on-attach})
   (kset :n :<Leader>bb #(toggle) {:desc :Toggle})
   (kset :n :<Leader>bf #(open {:find_file true}) {:desc "Find file"})
   (kset :n :<Leader>b< #(resize :-20) {:desc "Resize -20"})

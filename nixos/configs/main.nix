@@ -80,7 +80,7 @@
       };
 
       hyprland = {
-        enable = true;
+        enable = false;
         nvidia = true;
       };
     };
@@ -140,6 +140,7 @@
   hardware.keyboard.zsa.enable = true;
 
   programs = {
+    zsh.enable = true;
     ausweisapp = {
       enable = true;
       openFirewall = true;
@@ -167,8 +168,8 @@
 
   fonts.fonts = with pkgs; [ corefonts source-han-sans ];
 
-  boot.tmpOnTmpfs = true;
-  boot.tmpOnTmpfsSize = "100%";
+  boot.tmp.useTmpfs = true;
+  boot.tmp.tmpfsSize = "100%";
 
   services = {
     journald.extraConfig = "SystemMaxUse=1G";

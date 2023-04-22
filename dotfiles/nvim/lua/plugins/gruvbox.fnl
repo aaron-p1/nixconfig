@@ -53,7 +53,6 @@
   (setup {:undercurl true
           :underline true
           :bold true
-          :italic true
           :strikethrough true
           :invert_selection true
           :invert_signs false
