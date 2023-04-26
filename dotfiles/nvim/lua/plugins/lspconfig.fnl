@@ -64,7 +64,7 @@
                 ; nix
                 {:server :rnix}
                 ; elixir
-                {:server :elixirls}
+                {:server :elixirls :cmd [:elixir-ls]}
                 ; python
                 {:server :pyright}
                 ; javascript
