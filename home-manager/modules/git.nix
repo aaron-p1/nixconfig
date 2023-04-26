@@ -24,6 +24,9 @@ in with lib; {
         signByDefault = true;
         key = cfg.signingKey;
       };
+      extraConfig = {
+        init.defaultBranch = "main";
+      };
     };
 
     home.packages = with pkgs;
