@@ -51,7 +51,6 @@
                     c.statix
                     ; elixir
                     d.credo
-                    f.surface
                     ; python
                     d.flake8
                     f.autopep8]
