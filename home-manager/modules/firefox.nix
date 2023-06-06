@@ -52,15 +52,8 @@ in with lib; {
           vue-js-devtools
         ];
         userChrome = ''
-          #main-window #TabsToolbar {
-            height: inherit !important;
-            overflow: hidden;
-          }
           #main-window[titlepreface*="​"] #TabsToolbar {
-            height: 0 !important;
-          }
-          #main-window[titlepreface*="​"] #tabbrowser-tabs {
-            z-index: 0 !important;
+            display: none !important;
           }
         '';
       };
