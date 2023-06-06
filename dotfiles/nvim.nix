@@ -1,6 +1,6 @@
 { lib, xsel, python3, gnumake, unzip, gcc, tree-sitter, fd, ripgrep
 , nodePackages, local, sumneko-lua-language-server, rnix-lsp, nixfmt, shellcheck
-, shellharden, editorconfig-checker, statix, stylua, fnlfmt, nodejs-16_x, phpPackages, stdenv
+, shellharden, editorconfig-checker, statix, stylua, fnlfmt, nodejs, phpPackages, stdenv
 , findutils, fennel }:
 let
   inherit (builtins) attrValues;
@@ -20,7 +20,7 @@ let
     # telescope
     ripgrep
     # copilot
-    nodejs-16_x
+    nodejs
     # null-ls
     editorconfig-checker
     nodePackages.prettier
