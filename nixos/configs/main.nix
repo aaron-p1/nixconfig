@@ -168,7 +168,11 @@
     };
   };
 
-  fonts.fonts = with pkgs; [ corefonts source-han-sans ];
+  fonts.fonts = with pkgs; [
+    corefonts
+    source-han-sans
+    kanji-stroke-order-font
+  ];
 
   boot.tmp.useTmpfs = true;
   boot.tmp.tmpfsSize = "100%";
