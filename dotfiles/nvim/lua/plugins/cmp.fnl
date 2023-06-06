@@ -1,6 +1,6 @@
 (local {: nvim_list_bufs} vim.api)
 
-(local {:setup {:cmdline s-cmdline &as setup}
+(local {:setup {:cmdline s-cmdline :filetype s-filetype &as setup}
         :mapping {: complete
                   : confirm
                   : abort
@@ -17,16 +17,18 @@
 (local cc (require :cmp.config.compare))
 (local {: cmp_format} (require :lspkind))
 
+(local cmp-sources
+       [{:name :nmp}
+        {:name :orgmode}
+        {:name :nvim_lsp}
+        {:name :luasnip}
+        {:name :path :options {:fd_timeout_msec 1000 :fd_cmd [:fd :-d :4 :-p]}}
+        {:name :calc}
+        {:name :digraphs :max_item_count 32}
+        {:name :buffer :option {:get_bufnrs #(nvim_list_bufs)}}])
+
 (fn config []
-  (setup {:sources [{:name :nmp}
-                    {:name :orgmode}
-                    {:name :nvim_lsp}
-                    {:name :luasnip}
-                    {:name :path
-                     :options {:fd_timeout_msec 1000 :fd_cmd [:fd :-d :4 :-p]}}
-                    {:name :calc}
-                    {:name :digraphs :max_item_count 32}
-                    {:name :buffer :option {:get_bufnrs #(nvim_list_bufs)}}]
+  (setup {:sources cmp-sources
           :sorting {:priority_weight 2
                     :comparators [cc.offset
                                   cc.exact
@@ -65,6 +67,7 @@
                                                    :omni "[OMNI]"
                                                    :copilot "[COP]"}})}
           :experimental {:ghost_text true}})
+  (s-filetype :gitcommit {:sources (sources [{:name :omni}])})
   (s-cmdline "/" {:sources [{:name :buffer}]})
   (s-cmdline ":"
              {:sources (sources [{:name :path}]

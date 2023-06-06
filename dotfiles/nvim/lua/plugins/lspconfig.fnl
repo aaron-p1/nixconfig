@@ -126,7 +126,6 @@
   (local tb (require :telescope.builtin))
   (local ls (require :lsp_signature))
   (ls.on_attach {:bind true :hint_prefix "→ "})
-  (nvim_buf_set_option bufnr :omnifunc "v:lua.vim.lsp.omnifunc")
   (map_keys get-keymaps bufnr tb)
   (when (and (not= :null-ls client.name)
              client.server_capabilities.documentHighlightProvider)
