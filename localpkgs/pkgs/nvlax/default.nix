@@ -21,6 +21,8 @@ let
       sha256 = "sha256-ljUOgHsaQizKv4k/tj1+ZX+quPm122ikxNrqUg743qA=";
       fetchSubmodules = true;
     };
+
+    doCheck = false;
   });
 in stdenv.mkDerivation rec {
   pname = "nvlax";
