@@ -12,6 +12,8 @@ in with lib; {
         vfs objects = fruit streams_xattr
       '';
 
+      openFirewall = true;
+
       # for users set: smbpasswd -a <user>
       shares = {
         homeShare = {
@@ -21,8 +23,5 @@ in with lib; {
         };
       };
     };
-
-    networking.firewall.allowedTCPPorts = [ 445 139 ];
-    networking.firewall.allowedUDPPorts = [ 137 138 ];
   };
 }
