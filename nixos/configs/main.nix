@@ -154,6 +154,8 @@
       wget
       neovim-nightly
 
+      anki
+
       local.initdev
     ];
     sessionVariables = {
