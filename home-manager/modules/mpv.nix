@@ -40,6 +40,8 @@ in with lib; {
       config = {
         volume = 80;
         audio-display = "no";
+        demuxer-max-bytes = "4096MiB";
+        demuxer-max-back-bytes = "4096MiB";
         script-opts = toListOptionsPrefix {
           ytdl_hook = { ytdl_path = "${pkgs.yt-dlp}/bin/yt-dlp"; };
           sponsorblock = rec {
