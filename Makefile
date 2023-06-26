@@ -8,11 +8,11 @@ nixargs :=
 rebuildCmds := switch boot test build
 
 nixpkgsRepoFilesBefore := https://raw.githubusercontent.com/NixOS/nixpkgs/
-nixpkgsRLNotesFile := /nixos/doc/manual/release-notes/rl-2305.section.md
+nixpkgsRLNotesFile := /nixos/doc/manual/release-notes/rl-2311.section.md
 nixpkgsBranch := nixos-unstable
 
 homeManagerRepoFilesBefore := https://raw.githubusercontent.com/nix-community/home-manager/
-homeManagerRLNotesFile := /docs/release-notes/rl-2305.adoc
+homeManagerRLNotesFile := /docs/release-notes/rl-2311.adoc
 homeManagerBranch := master
 
 default: existing
