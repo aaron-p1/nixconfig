@@ -38,7 +38,7 @@ in with lib; {
       };
 
       config = {
-        volume = 80;
+        volume = 100;
         audio-display = "no";
         demuxer-max-bytes = "4096MiB";
         demuxer-max-back-bytes = "4096MiB";
