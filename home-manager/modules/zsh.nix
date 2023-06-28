@@ -8,7 +8,7 @@ in with lib; {
       enable = true;
       enableAutosuggestions = true;
       enableCompletion = true;
-      enableSyntaxHighlighting = true;
+      syntaxHighlighting.enable = true;
       dotDir = ".config/zsh";
       shellAliases = {
         free = "free -h";
