@@ -1,8 +1,9 @@
 { pkgs, ... }: {
-  within.git.signingKey = "14E080A7466A0E0C!";
+  within = {
+    git.signingKey = "14E080A7466A0E0C!";
 
-  home.packages = with pkgs; [
-    kalendar
-    virt-manager
-  ];
+    hyprland.monitorFallback = ",highrr,auto,1";
+  };
+
+  home.packages = with pkgs; [ kalendar virt-manager ];
 }
