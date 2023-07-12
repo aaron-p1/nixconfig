@@ -129,7 +129,7 @@
     # ../modules/steam.nix
     steam.enable = true;
 
-    monitoring.enable = true;
+    monitoring.enable = false;
   };
 
   hardware.keyboard.zsa.enable = true;
