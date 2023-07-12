@@ -78,8 +78,11 @@
 
 (fn config.nixconfig.keymaps []
   (add-term-keymaps :<Leader>cps "sudo make switch")
+  (add-term-keymaps :<Leader>cpb "sudo make boot")
   (wk-register {:prefix :<Leader>c
-                :map {:p {:name :Profile :s {:name "Switch config"}}}}))
+                :map {:p {:name :Profile
+                          :s {:name "Switch config"}
+                          :b {:name "Boot config"}}}}))
 
 ;;; cmake
 
