@@ -14,5 +14,9 @@ in with lib; {
 
       nvidiaPatches = cfg.nvidia;
     };
+
+    hardware.nvidia.modesetting.enable = cfg.nvidia;
+
+    environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = mkIf cfg.nvidia "1";
   };
 }
