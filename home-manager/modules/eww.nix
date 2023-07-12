@@ -12,5 +12,8 @@ in with lib; {
       package = pkgs.eww-wayland;
       configDir = ../../dotfiles/eww;
     };
+
+    # if not recursive, eww commands will fail
+    xdg.configFile."eww".recursive = true;
   };
 }
