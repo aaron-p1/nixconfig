@@ -1,16 +1,13 @@
 { config, lib, pkgs, ... }:
-let
-  cfg = config.within.eww;
+let cfg = config.within.eww;
 in with lib; {
-  options.within.eww = {
-    enable = mkEnableOption "EWW";
-  };
+  options.within.eww = { enable = mkEnableOption "EWW"; };
 
   config = mkIf cfg.enable {
     programs.eww = {
       enable = true;
       package = pkgs.eww-wayland;
-      configDir = ../../dotfiles/eww;
+      configDir = pkgs.dotfiles.eww;
     };
 
     # if not recursive, eww commands will fail

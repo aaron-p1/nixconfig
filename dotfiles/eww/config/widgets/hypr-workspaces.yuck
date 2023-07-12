@@ -1,0 +1,12 @@
+(deflisten workspaces :initial "[]" "@scripts@/hypr-get-workspaces")
+(deflisten current_workspace :initial "1" "@scripts@/hypr-get-active-workspace")
+(defwidget hypr-workspaces []
+(eventbox
+    :onscroll "@scripts@/hypr-change-active-workspace {} ${current_workspace}"
+    :class "workspaces-widget"
+  (box :space-evenly true
+    (label :text "${workspaces}${current_workspace}" :visible false)
+    (for workspace in workspaces
+      (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+        (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
+          (label :text "${workspace.id}")))))))
