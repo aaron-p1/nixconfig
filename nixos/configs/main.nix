@@ -78,11 +78,6 @@
         kdeConnect = true;
         inputMethod.japanese = true;
       };
-
-      hyprland = {
-        enable = false;
-        nvidia = true;
-      };
     };
 
     # ../modules/bluetooth.nix

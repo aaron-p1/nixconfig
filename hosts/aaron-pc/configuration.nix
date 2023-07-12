@@ -31,8 +31,6 @@
   # ../../nixos/modules/swap.nix
   within.swap.file = 20;
 
-  hardware.nvidia.package =
-    pkgs.local.nvidia-patched config.boot.kernelPackages.nvidiaPackages.stable;
   services.xserver.videoDrivers = [ "nvidia" ];
 
   within = {
@@ -69,6 +67,8 @@
       thl.devices = [ "aaron-laptop" ];
       work.devices = [ "aaron-laptop" ];
     };
+
+    specialisation.hyprland = true;
   };
 
   virtualisation.libvirtd = {
