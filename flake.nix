@@ -46,8 +46,6 @@
             nixos-hardware.nixosModules.common-pc-ssd
             nixos-hardware.nixosModules.common-cpu-intel-cpu-only
 
-            hyprland.nixosModules.default
-
             ./nixos/configs/main.nix
             ./hosts/aaron-pc/configuration.nix
 
@@ -78,8 +76,6 @@
             nixos-hardware.nixosModules.common-cpu-intel-cpu-only
             nixos-hardware.nixosModules.common-gpu-nvidia
             nixos-hardware.nixosModules.common-pc-ssd
-
-            hyprland.nixosModules.default
 
             ./nixos/configs/main.nix
             ./hosts/aaron-laptop/configuration.nix
