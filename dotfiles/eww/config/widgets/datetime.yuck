@@ -1,0 +1,6 @@
+(defwidget datetime []
+(box
+        :class "datetime"
+        :orientation "v"
+    (label :class "time-label" :text "${formattime(EWW_TIME, "%H:%M")}")
+    (label :class "date-label" :text "${formattime(EWW_TIME, "%A, %d. %B %Y")}")))

@@ -1,3 +1,4 @@
+(include "./widgets/datetime.yuck")
 (include "./widgets/hypr-workspaces.yuck")
 
 (defwindow main
@@ -9,4 +10,32 @@
         :anchor "top center")
     :stacking "fg"
     :exclusive true
-(hypr-workspaces))
+(box
+        :orientation "h"
+    (left)
+    (center)
+    (right)))
+
+(defwidget left []
+(box
+        :orientation "h"
+        :space-evenly false
+        :halign "start"
+        :class "left-modules"
+    (hypr-workspaces)))
+
+(defwidget center []
+(box
+        :orientation "h"
+        :space-evenly false
+        :halign "center"
+        :class "center-modules"
+    (datetime)))
+
+(defwidget right []
+(box
+        :orientation "h"
+        :space-evenly false
+        :halign "end"
+        :class "right-modules"
+    "right"))
