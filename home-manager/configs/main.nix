@@ -59,6 +59,9 @@
 
     # ../modules/libreoffice.nix
     libreoffice.enable = false;
+
+    # ../modules/plasma.nix
+    plasma.enableKWallet = false;
   };
 
   home.sessionVariables = { EDITOR = "nvim"; };

@@ -14,6 +14,7 @@
     ./mpv.nix
     ./neovim.nix
     ./obs-studio.nix
+    ./plasma.nix
     ./ssh.nix
     ./tmux.nix
     ./xdg.nix
