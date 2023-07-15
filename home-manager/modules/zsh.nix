@@ -8,7 +8,14 @@ in with lib; {
       enable = true;
       enableAutosuggestions = true;
       enableCompletion = true;
-      syntaxHighlighting.enable = true;
+      syntaxHighlighting = {
+        enable = true;
+        styles = {
+          assign = "bold";
+          comment = "fg=#928374";
+          redirection = "fg=magenta";
+        };
+      };
       dotDir = ".config/zsh";
       shellAliases = {
         free = "free -h";
