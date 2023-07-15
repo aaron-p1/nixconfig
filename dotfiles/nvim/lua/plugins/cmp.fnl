@@ -67,7 +67,6 @@
                                                    :omni "[OMNI]"
                                                    :copilot "[COP]"}})}
           :experimental {:ghost_text true}})
-  (s-filetype :gitcommit {:sources (sources [{:name :omni}])})
   (s-cmdline "/" {:sources [{:name :buffer}]})
   (s-cmdline ":"
              {:sources (sources [{:name :path}]

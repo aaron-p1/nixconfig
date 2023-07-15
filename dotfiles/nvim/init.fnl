@@ -189,9 +189,6 @@
                        :Gedit
                        :GRename
                        :GMove]})
-             (u :tpope/vim-rhubarb {:after :vim-fugitive})
-             (u :shumphrey/fugitive-gitlab.vim
-                {:file :fugitive-gitlab :after :vim-fugitive})
              (u :lewis6991/gitsigns.nvim
                 {:file :gitsigns
                  :requires [:nvim-lua/plenary.nvim]
