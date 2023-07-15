@@ -55,7 +55,7 @@
     obs-studio.enable = true;
 
     # ../modules/idea-ultimate.nix
-    idea-ultimate.enable = true;
+    idea-ultimate.enable = false;
 
     # ../modules/libreoffice.nix
     libreoffice.enable = false;
