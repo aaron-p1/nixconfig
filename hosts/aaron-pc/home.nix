@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   within = {
-    git.signingKey = "14E080A7466A0E0C!";
+    git.signingKey = "F524AC445FF173DB!";
 
     hyprland.monitorFallback = ",highrr,auto,1";
   };
