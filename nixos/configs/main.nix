@@ -163,7 +163,7 @@
     };
   };
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     corefonts
     source-han-sans
     kanji-stroke-order-font

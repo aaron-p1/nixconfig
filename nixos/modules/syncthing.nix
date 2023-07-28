@@ -110,11 +110,14 @@ in with lib; {
       overrideDevices = true;
       overrideFolders = true;
       openDefaultPorts = true;
-      extraOptions = { gui.insecureSkipHostcheck = true; };
-      devices = mapAttrs (_: val: { id = val; }) chosenDeviceIDs;
-      folders = mapAttrs
-        (key: val: { inherit (val) path ignorePerms versioning devices; })
-        cfg.folders;
+      settings = {
+        devices = mapAttrs (_: val: { id = val; }) chosenDeviceIDs;
+        folders = mapAttrs
+          (key: val: { inherit (val) path ignorePerms versioning devices; })
+          cfg.folders;
+
+        gui.insecureSkipHostcheck = true;
+      };
     };
   };
 }
