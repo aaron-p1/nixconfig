@@ -20,7 +20,8 @@
                     : rename
                     : document_highlight
                     : clear_references}
-              :protocol {: make_client_capabilities}}
+              :protocol {: make_client_capabilities}
+              :codelens {:run codelens-run}}
         :diagnostic {:goto_prev d-prev
                      :goto_next d-next
                      :open_float d-float
@@ -64,7 +65,7 @@
                 ; nix
                 {:server :rnix}
                 ; elixir
-                {:server :elixirls :cmd [:elixir-ls]}
+                ; {:server :elixirls :cmd [:elixir-ls]}
                 ; python
                 {:server :pyright}
                 ; javascript
@@ -81,7 +82,7 @@
 
 (lambda get-keymaps [bufnr tb]
   [; jump to
-   [:n :gd #(tb.lsp_definitions {:jump_type :never}) {:desc "Definition"}]
+   [:n :gd #(tb.lsp_definitions {:jump_type :never}) {:desc :Definition}]
    [:n :gD declaration {:desc :Declaration}]
    [:n :gi tb.lsp_implementations {:desc :Implementations}]
    [:n :gr tb.lsp_references {:desc :References}]
@@ -106,7 +107,8 @@
    [:n :<Leader>lF #(format-buffer bufnr false) {:desc "Format sync"}]
    ; bufnr
    [:n :<Leader>lc code_action {:desc "Code action"}]
-   [:n :<Leader>lr rename {:desc :Rename}]])
+   [:n :<Leader>lr rename {:desc :Rename}]
+   [:n :<Leader>ll codelens-run {:desc :Codelens}]])
 
 (lambda add-highlighting [bufnr]
   (let [group (nvim_create_augroup :lsp_document_highlight {:clear false})]
@@ -125,7 +127,8 @@
 (lambda on-attach [client bufnr]
   (local tb (require :telescope.builtin))
   (local ls (require :lsp_signature))
-  (ls.on_attach {:bind true :hint_prefix "→ "})
+  (when (not (= (?. vim.bo bufnr :filetype) :elixir))
+    (ls.on_attach {:bind true :hint_prefix "→ "}))
   (map_keys get-keymaps bufnr tb)
   (when (and (not= :null-ls client.name)
              client.server_capabilities.documentHighlightProvider)

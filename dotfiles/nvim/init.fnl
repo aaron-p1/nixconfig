@@ -237,6 +237,11 @@
              ;; orgmode
              (u :nvim-orgmode/orgmode
                 {:file :orgmode :requires [:nvim-treesitter/nvim-treesitter]})
+             ;; elixir
+             (u :elixir-tools/elixir-tools.nvim
+                {:file :elixir-tools
+                 :tag :stable
+                 :requires :nvim-lua/plenary.nvim})
              ;; json
              (u :b0o/schemastore.nvim)
              ;; java
