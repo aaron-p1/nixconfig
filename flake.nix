@@ -17,15 +17,10 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "unstable";
     };
-
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "unstable";
-    };
   };
 
   outputs = { self, stable, unstable, nixpkgs, flake-utils, nixos-hardware, nur
-    , home-manager, neovim-nightly-overlay, hyprland, ... }@inputs:
+    , home-manager, neovim-nightly-overlay, ... }@inputs:
     let
       inherit (unstable) lib; # unstable for home manager
       overlays = [
@@ -56,8 +51,6 @@
                 useUserPackages = true;
                 users.aaron = {
                   imports = [
-                    hyprland.homeManagerModules.default
-
                     ./home-manager/configs/main.nix
                     ./hosts/aaron-pc/home.nix
                   ];
@@ -87,8 +80,6 @@
                 useUserPackages = true;
                 users.aaron = {
                   imports = [
-                    hyprland.homeManagerModules.default
-
                     ./home-manager/configs/main.nix
                     ./hosts/aaron-laptop/home.nix
                   ];
@@ -102,12 +93,7 @@
       let pkgs = nixpkgs.legacyPackages."${system}";
       in {
         devShell = pkgs.mkShell {
-          packages = with pkgs; [
-            gnumake
-            rsync
-            git-crypt
-            jq
-          ];
+          packages = with pkgs; [ gnumake rsync git-crypt jq ];
         };
       });
 }
