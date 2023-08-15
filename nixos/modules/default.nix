@@ -7,6 +7,7 @@
     ./bluetooth.nix
     ./boot.nix
     ./containers.nix
+    ./less.nix
     ./locale.nix
     ./mysql.nix
     ./nix.nix

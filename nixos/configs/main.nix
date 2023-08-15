@@ -66,6 +66,9 @@
       ];
     };
 
+    # ../modules/less.nix
+    less.enable = true;
+
     # ../modules/ssh.nix
     ssh.enable = true;
 
