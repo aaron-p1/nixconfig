@@ -7,11 +7,7 @@
 
 (fn config []
   (setup {:ensure_installed :all
-          :highlight {:enable true
-                      :disable (fn [lang bufnr]
-                                 (let [lines (nvim_buf_get_lines bufnr 0 -1
-                                                                 false)]
-                                   (any lines #(< vim.o.synmaxcol (length $1)))))}
+          :highlight {:enable true}
           :indent {:enable true}
           :autotag {:enable true :filetypes [:html :xml :blade :vue]}})
   (ts-register :yaml :yaml.docker-compose))
