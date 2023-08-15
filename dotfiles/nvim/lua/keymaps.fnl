@@ -39,6 +39,8 @@
   ;; noh
   (kset :n :<Leader>n :<Cmd>nohlsearch<CR> {:silent true})
   ;; tab maps
+  (kset :n :<C-w><C-t> "<Cmd>tab split<CR>"
+        {:silent true :desc "Open in new tab"})
   (kset :n :<Leader>tc close-tab {:desc "Tab close"})
   (kset :n :<Leader>to :<Cmd>tabonly<CR> {:silent true})
   ;; term
