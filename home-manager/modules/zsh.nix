@@ -29,6 +29,8 @@ in with lib; {
 
         ns = "NIXPKGS_ALLOW_UNFREE=1 nix shell --impure";
         nr = "NIXPKGS_ALLOW_UNFREE=1 nix run --impure";
+
+        ssh = "TERM=xterm-256color ssh";
       };
       sessionVariables = {
         LANG = "en_US.UTF-8";
