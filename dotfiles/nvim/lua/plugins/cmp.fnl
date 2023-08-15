@@ -20,7 +20,7 @@
 (local cmp-sources
        [{:name :nmp}
         {:name :orgmode}
-        {:name :nvim_lsp}
+        {:name :nvim_lsp :max_item_count 64}
         {:name :luasnip}
         {:name :path :options {:fd_timeout_msec 1000 :fd_cmd [:fd :-d :4 :-p]}}
         {:name :calc}
