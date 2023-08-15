@@ -15,6 +15,8 @@
   (each [key command (pairs maps)]
     (kset :n (.. :<Leader>g key) (.. "<Cmd>Git " command :<CR>) {:buffer true})))
 
+(kset :n :cO<Space> ":Git switch " {:buffer true})
+
 (wk-register {:buffer 0
               :prefix :<Leader>
               :map {:g {:name :Git
@@ -23,3 +25,5 @@
                         :P :Push
                         :l (.. "Log " log-count)
                         :L (.. "Log " (* log-count 2))}}})
+
+(wk-register {:buffer 0 :prefix :c :map {:O {:name "Switch branch"}}})
