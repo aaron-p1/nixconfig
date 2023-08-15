@@ -15,6 +15,43 @@
   . ","? @_end
   (#make-range! "element.outer" @element.inner @_end))
 
+; chaining
+(member_call_expression
+  "->" @_arrow .
+  name: (_) @_name
+  arguments: (_) @_args
+  (#make-range! "element.inner" @_name @_args)
+  (#make-range! "element.outer" @_arrow @_args))
+
+(member_call_expression
+  (scoped_call_expression
+    name: (_) @_name
+    arguments: (_) @_args)
+  "->" @_arrow
+  (#make-range! "element.inner" @_name @_args)
+  (#make-range! "element.outer" @_name @_arrow))
+
+(scoped_call_expression
+  name: (_) @_name
+  arguments: (_) @_args
+  (#make-range! "element.inner" @_name @_args))
+
+(member_access_expression
+  "->" @_arrow .
+  name: (_) @element.inner
+  (#make-range! "element.outer" @_arrow @element.inner))
+
+(member_access_expression
+  (scoped_call_expression
+    name: (_) @_name
+    arguments: (_) @_args)
+  "->" @_arrow
+  (#make-range! "element.inner" @_name @_args)
+  (#make-range! "element.outer" @_name @_arrow))
+
+(class_constant_access_expression
+  (name) @element.inner .)
+
 (assignment_expression
   "=" @_start .
   right: (_) @assignexpression.inner
