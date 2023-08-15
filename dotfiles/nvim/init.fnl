@@ -66,6 +66,7 @@
                       :smartcase true
                       ; GUI colors
                       :termguicolors true
+                      :synmaxcol 300
                       ; split buffers bottom right
                       :splitbelow true
                       :splitright true
