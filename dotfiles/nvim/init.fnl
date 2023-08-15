@@ -51,6 +51,7 @@
                       :ruler true
                       ; conceal
                       :conceallevel 2
+                      :concealcursor :n
                       ; confirm closing unsaved files
                       :confirm true
                       ; line numbers
