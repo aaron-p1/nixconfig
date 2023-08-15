@@ -1,7 +1,7 @@
 { lib, xsel, python3, gnumake, unzip, gcc, tree-sitter, fd, ripgrep
 , nodePackages, local, sumneko-lua-language-server, rnix-lsp, nixfmt, shellcheck
-, shellharden, editorconfig-checker, statix, stylua, fnlfmt, nodejs, phpPackages, stdenv
-, findutils, fennel }:
+, shellharden, editorconfig-checker, statix, stylua, fnlfmt, nodejs, phpPackages
+, stdenv, findutils, fennel }:
 let
   inherit (builtins) attrValues;
   inherit (lib) concatStringsSep mapAttrsToList;
@@ -36,6 +36,7 @@ let
     sumneko-lua-language-server
     rnix-lsp
     nodePackages.vscode-langservers-extracted
+    nodePackages."@tailwindcss/language-server"
     nodePackages.yaml-language-server
   ];
 in stdenv.mkDerivation {

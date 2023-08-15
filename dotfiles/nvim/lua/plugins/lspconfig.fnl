@@ -48,6 +48,7 @@
                 {:server :html :filetypes [:html :blade]}
                 ; css
                 {:server :cssls}
+                {:server :tailwindcss}
                 ; php
                 {:server :intelephense}
                 ; json
