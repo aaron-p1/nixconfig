@@ -27,16 +27,6 @@
     intelBusId = "PCI:0:2:0";
   };
 
-  specialisation.use-nvidia-gpu.configuration = {
-    hardware.nvidia = {
-      modesetting.enable = true;
-      prime = {
-        offload.enable = false;
-        sync.enable = true;
-      };
-    };
-  };
-
   within = {
     users.aaron.u2fKeys = [
       # 1
