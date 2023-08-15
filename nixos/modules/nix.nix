@@ -56,6 +56,20 @@ in with lib; {
     boot.binfmt.emulatedSystems = cfg.emulatedSystems;
 
     environment.systemPackages = [
+      # nix shell nixpkgs#{$1}
+      (pkgs.writeShellScriptBin "s" ''
+        if [ -z "$1" ]
+        then
+          echo "Usage: $0 {nixpkg}" 1>&2
+          exit 1
+        fi
+
+        pkg="$1"
+        shift
+
+        NIXPKGS_ALLOW_UNFREE=1 exec nix shell --impure "nixpkgs#$pkg" -- "$@"
+      '')
+
       # nix run nixpkgs#{$1}
       (pkgs.writeShellScriptBin "x" ''
         if [ -z "$1" ]
