@@ -81,6 +81,8 @@
                       :cursorline true
                       ; updatetime for CursorHold
                       :updatetime 300
+                      ; color column
+                      :colorcolumn :+1
                       ; ! Don't use tmp file
                       :shelltemp false
                       :mouse ""
