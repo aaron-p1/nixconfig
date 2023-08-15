@@ -49,7 +49,7 @@ in with lib; {
         share = false;
         ignoreSpace = true;
         path = ".local/share/zsh/zsh_history";
-        save = 10000;
+        save = 100000;
       };
       oh-my-zsh = {
         enable = true;
