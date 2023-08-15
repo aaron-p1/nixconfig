@@ -9,7 +9,17 @@ let
   additionalHosts = builtins.fromJSON additionalHostsContent;
 
 in with lib; {
-  options.within.ssh = { enable = mkEnableOption "SSH"; };
+  options.within.ssh = {
+    enable = mkEnableOption "SSH";
+
+    keyFiles = mkOption {
+      type = types.listOf types.string;
+      default = [ ];
+      description = ''
+        List of SSH key files to add to ssh-agent.
+      '';
+    };
+  };
 
   config = mkIf cfg.enable {
     assertions = [{
@@ -26,6 +36,7 @@ in with lib; {
       controlPath = "~/.ssh/sockets/%r@%n:%p";
       controlPersist = "8h";
       matchBlocks = recursiveUpdate {
+        "*".identityFile = mkIf (cfg.keyFiles != [ ]) cfg.keyFiles;
         pc = {
           hostname = "aaron-pc";
           user = "aaron";
