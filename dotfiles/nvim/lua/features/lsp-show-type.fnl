@@ -4,7 +4,7 @@
               : nvim_buf_clear_namespace
               : nvim_buf_set_extmark}
         :lsp {: buf_request_all}
-        :treesitter {: parse_query : get_parser}} vim)
+        :treesitter {: get_parser :query {:parse parse_query}}} vim)
 
 (local queries {:php "(assignment_expression (variable_name) @assignment)"})
 
@@ -20,13 +20,14 @@
           [current-line] (or current-lines [])
           col (if current-line (- (or (string.find current-line "%S") 0) 1))
           var-type (if content (string.match content "@.*`(.*) %$"))
-          short-type (if var-type (< (length var-type) col))
-          mark-col (if short-type (- col 1 (length var-type)) 0)]
+          short-type (if var-type (< (length var-type) 10))]
       (when var-type
         (nvim_buf_clear_namespace bufnr namespace line (+ line 1))
-        (nvim_buf_set_extmark bufnr namespace line mark-col
-                              {:virt_text [[var-type :Comment]]
-                               :virt_text_pos (if short-type :overlay :eol)
+        (nvim_buf_set_extmark bufnr namespace line col
+                              {:virt_text [[var-type
+                                            (if short-type :Type :Comment)]
+                                           [" "]]
+                               :virt_text_pos (if short-type :inline :eol)
                                :hl_mode :combine})))))
 
 (lambda get-hover [bufnr row col]
