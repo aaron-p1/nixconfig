@@ -79,6 +79,8 @@
                       :spellfile (.. spelldir :/custom.utf-8.add)
                       ; cursor line
                       :cursorline true
+                      ; updatetime for CursorHold
+                      :updatetime 300
                       ; ! Don't use tmp file
                       :shelltemp false
                       :mouse ""
