@@ -3,9 +3,12 @@
               : nvim_buf_get_offset
               : nvim_chan_send
               : nvim_create_augroup
-              : nvim_create_autocmd}
+              : nvim_create_autocmd
+              : nvim_feedkeys
+              : nvim_win_get_buf
+              : nvim_win_set_buf}
         :cmd {: edit}
-        :fn {: substitute}
+        :fn {: substitute : win_findbuf}
         :highlight {:on_yank h-on-yank}
         :keymap {:set kset}} vim)
 
@@ -19,6 +22,11 @@
 (lambda remove-pid-from-term-title [title]
   "term://dir//pid:cmd -> term://dir//cmd"
   (substitute title "term://.\\{-}//\\zs\\d*:" "" ""))
+
+(lambda replace-buffer-in-wins [old-buf new-buf]
+  (let [wins (win_findbuf old-buf)]
+    (each [_ win (ipairs wins)]
+      (nvim_win_set_buf win new-buf))))
 
 (lambda send-to-terminal [input]
   (let [job-id vim.b.terminal_job_id]
@@ -36,6 +44,8 @@
   (let [new-cmd (remove-pid-from-term-title file)]
     (kset :n :r (fn []
                   (edit new-cmd)
+                  (let [new-buf (nvim_win_get_buf 0)]
+                    (replace-buffer-in-wins bufnr new-buf))
                   (nvim_buf_delete bufnr {:force true}))
           {:buffer bufnr})
     (kset :n :q #(nvim_buf_delete bufnr {:force true}) {:buffer bufnr})))
