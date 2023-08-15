@@ -4,7 +4,7 @@ in with lib; {
   options.within.neovim = { enable = mkEnableOption "Neovim"; };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ neovim-nightly ];
+    home.packages = with pkgs; [ neovim-nightly neovim-remote ];
 
     xdg.configFile."nvim" = {
       source = pkgs.dotfiles.nvim;

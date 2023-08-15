@@ -14,6 +14,8 @@
 (local {: has-profile} (require :profiles))
 
 (set vim.env.PATH (.. vim.env.PATH ":@addPath@"))
+(set vim.env.VISUAL "nvr -cc split --remote-wait +'set bufhidden=wipe'")
+(set vim.env.EDITOR "nvr -cc split --remote-wait +'set bufhidden=wipe'")
 
 (let [install-path (.. (stdpath :data) :/site/pack/packer/start/packer.nvim)]
   (when (not= 1 (isdirectory install-path))

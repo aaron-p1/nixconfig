@@ -14,6 +14,8 @@
 
 (local huge-file-size (* 1024 512))
 
+(var nvr-closed false)
+
 (lambda remove-pid-from-term-title [title]
   "term://dir//pid:cmd -> term://dir//cmd"
   (substitute title "term://.\\{-}//\\zs\\d*:" "" ""))
@@ -67,6 +69,16 @@
                           :callback #(set_options vim.bo {:bufhidden :delete})}))
   ;; huge files fix
   (let [augroup (nvim_create_augroup :FixHugeFiles {:clear true})]
-    (nvim_create_autocmd :BufRead {:group augroup :callback fix-huge-file})))
+    (nvim_create_autocmd :BufRead {:group augroup :callback fix-huge-file}))
+  ;; go insert mode in terminal after closing nvr buffer
+  (let [group (nvim_create_augroup :NvrClose {:clear true})]
+    (nvim_create_autocmd :BufDelete
+                         {: group
+                          :callback #(set nvr-closed (?. vim.b $1.buf :nvr))})
+    (nvim_create_autocmd :WinEnter
+                         {: group
+                          :callback #(when nvr-closed
+                                       (set nvr-closed false)
+                                       (nvim_feedkeys :i :n false))})))
 
 {: setup}
