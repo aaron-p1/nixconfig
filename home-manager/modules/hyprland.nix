@@ -28,9 +28,9 @@ in with lib; {
     wayland.windowManager.hyprland = {
       enable = true;
 
-      inherit (osCfg) package xwayland nvidiaPatches;
+      inherit (osCfg) package xwayland;
 
-      recommendedEnvironment = true;
+      enableNvidiaPatches = osCfg.nvidiaPatches;
 
       extraConfig = with pkgs;
         let launcher = "${rofi-wayland}/bin/rofi -show drun";
