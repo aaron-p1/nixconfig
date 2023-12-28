@@ -129,6 +129,15 @@
       };
     };
 
+    tailscale = {
+      enable = true;
+      download = {
+        enable = true;
+        owner = "aaron:users";
+        dir = "/home/aaron/Downloads/Tailscale";
+      };
+    };
+
     # ../modules/steam.nix
     steam.enable = true;
 

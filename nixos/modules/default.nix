@@ -19,6 +19,7 @@
     ./steam.nix
     ./swap.nix
     ./syncthing.nix
+    ./tailscale.nix
     ./vmclient.nix
 
     ./users.nix
