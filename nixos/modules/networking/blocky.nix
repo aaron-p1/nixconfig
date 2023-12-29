@@ -72,7 +72,7 @@ in with lib; {
         port = "${cfg.ip}:53";
         upstream.default = cfg.nameservers;
         customDNS.mapping = cfg.mapDomains;
-        conditional.mapping = { "." = "192.168.178.1"; };
+        conditional.mapping = { "." = "100.100.100.100"; };
         blocking = {
           blackLists.default = blockLists;
           clientGroupsBlock.default = [ "default" ];
