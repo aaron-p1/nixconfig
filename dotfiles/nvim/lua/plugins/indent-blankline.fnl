@@ -1,9 +1,6 @@
-(local {: setup} (require :indent_blankline))
+(local {: setup} (require :ibl))
 
 (fn config []
-  (setup {:filetype_exclude [:help :packer]
-          :use_treesitter true
-          :show_current_context true
-          :show_current_context_start true}))
+  (setup {:exclude {:filetypes [:help :packer]} :scope {:show_end false}}))
 
 {: config}
