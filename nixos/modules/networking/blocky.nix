@@ -69,17 +69,18 @@ in with lib; {
       # https://0xerr0r.github.io/blocky/configuration
       settings = {
         inherit (cfg) bootstrapDns httpPort;
-        port = "${cfg.ip}:53";
-        upstream.default = cfg.nameservers;
+        ports.dns = "${cfg.ip}:53";
+        upstreams.groups.default = cfg.nameservers;
         customDNS.mapping = cfg.mapDomains;
-        conditional.mapping = { "." = "100.100.100.100"; };
         blocking = {
           blackLists.default = blockLists;
           clientGroupsBlock.default = [ "default" ];
-          downloadAttempts = 0;
-          downloadCooldown = "4s";
+          loading.downloads = {
+            attempts = 0;
+            cooldown = "4s";
+          };
         };
-        logLevel = "warn";
+        log.level = "warn";
         prometheus.enable = cfg.prometheus;
       };
     };
