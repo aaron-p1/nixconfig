@@ -62,7 +62,7 @@ in with lib; {
             }
           ];
         };
-        key_bindings = let
+        keyboard.bindings = let
           mod = "Control|Shift";
           keys = {
             A = 65;
@@ -96,7 +96,7 @@ in with lib; {
           ctrlShiftMappings = mapAttrsToList (key: code: {
             inherit key;
             mods = mod;
-            chars = "\\x1b[${toString code};6u";
+            chars = "\\\\x1b[${toString code};6u";
           }) keys;
         in concatLists [
           [{
