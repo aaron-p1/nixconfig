@@ -10,11 +10,11 @@ rebuildCmds := boot test build
 specialisationFile := /etc/specialisation
 
 nixpkgsRepoFilesBefore := https://raw.githubusercontent.com/NixOS/nixpkgs/
-nixpkgsRLNotesFile := /nixos/doc/manual/release-notes/rl-2311.section.md
+nixpkgsRLNotesFile := /nixos/doc/manual/release-notes/rl-2405.section.md
 nixpkgsBranch := nixos-unstable
 
 homeManagerRepoFilesBefore := https://raw.githubusercontent.com/nix-community/home-manager/
-homeManagerRLNotesFile := /docs/release-notes/rl-2311.adoc
+homeManagerRLNotesFile := /docs/release-notes/rl-2405.md
 homeManagerBranch := master
 
 default: existing
