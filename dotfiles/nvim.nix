@@ -38,6 +38,7 @@ let
     nodePackages.vscode-langservers-extracted
     nodePackages."@tailwindcss/language-server"
     nodePackages.yaml-language-server
+    nodePackages.volar
   ];
 in stdenv.mkDerivation {
   pname = "dotfiles-nvim";
@@ -52,6 +53,8 @@ in stdenv.mkDerivation {
 
   # additional env vars
   addPath = lib.makeBinPath addPath;
+
+  tsLib = "${nodePackages.typescript}/lib/node_modules/typescript/lib";
 
   postPatch = ''
     # replace env vars in place

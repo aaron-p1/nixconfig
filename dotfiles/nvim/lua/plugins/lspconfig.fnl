@@ -60,7 +60,7 @@
                 ; yaml
                 {:server :yamlls}
                 ; vue
-                {:server :vuels}
+                {:server :volar :init_options {:typescript {:tsdk "@tsLib@"}}}
                 ; haskell
                 {:server :hls}
                 ; nix
