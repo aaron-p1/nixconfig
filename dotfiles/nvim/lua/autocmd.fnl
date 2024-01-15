@@ -50,8 +50,8 @@
                   (edit new-cmd)
                   (let [new-buf (nvim_win_get_buf 0)]
                     (replace-buffer-in-wins bufnr new-buf))
-                  (nvim_buf_delete bufnr {:force true}))
-          {:buffer bufnr})
+                  (nvim_buf_delete bufnr {:force true})
+                  (nvim_feedkeys :G :n false)) {:buffer bufnr})
     (kset :n :q #(nvim_buf_delete bufnr {:force true}) {:buffer bufnr})))
 
 (lambda calc-big-file [bufnr]
