@@ -38,6 +38,8 @@ Broken Stuff:
         create file /etc/specialisation to specify specialisation
         see Makefile for more info
       No issue found
+    tmuxp does not build:
+      changed to stable version in ./localpkgs/default.nix
 
   home-manager:
     firefox:
