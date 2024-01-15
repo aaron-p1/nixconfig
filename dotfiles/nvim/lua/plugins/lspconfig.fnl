@@ -11,7 +11,6 @@
                     : declaration
                     : type_definition
                     : hover
-                    : signature_help
                     : list_workspace_folders
                     : add_workspace_folder
                     : remove_workspace_folder
@@ -19,6 +18,7 @@
                     : range_code_action
                     : rename
                     : document_highlight
+                    : signature_help
                     : clear_references}
               :protocol {: make_client_capabilities}
               :codelens {:run codelens-run}}
@@ -96,7 +96,8 @@
    [:n :<Leader>ltD #(d-disable bufnr) {:desc "Disable diagnostics"}]
    ; show info
    [:n :K hover {:desc :Hover}]
-   [:n :<C-K> signature_help {:desc :Signature}]
+   [:n :<C-k> signature_help {:desc :Signature}]
+   [:i :<C-S-e> signature_help {:desc :Signature}]
    [:n
     :<Leader>lwl
     #(print (vim.inspect (list_workspace_folders)))
@@ -127,9 +128,6 @@
 
 (lambda on-attach [client bufnr]
   (local tb (require :telescope.builtin))
-  (local ls (require :lsp_signature))
-  (when (not (= (?. vim.bo bufnr :filetype) :elixir))
-    (ls.on_attach {:bind true :hint_prefix "→ "}))
   (map_keys get-keymaps bufnr tb)
   (when (and (not= :null-ls client.name)
              client.server_capabilities.documentHighlightProvider)

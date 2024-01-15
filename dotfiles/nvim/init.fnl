@@ -234,10 +234,7 @@
              ;; lsp
              (u :neovim/nvim-lspconfig
                 {:file :lspconfig
-                 :after [:lsp_signature.nvim
-                         :nvim-cmp
-                         :telescope.nvim
-                         :schemastore.nvim]})
+                 :after [:nvim-cmp :telescope.nvim :schemastore.nvim]})
              (u :kosayoda/nvim-lightbulb
                 {:patches :change-lightbulb-char.patch
                  :file :lightbulb
@@ -272,7 +269,6 @@
              (u :David-Kunz/cmp-npm {:requires [:nvim-lua/plenary.nvim]})
              ;; DEPENDENCIES: nodejs
              (u :github/copilot.vim {:file :copilot})
-             (u :ray-x/lsp_signature.nvim)
              ;; diagnostics
              (u :folke/trouble.nvim
                 {:file :trouble :requires :kyazdani42/nvim-web-devicons})
