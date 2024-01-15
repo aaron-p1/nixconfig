@@ -72,6 +72,16 @@
     };
   };
 
+  services.restic.backups.documentsRemote = {
+    paths = [ "/home/aaron/Documents" ];
+    repository = "rest:http://home-server:54321";
+    passwordFile = "/etc/secrets/restic_remote";
+    timerConfig = {
+      OnCalendar = "weekly";
+      Persistent = true;
+    };
+  };
+
   virtualisation.libvirtd = {
     enable = true;
     qemu = { package = pkgs.qemu_kvm; };
