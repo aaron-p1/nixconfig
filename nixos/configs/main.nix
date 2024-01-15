@@ -159,6 +159,7 @@
 
   environment = {
     systemPackages = with pkgs; [
+      htop
       git
       wget
       neovim-nightly
