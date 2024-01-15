@@ -76,7 +76,15 @@
                 ; R
                 {:server :r_language_server}])
 
-(local formatting-preferences {:nix :null-ls :html :null-ls :json :null-ls})
+(var formatting-preferences {:nix :null-ls
+                             :html :null-ls
+                             :javascript :null-ls
+                             :json :null-ls
+                             :php :intelephense
+                             :vue :null-ls})
+
+(lambda set-formatting-preference [ft ?server]
+  (tset formatting-preferences ft ?server))
 
 (lambda format-buffer [bufnr ?async]
   (let [async (if (= nil ?async) true ?async)
@@ -177,4 +185,7 @@
     (configure-servers capabilities)
     (configure-lua capabilities)))
 
-{:on_attach on-attach :getCapabilities get-capabilities : config}
+{:on_attach on-attach
+ :getCapabilities get-capabilities
+ : config
+ : set-formatting-preference}
