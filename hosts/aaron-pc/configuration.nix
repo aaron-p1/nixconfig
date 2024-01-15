@@ -67,8 +67,6 @@
       thl.devices = [ "aaron-laptop" ];
       work.devices = [ "aaron-laptop" ];
     };
-
-    specialisation.hyprland = true;
   };
 
   virtualisation.libvirtd = {

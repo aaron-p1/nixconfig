@@ -1,9 +1,5 @@
 { config, lib, pkgs, ... }:
-let
-  cfg = config.within.alacritty;
-
-  # currently buggy in hyprland
-  hideCursor = !config.wayland.windowManager.hyprland.enable;
+let cfg = config.within.alacritty;
 in with lib; {
   options.within.alacritty = { enable = mkEnableOption "Alacritty"; };
 
@@ -23,7 +19,7 @@ in with lib; {
           size = 9;
           normal = { family = "FiraCode Nerd Font"; };
         };
-        mouse.hide_when_typing = hideCursor;
+        mouse.hide_when_typing = true;
         hints = {
           alphabet = "abcdefghjklmnopqrstuvwxyz";
           enabled = [

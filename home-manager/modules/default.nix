@@ -4,11 +4,9 @@
     ./chromium.nix
     ./direnv.nix
     ./easyeffects.nix
-    ./eww.nix
     ./firefox.nix
     ./git.nix
     ./gpg.nix
-    ./hyprland.nix
     ./idea-ultimate.nix
     ./libreoffice.nix
     ./mpv.nix
