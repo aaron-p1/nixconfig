@@ -175,10 +175,6 @@
                 {:file :treesitter-textobjects
                  :requires :nvim-treesitter/nvim-treesitter
                  :after :nvim-treesitter})
-             (u :nvim-treesitter/playground
-                {:file :treesitter-playground
-                 :requires :nvim-treesitter/nvim-treesitter
-                 :after :nvim-treesitter})
              (u :mizlan/iswap.nvim {:file :iswap :after :nvim-treesitter})
              ;; syntax
              (u :sheerun/vim-polyglot {:file :polyglot :setup true})
