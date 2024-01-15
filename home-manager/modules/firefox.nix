@@ -34,6 +34,7 @@ in with lib; {
           "devtools.toolbox.host" = "window";
           "extensions.update.autoUpdateDefault" = false;
           "general.useragent.locale" = "de-DE";
+          "intl.regional_prefs.use_os_locales" = true;
           "media.ffmpeg.vaapi.enabled" = true;
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         };
