@@ -144,6 +144,10 @@
     monitoring.enable = false;
   };
 
+  systemd.extraConfig = ''
+    DefaultTimeoutStopSec=30s
+  '';
+
   hardware.keyboard.zsa.enable = true;
 
   programs = {
