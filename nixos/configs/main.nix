@@ -157,8 +157,6 @@
       openFirewall = true;
     };
     dconf.enable = true;
-
-    gamemode.enable = true;
   };
 
   environment = {
@@ -169,8 +167,6 @@
       neovim-nightly
 
       anki
-
-      mangohud
 
       local.initdev
     ];

@@ -82,6 +82,10 @@
     };
   };
 
+  programs.gamemode.enable = true;
+
+  environment.systemPackages = with pkgs; [ mangohud ];
+
   virtualisation.libvirtd = {
     enable = true;
     qemu = { package = pkgs.qemu_kvm; };
