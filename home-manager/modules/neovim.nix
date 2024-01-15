@@ -4,7 +4,18 @@ in with lib; {
   options.within.neovim = { enable = mkEnableOption "Neovim"; };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ neovim-nightly neovim-remote ];
+    home.packages = with pkgs; [
+      neovim-nightly
+      (neovim-remote.overrideAttrs (attrs:
+        attrs // {
+          patches = attrs.patches ++ [
+            (pkgs.fetchpatch {
+              url = "https://github.com/mhinz/neovim-remote/pull/190.patch";
+              sha256 = "sha256-BGaysA9pKxAbBhQFzdpUn1qA8wWZOVhUJ4x2sClgwwc=";
+            })
+          ];
+        }))
+    ];
 
     xdg.configFile."nvim" = {
       source = pkgs.dotfiles.nvim;
