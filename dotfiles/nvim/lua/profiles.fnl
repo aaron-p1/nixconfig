@@ -106,7 +106,7 @@
     (wk-register {:prefix :<Leader>c
                   :map {:p {:name :Profile :t {:name :Tinker}}}})
     (when (or sail? podman-compose?)
-      (let [shell-cmd (if sail? "sail shell" (get-compose-cmd :PHP :bash))]
+      (let [shell-cmd (if sail? "sail root-shell" (get-compose-cmd :PHP :bash))]
         (add-term-keymaps :<Leader>cps shell-cmd)
         (wk-register {:prefix :<Leader>cp :map {:s {:name :Shell}}})))
     (when (has-profile :tenancy-for-laravel)
