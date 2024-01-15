@@ -166,6 +166,8 @@
 
       anki
 
+      mangohud
+
       local.initdev
     ];
     sessionVariables = {
