@@ -1,6 +1,6 @@
 (local {: nvim_create_autocmd : nvim_buf_get_lines : nvim_buf_set_text} vim.api)
 
-(local {: set_options : replace-when-diag} (require :helper))
+(local {: set_options} (require :helper))
 (local {: show-types} (require :features.lsp-show-type))
 
 (var buf-show-types {})
@@ -8,11 +8,6 @@
 (var buf-changed {})
 
 (set_options vim.bo {:suffixesadd :.php})
-
-(nvim_create_autocmd :BufWrite
-                     {:buffer 0
-                      :callback #(replace-when-diag $1.buf "Expected ';'%.$"
-                                                    "([^;])$" "%1;")})
 
 (lambda show-type-if-changed [bufnr]
   (tset types-waiting bufnr false)
