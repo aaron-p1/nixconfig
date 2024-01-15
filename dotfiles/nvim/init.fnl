@@ -141,6 +141,10 @@
              ;; "~/Documents/private/repos/virt-notes.nvim"
              (u :aaron-p1/virt-notes.nvim
                 {:file :virt-notes :after :telescope.nvim})
+             ;; improvements
+             (u :m4xshen/hardtime.nvim
+                {:file :hardtime
+                 :requires [:MunifTanjim/nui.nvim :nvim-lua/plenary.nvim]})
              ;; color scheme
              (u :ellisonleao/gruvbox.nvim {:file :gruvbox})
              (u :rcarriga/nvim-notify {:file :notify :after :telescope.nvim})
