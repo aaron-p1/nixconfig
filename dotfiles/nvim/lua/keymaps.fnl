@@ -29,6 +29,8 @@
 
 (fn setup []
   (get-profile-config :keymaps)
+  (kset :n :<PageUp> "<nop>")
+  (kset :n :<PageDown> "<nop>")
   ;; clear line
   (kset :n :dD :0D {:desc "Clear line"})
   ;; alt + Esc for leaving terminal
