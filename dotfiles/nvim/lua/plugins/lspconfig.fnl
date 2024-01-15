@@ -44,6 +44,8 @@
                        :clangd]}
                 ; dart
                 {:server :dartls}
+                ; graphql
+                {:server :graphql}
                 ; html
                 {:server :html :filetypes [:html :blade]}
                 ; css
