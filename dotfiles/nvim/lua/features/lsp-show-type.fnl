@@ -10,6 +10,11 @@
 
 (local namespace (nvim_create_namespace :ShowTypes))
 
+(lambda parse-intelephense-var [?content]
+  (-?> ?content
+       (string.match "@.*`(.*) %$")
+       (string.gsub "\\[%w\\]+\\" "")))
+
 (lambda create-extmark-from-hover-result [bufnr results]
   (each [_ result (pairs results)]
     (let [content (?. result :result :contents :value)
@@ -19,7 +24,7 @@
                             (nvim_buf_get_lines bufnr line (+ line 1) false))
           [current-line] (or current-lines [])
           col (if current-line (- (or (string.find current-line "%S") 0) 1))
-          var-type (if content (string.match content "@.*`(.*) %$"))
+          var-type (parse-intelephense-var content)
           short-type (if var-type (< (length var-type) 10))]
       (when var-type
         (nvim_buf_clear_namespace bufnr namespace line (+ line 1))
