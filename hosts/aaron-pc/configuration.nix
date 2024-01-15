@@ -3,24 +3,14 @@
 
   powerManagement.cpuFreqGovernor = "ondemand";
 
-  # ../../nixos/modules/boot.nix
-  within.boot = {
-    grub = true;
-    supportedFilesystems = [ "btrfs" ];
-    kernelPackages = pkgs.linuxPackages_latest;
-  };
-
   # NETWORKING
-  networking.useDHCP = false;
-  networking.hostName = "aaron-pc";
-  networking.interfaces.enp4s0.useDHCP = true;
-  networking.interfaces.wlp7s0.useDHCP = true;
-
-  networking.firewall.allowedTCPPorts = [ 19000 ];
-
-  within.networking.v6 = {
-    loopbackPrefix = "fd70:a008:85df:ffb2";
-    loopbackPrefixLength = 64;
+  networking = {
+    useDHCP = false;
+    hostName = "aaron-pc";
+    interfaces = {
+      enp4s0.useDHCP = true;
+      wlp7s0.useDHCP = true;
+    };
   };
 
   fileSystems."/mnt/data" = {
@@ -28,12 +18,25 @@
     fsType = "ext4";
   };
 
-  # ../../nixos/modules/swap.nix
-  within.swap.file = 20;
-
   services.xserver.videoDrivers = [ "nvidia" ];
 
   within = {
+    # ../../nixos/modules/boot.nix
+    boot = {
+      grub = true;
+      supportedFilesystems = [ "btrfs" ];
+      kernelPackages = pkgs.linuxPackages_latest;
+    };
+
+    # ../../nixos/modules/networking/default.nix
+    networking.v6 = {
+      loopbackPrefix = "fd70:a008:85df:ffb2";
+      loopbackPrefixLength = 64;
+    };
+
+    # ../../nixos/modules/swap.nix
+    swap.file = 20;
+
     users.aaron = {
       u2fKeys = [
         # 1

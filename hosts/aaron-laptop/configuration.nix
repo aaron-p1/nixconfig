@@ -1,24 +1,14 @@
 { config, pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ../../nixos/modules ];
 
-  within.boot = {
-    grub = true;
-    efiMountPoint = "/boot/efi";
-    supportedFilesystems = [ "btrfs" ];
-    kernelPackages = pkgs.linuxPackages_latest;
+  networking = {
+    useDHCP = false;
+    hostName = "aaron-laptop";
+    interfaces = {
+      enp3s0.useDHCP = true;
+      wlp2s0.useDHCP = true;
+    };
   };
-
-  networking.useDHCP = false;
-  networking.hostName = "aaron-laptop";
-  networking.interfaces.enp3s0.useDHCP = true;
-  networking.interfaces.wlp2s0.useDHCP = true;
-
-  within.networking.v6 = {
-    loopbackPrefix = "fdfd:3ea0:fd08:44cc";
-    loopbackPrefixLength = 64;
-  };
-
-  within.swap.file = 20;
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -28,6 +18,20 @@
   };
 
   within = {
+    boot = {
+      grub = true;
+      efiMountPoint = "/boot/efi";
+      supportedFilesystems = [ "btrfs" ];
+      kernelPackages = pkgs.linuxPackages_latest;
+    };
+
+    networking.v6 = {
+      loopbackPrefix = "fdfd:3ea0:fd08:44cc";
+      loopbackPrefixLength = 64;
+    };
+
+    swap.file = 20;
+
     users.aaron.u2fKeys = [
       # 1
       "K75FjUADd0jxHJxt1mSt1l9SaMZytdusDhBWHreUHkZF2t3NLKoSMswyLgaNDktrc5OdCNuQvc5ZF0w+Jyk5Jw==,KAoLBV0lY/dTByVVLUshVjIZknJuolefxUG68FcVD86kU+mvXc7qh5vRSXE56QL6zXQ0yJWnrqcXp0hZnsUkLQ==,es256,+presence"
