@@ -13,7 +13,7 @@ in with lib; {
     enable = mkEnableOption "SSH";
 
     keyFiles = mkOption {
-      type = types.listOf types.string;
+      type = types.listOf types.str;
       default = [ ];
       description = ''
         List of SSH key files to add to ssh-agent.
