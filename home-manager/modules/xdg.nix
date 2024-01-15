@@ -53,7 +53,7 @@ in with lib; {
         terminalCfg = cfg.desktopEntries.terminal;
 
         terminalCmd = "${pkgs.alacritty}/bin/alacritty"
-          + " -o window.startup_mode=Fullscreen" + " -e {}";
+          + " -o \"window.startup_mode='Fullscreen'\"" + " -e {}";
 
         terminalIcon = "${pkgs.alacritty}"
           + "/share/icons/hicolor/scalable/apps/Alacritty.svg";
@@ -65,7 +65,7 @@ in with lib; {
           }) (optional terminalCfg.nixconfig {
             name = "Nixconfig";
             shortName = "nixconfig";
-            command = "gotmux nixconfig";
+            command = ''${pkgs.zsh}/bin/zsh -c "gotmux nixconfig"'';
             settings.Keywords = "nc";
           } ++ optional terminalCfg.oro {
             name = "Orgmode optimize";
