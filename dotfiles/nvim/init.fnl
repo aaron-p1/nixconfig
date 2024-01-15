@@ -300,6 +300,7 @@
 (local setup-modules [:overrides
                       :keymaps
                       :autocmd
+                      :features.error-buffer
                       :features.macro-insert-paste
                       :features.paste-plugin-link
                       :features.plugin-links
