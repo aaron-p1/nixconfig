@@ -172,7 +172,10 @@
   (let [runtime-path (split package.path ";")
         lsp-settings {:Lua {:runtime {:version :LuaJIT :path runtime-path}
                             :diagnostics {:globals [:vim]}
-                            :workspace {:library (nvim_get_runtime_file "" true)}
+                            :workspace {:library [vim.env.VIMRUNTIME
+                                                  "${3rd}/luv/library"
+                                                  "${3rd}/busted/library"
+                                                  "${3rd}/luassert/library"]}
                             :telemetry {:enable false}}}]
     (table.insert runtime-path :lua/?.lua)
     (table.insert runtime-path :lua/?/init.lua)
