@@ -100,7 +100,10 @@
   (set-map :<Leader>fr live-grep-in-dir "Live grep"))
 
 (fn config []
-  (setup {:disable_netrw false :hijack_netrw false :on_attach on-attach})
+  (setup {:disable_netrw false
+          :hijack_netrw false
+          :on_attach on-attach
+          :git {:enable false}})
   (kset :n :<Leader>bb #(toggle) {:desc :Toggle})
   (kset :n :<Leader>bf #(open {:find_file true}) {:desc "Find file"})
   (kset :n :<Leader>b< #(resize :-20) {:desc "Resize -20"})
