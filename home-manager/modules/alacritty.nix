@@ -66,7 +66,7 @@ in with lib; {
             # C = 67; # copy
             D = 68;
             E = 69;
-            F = 70;
+            # F = 70; # search
             G = 71;
             # H = 72; # copy sha256
             I = 73;
@@ -92,7 +92,7 @@ in with lib; {
           ctrlShiftMappings = mapAttrsToList (key: code: {
             inherit key;
             mods = mod;
-            chars = "\\\\x1b[${toString code};6u";
+            chars = "\\u001B[${toString code};6u";
           }) keys;
         in concatLists [
           [{
