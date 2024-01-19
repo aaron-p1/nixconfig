@@ -25,7 +25,9 @@
 
 (lambda remove-pid-from-term-title [title]
   "term://dir//pid:cmd -> term://dir//cmd"
-  (substitute title "term://.\\{-}//\\zs\\d*:" "" ""))
+  (-> title
+      (substitute "term://.\\{-}//\\zs\\d*:" "" "")
+      (string.gsub "\\" "\\\\\\")))
 
 (lambda replace-buffer-in-wins [old-buf new-buf]
   (let [wins (win_findbuf old-buf)]
