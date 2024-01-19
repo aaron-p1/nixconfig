@@ -10,6 +10,7 @@
 ;; profiles that do something
 
 (local existing-profiles [:nixconfig
+                          :nixserver
                           :cmake
                           :podman-compose
                           :laravel
@@ -84,6 +85,13 @@
                           :s {:name "Switch config"}
                           :b {:name "Boot config"}}}}))
 
+;;; nixserver
+
+(fn config.nixserver.keymaps []
+  (add-term-keymaps :<Leader>cpd
+                    (.. "deploy .\\\\\\#" vim.env.NVIM_PROFILE_NIXSERVER_HOST))
+  (wk-register {:prefix :<Leader>cp :map {:d {:name "Deploy to server"}}}))
+
 ;;; cmake
 
 (set config.cmake (require :profiles.cmake))
@@ -106,7 +114,8 @@
     (wk-register {:prefix :<Leader>c
                   :map {:p {:name :Profile :t {:name :Tinker}}}})
     (when (or sail? podman-compose?)
-      (let [shell-cmd (if sail? "sail root-shell" (get-compose-cmd :PHP :bash))]
+      (let [shell-cmd (if sail? "sail root-shell"
+                          (get-compose-cmd :PHP :bash))]
         (add-term-keymaps :<Leader>cps shell-cmd)
         (wk-register {:prefix :<Leader>cp :map {:s {:name :Shell}}})))
     (when (has-profile :tenancy-for-laravel)
