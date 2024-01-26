@@ -4,15 +4,6 @@ in with lib; {
   options.within.firefox = { enable = mkEnableOption "Firefox"; };
 
   config = mkIf cfg.enable {
-    # firefox override not working "gtk3 missing" (in browser parameter wrapper.nix)
-    # https://github.com/nix-community/home-manager/issues/1586
-    home.file.".mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json".source =
-      "${pkgs.plasma-browser-integration}/lib/mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json";
-
-    # ff2mpv does not exist in repo
-    home.file.".mozilla/native-messaging-hosts/ff2mpv.json".source =
-      "${pkgs.local.ff2mpv-native-client}/lib/mozilla/native-messaging-hosts/ff2mpv.json";
-
     programs.firefox = {
       enable = true;
 
@@ -58,6 +49,9 @@ in with lib; {
           }
         '';
       };
+
+      nativeMessagingHosts =
+        [ pkgs.local.ff2mpv-native-client pkgs.plasma-browser-integration ];
     };
   };
 }

@@ -5,7 +5,7 @@ final: prev: {
 
     nix-autobahn = prev.callPackage ./pkgs/nix-autobahn/default.nix { };
 
-    gotmux = prev.callPackage ./pkgs/gotmux { inherit (prev.stable) tmuxp; };
+    gotmux = prev.callPackage ./pkgs/gotmux { };
     ask = prev.callPackage ./pkgs/ask { };
 
     initdev = prev.callPackage ./pkgs/initdev { };
