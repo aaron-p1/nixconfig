@@ -66,7 +66,7 @@
                 ; haskell
                 {:server :hls}
                 ; nix
-                {:server :rnix}
+                {:server :nil_ls}
                 ; elixir
                 ; {:server :elixirls :cmd [:elixir-ls]}
                 ; python

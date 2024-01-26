@@ -1,5 +1,5 @@
 { lib, xsel, python3, gnumake, unzip, gcc, tree-sitter, fd, ripgrep
-, nodePackages, local, sumneko-lua-language-server, rnix-lsp, nixfmt, shellcheck
+, nodePackages, local, sumneko-lua-language-server, nil, nixfmt, shellcheck
 , shellharden, editorconfig-checker, statix, stylua, fnlfmt, nodejs, phpPackages
 , stdenv, findutils, fennel }:
 let
@@ -34,7 +34,7 @@ let
     # lspconfig
     nodePackages.intelephense
     sumneko-lua-language-server
-    rnix-lsp
+    nil
     nodePackages.vscode-langservers-extracted
     nodePackages."@tailwindcss/language-server"
     nodePackages.yaml-language-server
