@@ -29,7 +29,7 @@
 
         syncthing = "127.32.0.101";
       };
-      networkDomains = { "home-server.service" = "100.108.95.65"; };
+      networkDomains = { };
 
       dns = "blocky";
 
