@@ -198,5 +198,15 @@
     # for yubikey pgp configuration
     pcscd.enable = true;
     flatpak.enable = true;
+
+    restic.backups.documentsRemote = {
+      paths = [ "/home/aaron/Documents" ];
+      repository = "rest:http://home-server:54321";
+      passwordFile = "/etc/secrets/restic_remote";
+      timerConfig = {
+        OnCalendar = "weekly";
+        Persistent = true;
+      };
+    };
   };
 }

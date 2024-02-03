@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ../../nixos/modules ];
 
   powerManagement.cpuFreqGovernor = "ondemand";
@@ -69,16 +69,6 @@
     syncthing.folders = {
       thl.devices = [ "aaron-laptop" ];
       work.devices = [ "aaron-laptop" ];
-    };
-  };
-
-  services.restic.backups.documentsRemote = {
-    paths = [ "/home/aaron/Documents" ];
-    repository = "rest:http://home-server:54321";
-    passwordFile = "/etc/secrets/restic_remote";
-    timerConfig = {
-      OnCalendar = "weekly";
-      Persistent = true;
     };
   };
 
