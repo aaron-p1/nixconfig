@@ -129,6 +129,7 @@
       };
     };
 
+    # ../modules/tailscale.nix
     tailscale = {
       enable = true;
       download = {
@@ -186,8 +187,10 @@
     kanji-stroke-order-font
   ];
 
-  boot.tmp.useTmpfs = true;
-  boot.tmp.tmpfsSize = "100%";
+  boot.tmp = {
+    useTmpfs = true;
+    tmpfsSize = "100%";
+  };
 
   services = {
     journald.extraConfig = "SystemMaxUse=1G";

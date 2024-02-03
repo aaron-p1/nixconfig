@@ -64,33 +64,35 @@
     plasma.enableKWallet = false;
   };
 
-  home.sessionVariables = { EDITOR = "nvim"; };
+  home = {
+    sessionVariables.EDITOR = "nvim";
+
+    packages = with pkgs; [
+      gnumake
+
+      hunspell
+      hunspellDicts.en_US
+      hunspellDicts.de_DE
+
+      tdesktop
+      discord
+      thunderbird
+      qalculate-gtk
+      flameshot
+      gImageReader
+      feh
+      ark
+      obsidian
+      element-desktop
+      bitwarden
+
+      local.create-project
+      local.nix-autobahn
+      local.ask
+    ];
+
+    stateVersion = "18.09";
+  };
 
   services.kdeconnect.enable = true;
-
-  home.packages = with pkgs; [
-    gnumake
-
-    hunspell
-    hunspellDicts.en_US
-    hunspellDicts.de_DE
-
-    tdesktop
-    discord
-    thunderbird
-    qalculate-gtk
-    flameshot
-    gImageReader
-    feh
-    ark
-    obsidian
-    element-desktop
-    bitwarden
-
-    local.create-project
-    local.nix-autobahn
-    local.ask
-  ];
-
-  home.stateVersion = "18.09";
 }
