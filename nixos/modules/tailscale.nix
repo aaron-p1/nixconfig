@@ -24,15 +24,21 @@ in with lib; {
 
     systemd.services.tailscaleDownload = mkIf cfg.download.enable {
       description = "Tailscale File Get Service";
-      after = [ "network.target" ];
+      after = [ "tailscaled.service" ];
+      partOf = [ "tailscaled.service" ];
       wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Restart = "on-failure";
+        RestartSec = "1s";
+      };
       script = ''
         set -euo pipefail
 
         while true; do
           mkdir -p ${cfg.download.dir}
 
-          ${pkgs.tailscale}/bin/tailscale file get --wait --conflict=rename ${cfg.download.dir}
+          ${pkgs.tailscale}/bin/tailscale file get \
+            --verbose --wait --conflict=rename ${cfg.download.dir}
 
           chown -R ${cfg.download.owner} ${cfg.download.dir}
         done
