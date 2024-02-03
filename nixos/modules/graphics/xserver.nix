@@ -7,13 +7,15 @@ in with lib; {
     services.xserver = {
       enable = true;
 
-      layout = "de";
+      xkb = {
+        layout = "de";
 
-      xkbOptions = builtins.concatStringsSep "," [
-        "terminate:ctrl_alt_bksp"
-        "caps:escape"
-        "compose:sclk"
-      ];
+        options = builtins.concatStringsSep "," [
+          "terminate:ctrl_alt_bksp"
+          "caps:escape"
+          "compose:sclk"
+        ];
+      };
 
       libinput = {
         enable = true;
