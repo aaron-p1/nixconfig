@@ -15,9 +15,10 @@ in with lib; {
     nix = {
       package = pkgs.nixUnstable;
       extraOptions = ''
-        experimental-features = nix-command flakes
-        extra-platforms = ${optionalString cfg.enablei686 "i686-linux "}${
-          concatStringsSep " " cfg.emulatedSystems
+        experimental-features = nix-command flakes auto-allocate-uids
+        extra-platforms = ${
+          concatStringsSep " "
+          ((optional cfg.enablei686 "i686-linux") ++ cfg.emulatedSystems)
         }
         keep-outputs = true
         keep-derivations = true
