@@ -90,7 +90,12 @@
 (fn config.nixserver.keymaps []
   (add-term-keymaps :<Leader>cpd
                     (.. "deploy .\\\\\\#" vim.env.NVIM_PROFILE_NIXSERVER_HOST))
-  (wk-register {:prefix :<Leader>cp :map {:d {:name "Deploy to server"}}}))
+  (add-term-keymaps :<Leader>cpb
+                    (.. "deploy --boot .\\\\\\#"
+                        vim.env.NVIM_PROFILE_NIXSERVER_HOST))
+  (wk-register {:prefix :<Leader>cp
+                :map {:d {:name "Deploy to server"}
+                      :b {:name "Deploy to server without switching"}}}))
 
 ;;; cmake
 
