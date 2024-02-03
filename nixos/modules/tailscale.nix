@@ -29,7 +29,11 @@ in with lib; {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Restart = "on-failure";
-        RestartSec = "1s";
+        RestartSec = "5s";
+      };
+      unitConfig = {
+        StartLimitBurst = 5;
+        StartLimitInterval = "30s";
       };
       script = ''
         set -euo pipefail
