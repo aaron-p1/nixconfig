@@ -209,4 +209,6 @@
       };
     };
   };
+
+  security.pki.certificateFiles = [ ./files/home-server.crt ];
 }
