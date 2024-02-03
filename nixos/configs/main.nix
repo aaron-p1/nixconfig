@@ -103,7 +103,7 @@
 
     # ../modules/syncthing.nix
     syncthing = {
-      enable = true;
+      enable = false;
       user = "aaron";
       group = "users";
       guiAddress = "${config.within.networking.localDomains.syncthing}:8000";
