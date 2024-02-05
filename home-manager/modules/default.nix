@@ -8,6 +8,7 @@
     ./git.nix
     ./gpg.nix
     ./idea-ultimate.nix
+    ./kde-service-menus
     ./libreoffice.nix
     ./mpv.nix
     ./neovim.nix
