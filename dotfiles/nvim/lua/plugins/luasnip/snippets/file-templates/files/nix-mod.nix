@@ -1,7 +1,9 @@
 { config, lib, ... }:
 let
+	inherit (lib) mkEnableOption mkIf;
+
 	cfg = config.within.<>;
-in with lib; {
+in {
 	options.within.<> = {
 		enable = mkEnableOption "<>";
 	};
