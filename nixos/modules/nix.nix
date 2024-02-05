@@ -41,7 +41,7 @@ in with lib; {
       gc = {
         automatic = true;
         options = "--delete-older-than 15d";
-        dates = "weekly";
+        dates = "monthly";
       };
     };
 
