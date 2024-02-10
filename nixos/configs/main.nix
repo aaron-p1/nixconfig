@@ -198,6 +198,10 @@
     # for yubikey pgp configuration
     pcscd.enable = true;
     flatpak.enable = true;
+    printing = {
+      enable = true;
+      drivers = [ pkgs.hplip ];
+    };
 
     restic.backups.documentsRemote = {
       paths = [ "/home/aaron/Documents" ];
