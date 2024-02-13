@@ -117,11 +117,11 @@
   (#make-range! "expression.outer" @_start @expression.inner))
 (binary_expression
   right: (_) @expression.inner)
-(exponentiation_expression
+(binary_expression
   left: (_) @expression.inner .
   "**" @_end
   (#make-range! "expression.outer" @expression.inner @_end))
-(exponentiation_expression
+(binary_expression
   "**" @_start .
   right: (_) @expression.inner
   (#make-range! "expression.outer" @_start @expression.inner))
