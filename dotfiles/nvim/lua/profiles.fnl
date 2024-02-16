@@ -16,7 +16,8 @@
                           :laravel
                           :sail
                           :tenancy-for-laravel
-                          :npm])
+                          :npm
+                          :gradle])
 
 (local config (map existing-profiles #(values $1 {})))
 
@@ -148,5 +149,14 @@
               (add-term-keymaps :<Leader>cpp prod-cmd)))
         (wk-register {:prefix :<Leader>cp
                       :map {:w {:name "Npm watch"} :p {:name "Npm prod"}}})))))
+
+(fn config.gradle.keymaps []
+  (add-term-keymaps :<Leader>cpc "./gradlew compileJava")
+  (add-term-keymaps :<Leader>cpr "./gradlew run")
+  (add-term-keymaps :<Leader>cpt "./gradlew test")
+  (wk-register {:prefix :<Leader>cp
+                :map {:c {:name "Compile Java"}
+                      :r {:name :Run}
+                      :t {:name :Test}}}))
 
 {: profiles : has-profile : get-profile-config : run-profile-config}
