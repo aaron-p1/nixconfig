@@ -36,7 +36,7 @@
   (map_keys get-keymaps bufnr)
   (wk-register {:buffer bufnr :prefix :<Leader> :map {:l {:l {:name :Java}}}}))
 
-(let [config {:cmd [:jdt-language-server
+(let [config {:cmd [:jdtls
                     :-data
                     (.. (expand "~/.cache/jdtls") (getcwd))]
               :root_dir (jsetup.find_root [:.git :mvnw :gradlew])
