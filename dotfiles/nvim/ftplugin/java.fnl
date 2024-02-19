@@ -11,13 +11,13 @@
 
 (fn get-keymaps [bufnr]
   [[:n :<Leader>llo jdtls.organize_imports {:desc "Organize imports"}]
-   [:n :<Leader>llv jdtls.organize_variable {:desc "Extract variable"}]
+   [:n :<Leader>llv jdtls.extract_variable {:desc "Extract variable"}]
    [:v
     :<Leader>llv
     (fn []
       (jdtls.extract_variable true))
     {:desc "Extract variable"}]
-   [:n :<Leader>llc jdtls.organize_constant {:desc "Extract constant"}]
+   [:n :<Leader>llc jdtls.extract_constant {:desc "Extract constant"}]
    [:v
     :<Leader>llc
     (fn []
