@@ -152,11 +152,15 @@
 
 (fn config.gradle.keymaps []
   (add-term-keymaps :<Leader>cpc "./gradlew compileJava")
+  (add-term-keymaps :<Leader>cpb "./gradlew build")
   (add-term-keymaps :<Leader>cpr "./gradlew run")
+  (add-term-keymaps :<Leader>cpd "./gradlew clean")
   (add-term-keymaps :<Leader>cpt "./gradlew test")
   (wk-register {:prefix :<Leader>cp
                 :map {:c {:name "Compile Java"}
+                      :b {:name :Build}
                       :r {:name :Run}
+                      :d {:name :Clean}
                       :t {:name :Test}}}))
 
 {: profiles : has-profile : get-profile-config : run-profile-config}
