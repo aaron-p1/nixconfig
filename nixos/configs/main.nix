@@ -99,7 +99,7 @@
     pam.u2f.enable = true;
 
     # ../modules/samba.nix
-    samba.enable = true;
+    samba.enable = false;
 
     # ../modules/syncthing.nix
     syncthing = {
