@@ -185,7 +185,6 @@
              (u :dylon/vim-antlr)
              ;; helper
              (u :folke/which-key.nvim {:file :which-key})
-             (u :deris/vim-shot-f)
              ;; git
              (u :tpope/vim-fugitive
                 {:file :fugitive
@@ -301,6 +300,7 @@
                       :keymaps
                       :autocmd
                       :features.error-buffer
+                      :features.fhighlight
                       :features.macro-insert-paste
                       :features.paste-plugin-link
                       :features.plugin-links

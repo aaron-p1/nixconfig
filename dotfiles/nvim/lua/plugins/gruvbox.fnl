@@ -71,6 +71,8 @@
                       :DiffText {:bg "#474728" :fg :NONE :reverse false}
                       ; Float
                       :NormalFloat {:bg dark1}
+                      ; match-visual
+                      :VisualMatch {:bg "#5c534c"}
                       ; telescope
                       :TelescopeMatching {:link :GruvboxRedBold}
                       :TelescopeSelection {:fg :NONE :bg dark2 :bold false}
