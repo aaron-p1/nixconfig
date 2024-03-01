@@ -26,7 +26,6 @@ let
     nodePackages.prettier
     phpPackages.php-cs-fixer
     statix
-    nixfmt
     shellcheck
     shellharden
     stylua
@@ -35,6 +34,7 @@ let
     nodePackages.intelephense
     sumneko-lua-language-server
     nil
+    nixfmt
     nodePackages.vscode-langservers-extracted
     nodePackages."@tailwindcss/language-server"
     nodePackages.yaml-language-server

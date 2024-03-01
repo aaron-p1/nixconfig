@@ -66,7 +66,10 @@
                 ; haskell
                 {:server :hls}
                 ; nix
-                {:server :nil_ls}
+                {:server :nil_ls
+                 :settings {:nil {:formatting {:command [:nixfmt]}
+                                  :nix {:maxMemoryMB 8192
+                                        :flake {:autoEvalInputs true}}}}}
                 ; elixir
                 ; {:server :elixirls :cmd [:elixir-ls]}
                 ; python
@@ -76,8 +79,7 @@
                 ; R
                 {:server :r_language_server}])
 
-(var formatting-preferences {:nix :null-ls
-                             :html :null-ls
+(var formatting-preferences {:html :null-ls
                              :javascript :null-ls
                              :json :null-ls
                              :php :intelephense

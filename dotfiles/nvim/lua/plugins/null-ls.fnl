@@ -46,8 +46,6 @@
                     ; nix
                     ; DEPENDENCIES: statix
                     d.statix
-                    ; DEPENDENCIES: nixfmt
-                    f.nixfmt
                     ; DEPENDENCIES: statix
                     c.statix
                     ; elixir
