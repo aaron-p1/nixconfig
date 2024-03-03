@@ -1,6 +1,9 @@
 { config, lib, ... }:
-let cfg = config.within.networking.nm;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkOption types mkIf;
+
+  cfg = config.within.networking.nm;
+in {
   options.within.networking.nm = {
     enable = mkEnableOption "NetworkManager";
 
@@ -11,8 +14,8 @@ in with lib; {
     };
 
     nameservers = mkOption {
-      type = with types; listOf str;
-      default = [];
+      type = types.listOf types.str;
+      default = [ ];
       description = "nameservers before dhcp";
     };
 

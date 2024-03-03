@@ -1,6 +1,9 @@
 { config, lib, ... }:
-let cfg = config.within.ssh;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.ssh;
+in {
   options.within.ssh = { enable = mkEnableOption "SSH"; };
 
   config = mkIf cfg.enable {

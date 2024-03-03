@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (lib) mapAttrs' nameValuePair foldr mapAttrsToList flip pipe;
   inherit (builtins) concatStringsSep;
+  inherit (lib)
+    mapAttrs' nameValuePair foldr mapAttrsToList flip pipe mkEnableOption mkIf;
 
   cfg = config.within.mpv;
 
@@ -24,7 +25,7 @@ let
     concatAttrs
     toListOptions
   ];
-in with lib; {
+in {
   options.within.mpv = { enable = mkEnableOption "mpv"; };
 
   config = mkIf cfg.enable {

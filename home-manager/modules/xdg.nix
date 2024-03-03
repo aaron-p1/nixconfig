@@ -1,9 +1,10 @@
 { config, lib, pkgs, ... }:
 let
   inherit (builtins) removeAttrs replaceStrings;
+  inherit (lib) mkEnableOption mkIf optional optionals listToAttrs;
 
   cfg = config.within.xdg;
-in with lib; {
+in {
   options.within.xdg = {
     enable = mkEnableOption "xdg config";
 

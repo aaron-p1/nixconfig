@@ -1,6 +1,6 @@
 { config, lib, extendModules, noUserModules, options, inputs, ... }:
 let cfg = config.within.specialisation;
-in with lib; {
+in {
   options.within.specialisation = { };
 
   config = {

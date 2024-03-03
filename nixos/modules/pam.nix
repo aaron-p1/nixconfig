@@ -1,10 +1,11 @@
 { config, lib, ... }:
-let cfg = config.within.pam;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.pam;
+in {
   options.within.pam = {
-    u2f = {
-      enable = mkEnableOption "pamu2f mappings";
-    };
+    u2f = { enable = mkEnableOption "pamu2f mappings"; };
   };
 
   config = mkIf cfg.u2f.enable {

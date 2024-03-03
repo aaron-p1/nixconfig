@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
-let cfg = config.within.zsh;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.zsh;
+in {
   options.within.zsh = { enable = mkEnableOption "ZSH"; };
 
   config = mkIf cfg.enable {

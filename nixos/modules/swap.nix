@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-let cfg = config.within.swap;
-in with lib; {
+{ config, lib, ... }:
+let
+  inherit (lib) mkOption types mkMerge mkIf;
+
+  cfg = config.within.swap;
+in {
   options.within.swap = {
     zram = mkOption {
       type = types.int;

@@ -1,61 +1,65 @@
 { config, lib, ... }:
 let
+  inherit (lib) mkEnableOption mkOption types mkIf;
+
   cfg = config.within.networking.blocky;
 
   blockLists = cfg.blockLists ++ cfg.blockListFile;
-in with lib; {
-  options.within.networking.blocky = {
-    enable = mkEnableOption "blocky";
+in {
+  options.within.networking.blocky =
+    let inherit (types) str nullOr listOf path attrsOf bool;
+    in {
+      enable = mkEnableOption "blocky";
 
-    ip = mkOption {
-      type = types.str;
-      default = "127.0.0.1";
-      description = "IPv4 to run blocky on";
-    };
+      ip = mkOption {
+        type = str;
+        default = "127.0.0.1";
+        description = "IPv4 to run blocky on";
+      };
 
-    httpPort = mkOption {
-      type = with types; nullOr str;
-      default = null;
-      description = "http address to listen on";
-    };
+      httpPort = mkOption {
+        type = nullOr str;
+        default = null;
+        description = "http address to listen on";
+      };
 
-    bootstrapDns = mkOption {
-      type = types.str;
-      default = "9.9.9.9";
-      description = "used for resolving nameservers and blockLists";
-    };
+      bootstrapDns = mkOption {
+        type = str;
+        default = "9.9.9.9";
+        description = "used for resolving nameservers and blockLists";
+      };
 
-    nameservers = mkOption {
-      type = with types; listOf str;
-      default = config.networking.nameservers;
-      description = "nameservers";
-    };
+      nameservers = mkOption {
+        type = listOf str;
+        default = config.networking.nameservers;
+        description = "nameservers";
+      };
 
-    blockLists = mkOption {
-      type = with types; listOf str;
-      default = [
-        "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
-      ];
-      description = "lists to enable blocking on";
-    };
-    blockListFile = mkOption {
-      type = with types; listOf path;
-      default = [ ];
-      description = "list of paths to blocklist file";
-    };
+      blockLists = mkOption {
+        type = listOf str;
+        default = [
+          "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
+        ];
+        description = "lists to enable blocking on";
+      };
+      blockListFile = mkOption {
+        type = listOf path;
+        default = [ ];
+        description = "list of paths to blocklist file";
+      };
 
-    mapDomains = mkOption {
-      type = with types; attrsOf str;
-      default = { };
-      description = "domains to ip mappings";
-    };
+      mapDomains = mkOption {
+        type = attrsOf str;
+        default = { };
+        description = "domains to ip mappings";
+      };
 
-    prometheus = mkOption {
-      type = types.bool;
-      default = false;
-      description = "enable prometheus monitoring. Needs httpPort";
+      prometheus = mkOption {
+        type = bool;
+        default = false;
+        description = "enable prometheus monitoring. Needs httpPort";
+      };
     };
-  };
 
   config = mkIf cfg.enable {
     assertions = [{

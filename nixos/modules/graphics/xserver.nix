@@ -1,6 +1,9 @@
 { config, lib, ... }:
-let cfg = config.within.graphics.xserver;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.graphics.xserver;
+in {
   options.within.graphics.xserver = { enable = mkEnableOption "XServer"; };
 
   config = mkIf cfg.enable {

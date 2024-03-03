@@ -19,12 +19,12 @@
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia.modesetting.enable = true;
 
   within = {
     # ../../nixos/modules/boot.nix
     boot = {
       grub = true;
-      supportedFilesystems = [ "btrfs" ];
       kernelPackages = pkgs.linuxPackages_latest;
     };
 

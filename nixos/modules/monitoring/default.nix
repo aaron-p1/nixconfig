@@ -1,10 +1,12 @@
 { config, lib, pkgs, ... }:
 let
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.within.monitoring;
 
   domain = "monitoring";
   ip = "127.64.0.2";
-in with lib; {
+in {
   imports = [ ./monitored ./grafana.nix ./prometheus.nix ];
 
   options.within.monitoring = {
@@ -19,7 +21,7 @@ in with lib; {
           enable = true;
           listenAddr = "${domain}:80";
 
-          plugins = with pkgs.grafanaPlugins; [ grafana-piechart-panel ];
+          plugins = [ pkgs.grafanaPlugins.grafana-piechart-panel ];
           datasources = { prometheus.enable = true; };
         };
         prometheus = {

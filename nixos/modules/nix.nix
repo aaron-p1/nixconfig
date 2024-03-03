@@ -1,10 +1,13 @@
 { config, lib, pkgs, inputs, ... }:
-let cfg = config.within.nix;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkOption mkIf types concatStringsSep optional;
+
+  cfg = config.within.nix;
+in {
   options.within.nix = {
     enable = mkEnableOption "nix config";
     emulatedSystems = mkOption {
-      type = with types; listOf str;
+      type = types.listOf types.str;
       default = [ ];
       description = "emulated systems with qemu";
     };

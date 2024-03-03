@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
-let cfg = config.within.tmux;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.tmux;
+in {
   options.within.tmux = { enable = mkEnableOption "tmux"; };
 
   config = mkIf cfg.enable {
@@ -31,8 +34,8 @@ in with lib; {
         bind-key -N "Kills session" K confirm-before -p "Kill session?" kill-session
       '';
 
-      plugins = with pkgs.tmuxPlugins; [{
-        plugin = onedark-theme;
+      plugins = [{
+        plugin = pkgs.tmuxPlugins.onedark-theme;
         extraConfig = ''
           set -g @onedark_date_format "%y-%m-%d"
         '';

@@ -1,20 +1,23 @@
 { config, lib, ... }:
 let
+  inherit (builtins) readFile fromJSON;
+  inherit (lib) mkEnableOption mkOption types mkIf hasPrefix mapAttrs;
+
   cfg = config.within.syncthing;
 
   userHome = config.users.users."${cfg.user}".home;
 
   deviceIDFileContent = if config.within.enableEncryptedFileOptions then
-    builtins.readFile cfg.deviceIDFile
+    readFile cfg.deviceIDFile
   else
     "{}";
-  deviceIDs = builtins.fromJSON deviceIDFileContent;
+  deviceIDs = fromJSON deviceIDFileContent;
 
   folderDevices =
     lib.flatten (lib.mapAttrsToList (_: val: val.devices) cfg.folders);
   chosenDeviceIDs = lib.getAttrs folderDevices deviceIDs;
 
-in with lib; {
+in {
   options.within.syncthing = {
     enable = mkEnableOption "syncthing";
 
@@ -34,7 +37,7 @@ in with lib; {
     };
 
     deviceIDFile = mkOption {
-      type = with types; nullOr path;
+      type = types.nullOr types.path;
       default = null;
       description = ''
         path to file containing hostnames and device ids.
@@ -59,22 +62,22 @@ in with lib; {
           versioning = mkOption {
             default = null;
             description = "versioning";
-            type = with types;
-              nullOr (submodule {
-                options = {
-                  type = mkOption {
-                    type = enum [ "external" "simple" "staggered" "trashcan" ];
-                    description = "type of versioning";
-                  };
-                  params = mkOption {
-                    type = attrsOf str;
-                    description = "versioning params";
-                  };
+            type = types.nullOr (types.submodule {
+              options = {
+                type = mkOption {
+                  type =
+                    types.enum [ "external" "simple" "staggered" "trashcan" ];
+                  description = "type of versioning";
                 };
-              });
+                params = mkOption {
+                  type = types.attrsOf types.str;
+                  description = "versioning params";
+                };
+              };
+            });
           };
           devices = mkOption {
-            type = with types; listOf str;
+            type = types.listOf types.str;
             default = [ ];
             description =
               "devices to sync folder with. Devices must be defined in deviceIDFile";

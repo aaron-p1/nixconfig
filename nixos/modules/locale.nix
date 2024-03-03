@@ -1,6 +1,9 @@
 { config, lib, ... }:
-let cfg = config.within.locale;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.locale;
+in {
   options.within.locale = { enable = mkEnableOption "my locale config"; };
 
   config = mkIf cfg.enable {

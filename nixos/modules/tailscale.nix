@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
-let cfg = config.within.tailscale;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkOption mkIf types;
+
+  cfg = config.within.tailscale;
+in {
   options.within.tailscale = {
     enable = mkEnableOption "Tailscale";
 

@@ -1,9 +1,11 @@
 { config, lib, ... }:
 let
+  inherit (lib) mkEnableOption mkOption types mkMerge mkIf mkDefault;
+
   cfg = config.within.monitoring.monitored.blocky;
 
   mysqlSocket = "/run/mysqld/mysqld.sock";
-in with lib; {
+in {
   options.within.monitoring.monitored.blocky = {
     prometheus = {
       enable = mkEnableOption "Monitoring of blocky with prometheus";

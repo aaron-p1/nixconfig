@@ -5,7 +5,7 @@ stdenv.mkDerivation {
 
   src = ./.;
 
-  buildInputs = [ (python3.withPackages (p: with p; [ ])) ];
+  buildInputs = [ python3 ];
 
   nativeBuildInputs = [ installShellFiles ];
 
@@ -17,9 +17,9 @@ stdenv.mkDerivation {
     installShellCompletion completions/initdev.{bash,zsh}
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Copy nix files for new dev environment";
-    license = licenses.mit;
-    platforms = platforms.all;
+    license = lib.licenses.mit;
+    platforms = lib.platforms.all;
   };
 }

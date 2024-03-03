@@ -1,6 +1,9 @@
 { config, lib, ... }:
-let cfg = config.within.samba;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.samba;
+in {
   options.within.samba = { enable = mkEnableOption "Samba"; };
 
   config = mkIf cfg.enable {

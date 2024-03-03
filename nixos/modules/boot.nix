@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
-let cfg = config.within.boot;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkOption mkIf types;
+
+  cfg = config.within.boot;
+in {
   options.within.boot = {
     grub = mkEnableOption "Grub bootloader";
     efiMountPoint = mkOption {
@@ -9,8 +12,8 @@ in with lib; {
       description = "Dir to mount efi on";
     };
     supportedFilesystems = mkOption {
-      type = with types; listOf str;
-      default = [ ];
+      type = types.attrsOf types.bool;
+      default = { };
       description = "Supported filesystems";
     };
     kernelPackages = mkOption {

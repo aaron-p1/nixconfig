@@ -1,28 +1,33 @@
 { config, lib, options, pkgs, ... }:
-let cfg = config.within.users;
-in with lib; {
-  options.within.users = mkOption {
-    type = with types;
-      attrsOf (submodule ({ name, config, ... }: {
-        options = {
-          uid = mkOption {
-            type = types.int;
-            description = "uid";
-          };
-          sshKeys = mkOption {
-            type = with types; listOf str;
-            default = [ ];
-            description = "SSH Keys";
-          };
-          u2fKeys = mkOption {
-            type = with types; listOf str;
-            default = [ ];
-            description = "U2F Keys";
-          };
+let
+  inherit (lib)
+    mkOption types concatStringsSep mapAttrsToList filterAttrs length any
+    attrNames attrValues mapAttrs' nameValuePair mkMerge listToAttrs flatten
+    mkIf optional;
 
-          resticBackups = options.services.restic.backups;
+  cfg = config.within.users;
+in {
+  options.within.users = mkOption {
+    type = types.attrsOf (types.submodule ({ name, config, ... }: {
+      options = {
+        uid = mkOption {
+          type = types.int;
+          description = "uid";
         };
-      }));
+        sshKeys = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          description = "SSH Keys";
+        };
+        u2fKeys = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          description = "U2F Keys";
+        };
+
+        resticBackups = options.services.restic.backups;
+      };
+    }));
     default = { };
     description = "User config";
   };

@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
-let cfg = config.within.graphics.plasma;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.graphics.plasma;
+in {
   options.within.graphics.plasma = {
     enable = mkEnableOption "Plasma Desktop";
     kdeConnect = mkEnableOption "Kde Connect";

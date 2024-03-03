@@ -1,15 +1,17 @@
 { config, lib, ... }:
 let
-  cfg = config.within.monitoring.grafana;
-
   inherit (builtins) head match split;
+  inherit (lib)
+    toInt mkEnableOption mkOption types mkIf optional mapAttrsToList;
+
+  cfg = config.within.monitoring.grafana;
 
   domain = head (split ":[[:digit:]]*$" cfg.listenAddr);
   inherit (config.within.networking) localDomains;
   http_addr =
     if domain == "localhost" then "127.0.0.1" else localDomains."${domain}";
-  http_port = lib.toInt (head (match ".*:([[:digit:]]+)" cfg.listenAddr));
-in with lib; {
+  http_port = toInt (head (match ".*:([[:digit:]]+)" cfg.listenAddr));
+in {
   options.within.monitoring.grafana = {
     enable = mkEnableOption "Grafana";
 
@@ -20,7 +22,7 @@ in with lib; {
     };
 
     plugins = mkOption {
-      type = with types; nullOr (listOf path);
+      type = types.nullOr (types.listOf types.path);
       default = null;
       description = "Plugins in pkgs.grafanaPlugins";
     };
@@ -32,25 +34,24 @@ in with lib; {
     dashboards = mkOption {
       default = { };
       description = "dashboards to provision";
-      type = with types;
-        attrsOf (submodule {
-          options = {
-            folder = mkOption {
-              type = str;
-              default = "";
-              description = "folder for dashboards";
-            };
-            foldersFromFilesStructure = mkOption {
-              type = bool;
-              default = false;
-              description = "create folders from filesystem";
-            };
-            path = mkOption {
-              type = path;
-              description = "directory of dashboards";
-            };
+      type = types.attrsOf (types.submodule {
+        options = {
+          folder = mkOption {
+            type = types.str;
+            default = "";
+            description = "folder for dashboards";
           };
-        });
+          foldersFromFilesStructure = mkOption {
+            type = types.bool;
+            default = false;
+            description = "create folders from filesystem";
+          };
+          path = mkOption {
+            type = types.path;
+            description = "directory of dashboards";
+          };
+        };
+      });
     };
   };
 

@@ -1,33 +1,36 @@
 { config, lib, ... }:
 let
+  inherit (lib)
+    optionalString mapAttrs mapAttrsToList nameValuePair partition hasInfix
+    listToAttrs attrValues mkEnableOption mkOption types mkIf mkMerge length
+    remove splitString hasSuffix;
+
   cfg = config.within.networking;
 
   v6Prefix = cfg.v6.loopbackPrefix;
-  v6PrefixString = lib.optionalString (v6Prefix != null) v6Prefix;
-  prependV6Prefix = lib.mapAttrs (name: value: v6PrefixString + value);
+  v6PrefixString = optionalString (v6Prefix != null) v6Prefix;
+  prependV6Prefix = mapAttrs (name: value: v6PrefixString + value);
 
-  splitLocalAddresses = with lib;
-    let
-      attrList = mapAttrsToList nameValuePair cfg.localDomains;
-      partitionList = partition (attr: hasInfix "." attr.value) attrList;
-    in {
-      v4 = listToAttrs partitionList.right;
-      v6 = listToAttrs partitionList.wrong;
-    };
+  splitLocalAddresses = let
+    attrList = mapAttrsToList nameValuePair cfg.localDomains;
+    partitionList = partition (attr: hasInfix "." attr.value) attrList;
+  in {
+    v4 = listToAttrs partitionList.right;
+    v6 = listToAttrs partitionList.wrong;
+  };
 
   realLocalDomains = splitLocalAddresses.v4
     // prependV6Prefix splitLocalAddresses.v6;
 
   v6LoopbackAddresses = cfg.v6.loopbackAddresses
-    ++ lib.attrValues splitLocalAddresses.v6;
+    ++ attrValues splitLocalAddresses.v6;
 
-  mappedV6LoopbackAddresses = builtins.map (value: {
+  mappedV6LoopbackAddresses = map (value: {
     address = cfg.v6.loopbackPrefix + value;
     prefixLength = cfg.v6.loopbackPrefixLength;
   }) v6LoopbackAddresses;
 
   mkDefaultTrue = name:
-    with lib;
     mkOption {
       type = types.bool;
       default = true;
@@ -35,17 +38,17 @@ let
     };
 
   mkDomainOption = name:
-    with lib;
     mkOption {
-      type = with types; attrsOf str;
+      type = types.attrsOf types.str;
       default = { };
       description = name;
     };
 
-in with lib; {
+in {
   imports = [ ./networkmanager.nix ./dnsmasq.nix ./blocky.nix ];
 
-  options.within.networking = {
+  options.within.networking = let inherit (types) nullOr str int listOf enum;
+  in {
     enable = mkEnableOption "basic setup";
 
     allowPing = mkDefaultTrue "allow ping";
@@ -56,7 +59,7 @@ in with lib; {
       redirectLoopback80 = mkDefaultTrue "redirect port 80 to 8000";
 
       loopbackPrefix = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           loopback prefix. Must not end with ":".
@@ -64,26 +67,26 @@ in with lib; {
         '';
       };
       loopbackPrefixLength = mkOption {
-        type = types.int;
+        type = int;
         default = 0;
         description = "loopback prefix length";
       };
 
       loopbackAddresses = mkOption {
-        type = with types; listOf str;
+        type = listOf str;
         default = [ ];
         description = "host parts of addresses to assign to dev lo";
       };
     };
 
     dns = mkOption {
-      type = types.enum [ "none" "networkmanager" "dnsmasq" "blocky" ];
+      type = enum [ "none" "networkmanager" "dnsmasq" "blocky" ];
       default = "none";
       description = "dns server to use";
     };
 
     nameservers = mkOption {
-      type = with types; listOf str;
+      type = listOf str;
       default = [ ];
       description = "nameservers to use";
     };

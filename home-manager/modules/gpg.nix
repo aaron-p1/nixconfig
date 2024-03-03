@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
-let cfg = config.within.gpg;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.gpg;
+in {
   options.within.gpg = { enable = mkEnableOption "Gpg"; };
 
   config = mkIf cfg.enable {

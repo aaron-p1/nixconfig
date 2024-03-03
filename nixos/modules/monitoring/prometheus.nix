@@ -1,6 +1,9 @@
 { config, lib, ... }:
-let cfg = config.within.monitoring.prometheus;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkOption types mkIf mkMerge concatLists optional;
+
+  cfg = config.within.monitoring.prometheus;
+in {
   options.within.monitoring.prometheus = {
     enable = mkEnableOption "Prometheus";
 

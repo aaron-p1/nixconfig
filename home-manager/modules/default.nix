@@ -1,4 +1,6 @@
-{ lib, ... }: {
+{ lib, ... }:
+let inherit (lib) mkOption types;
+in {
   imports = [
     ./alacritty.nix
     ./chromium.nix
@@ -21,11 +23,10 @@
     ./zsh.nix
   ];
 
-  options.within.enableEncryptedFileOptions = with lib;
-    mkOption {
-      type = types.bool;
-      default = true;
-      description =
-        "disable all options that require decryption of inline-secrets";
-    };
+  options.within.enableEncryptedFileOptions = mkOption {
+    type = types.bool;
+    default = true;
+    description =
+      "disable all options that require decryption of inline-secrets";
+  };
 }

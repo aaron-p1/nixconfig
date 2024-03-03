@@ -1,6 +1,9 @@
 { config, lib, ... }:
-let cfg = config.within.audio;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.audio;
+in {
   options.within.audio = { pipewire.enable = mkEnableOption "pipewire"; };
 
   config = mkIf cfg.pipewire.enable {

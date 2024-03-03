@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
-let cfg = config.within.firefox;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.firefox;
+in {
   options.within.firefox = { enable = mkEnableOption "Firefox"; };
 
   config = mkIf cfg.enable {

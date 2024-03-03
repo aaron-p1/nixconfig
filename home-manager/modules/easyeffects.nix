@@ -1,25 +1,29 @@
 { config, lib, ... }:
 let
+  inherit (builtins) readDir attrNames foldl' readFile replaceStrings toString;
+  inherit (lib) flip pipe mkEnableOption mkIf recursiveUpdate;
+
   cfg = config.within.easyeffects;
 
   # get file names of directory
-  getFiles = (lib.flip lib.pipe) (with builtins; [ readDir attrNames ]);
+  getFiles = (flip pipe) [ readDir attrNames ];
 
   # get all input and output files
-  profileNames = builtins.foldl' (acc: dir:
-    acc ++ builtins.map (file: "easyeffects/${dir}/" + file)
+  profileNames = foldl' (acc: dir:
+    acc ++ map (file: "easyeffects/${dir}/" + file)
     (getFiles (../../dotfiles/easyeffects + "/${dir}")))
     [ ] [ "input" "output" ];
 
   # replace text
-  profiles = builtins.foldl' (acc: file:
+  profiles = foldl' (acc: file:
     let
-      fileText = builtins.readFile (../../dotfiles + "/${file}");
-      replacedFileText = builtins.replaceStrings [ "{config}" ]
-        [ (builtins.toString config.xdg.configHome) ] fileText;
+      fileText = readFile (../../dotfiles + "/${file}");
+      replacedFileText =
+        replaceStrings [ "{config}" ] [ (toString config.xdg.configHome) ]
+        fileText;
     in acc // { "${file}".text = replacedFileText; }) { } profileNames;
 
-in with lib; {
+in {
   options.within.easyeffects = { enable = mkEnableOption "Easyeffects"; };
 
   config = mkIf cfg.enable {
@@ -32,7 +36,7 @@ in with lib; {
       process-all-inputs = true;
     };
 
-    xdg.configFile = lib.recursiveUpdate profiles {
+    xdg.configFile = recursiveUpdate profiles {
       "easyeffects/rnnoise" = {
         source = ../../dotfiles/easyeffects/rnnoise;
         recursive = true;

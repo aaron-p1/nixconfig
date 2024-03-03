@@ -1,5 +1,7 @@
 { config, lib, ... }:
 let
+  inherit (lib) mkEnableOption mkOption types mkIf hasPrefix recursiveUpdate;
+
   cfg = config.within.ssh;
 
   additionalHostsContent = if config.within.enableEncryptedFileOptions then
@@ -8,7 +10,7 @@ let
     "{}";
   additionalHosts = builtins.fromJSON additionalHostsContent;
 
-in with lib; {
+in {
   options.within.ssh = {
     enable = mkEnableOption "SSH";
 

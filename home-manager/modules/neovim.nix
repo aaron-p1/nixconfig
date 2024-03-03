@@ -1,12 +1,15 @@
 { config, lib, pkgs, ... }:
-let cfg = config.within.neovim;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.neovim;
+in {
   options.within.neovim = { enable = mkEnableOption "Neovim"; };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      neovim-nightly
-      (neovim-remote.overrideAttrs (attrs:
+    home.packages = [
+      pkgs.neovim-nightly
+      (pkgs.neovim-remote.overrideAttrs (attrs:
         attrs // {
           patches = attrs.patches ++ [
             (pkgs.fetchpatch {

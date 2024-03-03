@@ -1,5 +1,7 @@
 { config, lib, ... }:
 let
+  inherit (lib) mkEnableOption mkOption types mkIf;
+
   cfg = config.within.networking.dnsmasq;
 
   mkDnsmasqDomains = attrs:
@@ -7,20 +9,12 @@ let
       address=/${k}/${v}
     '') attrs);
 
-  mkDomainOption = name:
-    with lib;
-    mkOption {
-      type = with types; attrsOf str;
-      default = { };
-      description = name;
-    };
-
-in with lib; {
+in {
   options.within.networking.dnsmasq = {
     enable = mkEnableOption "dnsmasq";
 
     servers = mkOption {
-      type = with types; listOf str;
+      type = types.listOf types.str;
       default = config.networking.nameservers;
       description = "nameservers used by dnsmasq";
     };
@@ -32,7 +26,7 @@ in with lib; {
     };
 
     mapDomains = mkOption {
-      type = with types; attrsOf str;
+      type = types.attrsOf types.str;
       default = { };
       description = "domains to ip mappings";
     };
@@ -42,8 +36,7 @@ in with lib; {
     services.dnsmasq = {
       enable = true;
       inherit (cfg) servers;
-      extraConfig = cfg.extraConfig + "\n"
-        + mkDnsmasqDomains cfg.mapDomains;
+      extraConfig = cfg.extraConfig + "\n" + mkDnsmasqDomains cfg.mapDomains;
     };
   };
 }

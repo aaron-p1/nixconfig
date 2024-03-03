@@ -1,11 +1,13 @@
 { config, lib, pkgs, ... }:
-let cfg = config.within.alacritty;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf mapAttrsToList concatLists;
+
+  cfg = config.within.alacritty;
+in {
   options.within.alacritty = { enable = mkEnableOption "Alacritty"; };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
-      [ (nerdfonts.override { fonts = [ "FiraCode" ]; }) ];
+    home.packages = [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; }) ];
 
     programs.alacritty = {
       enable = true;

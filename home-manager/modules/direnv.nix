@@ -1,6 +1,9 @@
 { config, lib, ... }:
-let cfg = config.within.direnv;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.direnv;
+in {
   options.within.direnv = { enable = mkEnableOption "Direnv"; };
 
   config = mkIf cfg.enable {

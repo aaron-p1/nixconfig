@@ -1,6 +1,9 @@
 { config, lib, ... }:
-let cfg = config.within.vmclient;
-in with lib; {
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.within.vmclient;
+in {
   options.within.vmclient = { enable = mkEnableOption "VmClient config"; };
 
   config = mkIf cfg.enable {
