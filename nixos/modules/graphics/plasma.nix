@@ -11,10 +11,15 @@ in with lib; {
     services.xserver = {
       enable = true;
 
-      desktopManager.plasma5 = { enable = true; };
+      desktopManager.plasma6.enable = true;
     };
 
-    environment.systemPackages = with pkgs; [ latte-dock ];
+    environment.plasma6.excludePackages = with pkgs.kdePackages; [
+      konsole
+      kate
+      khelpcenter
+      okular
+    ];
 
     programs.kdeconnect.enable = cfg.kdeConnect;
 
@@ -23,7 +28,7 @@ in with lib; {
       fcitx5.addons = with pkgs; [
         fcitx5-mozc
         fcitx5-gtk
-        libsForQt5.fcitx5-qt
+        kdePackages.fcitx5-qt
       ];
     };
   };
