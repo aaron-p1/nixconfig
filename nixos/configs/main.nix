@@ -154,10 +154,7 @@
 
   programs = {
     zsh.enable = true;
-    ausweisapp = {
-      enable = true;
-      openFirewall = true;
-    };
+    ausweisapp.enable = false;
     dconf.enable = true;
   };
 
