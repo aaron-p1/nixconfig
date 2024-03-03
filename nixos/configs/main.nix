@@ -146,6 +146,7 @@
   };
 
   systemd.extraConfig = ''
+    DefaultTimeoutStartSec=30s
     DefaultTimeoutStopSec=30s
   '';
 
