@@ -1,14 +1,12 @@
-{ lib, xsel, python3, gnumake, unzip, gcc, tree-sitter, fd, ripgrep
-, nodePackages, local, sumneko-lua-language-server, nil, nixfmt, shellcheck
+{ lib, xsel, wl-clipboard, python3, gnumake, unzip, gcc, tree-sitter, fd
+, ripgrep, nodePackages, sumneko-lua-language-server, nil, nixfmt, shellcheck
 , shellharden, editorconfig-checker, statix, stylua, fnlfmt, nodejs, phpPackages
 , stdenv, findutils, fennel }:
 let
-  inherit (builtins) attrValues;
-  inherit (lib) concatStringsSep mapAttrsToList;
-
   addPath = [
     # core
     xsel
+    wl-clipboard
     # packer
     python3
     gnumake
