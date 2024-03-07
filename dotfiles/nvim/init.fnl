@@ -272,7 +272,7 @@
              (u :folke/trouble.nvim
                 {:file :trouble :requires :kyazdani42/nvim-web-devicons})
              ;; dap
-             (u :mfussenegger/nvim-dap {:file :dap :keys [:<F5> :<F8>]})
+             (u :mfussenegger/nvim-dap {:file :dap})
              (u :theHamsta/nvim-dap-virtual-text
                 {:file :dap-virtual-text
                  :requires [:mfussenegger/nvim-dap]

@@ -1,8 +1,10 @@
 {
-  inputs = rec {
+  inputs = {
     stable.url = "github:nixos/nixpkgs/nixos-23.11";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.follows = "unstable";
+
+    nixpkgs2305.url = "github:nixos/nixpkgs/nixos-23.05";
 
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -19,8 +21,8 @@
     };
   };
 
-  outputs = { self, stable, unstable, nixpkgs, flake-utils, nixos-hardware, nur
-    , home-manager, neovim-nightly-overlay, ... }@inputs:
+  outputs = { self, stable, unstable, nixpkgs, nixpkgs2305, flake-utils
+    , nixos-hardware, nur, home-manager, neovim-nightly-overlay, ... }@inputs:
     let
       inherit (unstable) lib; # unstable for home manager
       overlays = [
@@ -29,6 +31,14 @@
         neovim-nightly-overlay.overlay
         (import ./localpkgs { inherit inputs; })
         (import ./dotfiles { })
+        (final: prev: {
+          inherit (import nixpkgs2305 {
+            inherit (final) system;
+            config.permittedInsecurePackages = [ "nodejs-16.20.2" ];
+          })
+          # for nvim dotfiles vscode-php-debug
+            nodejs_16;
+        })
       ];
     in {
       nixosConfigurations = {

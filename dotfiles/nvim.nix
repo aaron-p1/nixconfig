@@ -1,7 +1,7 @@
 { lib, xsel, wl-clipboard, python3, gnumake, unzip, gcc, tree-sitter, fd
 , ripgrep, nodePackages, sumneko-lua-language-server, nil, nixfmt, shellcheck
 , shellharden, editorconfig-checker, statix, stylua, fnlfmt, nodejs, phpPackages
-, stdenv, findutils, fennel }:
+, nodejs_16, local, stdenv, findutils, fennel }:
 let
   addPath = [
     # core
@@ -53,6 +53,8 @@ in stdenv.mkDerivation {
   addPath = lib.makeBinPath addPath;
 
   tsLib = "${nodePackages.typescript}/lib/node_modules/typescript/lib";
+  inherit nodejs_16;
+  phpDebugJs = "${local.vscode-php-debug}/out/phpDebug.js";
 
   postPatch = ''
     # replace env vars in place
