@@ -31,7 +31,7 @@
     direnv.enable = true;
 
     # ../modules/easyeffects.nix
-    easyeffects.enable = true;
+    easyeffects.enable = false;
 
     # ../modules/firefox.nix
     firefox.enable = true;
