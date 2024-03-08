@@ -35,6 +35,9 @@ in {
           nr = "NIXPKGS_ALLOW_UNFREE=1 nix run --impure";
 
           ssh = "TERM=xterm-256color ssh";
+
+          "'??'" = "copilot-cli shell";
+          "'?git'" = "copilot-cli git";
         };
         sessionVariables = {
           LANG = "en_US.UTF-8";
