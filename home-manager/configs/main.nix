@@ -72,6 +72,7 @@
 
     packages = with pkgs; [
       gnumake
+      wl-clipboard
 
       hunspell
       hunspellDicts.en_US
