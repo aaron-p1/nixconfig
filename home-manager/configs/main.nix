@@ -82,7 +82,6 @@
       discord
       thunderbird
       qalculate-gtk
-      flameshot
       gImageReader
       feh
       ark
