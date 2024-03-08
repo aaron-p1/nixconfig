@@ -84,7 +84,6 @@
       qalculate-gtk
       gImageReader
       feh
-      ark
       obsidian
       element-desktop
       bitwarden
