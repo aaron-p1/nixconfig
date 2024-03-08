@@ -44,8 +44,8 @@
       nixosConfigurations = {
         aaron-pc = lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
-            { _module.args = { inherit inputs; }; }
             { nixpkgs.overlays = overlays; }
 
             nixos-hardware.nixosModules.common-pc-ssd
@@ -71,8 +71,8 @@
         };
         aaron-laptop = lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
-            { _module.args = { inherit inputs; }; }
             { nixpkgs.overlays = overlays; }
 
             nixos-hardware.nixosModules.common-pc-laptop
