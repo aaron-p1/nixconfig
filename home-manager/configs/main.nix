@@ -85,7 +85,6 @@
       gImageReader
       feh
       obsidian
-      element-desktop
       bitwarden
 
       local.create-project
