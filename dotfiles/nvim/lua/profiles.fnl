@@ -80,11 +80,15 @@
 
 (fn config.nixconfig.keymaps []
   (add-term-keymaps :<Leader>cps "sudo make switch")
+  (add-term-keymaps :<Leader>cpS "sudo make nom switch")
   (add-term-keymaps :<Leader>cpb "sudo make boot")
+  (add-term-keymaps :<Leader>cpB "sudo make nom boot")
   (wk-register {:prefix :<Leader>c
                 :map {:p {:name :Profile
                           :s {:name "Switch config"}
-                          :b {:name "Boot config"}}}}))
+                          :S {:name "Switch config with nom-rebuild"}
+                          :b {:name "Boot config"}
+                          :B {:name "Boot config with nom-rebuild"}}}}))
 
 ;;; nixserver
 

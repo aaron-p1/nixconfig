@@ -5,6 +5,7 @@ systemPath := /etc/nixos
 path :=
 nixargs :=
 
+rebuildCmd := nixos-rebuild
 rebuildCmds := boot test build switch
 
 nixpkgsRepoFilesBefore := https://raw.githubusercontent.com/NixOS/nixpkgs/
@@ -17,6 +18,11 @@ homeManagerBranch := master
 
 default: existing
 
+nom:
+	$(eval rebuildCmd := nom-rebuild)
+	@# hide message 'Nothing to be done'
+	@true
+
 existing: path := ${systemPath}
 new: path := ${newSystemPath}
 
@@ -26,7 +32,7 @@ existing new:
 	rsync --verbose --delete-after --recursive --cvs-exclude --filter=':- .gitignore' --filter=':- .rsyncignore' --checksum . ${path}
 
 ${rebuildCmds}: existing
-	nixos-rebuild ${nixargs} $@
+	${rebuildCmd} ${nixargs} $@
 
 update:
 	cat ./afterupdate.txt
@@ -61,4 +67,4 @@ check-release-notes-home-manager: flakeInputName := home-manager
 check-release-notes-home-manager: showLine := ^===
 check-release-notes-home-manager: check-release-notes
 
-.PHONY: default existing new ${rebuildCmds} update listChanges check-release-notes check-release-notes-home-manager
+.PHONY: default nom existing new ${rebuildCmds} update listChanges check-release-notes check-release-notes-home-manager
