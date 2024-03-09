@@ -32,12 +32,6 @@ Broken Stuff:
       https://github.com/NixOS/nixpkgs/issues/138423
       workaround:
         https://github.com/NixOS/nixpkgs/issues/138423#issuecomment-947888673
-    nixos-rebuild switch with specialisation not working:
-      defaulting to default specialisation
-      workaround:
-        create file /etc/specialisation to specify specialisation
-        see Makefile for more info
-      No issue found
 
   home-manager:
 

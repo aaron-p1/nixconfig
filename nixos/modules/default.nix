@@ -17,7 +17,6 @@ in {
     ./pam.nix
     ./audio.nix
     ./samba.nix
-    ./specialisation.nix
     ./steam.nix
     ./swap.nix
     ./syncthing.nix

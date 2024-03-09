@@ -5,9 +5,7 @@ systemPath := /etc/nixos
 path :=
 nixargs :=
 
-rebuildCmds := boot test build
-
-specialisationFile := /etc/specialisation
+rebuildCmds := boot test build switch
 
 nixpkgsRepoFilesBefore := https://raw.githubusercontent.com/NixOS/nixpkgs/
 nixpkgsRLNotesFile := /nixos/doc/manual/release-notes/rl-2405.section.md
@@ -29,24 +27,6 @@ existing new:
 
 ${rebuildCmds}: existing
 	nixos-rebuild ${nixargs} $@
-
-# when switching with specialisation support,
-# > nixos-rebuild switch --specialisation "${specialisation}"
-# updates the grub menu, so the specialisation is the default
-# and the main config is not bootable anymore
-#
-# Workaround:
-# > nixos-rebuild build
-# > result/bin/switch-to-configuration boot
-# > result/specialisation/${specialisation}/bin/switch-to-configuration test
-#
-# nixos-rebuild boot then nixos-rebuild test evaluates the config 2 times
-switch: existing
-	$(eval specialisation = $(shell [ -f $(specialisationFile) ] && cat $(specialisationFile)))
-	nixos-rebuild ${nixargs} build
-	result/bin/switch-to-configuration boot
-	$(eval switchScript = result/$(if $(strip ${specialisation}),specialisation/$(specialisation)/)bin/switch-to-configuration)
-	${switchScript} test
 
 update:
 	cat ./afterupdate.txt
