@@ -56,6 +56,8 @@ in {
     boot.binfmt.emulatedSystems = cfg.emulatedSystems;
 
     environment.systemPackages = [
+      pkgs.nix-output-monitor
+
       # nix shell nixpkgs#{$1}
       (pkgs.writeShellScriptBin "s" ''
         if [ -z "$1" ]
