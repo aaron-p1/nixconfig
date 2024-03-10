@@ -36,8 +36,8 @@ in {
 
           ssh = "TERM=xterm-256color ssh";
 
-          "'??'" = "copilot-cli shell";
-          "'?git'" = "copilot-cli git";
+          "??" = "copilot-cli shell";
+          "?git" = "copilot-cli git";
         };
         sessionVariables = {
           LANG = "en_US.UTF-8";
