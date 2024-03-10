@@ -22,6 +22,7 @@ in {
       kate
       khelpcenter
       okular
+      elisa
     ];
 
     programs.kdeconnect.enable = cfg.kdeConnect;
