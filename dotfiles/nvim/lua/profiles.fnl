@@ -17,7 +17,8 @@
                           :sail
                           :tenancy-for-laravel
                           :npm
-                          :gradle])
+                          :gradle
+                          :elixir_phoenix])
 
 (local config (map existing-profiles #(values $1 {})))
 
@@ -165,6 +166,19 @@
                       :b {:name :Build}
                       :r {:name :Run}
                       :d {:name :Clean}
+                      :t {:name :Test}}}))
+
+(fn config.elixir_phoenix.keymaps []
+  (add-term-keymaps :<Leader>cpd "mix deps.get")
+  (add-term-keymaps :<Leader>cps "mix phx.server")
+  (add-term-keymaps :<Leader>cpi "iex -S mix")
+  (add-term-keymaps :<Leader>cpI "iex -S mix phx.server")
+  (add-term-keymaps :<Leader>cpt "mix test")
+  (wk-register {:prefix :<Leader>cp
+                :map {:d {:name "Get deps"}
+                      :s {:name "Start server"}
+                      :i {:name :Iex}
+                      :I {:name "Iex with server"}
                       :t {:name :Test}}}))
 
 {: profiles : has-profile : get-profile-config : run-profile-config}
