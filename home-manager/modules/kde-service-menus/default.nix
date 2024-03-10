@@ -13,7 +13,7 @@ let
     { entry, actions ? { } }:
     pkgs.writeTextFile {
       name = "${name}.desktop";
-      destination = "/share/kservices5/ServiceMenus/${name}.desktop";
+      destination = "/share/kio/servicemenus/${name}.desktop";
       text = let
         actionLine = if actions != { } then
           renderLine "Actions" (concatStringsSep ";" (attrNames actions))
