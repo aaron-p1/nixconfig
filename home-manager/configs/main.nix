@@ -94,6 +94,4 @@
 
     stateVersion = "18.09";
   };
-
-  services.kdeconnect.enable = true;
 }
