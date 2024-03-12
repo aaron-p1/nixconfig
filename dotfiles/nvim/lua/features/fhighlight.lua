@@ -37,8 +37,9 @@ end
 --- @param line string
 --- @param start_byte integer
 --- @param backwards boolean
+--- @param count integer nth unique char
 --- @return table<string, CharPosition>
-local function get_unique_chars(line, start_byte, backwards)
+local function get_unique_chars(line, start_byte, backwards, count)
   local unique_chars = {}
 
   if line == "" then
@@ -54,17 +55,28 @@ local function get_unique_chars(line, start_byte, backwards)
     local char_end = get_char_end(line, i)
 
     local char = line:sub(char_start, char_end)
+    local new_count = unique_chars[char] and unique_chars[char].count + 1 or 1
 
-    if not unique_chars[char] then
+    if new_count <= count then
       local is_whitespace = string.match(char, "%s") ~= nil
 
-      unique_chars[char] = { col = char_start - 1, blank = is_whitespace }
+      unique_chars[char] = { count = new_count, info = { col = char_start - 1, blank = is_whitespace } }
     end
 
     i = backwards and char_start - 1 or char_end + 1
   end
 
-  return unique_chars
+  return vim.iter(unique_chars)
+      :filter(function(_, v)
+        return v.count == count
+      end)
+      :map(function(k, v)
+        return unpack({ k, v.info })
+      end)
+      :fold({}, function(acc, k, v)
+        acc[k] = v
+        return acc
+      end)
 end
 
 --- Highlight first unique character depending on cursor position and type
@@ -73,13 +85,14 @@ end
 --- @return string
 local function highlight(type)
   local backwards = type == "T" or type == "F"
+  local count = vim.v.count1
 
   local cursor = vim.api.nvim_win_get_cursor(0)
   local line = cursor[1] - 1
 
   local text = vim.api.nvim_buf_get_lines(0, line, line + 1, false)[1]
 
-  local unique_chars = get_unique_chars(text, cursor[2], backwards)
+  local unique_chars = get_unique_chars(text, cursor[2], backwards, count)
 
   vim.api.nvim_buf_clear_namespace(0, M.namespace, 0, -1)
 
