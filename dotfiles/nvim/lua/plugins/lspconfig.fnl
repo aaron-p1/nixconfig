@@ -56,7 +56,7 @@
                 ; json
                 {:server :jsonls
                  :settings {:json {:validate {:enable true}
-                                   :schemas (concat (json-schemas)
+                                   :schemas (concat (json-schemas {:ignore [:task.json]})
                                                     (get-profile-config :json-schemas
                                                                         []))}}}
                 ; yaml
