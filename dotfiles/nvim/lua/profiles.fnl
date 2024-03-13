@@ -1,4 +1,4 @@
-(local {: split :keymap {:set kset}} vim)
+(local {: split :keymap {:set kset} :fn {: getcwd}} vim)
 
 (local {: map : concat : contains :is_empty is-empty : add-term-keymaps}
        (require :helper))
@@ -15,6 +15,7 @@
                           :podman-compose
                           :laravel
                           :sail
+                          :xo
                           :tenancy-for-laravel
                           :npm
                           :gradle
@@ -154,6 +155,11 @@
               (add-term-keymaps :<Leader>cpp prod-cmd)))
         (wk-register {:prefix :<Leader>cp
                       :map {:w {:name "Npm watch"} :p {:name "Npm prod"}}})))))
+
+(fn config.xo.json-schemas []
+  (let [schema-path (.. (getcwd) :/storage/app/schema/)]
+    [{:url (.. schema-path :fields.schema.json)
+      :fileMatch [:storage/app/schema/fields/*.json]}]))
 
 (fn config.gradle.keymaps []
   (add-term-keymaps :<Leader>cpc "./gradlew compileJava")
