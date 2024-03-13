@@ -10,6 +10,9 @@ in {
     home = {
       packages = with pkgs; [
         jetbrains.idea-ultimate
+
+        github-copilot-intellij-agent
+
         (buildFHSUserEnv {
           name = "codeWithMe";
           targetPkgs = pkgs:
@@ -73,6 +76,7 @@ in {
       ];
 
       file = {
+        ".jdks/openjdk-17".source = pkgs.jdk17;
         ".jdks/openjdk-11".source = pkgs.jdk11;
         ".jdks/openjdk-8".source = pkgs.jdk8;
       };
