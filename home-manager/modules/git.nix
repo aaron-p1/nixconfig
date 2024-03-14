@@ -1,8 +1,17 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (lib) mkEnableOption mkOption types mkIf;
+  inherit (lib)
+    concatStringsSep mapAttrsToList mkEnableOption mkOption types mkIf;
 
   cfg = config.within.git;
+
+  toAttributeProperties = attrs:
+    concatStringsSep " "
+    (mapAttrsToList (name: value: "${name}=${value}") attrs);
+
+  toAttributeLines = attributes:
+    mapAttrsToList (pattern: attrs: "${pattern} ${toAttributeProperties attrs}")
+    attributes;
 in {
   options.within.git = {
     enable = mkEnableOption "Git";
@@ -28,6 +37,11 @@ in {
         key = cfg.signingKey;
       };
       extraConfig = { init.defaultBranch = "main"; };
+      attributes = toAttributeLines {
+        "*.php" = { diff = "php"; };
+        "*.css" = { diff = "css"; };
+        "*.html" = { diff = "html"; };
+      };
     };
 
     home.packages = [
