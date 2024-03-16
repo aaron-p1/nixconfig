@@ -3,7 +3,7 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.plasma;
-  systemPlasma = osConfig.services.xserver.desktopManager.plasma6;
+  systemPlasma = osConfig.services.desktopManager.plasma6;
 in {
   options.within.plasma = {
     enableKWallet = mkEnableOption "KWallet" // {

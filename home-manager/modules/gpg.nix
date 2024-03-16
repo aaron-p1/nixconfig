@@ -18,7 +18,7 @@ in {
 
     services.gpg-agent = {
       enable = true;
-      pinentryFlavor = "qt";
+      pinentryPackage = pkgs.pinentry-qt;
     };
   };
 }
