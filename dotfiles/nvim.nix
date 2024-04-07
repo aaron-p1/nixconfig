@@ -1,5 +1,5 @@
 { lib, xsel, wl-clipboard, python3, gnumake, unzip, gcc, tree-sitter, fd
-, ripgrep, nodePackages, sumneko-lua-language-server, nil, nixfmt, shellcheck
+, ripgrep, nodePackages, sumneko-lua-language-server, nil, nixfmt-classic, shellcheck
 , shellharden, editorconfig-checker, statix, stylua, fnlfmt, nodejs, phpPackages
 , nodejs_16, local, stdenv, findutils, fennel }:
 let
@@ -32,7 +32,7 @@ let
     nodePackages.intelephense
     sumneko-lua-language-server
     nil
-    nixfmt
+    nixfmt-classic
     nodePackages.vscode-langservers-extracted
     nodePackages."@tailwindcss/language-server"
     nodePackages.yaml-language-server
