@@ -7,13 +7,9 @@ in {
   options.within.graphics.sddm = { enable = mkEnableOption "sddm"; };
 
   config = mkIf cfg.enable {
-    services.xserver = {
+    services.displayManager.sddm = {
       enable = true;
-
-      displayManager.sddm = {
-        enable = true;
-        autoNumlock = true;
-      };
+      autoNumlock = true;
     };
   };
 }
