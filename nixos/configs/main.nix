@@ -96,7 +96,14 @@
     };
 
     # ../modules/pam.nix
-    pam.u2f.enable = true;
+    pam.u2f = {
+      enable = true;
+
+      autolock = {
+        enable = true;
+        user = "aaron";
+      };
+    };
 
     # ../modules/samba.nix
     samba.enable = false;
