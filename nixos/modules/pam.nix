@@ -32,16 +32,23 @@ in {
     };
 
     services.udev.extraRules = mkIf cfg.u2f.autolock.enable (let
+      loginctl = "${pkgs.systemd}/bin/loginctl";
+      pamtester = "${pkgs.pamtester}/bin/pamtester";
+
+      inherit (cfg.u2f.autolock) user;
+
       unlockScript = pkgs.writeShellScript "try-unlock" ''
+        if ! ${loginctl} list-sessions | grep -q "${user}"; then
+          exit 0
+        fi
+
         case "$1" in
           lock)
-            ${pkgs.systemd}/bin/loginctl lock-sessions
+            ${loginctl} lock-sessions
             ;;
           unlock)
-            ${pkgs.pamtester}/bin/pamtester \
-              login "${cfg.u2f.autolock.user}" authenticate \
-              < /dev/null \
-              && ${pkgs.systemd}/bin/loginctl unlock-sessions
+            ${pamtester} login "${user}" authenticate < /dev/null \
+              && ${loginctl} unlock-sessions
             ;;
         esac
       '';
