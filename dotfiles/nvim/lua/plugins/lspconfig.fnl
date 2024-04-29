@@ -82,6 +82,7 @@
 (var formatting-preferences {:html :null-ls
                              :javascript :null-ls
                              :json :null-ls
+                             :lua :lua_ls
                              :php :intelephense
                              :vue :null-ls})
 
