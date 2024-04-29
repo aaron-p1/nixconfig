@@ -263,7 +263,7 @@
                  :after :nvim-dap})
              (u :rcarriga/nvim-dap-ui
                 {:file :dap-ui
-                 :requires [:mfussenegger/nvim-dap]
+                 :requires [:mfussenegger/nvim-dap :nvim-neotest/nvim-nio]
                  :after :nvim-dap})
              (u :vim-test/vim-test)
              ;; tex
