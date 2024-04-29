@@ -1,4 +1,5 @@
-(local {:api {: nvim_buf_delete
+(local {:api {: nvim_buf_call
+              : nvim_buf_delete
               : nvim_buf_is_loaded
               : nvim_buf_line_count
               : nvim_buf_get_offset
@@ -9,7 +10,7 @@
               : nvim_get_current_buf
               : nvim_win_get_buf
               : nvim_win_set_buf}
-        :cmd {: edit}
+        :cmd {: edit : normal}
         :fn {: substitute : win_findbuf}
         :highlight {:on_yank h-on-yank}
         :keymap {:set kset}
@@ -43,6 +44,7 @@
                               :relativenumber false
                               :cursorline false
                               :spell false})
+  (nvim_buf_call bufnr #(normal :G))
   (kset :n :cd #(send-to-terminal "\004") {:buffer bufnr :desc "Send <C-d>"})
   (kset :n :cc #(send-to-terminal "\003") {:buffer bufnr :desc "Send <C-c>"}))
 
