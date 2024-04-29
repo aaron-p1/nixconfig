@@ -160,6 +160,8 @@
     zsh.enable = true;
     ausweisapp.enable = false;
     dconf.enable = true;
+
+    nix-ld.enable = true;
   };
 
   environment = {
