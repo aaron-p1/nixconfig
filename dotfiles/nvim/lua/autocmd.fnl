@@ -19,7 +19,7 @@
 (local {: set_options} (require :helper))
 (local {: get-profile-config} (require :profiles))
 
-(local big-file-size (* 1024 128))
+(local big-file-size (* 1024 256))
 
 (var big-file-buffer? {})
 (var nvr-closed false)
