@@ -234,9 +234,6 @@
                 {:patches :change-lightbulb-char.patch
                  :file :lightbulb
                  :requires [:antoinemadec/FixCursorHold.nvim]})
-             ;; orgmode
-             (u :nvim-orgmode/orgmode
-                {:file :orgmode :requires [:nvim-treesitter/nvim-treesitter]})
              ;; elixir
              (u :elixir-tools/elixir-tools.nvim
                 {:file :elixir-tools
