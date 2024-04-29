@@ -70,6 +70,8 @@
       thl.devices = [ "aaron-laptop" ];
       work.devices = [ "aaron-laptop" ];
     };
+
+    steam.enable = true;
   };
 
   programs.gamemode.enable = true;

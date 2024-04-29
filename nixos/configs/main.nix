@@ -146,9 +146,6 @@
       };
     };
 
-    # ../modules/steam.nix
-    steam.enable = true;
-
     monitoring.enable = false;
   };
 
