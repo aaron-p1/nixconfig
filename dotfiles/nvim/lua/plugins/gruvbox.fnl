@@ -49,7 +49,8 @@
   (let [group (nvim_create_augroup :TerminalColors {})]
     (nvim_set_hl term-hl-ns :Normal
                  {:fg vim.g.terminal_color_7 :bg vim.g.terminal_color_0})
-    (nvim_create_autocmd :BufEnter {: group :callback set-term-hl-ns})))
+    (nvim_create_autocmd [:TermOpen :TermEnter]
+                         {: group :callback set-term-hl-ns})))
 
 (fn config []
   (setup {:undercurl true
