@@ -182,16 +182,7 @@
              ;; helper
              (u :folke/which-key.nvim {:file :which-key})
              ;; git
-             (u :tpope/vim-fugitive
-                {:file :fugitive
-                 :cmd [:Git
-                       :GBrowse
-                       :Gdiffsplit
-                       :Gwrite
-                       :Gread
-                       :Gedit
-                       :GRename
-                       :GMove]})
+             (u :tpope/vim-fugitive {:file :fugitive})
              (u :lewis6991/gitsigns.nvim
                 {:file :gitsigns
                  :requires [:nvim-lua/plenary.nvim]
