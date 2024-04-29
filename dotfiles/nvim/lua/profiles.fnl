@@ -116,6 +116,11 @@
 ;; - NVIM_PROFILE_TINKER_CONTAINER_OPTIONS
 
 (fn config.laravel.keymaps []
+  (add-term-keymaps :<Leader>cpl "tail -f storage/logs/laravel.log")
+  (add-term-keymaps :<Leader>cpL "less storage/logs/laravel.log")
+  (wk-register {:prefix :<Leader>cp
+                :map {:l {:name "Tail laravel log"}
+                      :L {:name "Less laravel log"}}})
   (let [sail? (has-profile :sail)
         podman-compose? (has-profile :podman-compose)
         php-tinker-cmd "php artisan tinker"
