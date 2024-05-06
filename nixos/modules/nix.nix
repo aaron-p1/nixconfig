@@ -16,7 +16,7 @@ in {
 
   config = mkIf cfg.enable {
     nix = {
-      package = pkgs.nixUnstable;
+      package = pkgs.nixVersions.latest;
       extraOptions = ''
         experimental-features = nix-command flakes auto-allocate-uids
         extra-platforms = ${
