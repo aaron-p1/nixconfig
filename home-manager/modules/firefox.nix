@@ -46,11 +46,27 @@ in {
           videospeed
           vue-js-devtools
         ];
-        userChrome = ''
-          #main-window[titlepreface*="​"] #TabsToolbar {
-            display: none !important;
-          }
-        '';
+
+        userChrome =
+          # CSS
+          ''
+            #main-window[titlepreface*="​"] #TabsToolbar {
+              display: none !important;
+            }
+          '';
+
+        userContent =
+          # CSS
+          ''
+            @-moz-document domain(chatgpt.com) {
+              @media (min-width: 1280px) {
+                /* make chat wider */
+                .text-token-text-primary > div > div {
+                  max-width: 80rem !important;
+                }
+              }
+            }
+          '';
       };
 
       nativeMessagingHosts =
