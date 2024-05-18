@@ -14,21 +14,15 @@
       url = "github:rycee/home-manager";
       inputs.nixpkgs.follows = "unstable";
     };
-
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "unstable";
-    };
   };
 
   outputs = { self, stable, unstable, nixpkgs, nixpkgs2305, flake-utils
-    , nixos-hardware, nur, home-manager, neovim-nightly-overlay, ... }@inputs:
+    , nixos-hardware, nur, home-manager, ... }@inputs:
     let
       inherit (unstable) lib; # unstable for home manager
       overlays = [
         (final: prev: { stable = import stable { inherit (final) system; }; })
         nur.overlay
-        neovim-nightly-overlay.overlay
         (import ./localpkgs { inherit inputs; })
         (import ./dotfiles { })
         (final: prev: {

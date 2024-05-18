@@ -8,7 +8,7 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = [
-      pkgs.neovim-nightly
+      pkgs.neovim
       (pkgs.neovim-remote.overrideAttrs (attrs:
         attrs // {
           patches = attrs.patches ++ [

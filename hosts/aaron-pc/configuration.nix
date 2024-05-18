@@ -44,26 +44,6 @@
         # 2
         "nuf7Ig6OU1qW3Q7srl4JfD5j3yED6ai0TeMV7N9L3maVMVcx8gbmw/nJgefpTiDWOp27I9IkvMB7S8cWL2zr3Q==,wAoubro0eh+hziuSt2Me8IwyWgpCgZq4dv95So+gRDGSIhDJB5VGYT5XljNUJRRD7jXxVMNMh65kAXeIuO7Mqw==,es256,+presence"
       ];
-
-      resticBackups = {
-        documents = {
-          paths = [ "/home/aaron/Documents" ];
-          repository = "/mnt/data/backup/restic";
-          initialize = true;
-          passwordFile = "/etc/secrets/restic_local";
-          timerConfig = {
-            OnCalendar =
-              "0/3:00"; # every 3 hours (systemd-analyze --iterations=5 "0/3:00")
-          };
-          pruneOpts = [
-            "--keep-hourly 24"
-            "--keep-daily 7"
-            "--keep-weekly 5"
-            "--keep-monthly 12"
-            "--keep-yearly 75"
-          ];
-        };
-      };
     };
 
     syncthing.folders = {
@@ -72,6 +52,24 @@
     };
 
     steam.enable = true;
+  };
+
+  services.restic.backups.aaron-documents = {
+    paths = [ "/home/aaron/Documents" ];
+    repository = "/mnt/data/backup/restic";
+    initialize = true;
+    user = "aaron";
+    passwordFile = "/etc/secrets/restic_local";
+    timerConfig = {
+      OnCalendar = "12,21:00";
+      Persistent = true;
+    };
+    pruneOpts = [
+      "--keep-within 7d"
+      "--keep-weekly 5"
+      "--keep-monthly 12"
+      "--keep-yearly 75"
+    ];
   };
 
   programs.gamemode.enable = true;

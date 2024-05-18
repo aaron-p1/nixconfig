@@ -169,7 +169,7 @@
       htop
       git
       wget
-      neovim-nightly
+      neovim
 
       anki
 
