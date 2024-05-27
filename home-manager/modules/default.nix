@@ -14,6 +14,7 @@ in {
     ./libreoffice.nix
     ./mpv.nix
     ./neovim.nix
+    ./neovim-new
     ./obs-studio.nix
     ./plasma.nix
     ./shell-scripts.nix
