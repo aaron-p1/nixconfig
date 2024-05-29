@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   inherit (builtins) removeAttrs replaceStrings;
-  inherit (lib) mkEnableOption mkIf optional optionals listToAttrs;
+  inherit (lib) mkEnableOption mkIf optional listToAttrs;
 
   cfg = config.within.xdg;
 in {
@@ -11,12 +11,7 @@ in {
     desktopEntries = {
       enable = mkEnableOption "Desktop entries";
 
-      terminal = {
-        nixconfig = mkEnableOption "Nixconfig";
-        oro = mkEnableOption "Orgmode optimize";
-      };
-
-      links = { nixpkgs = mkEnableOption "Nixpkgs"; };
+      terminal.nixconfig = mkEnableOption "Nixconfig";
     };
   };
 
@@ -68,39 +63,11 @@ in {
             shortName = "nixconfig";
             command = ''${pkgs.zsh}/bin/zsh -c "gotmux nixconfig"'';
             settings.Keywords = "nc";
-          } ++ optional terminalCfg.oro {
-            name = "Orgmode optimize";
-            shortName = "oro";
-            command = let inherit (config.xdg.userDirs) documents;
-            in "nvim ${documents}/private/orgmode/optimize.org";
-            settings.Keywords = "oro";
           });
-
-        linkEntries = map (args@{ url, ... }:
-          removeAttrs args [ "url" ] // {
-            exec = "xdg-open ${url}";
-          }) (optionals cfg.desktopEntries.links.nixpkgs [
-            {
-              name = "Nixpkgs";
-              shortName = "nixpkgs";
-              url = "https://github.com/NixOS/nixpkgs";
-              icon = "nix-snowflake";
-              settings.Keywords = "np";
-            }
-            {
-              name = "Nixpkgs unstable";
-              shortName = "nixpkgs-unstable";
-              url = "https://github.com/NixOS/nixpkgs/tree/nixos-unstable";
-              icon = "nix-snowflake";
-              settings.Keywords = "nu";
-            }
-          ]);
-
-        entries = terminalEntries ++ linkEntries;
       in mkIf cfg.desktopEntries.enable (listToAttrs (map (args: {
         name = args.shortName;
         value = builtins.removeAttrs args [ "shortName" ];
-      }) entries));
+      }) terminalEntries));
     };
   };
 }

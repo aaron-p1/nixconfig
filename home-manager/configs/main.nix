@@ -7,11 +7,7 @@
       enable = true;
       desktopEntries = {
         enable = true;
-        terminal = {
-          nixconfig = true;
-          oro = true;
-        };
-        links.nixpkgs = true;
+        terminal.nixconfig = true;
       };
     };
 
