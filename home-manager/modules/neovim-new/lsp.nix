@@ -1,25 +1,42 @@
 { pkgs, ... }: {
   name = "lsp";
-  plugins = with pkgs.vimPlugins; [ nvim-lspconfig SchemaStore-nvim ];
-  packages = with pkgs; [
-    sumneko-lua-language-server
+  plugins = with pkgs.vimPlugins; [
+    nvim-lspconfig
+    SchemaStore-nvim
 
-    nil
-    nixfmt-classic
-
-    nodePackages.intelephense
-    # html css json
-    nodePackages.vscode-langservers-extracted
-    nodePackages.yaml-language-server
-    nodePackages."@tailwindcss/language-server"
-    nodePackages.volar
+    none-ls-nvim
+    plenary-nvim
   ];
+  packages = with pkgs;
+    let
+      nills = [ nil nixfmt-classic ];
+
+      bashls = [ nodePackages.bash-language-server shellcheck shfmt ];
+
+      lsp = [
+        sumneko-lua-language-server
+        nodePackages.intelephense
+        nodePackages.vscode-langservers-extracted # html css json
+        nodePackages.yaml-language-server
+        nodePackages."@tailwindcss/language-server"
+        nodePackages.volar
+      ] ++ nills ++ bashls;
+
+      none-ls = [ editorconfig-checker nodePackages.prettier ];
+    in lsp ++ none-ls;
   config = let
     tsLib = "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib";
 
     # lua
   in ''
     local lc = require("lspconfig")
+
+    local formatting_preferences = {
+      html = "null-ls",
+      javascript = "null-ls",
+      json = "null-ls",
+      vue = "null-ls",
+    }
 
     local function on_attach(client, bufnr)
       local tb = Configs.telescope.builtin
@@ -37,15 +54,21 @@
       mapkey("n", "gD", vim.lsp.buf.declaration, { desc = "Declaration" })
       mapkey("n", "<Leader>lD", vim.lsp.buf.type_definition, { desc = "Type Definition" })
 
+      mapkey("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
+      mapkey("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
       mapkey("n", "<Leader>ld", vim.diagnostic.open_float, { desc = "Show diagnostic" })
 
-      mapkey("n", "<Leader>lf", vim.lsp.buf.format, { desc = "Format" })
+      mapkey("n", "<Leader>lf", function()
+        local ft = vim.bo[bufnr].filetype
+        vim.lsp.buf.format({ bufnr = bufnr, name = formatting_preferences[ft] })
+      end, { desc = "Format" })
       mapkey("n", "<Leader>lc", vim.lsp.buf.code_action, { desc = "Code Action" })
       mapkey("n", "<Leader>lr", vim.lsp.buf.rename, { desc = "Rename" })
       mapkey("n", "<Leader>ll", vim.lsp.codelens.run, { desc = "Codelens" })
 
       if client.server_capabilities.documentHighlightProvider then
-        local group = vim.api.nvim_create_augroup("lsp_document_highlight", {})
+        local group = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = false })
+        vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
 
         vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
           group = group,
@@ -64,7 +87,7 @@
         })
       end
 
-      Configs.common.wk_register({
+      Configs.which_key.register({
         prefix = "<Leader>",
         buffer = bufnr,
         map = { l = { name = "LSP" } }
@@ -118,20 +141,48 @@
 
     setup("html")
     setup("cssls")
-    setup("tailwindcss")
+    setup("tailwindcss", { filetypes = { "html", "blade", "scss", "javascript", "typescript", "vue" } })
     setup("tsserver")
     setup("volar", { init_options = { typescript = { tsdk = "${tsLib}" } } })
+
+    local json_schemas = require("schemastore").json.schemas({ ignore = { "task.json" } })
+
+    for _, schema in ipairs(Configs.profiles.json_schemas()) do
+      table.insert(json_schemas, schema)
+    end
 
     setup("jsonls", {
       settings = {
         json = {
           validate = { enable = true },
-          schemas = require("schemastore").json.schemas()
+          schemas = json_schemas
         }
       }
     })
     setup("yamlls")
 
     setup("graphql")
+
+    local nls = require("null-ls")
+
+    local disabled_filetypes = { "NvimTree" }
+
+    local d = nls.builtins.diagnostics
+    local f = nls.builtins.formatting
+
+    nls.setup({
+      sources = {
+        d.editorconfig_checker.with({
+          method = nls.methods.DIAGNOSTICS_ON_SAVE,
+          disabled_filetypes = { "gitcommit" }
+        }),
+        f.prettier
+      },
+      should_attach = function(bufnr)
+        return not vim.tbl_contains(disabled_filetypes, vim.bo[bufnr].filetype)
+      end,
+      on_attach = default_config.on_attach,
+      capabilities = default_config.capabilities
+    })
   '';
 }

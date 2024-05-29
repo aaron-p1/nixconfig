@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (builtins) match readFile isAttrs listToAttrs;
+  inherit (builtins) match readFile isAttrs listToAttrs concatLists;
   inherit (lib)
     concatMap concatMapAttrs concatStringsSep filter isPath isString makeBinPath
     mapAttrs mapAttrsToList mkEnableOption mkIf optionals optionalString pipe
@@ -10,9 +10,11 @@ let
 
   domains = [
     ./utils.nix
+    ./which_key.nix
     ./base.nix
     ./features.nix
     ./common.nix
+    ./profiles.nix
     ./ui.nix
     ./treesitter.nix
     ./snippets.nix
@@ -27,12 +29,16 @@ let
     name = null;
     plugins = [ ];
     packages = [ ];
+    luaPackages = _: [ ];
     config = null;
     extraFiles = { };
   };
 
+  localVimPlugins = import ./local-plugins.nix { inherit lib pkgs; };
+
   domainsValues = pipe domains [
-    (map (domain: defaultValues // import domain { inherit lib pkgs; }))
+    (map (domain:
+      defaultValues // import domain { inherit lib pkgs localVimPlugins; }))
 
     (map (values:
       if isPath values.config then
@@ -41,7 +47,7 @@ let
         values))
 
     (map (values:
-      let cond = values.name != null && (match "[a-z_-]*" values.name) != null;
+      let cond = values.name != null && (match "[a-z_]*" values.name) != null;
       in throwIfNot cond "Neovim config domain name invalid" values))
   ];
 
@@ -50,11 +56,29 @@ let
   packages =
     pipe domainsValues [ (concatMap (domain: domain.packages)) unique ];
 
+  lua = pkgs.neovim-unwrapped.lua;
+
+  luaEnv = lua.withPackages (ps:
+    pipe domainsValues [
+      (map (domain: domain.luaPackages ps))
+      concatLists
+      unique
+    ]);
+
   wrapperArgs = optionals (packages != [ ]) [
     "--suffix"
     "PATH"
     ":"
     "${makeBinPath packages}"
+  ] ++ optionals (luaEnv != null) [
+    "--prefix"
+    "LUA_PATH"
+    ";"
+    (lua.pkgs.luaLib.genLuaPathAbsStr luaEnv)
+    "--prefix"
+    "LUA_CPATH"
+    ";"
+    (lua.pkgs.luaLib.genLuaCPathAbsStr luaEnv)
   ];
 
   toConfig = configAttrs:
@@ -72,7 +96,7 @@ let
 
           local fn = rawget(t, '_' .. k)
 
-          if fn then
+          if fn and type(fn) == 'function' then
             if is_running[k] then
               error('Recursive config call detected: ' .. k)
             end
@@ -85,6 +109,8 @@ let
 
             rawset(t, k, value)
             return value
+          else
+            error('No config found for ' .. k)
           end
         end,
       }
@@ -186,13 +212,14 @@ let
       opt = [ ];
     };
     inherit wrapperArgs luaRcContent;
+
+    withPython3 = false;
   };
 in {
   options.within.neovim-new = {
     enable = mkEnableOption "Neovim New";
 
-    # TODO remove
-    out = lib.mkOption {
+    finalPackage = lib.mkOption {
       type = lib.types.package;
       default = neovim;
       readOnly = true;

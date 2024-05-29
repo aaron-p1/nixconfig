@@ -1,12 +1,18 @@
 { pkgs, ... }: {
   name = "telescope";
-  plugins = with pkgs.vimPlugins; [ telescope-nvim telescope-symbols-nvim ];
+  plugins = with pkgs.vimPlugins; [
+    telescope-nvim
+    telescope-zf-native-nvim
+    telescope-symbols-nvim
+  ];
   packages = [ pkgs.fd pkgs.ripgrep ];
   config = # lua
     ''
       local tl = require("telescope")
 
       tl.setup({ defaults = { preview = { filesize_limit = 1 } } })
+
+      tl.load_extension("zf-native")
 
       local tb = require("telescope.builtin")
 
@@ -64,7 +70,12 @@
 
       vim.keymap.set("n", "<Leader>fs", tb.symbols, { desc = "Symbols" })
 
-      Configs.common.wk_register({
+      -- extensions
+      vim.keymap.set("n", "<Leader>fv", function()
+        tl.extensions.virt_notes.virt_notes()
+      end, { desc = "Virt notes" })
+
+      Configs.which_key.register({
         prefix = "<Leader>",
         map = {
           f = {
@@ -78,7 +89,9 @@
 
       return {
         builtin = tb,
-        themes = require("telescope.themes")
+        themes = require("telescope.themes"),
+        actions = require("telescope.actions"),
+        state = require("telescope.actions.state"),
       }
     '';
 }

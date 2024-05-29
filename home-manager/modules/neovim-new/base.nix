@@ -3,14 +3,14 @@
   packages = with pkgs; [ wl-clipboard ];
   config = # lua
     ''
-      local spelldir = vim.fn.stdpath('data') .. '/spell'
+      local spelldir = vim.fn.stdpath("data") .. "/spell"
 
-      vim.fn.mkdir(spelldir, 'p')
+      vim.fn.mkdir(spelldir, "p")
 
       local opts = {
         -- common
         termguicolors = true,
-        background = 'dark',
+        background = "dark",
         synmaxcol = 300,
         updatetime = 300,
         timeoutlen = 500,
@@ -23,7 +23,7 @@
         number = true,
         relativenumber = true,
         cursorline = true,
-        colorcolumn = '+1',
+        colorcolumn = "+1",
         scrolljump = -10,
         scrolloff = 8,
 
@@ -35,26 +35,26 @@
 
         -- buffer
         linebreak = true,
-        showbreak = '↪',
+        showbreak = "↪",
         list = true,
-        listchars = { tab = '──', trail = '❯', nbsp = '˰' },
+        listchars = { tab = "──", trail = "❯", nbsp = "˰" },
         conceallevel = 2,
-        concealcursor = 'n',
+        concealcursor = "",
         undofile = true,
-        diffopt = { 'internal', 'filler', 'closeoff', 'vertical', 'linematch:102' },
-        completeopt = { 'menuone', 'noselect' },
-        omnifunc = 'syntaxcomplete#Complete',
+        diffopt = { "internal", "filler", "closeoff", "vertical", "linematch:102" },
+        completeopt = { "menuone", "noselect" },
+        omnifunc = "syntaxcomplete#Complete",
         expandtab = true,
         tabstop = 2,
         shiftwidth = 2,
 
-        foldmethod = 'indent',
+        foldmethod = "indent",
         foldlevelstart = 99,
 
         spell = true,
-        spelloptions = { 'camel', 'noplainbuffer' },
-        spelllang = { 'en', 'de', 'cjk' },
-        spellfile = spelldir .. '/custom.utf-8.add',
+        spelloptions = { "camel", "noplainbuffer" },
+        spelllang = { "en", "de", "cjk" },
+        spellfile = spelldir .. "/custom.utf-8.add",
 
         -- window handling
         splitbelow = true,
@@ -69,10 +69,7 @@
         vim.opt[k] = v
       end
 
-      vim.cmd.language('en_US.utf8')
-
-      -- TODO temp
-      vim.opt.runtimepath:remove("/home/aaron/.config/nvim")
+      vim.cmd.language("en_US.utf8")
 
       vim.keymap.set("n", "<PageUp>", "<nop>")
       vim.keymap.set("n", "<PageDown>", "<nop>")
@@ -112,14 +109,28 @@
       function Replace_selection(motion_type)
         local start_row, start_col, end_row, end_col = unpack(Configs.utils.get_operator_range(motion_type))
         ---@type string[]
-        local register_content = vim.fn.getreg('0', 1, true)
+        local register_content = vim.fn.getreg("0", 1, true)
 
         vim.api.nvim_buf_set_text(0, start_row, start_col, end_row, end_col, register_content)
       end
 
       vim.keymap.set("n", "gp", "<Cmd>set operatorfunc=v:lua.Replace_selection<CR>g@", { silent = true })
 
-      -- TODO which-key
+      Configs.which_key.register({
+        prefix = "<Leader>",
+        map = {
+          d = { name = "Diff" },
+          t = { name = "Tab" },
+          c = {
+            name = "Create buffer",
+            t = {
+              name = "Terminal",
+              t = { name = "Shell here" },
+              s = { name = "Shell home" }
+            },
+          }
+        }
+      })
 
       local term_augroup = vim.api.nvim_create_augroup("Terminal", {})
 
@@ -155,7 +166,9 @@
       ---@return string
       local function remove_pid_from_term_title(title)
         title = vim.fn.substitute(title, "term://.\\{-}//\\zs\\d*:", "", "")
-        title = title:gsub("\\", "\\\\\\")
+        title = title:gsub("\\", "\\\\")
+        -- # would be replaced by file path in term://
+        title = title:gsub("#", "\\#")
         return title
       end
 
@@ -206,6 +219,9 @@
         pattern = "scp://*",
         callback = function() vim.bo.bufhidden = "delete" end
       })
-      return { spelldir = spelldir }
+
+      Configs.profiles.startup()
+
+      return { spelldir = spelldir, test = remove_pid_from_term_title }
     '';
 }

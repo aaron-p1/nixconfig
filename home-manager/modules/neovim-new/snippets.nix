@@ -1,9 +1,11 @@
 { pkgs, ... }: {
   name = "snippets";
   plugins = with pkgs.vimPlugins; [ luasnip ];
+  luaPackages = ps: [ ps.jsregexp ];
   config = # lua
     ''
       local ls = require("luasnip")
+      local le = require("luasnip.extras")
       local lt = require("luasnip.util.types")
 
       vim.keymap.set("i", "<C-k>", ls.expand, { desc = "Expand" })
@@ -29,6 +31,39 @@
             unvisited = { virt_text = { { "⨉", "LuasnipInsertUnvisited" } } },
           },
         },
+      })
+
+      ---run command and return stdout lines
+      ---@param command string[]
+      ---@return string[]
+      local function run_in_shell(command)
+        local stdout = vim.system(command):wait().stdout
+
+        if not stdout then
+          return {}
+        end
+
+        local lines = vim.split(stdout, "\n")
+
+        if lines[#lines] == "" then
+          table.remove(lines, #lines)
+        end
+
+        return lines
+      end
+
+      ---create simple shell command snippet
+      ---@param trig string
+      ---@param command string[]
+      local function shell_snippet(trig, command)
+        return ls.snippet(trig, le.partial(run_in_shell, command))
+      end
+
+      ls.add_snippets("all", {
+        shell_snippet("uuidgen", { "uuidgen" }),
+        shell_snippet("date", { "date", "--iso-8601" }),
+        shell_snippet("datetime", { "date", "--rfc-3339=seconds" }),
+        shell_snippet("datetimei", { "date", "--iso-8601=seconds" }),
       })
 
       return {

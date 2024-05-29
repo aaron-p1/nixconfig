@@ -9,12 +9,15 @@
     cmp-nvim-lsp
     cmp_luasnip
     copilot-vim
+
+    nvim-autopairs
+    nvim-ts-autotag
   ];
   packages = with pkgs; [ fd ];
   config = # lua
     ''
-      local cmp = require('cmp')
-      local lk = require('lspkind')
+      local cmp = require("cmp")
+      local lk = require("lspkind")
 
       cmp.setup({
         sources = {
@@ -67,13 +70,35 @@
       vim.g.copilot_filetypes = { TelescopePrompt = false, DressingInput = false }
 
       vim.keymap.set("i", "<C-o>", 'copilot#Accept("")', { expr = true, replace_keycodes = false })
-      vim.keymap.set("i", "<C-S-o>", 'copilot#AcceptLine()', { expr = true, replace_keycodes = false })
-      vim.keymap.set("i", "<M-o>", 'copilot#AcceptWord()', { expr = true, replace_keycodes = false })
+      vim.keymap.set("i", "<C-S-o>", "copilot#AcceptLine()", { expr = true, replace_keycodes = false })
+      vim.keymap.set("i", "<M-o>", "copilot#AcceptWord()", { expr = true, replace_keycodes = false })
       vim.keymap.set("i", "<M-[>", "<Cmd>call copilot#Previous()<CR>", { silent = true })
       vim.keymap.set("i", "<M-]>", "<Cmd>call copilot#Next()<CR>", { silent = true })
 
+      require("nvim-autopairs").setup({
+        disable_filetype = { "TelescopePrompt", "dap-repl", "dapui_watches" },
+      })
+
+      cmp.event:on(
+        "confirm_done",
+        require("nvim-autopairs.completion.cmp").on_confirm_done({
+          -- map <CR> on insert mode
+          map_cr = false,
+          -- it will auto insert `()` after select function or method item
+          map_complete = true,
+          -- automatically select the first item
+          auto_select = true
+        })
+      )
+
+      require("nvim-ts-autotag").setup({
+        opts = {
+          enable_close_on_slash = true
+        }
+      })
+
       return {
-        lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+        lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
       }
     '';
 }

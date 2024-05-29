@@ -1,0 +1,39 @@
+{ pkgs, ... }:
+let
+  inherit (pkgs) fetchFromGitHub;
+  inherit (pkgs.vimUtils) buildVimPlugin;
+in {
+  match-visual-nvim = buildVimPlugin {
+    pname = "match-visual.nvim";
+    version = "2024-04-29";
+    src = fetchFromGitHub {
+      owner = "aaron-p1";
+      repo = "match-visual.nvim";
+      rev = "98540e79c151126187907278ff5bc61823edcebc";
+      sha256 = "sha256-wYBueqOcIfqJOFjdSAUHe8725i9dKmwqTxaNWW3gmg4=";
+    };
+    meta.homepage = "https://github.com/aaron-p1/match-visual.nvim";
+  };
+  virt-notes-nvim = buildVimPlugin {
+    pname = "virt-notes.nvim";
+    version = "2023-09-10";
+    src = fetchFromGitHub {
+      owner = "aaron-p1";
+      repo = "virt-notes.nvim";
+      rev = "1c43e82cc996e3df570b9d08a305bc7e5135ab0e";
+      sha256 = "sha256-I6oygOgFX3Bzy4rJ1MQUebxy+VGLBXJfXPPFsQZzubA=";
+    };
+    meta.homepage = "https://github.com/aaron-p1/virt-notes.nvim";
+  };
+  compare-remotes-nvim = buildVimPlugin {
+    pname = "compare-remotes.nvim";
+    version = "2023-02-15";
+    src = fetchFromGitHub {
+      owner = "aaron-p1";
+      repo = "compare-remotes.nvim";
+      rev = "501f6dba3c916204a3bf586d7b4b789a64157aad";
+      sha256 = "sha256-mEk8JgOjUp/3FDBu3DgumHqa3+kuT7SjzQLEmEvc42Y=";
+    };
+    meta.homepage = "https://github.com/aaron-p1/compare-remotes.nvim";
+  };
+}

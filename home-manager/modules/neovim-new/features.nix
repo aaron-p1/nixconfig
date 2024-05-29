@@ -6,6 +6,7 @@ let
   features = {
     fh = ./features/fhighlight.lua;
     ei = ./features/edit_injection.lua;
+    st = ./features/swap_textobjects.lua;
   };
 
   featureFunctions = pipe features [

@@ -1,11 +1,15 @@
-{ pkgs, ... }: {
+{ pkgs, localVimPlugins, ... }: {
   name = "common";
   plugins = with pkgs.vimPlugins; [
     vim-repeat
     vim-abolish
     vim-unimpaired
     nvim-surround
-    which-key-nvim
+    dial-nvim
+
+    localVimPlugins.compare-remotes-nvim
+    localVimPlugins.match-visual-nvim
+    localVimPlugins.virt-notes-nvim
   ];
   config = # lua
     ''
@@ -17,7 +21,7 @@
           { prompt = "Select spelllang" }, function(choice)
             if choice ~= nil then
               vim.opt_local.spelllang = choice
-              vim.opt_local.spellfile = Configs.base.spelldir .. '/' .. choice .. '.utf-8.add'
+              vim.opt_local.spellfile = Configs.base.spelldir .. "/" .. choice .. ".utf-8.add"
               vim.opt_local.spell = true
             end
           end)
@@ -32,23 +36,65 @@
         end
       end, { desc = "Toggle spell" })
 
-      require('nvim-surround').setup({
+      require("nvim-surround").setup({
         highlight = { duration = 0 },
         move_cursor = false,
         indent_lines = false,
       })
 
-      local wk = require("which-key")
-      wk.setup({
-        disable = { filetypes = { "TelescopePrompt", "DressingInput" } }
+      local da = require("dial.augend")
+      local dm = require("dial.map")
+
+      require("dial.config").augends:register_group({
+        default = {
+          da.integer.alias.decimal_int,
+          da.integer.alias.hex,
+          da.integer.alias.octal,
+          da.integer.alias.binary,
+          da.date.alias["%Y-%m-%d"],
+          da.date.alias["%d.%m.%Y"],
+          da.date.alias["%d.%m.%y"],
+          da.date.alias["%H:%M:%S"],
+          da.date.alias["%H:%M"],
+          da.constant.alias.bool,
+          da.semver.alias.semver,
+
+          da.constant.new({ elements = { "and", "or" }, word = true, cyclic = true }),
+          da.constant.new({ elements = { "&&", "||" }, word = false, cyclic = true }),
+          da.hexcolor.new({ case = "lower" })
+        }
       })
-      local function wk_register(config)
-        wk.register(config.map, {
-          prefix = config.prefix or "",
-          buffer = config.buffer
+
+      vim.keymap.set("n", "<C-a>", dm.inc_normal(), { desc = "Increment" })
+      vim.keymap.set("n", "<C-x>", dm.dec_normal(), { desc = "Decrement" })
+      vim.keymap.set("n", "g<C-a>", dm.inc_gnormal(), { desc = "Increment more per repeat" })
+      vim.keymap.set("n", "g<C-x>", dm.dec_gnormal(), { desc = "Decrement more per repeat" })
+      vim.keymap.set("v", "<C-a>", dm.inc_visual(), { desc = "Increment" })
+      vim.keymap.set("v", "<C-x>", dm.dec_visual(), { desc = "Decrement" })
+      vim.keymap.set("v", "g<C-a>", dm.inc_gvisual(), { desc = "Increment more per line" })
+      vim.keymap.set("v", "g<C-x>", dm.dec_gvisual(), { desc = "Decrement more per line" })
+
+      do
+        local remotes_file_content = table.concat(
+          vim.fn.readfile("${./secrets/static/comparable-remotes.json}")
+        )
+        local remotes_json = vim.json.decode(remotes_file_content)
+        local remote_keys = { "all", unpack(Configs.profiles.list_applied) }
+
+        local remotes_list = vim.tbl_map(function(profile)
+          return remotes_json[profile] or {}
+        end, remote_keys)
+
+        local remotes = vim.tbl_extend("force", {}, {}, unpack(remotes_list))
+
+        require("compare-remotes").setup({
+          remotes = remotes,
+          mapping = { key = "<Leader>cr" }
         })
       end
 
-      return { wk_register = wk_register }
+      require("match-visual").setup({ min_length = 2 })
+
+      require("virt-notes").setup()
     '';
 }

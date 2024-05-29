@@ -82,7 +82,7 @@
         local gsa = require("gitsigns.actions")
         kset({ "o", "x" }, "ih", gsa.select_hunk, { desc = "In hunk" })
 
-        Configs.common.wk_register({
+        Configs.which_key.register({
           buffer = bufnr,
           prefix = "<Leader>",
           map = { g = { name = "Git", h = { name = "Hunk" }, b = { name = "Blame" } } },
@@ -95,7 +95,7 @@
         on_attach = gs_attach,
       })
 
-      Configs.common.wk_register({
+      Configs.which_key.register({
         prefix = "<Leader>",
         map = { g = { name = "Git", b = { name = "Blame" } } },
       })
@@ -104,35 +104,35 @@
     ''
       local log_count = 50
 
-      vim.opt_local.foldmethod = 'syntax'
+      vim.opt_local.foldmethod = "syntax"
 
       local maps = {
-        p = 'pull',
-        f = 'fetch',
-        P = 'push',
-        l = 'log -' .. log_count,
-        L = 'log -' .. (log_count * 2),
+        p = "pull",
+        f = "fetch",
+        P = "push",
+        l = "log -" .. log_count,
+        L = "log -" .. (log_count * 2),
       }
 
       for key, command in pairs(maps) do
-        vim.keymap.set('n', '<Leader>g' .. key, '<Cmd>Git ' .. command .. '<CR>', { buffer = true })
+        vim.keymap.set("n", "<Leader>g" .. key, "<Cmd>Git " .. command .. "<CR>", { buffer = true })
       end
 
-      if vim.b.fugitive_type == 'index' then
-        vim.keymap.set('n', 'R', '<Cmd>Git<CR>', { buffer = true })
+      if vim.b.fugitive_type == "index" then
+        vim.keymap.set("n", "R", "<Cmd>Git<CR>", { buffer = true })
       end
 
-      Configs.common.wk_register({
+      Configs.which_key.register({
         buffer = 0,
-        prefix = '<Leader>',
+        prefix = "<Leader>",
         map = {
           g = {
-            name = 'Git',
-            p = 'Pull',
-            f = 'Fetch',
-            P = 'Push',
-            l = 'Log ' .. log_count,
-            L = 'Log ' .. (log_count * 2),
+            name = "Git",
+            p = "Pull",
+            f = "Fetch",
+            P = "Push",
+            l = "Log " .. log_count,
+            L = "Log " .. (log_count * 2),
           },
         },
       })
