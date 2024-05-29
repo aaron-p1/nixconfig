@@ -43,7 +43,10 @@
     git.enable = true;
 
     # ../modules/neovim.nix
-    neovim.enable = true;
+    neovim.enable = false;
+
+    # ../modules/neovim-new
+    neovim-new.enable = true;
 
     # ../modules/mpv.nix
     mpv.enable = true;
