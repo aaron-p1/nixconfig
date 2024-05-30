@@ -2,9 +2,9 @@
 let
   inherit (builtins) match readFile isAttrs listToAttrs concatLists;
   inherit (lib)
-    concatMap concatMapAttrs concatStringsSep filter isPath isString makeBinPath
-    mapAttrs mapAttrsToList mkEnableOption mkIf optionals optionalString pipe
-    throwIfNot unique;
+    concatMap concatMapAttrs concatStringsSep filter isPath hasPrefix isString
+    makeBinPath mapAttrs mapAttrsToList mkEnableOption mkIf optionals
+    optionalString pipe throwIfNot unique;
 
   cfg = config.within.neovim-new;
 
@@ -153,7 +153,7 @@ let
   flattenAttrs = flattenAttrs' "";
 
   readExtraFiles = mapAttrs (_: value:
-    if isPath value then
+    if isPath value || isString value && hasPrefix "/" value then
       readFile value
     else if isString value then
       value

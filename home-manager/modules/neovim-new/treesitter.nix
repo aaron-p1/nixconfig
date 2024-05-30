@@ -1,7 +1,27 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+let
+  ts = pkgs.vimPlugins.nvim-treesitter;
+
+  bladeParserVersion = "0.10.0";
+  bladeParserRepo = pkgs.fetchFromGitHub {
+    owner = "EmranMR";
+    repo = "tree-sitter-blade";
+    rev = "v${bladeParserVersion}";
+    sha256 = "sha256-sxnu2TvAvEnd2ftP+0hbhQGeiwWN1XY0RWHbDxQ3j88=";
+  };
+
+  bladeParser = pkgs.tree-sitter.buildGrammar {
+    language = "blade";
+    version = bladeParserVersion;
+    src = bladeParserRepo;
+    meta.homepage = "https://github.com/EmranMR/tree-sitter-blade";
+  };
+
+  nvim-treesitter = ts.withPlugins (_: ts.allGrammars ++ [ bladeParser ]);
+in {
   name = "treesitter";
   plugins = with pkgs.vimPlugins; [
-    nvim-treesitter.withAllGrammars
+    nvim-treesitter
     nvim-treesitter-textobjects
     vim-matchup
   ];
@@ -10,6 +30,10 @@
     php = {
       "textobjects.scm" = ./queries/php/textobjects.scm;
       "matchup.scm" = ./queries/php/matchup.scm;
+    };
+    blade = {
+      "highlights.scm" = ./queries/blade/highlights.scm;
+      "injections.scm" = bladeParserRepo + "/queries/injections.scm";
     };
   };
   config = # lua
