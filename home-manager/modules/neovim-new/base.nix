@@ -224,4 +224,5 @@
 
       return { spelldir = spelldir, test = remove_pid_from_term_title }
     '';
+  extraFiles.ftplugin."checkhealth.lua" = "vim.opt_local.spell = false";
 }
