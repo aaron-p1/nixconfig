@@ -197,7 +197,7 @@ let
     '') extraFileLists;
 
   rtpCommands = pipe extraFilePackages [
-    (map (extraFilePackage:
+    (map (extraFilePackage: # lua
       ''vim.opt.runtimepath:prepend("${extraFilePackage}")''))
     (concatStringsSep "\n")
     (cmd: cmd + "\n\n")
@@ -206,7 +206,7 @@ let
   luaRcContent = (optionalString (extraFileLists != { }) rtpCommands)
     + domainConfigs;
 
-  neovim = pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
+  neovim = (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
     packpathDirs.myNeovimPackages = {
       start = plugins;
       opt = [ ];
@@ -214,7 +214,19 @@ let
     inherit wrapperArgs luaRcContent;
 
     withPython3 = false;
-  };
+  }).overrideAttrs (old: {
+    doCheck = true;
+    checkPhase = ''
+      # is in /bin/nvim last line after -u
+      luaRcFile=$(tail -n 1 $out/bin/nvim | grep -oP '.*-u \K\S*')
+
+      # 131: Unused implicitly defined global variable.
+      # 611: A line consists of nothing but whitespace.
+      ${pkgs.buildPackages.luaPackages.luacheck}/bin/luacheck \
+        --std luajit --globals vim --allow-defined --no-max-line-length \
+        --no-unused --ignore 131 611 -- $luaRcFile
+    '';
+  });
 in {
   options.within.neovim-new = {
     enable = mkEnableOption "Neovim New";
