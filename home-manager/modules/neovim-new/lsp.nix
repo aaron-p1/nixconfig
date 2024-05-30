@@ -3,9 +3,7 @@
   plugins = with pkgs.vimPlugins; [
     nvim-lspconfig
     SchemaStore-nvim
-
     none-ls-nvim
-    plenary-nvim
   ];
   packages = with pkgs;
     let
