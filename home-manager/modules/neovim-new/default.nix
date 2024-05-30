@@ -23,6 +23,7 @@ let
     ./telescope.nix
     ./lsp.nix
     ./files.nix
+    ./dap.nix
   ];
 
   defaultValues = {
