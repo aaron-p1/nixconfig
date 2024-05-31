@@ -1,0 +1,16 @@
+diff --git a/autoload/db.vim b/autoload/db.vim
+index 9027d31..473aeed 100644
+--- a/autoload/db.vim
++++ b/autoload/db.vim
+@@ -313,7 +313,10 @@ function! s:query_callback(query, start_reltime, lines, status) abort
+   let job = remove(a:query, 'job')
+   let a:query.runtime = reltimefloat(reltime(a:start_reltime))
+   let a:query.exit_status = a:status
+-  call writefile(a:lines, a:query.output, 'b')
++
++  let fixed_lines = v:lua.Db_fix_lines(a:lines)
++
++  call writefile(fixed_lines, a:query.output, 'b')
+   let status_msg = 'DB: Query ' . string(a:query.output)
+   let status_msg .= a:status ? ' aborted after ' : ' finished in '
+   let status_msg .= printf('%.3fs', a:query.runtime)

@@ -24,6 +24,7 @@ let
     ./lsp.nix
     ./files.nix
     ./dap.nix
+    ./db.nix
   ];
 
   defaultValues = {

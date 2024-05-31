@@ -19,14 +19,16 @@
       local cmp = require("cmp")
       local lk = require("lspkind")
 
+      local default_sources = {
+        nvim_lsp = { name = "nvim_lsp" },
+        luasnip = { name = "luasnip" },
+        path = { name = "path", options = { fd_timeout_msec = 1000, fd_cmd = { "fd", "-d", "4", "-p" } } },
+        calc = { name = "calc" },
+        buffer = { name = "buffer", option = { get_bufnrs = function() return vim.api.nvim_list_bufs() end } },
+      }
+
       cmp.setup({
-        sources = {
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "path",    options = { fd_timeout_msec = 1000, fd_cmd = { "fd", "-d", "4", "-p" } } },
-          { name = "calc" },
-          { name = "buffer",  option = { get_bufnrs = function() return vim.api.nvim_list_bufs() end } },
-        },
+        sources = vim.tbl_values(default_sources),
         snippet = {
           expand = function(args)
             Configs.snippets.lsp_expand(args.body)
@@ -58,6 +60,7 @@
               path = "[P]",
               buffer = "[B]",
               calc = "[C]",
+              ["vim-dadbod-completion"] = "[DB]",
             }
           })
         },
@@ -98,7 +101,9 @@
       })
 
       return {
-        lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+        cmp_setup = cmp.setup,
+        default_sources = default_sources,
+        lsp_capabilities = require("cmp_nvim_lsp").default_capabilities(),
       }
     '';
 }
