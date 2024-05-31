@@ -47,6 +47,65 @@ in {
           vue-js-devtools
         ];
 
+        search.default = "DuckDuckGo";
+        search.engines = let
+          nixIcon =
+            "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+        in {
+          "Nix Packages" = {
+            urls = [{
+              template = "https://search.nixos.org/packages";
+              params = [
+                {
+                  name = "channel";
+                  value = "unstable";
+                }
+                {
+                  name = "query";
+                  value = "{searchTerms}";
+                }
+              ];
+            }];
+
+            icon = nixIcon;
+            definedAliases = [ "@np" ];
+          };
+
+          "Nix Options" = {
+            urls = [{
+              template = "https://search.nixos.org/options";
+              params = [
+                {
+                  name = "channel";
+                  value = "unstable";
+                }
+                {
+                  name = "query";
+                  value = "{searchTerms}";
+                }
+              ];
+            }];
+
+            icon = nixIcon;
+            definedAliases = [ "@no" ];
+          };
+
+          "NixOS Wiki" = {
+            urls = [{
+              template = "https://wiki.nixos.org/w/index.php";
+              params = [{
+                name = "search";
+                value = "{searchTerms}";
+              }];
+            }];
+
+            icon = nixIcon;
+            definedAliases = [ "@nw" ];
+          };
+
+          "Google".metaData.alias = "@g";
+        };
+
         userChrome =
           # CSS
           ''
