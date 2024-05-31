@@ -44,7 +44,7 @@
         })
       end, { desc = "Files" })
       vim.keymap.set("n", "<Leader>fe", function()
-        tb.git_files({ git_cammand = { "git", "diff", "--name-only" } })
+        tb.git_files({ git_command = { "git", "diff", "--name-only" } })
       end, { desc = "Git changed files" })
 
       -- Search (needs ripgrep)
