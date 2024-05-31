@@ -7,6 +7,7 @@
     nvim-surround
     dial-nvim
 
+    localVimPlugins.ts-node-action
     localVimPlugins.compare-remotes-nvim
     localVimPlugins.match-visual-nvim
     localVimPlugins.virt-notes-nvim
@@ -73,6 +74,8 @@
       vim.keymap.set("v", "<C-x>", dm.dec_visual(), { desc = "Decrement" })
       vim.keymap.set("v", "g<C-a>", dm.inc_gvisual(), { desc = "Increment more per line" })
       vim.keymap.set("v", "g<C-x>", dm.dec_gvisual(), { desc = "Decrement more per line" })
+
+      vim.keymap.set("n", "<C-S-a>", require("ts-node-action").node_action, { desc = "Node action" })
 
       do
         local remotes_file_content = table.concat(

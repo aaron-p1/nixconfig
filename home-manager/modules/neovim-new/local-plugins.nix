@@ -36,4 +36,16 @@ in {
     };
     meta.homepage = "https://github.com/aaron-p1/compare-remotes.nvim";
   };
+  ts-node-action = buildVimPlugin {
+    pname = "ts-node-action";
+    version = "2024-05-30";
+    src = fetchFromGitHub {
+      owner = "CKolkey";
+      repo = "ts-node-action";
+      rev = "6d3b60754fd87963d70eadaa2f77873b447eac26";
+      sha256 = "sha256-kOXH3r+V+DAxoATSnZepEAekrkO1TezKSkONuQ3Kzu4=";
+    };
+    meta.homepage = "https://github.com/CKolkey/ts-node-action";
+    dependencies = [ pkgs.vimPlugins.nvim-treesitter ];
+  };
 }
