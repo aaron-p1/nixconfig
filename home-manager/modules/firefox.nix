@@ -49,6 +49,8 @@ in {
         ];
 
         search.default = "DuckDuckGo";
+        search.privateDefault = "DuckDuckGo";
+        search.force = true;
         search.engines = let
           nixIcon =
             "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
