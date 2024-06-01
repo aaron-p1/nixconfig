@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ../../nixos/modules ];
 
   powerManagement.cpuFreqGovernor = "ondemand";
@@ -19,7 +19,11 @@
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    modesetting.enable = true;
+  };
+  boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
 
   within = {
     # ../../nixos/modules/boot.nix
