@@ -42,6 +42,7 @@ in {
           return-youtube-dislikes
           sidebery
           sponsorblock
+          dearrow
           ublock-origin
           videospeed
           vue-js-devtools
