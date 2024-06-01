@@ -64,7 +64,7 @@ in {
 
       profiles = { p = { af = "scaletempo=stride=28:overlap=.9:search=25"; }; };
 
-      scripts = with pkgs.mpvScripts; [ mpris sponsorblock ];
+      scripts = with pkgs.mpvScripts; [ mpris ];
     };
   };
 }
