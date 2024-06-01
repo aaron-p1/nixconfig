@@ -35,7 +35,9 @@ in {
       bindings = {
         "CTRL+UP" = "seek +3600 relative";
         "CTRL+DOWN" = "seek -3600 relative";
+        "Ctrl+i" = "seek +85 relative";
         "ſ" = "seek 0 absolute";
+        "Ctrl+BS" = "no-osd sub-seek 0";
       };
 
       config = {
