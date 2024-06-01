@@ -40,8 +40,8 @@
         ''
           local host = vim.env.NVIM_PROFILE_NIXSERVER_HOST
 
-          Configs.utils.add_term_keymaps("<Leader>cpd", "deploy .\\\\# " .. host)
-          Configs.utils.add_term_keymaps("<Leader>cpb", "deploy --boot .\\\\# " .. host)
+          Configs.utils.add_term_keymaps("<Leader>cpd", "deploy .\\\\#" .. host)
+          Configs.utils.add_term_keymaps("<Leader>cpb", "deploy --boot .\\\\#" .. host)
 
           Configs.which_key.register({
             prefix = "<Leader>cp",
