@@ -42,12 +42,16 @@
 
           Configs.utils.add_term_keymaps("<Leader>cpd", "deploy .\\\\#" .. host)
           Configs.utils.add_term_keymaps("<Leader>cpb", "deploy --boot .\\\\#" .. host)
+          Configs.utils.add_term_keymaps("<Leader>cps", "ssh " .. host)
+          Configs.utils.add_term_keymaps("<Leader>cpS", "ssh " .. host .. " -- exit")
 
           Configs.which_key.register({
             prefix = "<Leader>cp",
             map = {
               d = { name = "Deploy to server" },
-              b = { name = "Deploy to server without switching" }
+              b = { name = "Deploy to server without switching" },
+              s = { name = "SSH to server" },
+              S = { name = "Only create SSH connection" }
             }
           })
         '';
