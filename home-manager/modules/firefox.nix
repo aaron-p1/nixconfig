@@ -167,8 +167,30 @@ in {
         userChrome =
           # CSS
           ''
-            #main-window[titlepreface*="​"] #TabsToolbar {
+            /* context menu no navigation buttons */
+            #context-navigation, #context-sep-navigation {
               display: none !important;
+            }
+
+            /* hide empty tab notifications (e.g. translation) */
+            #tab-notification-deck notification:empty {
+              display: none !important;
+            }
+
+            /* Sidebery hide tab bar and side bar title
+                if Sidebery is open in sidebar */
+            #main-window:has(
+              #sidebar-box/*
+              */[sidebarcommand="_${sideberyId}_-sidebar-action"]/*
+              */:not([hidden="true"])
+            ) {
+              #TabsToolbar {
+                display: none !important;
+              }
+
+              #sidebar-header {
+                display: none !important;;
+              }
             }
           '';
 
