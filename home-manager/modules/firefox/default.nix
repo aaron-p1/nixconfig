@@ -1,13 +1,14 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (lib) removePrefix removeSuffix mkEnableOption mkIf;
+  inherit (builtins) head match readFile;
+  inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.firefox;
 
-  toPlainId = id: removePrefix "{" (removeSuffix "}" id);
+  toPlainAddonId = addonId: head (match "^\\{(.*)}$" addonId);
 
   sidebery = pkgs.nur.repos.rycee.firefox-addons.sidebery;
-  sideberyId = toPlainId sidebery.addonId;
+  sideberyId = toPlainAddonId sidebery.addonId;
 
   # https://www.userchrome.org/what-is-userchrome-js.html#combinedloader
   firefox = (pkgs.firefox.overrideAttrs (old: {
@@ -18,7 +19,7 @@ let
   })).override {
     extraPrefs = # javascript
       ''
-        function applyCustomScriptToNewWindow(win){
+        function runInWindow(win){
           function getElem(elem){
             return win.document.getElementById(elem);
           }
@@ -35,23 +36,7 @@ let
           getElem("key_newNavigator")?.setAttribute("modifiers", "accel,shift");
         }
 
-        /* Single function userChrome.js loader to run the above init function (no external scripts)
-          derived from https://www.reddit.com/r/firefox/comments/kilmm2/ */
-        try {
-          let { classes: Cc, interfaces: Ci, manager: Cm  } = Components;
-          const Services = globalThis.Services;
-          function ConfigJS() { Services.obs.addObserver(this, 'chrome-document-global-created', false); }
-          ConfigJS.prototype = {
-            observe: function (aSubject) { aSubject.addEventListener('DOMContentLoaded', this, {once: true}); },
-            handleEvent: function (aEvent) {
-              let document = aEvent.originalTarget; let window = document.defaultView; let location = window.location;
-              if (/^(chrome:(?!\/\/(global\/content\/commonDialog|browser\/content\/webext-panels)\.x?html)|about:(?!blank))/i.test(location.href)) {
-                if (window._gBrowser) applyCustomScriptToNewWindow(window);
-              }
-            }
-          };
-          if (!Services.appinfo.inSafeMode) { new ConfigJS(); }
-        } catch(ex) {};
+        ${readFile ./user-chome-js-loader.js}
       '';
   };
 in {
@@ -193,15 +178,13 @@ in {
                * - same dark border as top navigator toolbox
                * - dragging hit box should stay the same
                */
-              #sidebar-box {
-                border-right: 0.01px solid var(--chrome-content-separator-color) !important;
-              }
               #sidebar-splitter {
                 width: 6px !important;
-                margin-right: -6px !important;
+                margin-right: -5px !important;
                 z-index: 1 !important;
                 background: transparent !important;
                 border: none !important;
+                border-left: 1px solid var(--chrome-content-separator-color) !important;
               }
             }
           '';

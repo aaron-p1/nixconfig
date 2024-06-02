@@ -6,7 +6,7 @@ in {
     ./chromium.nix
     ./direnv.nix
     ./easyeffects.nix
-    ./firefox.nix
+    ./firefox
     ./git.nix
     ./gpg.nix
     ./idea-ultimate.nix
