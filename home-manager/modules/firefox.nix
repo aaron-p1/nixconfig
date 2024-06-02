@@ -164,8 +164,7 @@ in {
           "Bing".metaData.hidden = true;
         };
 
-        userChrome =
-          # CSS
+        userChrome = # CSS
           ''
             /* context menu no navigation buttons */
             #context-navigation, #context-sep-navigation {
@@ -180,9 +179,7 @@ in {
             /* Sidebery hide tab bar and side bar title
                 if Sidebery is open in sidebar */
             #main-window:has(
-              #sidebar-box/*
-              */[sidebarcommand="_${sideberyId}_-sidebar-action"]/*
-              */:not([hidden="true"])
+              #sidebar-box[sidebarcommand*="${sideberyId}"]:not([hidden="true"])
             ) {
               #TabsToolbar {
                 display: none !important;
@@ -191,11 +188,25 @@ in {
               #sidebar-header {
                 display: none !important;;
               }
+
+              /** change style of sidebar splitter:
+               * - same dark border as top navigator toolbox
+               * - dragging hit box should stay the same
+               */
+              #sidebar-box {
+                border-right: 0.01px solid var(--chrome-content-separator-color) !important;
+              }
+              #sidebar-splitter {
+                width: 6px !important;
+                margin-right: -6px !important;
+                z-index: 1 !important;
+                background: transparent !important;
+                border: none !important;
+              }
             }
           '';
 
-        userContent =
-          # CSS
+        userContent = # CSS
           ''
             @-moz-document domain(chatgpt.com) {
               @media (min-width: 1280px) {
