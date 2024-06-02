@@ -55,7 +55,7 @@ in {
           ignoreDups = true;
           share = false;
           ignoreSpace = true;
-          path = ".local/share/zsh/zsh_history";
+          path = "${config.xdg.dataHome}/zsh/zsh_history";
           save = 100000;
         };
         oh-my-zsh = {

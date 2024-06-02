@@ -91,6 +91,6 @@
       local.ask
     ];
 
-    stateVersion = "18.09";
+    stateVersion = "21.05";
   };
 }
