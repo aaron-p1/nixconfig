@@ -78,6 +78,7 @@ in {
           "browser.urlbar.trimURLs" = false;
           "devtools.theme" = "dark";
           "devtools.toolbox.host" = "window";
+          "extensions.pocket.enabled" = false;
           "extensions.update.autoUpdateDefault" = false;
           "general.useragent.locale" = "de-DE";
           "intl.regional_prefs.use_os_locales" = true;
