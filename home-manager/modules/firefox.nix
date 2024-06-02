@@ -161,6 +161,7 @@ in {
           };
 
           "Google".metaData.alias = "@g";
+          "Bing".metaData.hidden = true;
         };
 
         userChrome =
