@@ -38,6 +38,36 @@ in {
   };
   config = # lua
     ''
+      local t_start = vim.treesitter.start
+
+      local big_file_size = 1024 * 256
+      local is_big_file_buffer = {}
+
+      local function calc_big_file(bufnr)
+        local line_count = vim.api.nvim_buf_line_count(bufnr)
+        local buffer_size = vim.api.nvim_buf_get_offset(bufnr, line_count)
+        return buffer_size > big_file_size or buffer_size / line_count > vim.o.synmaxcol
+      end
+
+      local function is_big_file(bufnr)
+        if is_big_file_buffer[bufnr] ~= nil then
+          return is_big_file_buffer[bufnr]
+        end
+
+        local big_file = calc_big_file(bufnr)
+        is_big_file_buffer[bufnr] = big_file
+        return big_file
+      end
+
+      local function new_t_start(bufnr, lang)
+        bufnr = bufnr or vim.api.nvim_get_current_buf()
+        if vim.api.nvim_buf_is_loaded(bufnr) and not is_big_file(bufnr) then
+          t_start(bufnr, lang)
+        end
+      end
+
+      vim.treesitter.start = new_t_start
+
       require("nvim-treesitter.configs").setup({
         highlight = {
           enable = true,
