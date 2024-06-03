@@ -21,7 +21,7 @@
         nodePackages.volar
       ] ++ nills ++ bashls;
 
-      none-ls = [ editorconfig-checker nodePackages.prettier ];
+      none-ls = [ editorconfig-checker prettierd ];
     in lsp ++ none-ls;
   config = let
     tsLib = "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib";
@@ -94,7 +94,11 @@
     end
 
     local default_config = {
-      capabilities = Configs.completion.lsp_capabilities,
+      capabilities = vim.tbl_deep_extend(
+        "force",
+        Configs.completion.lsp_capabilities,
+        { offsetEncoding = { "utf-16" } }
+      ),
       on_attach = on_attach
     }
 
@@ -175,7 +179,7 @@
           method = nls.methods.DIAGNOSTICS_ON_SAVE,
           disabled_filetypes = { "gitcommit" }
         }),
-        f.prettier
+        f.prettierd
       },
       should_attach = function(bufnr)
         return not vim.tbl_contains(disabled_filetypes, vim.bo[bufnr].filetype)
