@@ -44,6 +44,7 @@ in {
           "text/plain" = nvim;
         };
       };
+      configFile."mimeapps.list".force = true;
 
       desktopEntries = let
         terminalCfg = cfg.desktopEntries.terminal;
