@@ -34,6 +34,9 @@ let
           // ctrl+n will be used for Sidebery next tab
           getElem("key_undoCloseWindow")?.setAttribute("modifiers", "accel,shift,alt");
           getElem("key_newNavigator")?.setAttribute("modifiers", "accel,shift");
+
+          // ctrl+s will be used for Sidebery search
+          getElem("key_savePage")?.remove();
         }
 
         ${readFile ./user-chome-js-loader.js}
