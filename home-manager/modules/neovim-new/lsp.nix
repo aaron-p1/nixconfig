@@ -17,6 +17,7 @@
         nodePackages.vscode-langservers-extracted # html css json
         nodePackages.yaml-language-server
         nodePackages."@tailwindcss/language-server"
+        nodePackages.typescript-language-server
         nodePackages.volar
       ] ++ nills ++ bashls;
 
