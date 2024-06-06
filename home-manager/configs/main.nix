@@ -64,6 +64,9 @@
 
     # ../modules/shell-scripts.nix
     shellScripts.enable = true;
+
+    # ../modules/gh.nix
+    gh.enable = true;
   };
 
   home = {

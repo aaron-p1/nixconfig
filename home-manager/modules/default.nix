@@ -7,6 +7,7 @@ in {
     ./direnv.nix
     ./easyeffects.nix
     ./firefox
+    ./gh.nix
     ./git.nix
     ./gpg.nix
     ./idea-ultimate.nix
