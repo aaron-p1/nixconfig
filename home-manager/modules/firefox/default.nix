@@ -24,6 +24,52 @@ let
             return win.document.getElementById(elem);
           }
 
+          // make Esc focus website
+          {
+            function focusWebsite(event) {
+              if (event.key !== "Escape") {
+                return;
+              }
+
+              // for some reason, Sidebery search input needs over 100 ms delay
+              // ctrl+f search, etc. only needs 10 ms
+              const time = win.document.activeElement.id === "sidebar" ? 150 : 10;
+
+              win.setTimeout(() => {
+                const browser = win.gBrowser.selectedBrowser
+
+                if (win.document.activeElement === browser) {
+                  return;
+                }
+
+                browser.focus()
+              }, time)
+            }
+
+            win.document.addEventListener("keydown", focusWebsite, true);
+          }
+
+          // ctrl+alt+shift+l will load current page with http
+          {
+            function loadHttp(event) {
+              if (!event.ctrlKey || !event.altKey || !event.shiftKey || event.key !== 'L') {
+                return;
+              }
+
+              const browser = win.gBrowser.selectedBrowser
+              const url = browser.currentURI.spec
+
+              if (url.startsWith("https://")) {
+                const principal = Services.scriptSecurityManager.getSystemPrincipal()
+                const uri = Services.io.newURI(url.replace("https://", "http://"))
+
+                browser.loadURI(uri, {triggeringPrincipal: principal})
+              }
+            }
+
+            win.document.addEventListener("keydown", loadHttp, true);
+          }
+
           // ctrl+o will be used for Sidebery prev active tab
           getElem("openFileKb")?.remove();
           // ctrl+i will be used for Sidebery next active tab
@@ -72,6 +118,7 @@ in {
           "general.useragent.locale" = "de-DE";
           "intl.regional_prefs.use_os_locales" = true;
           "media.ffmpeg.vaapi.enabled" = true;
+          "permissions.default.shortcuts" = 2;
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         };
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
