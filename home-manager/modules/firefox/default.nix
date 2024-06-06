@@ -83,6 +83,26 @@ let
 
           // ctrl+s will be used for Sidebery search
           getElem("key_savePage")?.remove();
+
+          // ctrl+s should always focus Sidebery search in sidebar
+          {
+            function focusSideberySearch(event) {
+              if (!event.ctrlKey || event.key !== 's') {
+                return;
+              }
+
+              if (!win.document.querySelector('#sidebar-box[sidebarcommand*="${sideberyId}"]:not([hidden="true"])')) {
+                return;
+              }
+
+              if (win.sidebar) {
+                Services.focus.moveFocus(win.sidebar, null, null, Services.focus.FLAG_BYKEY)
+                win.sidebar.document.getElementById("webext-panels-browser").focus()
+              }
+            }
+
+            win.document.addEventListener("keydown", focusSideberySearch, true);
+          }
         }
 
         ${readFile ./user-chome-js-loader.js}
@@ -235,6 +255,13 @@ in {
                 background: transparent !important;
                 border: none !important;
                 border-left: 1px solid var(--chrome-content-separator-color) !important;
+              }
+
+              /** Don't show top right search input.
+               * Used with focusSideberySearch function.
+               */
+              #customizationui-widget-panel[viewId*="${sideberyId}"] {
+                display: none !important;
               }
             }
           '';
