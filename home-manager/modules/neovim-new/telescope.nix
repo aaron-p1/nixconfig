@@ -2,7 +2,7 @@
   name = "telescope";
   plugins = with pkgs.vimPlugins; [
     telescope-nvim
-    telescope-zf-native-nvim
+    telescope-fzf-native-nvim
     telescope-symbols-nvim
   ];
   packages = [ pkgs.fd pkgs.ripgrep ];
@@ -12,7 +12,7 @@
 
       tl.setup({ defaults = { preview = { filesize_limit = 1 } } })
 
-      tl.load_extension("zf-native")
+      tl.load_extension("fzf")
 
       local tb = require("telescope.builtin")
 
