@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   name = "git";
-  plugins = with pkgs.vimPlugins; [ vim-fugitive gitsigns-nvim ];
+  plugins = with pkgs.vimPlugins; [ vim-fugitive gitsigns-nvim diffview-nvim ];
   config = # lua
     ''
       vim.keymap.set("n", "<Leader>gbb", "<Cmd>Git blame<CR>", { silent = true, desc = "Whole file" })
@@ -95,9 +95,66 @@
         on_attach = gs_attach,
       })
 
+      local dv = require("diffview")
+      local dva = require("diffview.actions")
+
+      dv.setup({
+        file_panel = { win_config = { position = "right" } },
+        keymaps = {
+          disable_defaults = true,
+          view = { ["<Tab>"] = dva.select_next_entry, ["<S-Tab>"] = dva.select_prev_entry },
+          file_panel = {
+            ["<CR>"] = dva.focus_entry,
+            ["<Tab>"] = dva.select_next_entry,
+            ["<S-Tab>"] = dva.select_prev_entry,
+            i = dva.listing_style,
+            R = dva.refresh_files,
+          },
+          file_history_panel = {
+            ["<CR>"] = dva.select_entry,
+            ["g!"] = dva.options,
+            L = dva.open_commit_log,
+            ["<Tab>"] = dva.select_next_entry,
+            ["<S-Tab>"] = dva.select_prev_entry,
+            gf = dva.goto_file_tab,
+            gy = dva.copy_hash,
+          },
+          option_panel = { ["<Tab>"] = dva.select_entry, q = dva.close },
+        },
+        hooks = { diff_buf_read = function() vim.opt_local.wrap = false end },
+      })
+
+      function _G.Diffview_file_history()
+        local start_line = vim.api.nvim_buf_get_mark(0, "[")[1]
+        local end_line = vim.api.nvim_buf_get_mark(0, "]")[1]
+        dv.file_history({ start_line, end_line })
+      end
+
+      vim.keymap.set("n", "<Leader>gdf", "<Cmd>DiffviewFileHistory %<CR>", { silent = true, desc = "Current file history" })
+      vim.keymap.set({ "n", "v" }, "<Leader>gdF", "<Cmd>DiffviewFileHistory<CR>", { silent = true, desc = "All file history" })
+      vim.keymap.set("n", "<Leader>gdr", "<Cmd>set operatorfunc=v:lua.Diffview_file_history<CR>g@",
+        { silent = true, desc = "Ranged file history" })
+      vim.keymap.set("n", "<Leader>gdcf", function()
+        dv.file_history(nil, { "--range=ORIG_HEAD..FETCH_HEAD" })
+      end, { silent = true, desc = "Fetched" })
+      vim.keymap.set("n", "<Leader>gdch", function()
+        dv.file_history(nil, { "--range=ORIG_HEAD..HEAD" })
+      end, { silent = true, desc = "Head" })
+
       Configs.which_key.register({
         prefix = "<Leader>",
-        map = { g = { name = "Git", b = { name = "Blame" } } },
+        map = {
+          g = {
+            name = "Git",
+            b = { name = "Blame" },
+            d = {
+              name = "Diffview",
+              c = {
+                name = "Commits",
+              },
+            },
+          }
+        },
       })
     '';
   extraFiles.ftplugin."fugitive.lua" = # lua
