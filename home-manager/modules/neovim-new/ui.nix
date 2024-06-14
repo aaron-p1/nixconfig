@@ -45,6 +45,8 @@
           CmpItemAbbrMatch = { link = "GruvboxRedBold" },
           CmpItemAbbrMatchFuzzy = { link = "GruvboxYellow" },
 
+          NvimTreeWindowPicker = { fg = gb.palette.dark0 },
+
           CopilotSuggestion = { fg = "#00FF88", italic = true },
 
           VirtNote = { fg = gb.palette.bright_blue, bg = gb.palette.dark2 },
