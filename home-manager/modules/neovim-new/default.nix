@@ -215,7 +215,8 @@ let
     };
     inherit wrapperArgs luaRcContent;
 
-    withPython3 = false;
+    # CopilotChat-nvim
+    withPython3 = true;
   }).overrideAttrs (old: {
     doCheck = true;
     checkPhase = ''

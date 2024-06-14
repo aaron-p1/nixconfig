@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   name = "completion";
   plugins = with pkgs.vimPlugins; [
     nvim-cmp
@@ -9,6 +9,9 @@
     cmp-nvim-lsp
     cmp_luasnip
     copilot-vim
+    (CopilotChat-nvim.overrideAttrs (old: {
+      dependencies = lib.remove pkgs.vimPlugins.copilot-lua old.dependencies;
+    }))
 
     nvim-autopairs
     nvim-ts-autotag
@@ -78,6 +81,30 @@
       vim.keymap.set("i", "<M-[>", "<Cmd>call copilot#Previous()<CR>", { silent = true })
       vim.keymap.set("i", "<M-]>", "<Cmd>call copilot#Next()<CR>", { silent = true })
 
+      local cc = require("CopilotChat")
+      local ccs = require("CopilotChat")
+      local cca = require("CopilotChat.actions")
+      local ccit = require("CopilotChat.integrations.telescope")
+
+      cc.setup({
+        mappings = {
+          complete = {
+            insert = "",
+          },
+        }
+      })
+      -- require("CopilotChat.integrations.cmp").setup()
+
+      vim.keymap.set({ "n", "v" }, "<Leader>CC", "<Cmd>CopilotChat<CR>", { desc = "Chat" })
+      vim.keymap.set("n", "<Leader>Cb", function()
+        cc.open({ selection = ccs.buffer })
+      end, { desc = "Chat buffer" })
+      vim.keymap.set("n", "<Leader>fC", function()
+        ccit.pick(cca.help_actions())
+      end, { desc = "Copilot chat actions" })
+
+      vim.treesitter.language.register("diff", "copilot-diff")
+
       require("nvim-autopairs").setup({
         disable_filetype = { "TelescopePrompt", "dap-repl", "dapui_watches" },
       })
@@ -97,6 +124,13 @@
       require("nvim-ts-autotag").setup({
         opts = {
           enable_close_on_slash = true
+        }
+      })
+
+      Configs.which_key.register({
+        prefix = "<Leader>",
+        map = {
+          C = { name = "Copilot chat" }
         }
       })
 
