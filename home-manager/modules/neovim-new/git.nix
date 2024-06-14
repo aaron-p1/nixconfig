@@ -1,8 +1,14 @@
 { pkgs, ... }: {
   name = "git";
-  plugins = with pkgs.vimPlugins; [ vim-fugitive gitsigns-nvim diffview-nvim ];
+  plugins = with pkgs.vimPlugins; [
+    vim-fugitive
+    vim-rhubarb
+    gitsigns-nvim
+    diffview-nvim
+  ];
   config = # lua
     ''
+      vim.keymap.set({ "n", "v" }, "<Leader>go", ":GBrowse<CR>", { silent = true, desc = "Open in browser" })
       vim.keymap.set("n", "<Leader>gbb", "<Cmd>Git blame<CR>", { silent = true, desc = "Whole file" })
       vim.keymap.set("n", "<Leader>gcc", "<Cmd>Gvsplit @:%<CR>", { silent = true, desc = "Open before changes" })
 
