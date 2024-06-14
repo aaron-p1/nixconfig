@@ -7,6 +7,7 @@ let
     fh = ./features/fhighlight.lua;
     ei = ./features/edit_injection.lua;
     st = ./features/swap_textobjects.lua;
+    cm = ./features/changed_marks.lua;
   };
 
   featureFunctions = pipe features [
