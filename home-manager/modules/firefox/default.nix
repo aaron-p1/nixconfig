@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   inherit (builtins) head match readFile;
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) replaceStrings mkEnableOption mkIf;
 
   cfg = config.within.firefox;
 
@@ -9,6 +9,9 @@ let
 
   sidebery = pkgs.nur.repos.rycee.firefox-addons.sidebery;
   sideberyId = toPlainAddonId sidebery.addonId;
+
+  # needed because in the js file, template strings are removed for some reason
+  toJsString = replaceStrings [ "\n" ] [ "" ];
 
   # https://www.userchrome.org/what-is-userchrome-js.html#combinedloader
   firefox = (pkgs.firefox.overrideAttrs (old: {
@@ -102,6 +105,43 @@ let
             }
 
             win.document.addEventListener("keydown", focusSideberySearch, true);
+          }
+
+          // remove app.asana.com key bindings
+          {
+            const keyRemover = '${
+              toJsString # javascript
+              ''
+                (function() {
+                  var observer = {
+                    observe(subject, topic, data) {
+                      if (topic === "content-document-global-created") {
+                        let window = subject;
+
+                        if (window.location.hostname !== "app.asana.com") {
+                          return;
+                        }
+
+                        window.document.addEventListener("keydown", e => {
+                          if (e.target && !e.target.className.toLowerCase().includes("editor")) {
+                            e.stopImmediatePropagation();
+                          }
+                        }, true);
+                      }
+                    }
+                  };
+
+                  Services.obs.addObserver(observer, "content-document-global-created");
+
+                  addEventListener("unload", () => {
+                    Services.obs.removeObserver(observer, "content-document-global-created");
+                  });
+                })()
+              ''
+            }';
+
+            // Load the frame script into all existing and future content processes
+            Services.mm.loadFrameScript("data:,(" + win.encodeURIComponent(keyRemover) + ")", true);
           }
         }
 
