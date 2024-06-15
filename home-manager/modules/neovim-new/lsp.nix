@@ -9,7 +9,9 @@
     let
       nills = [ nil nixfmt-classic ];
 
-      bashls = [ nodePackages.bash-language-server shellcheck shfmt ];
+      bashls = [ bash-language-server shellcheck shfmt ];
+
+      rustAnalyzerLs = [ rust-analyzer rustfmt ];
 
       lsp = [
         sumneko-lua-language-server
@@ -19,7 +21,7 @@
         nodePackages."@tailwindcss/language-server"
         nodePackages.typescript-language-server
         nodePackages.volar
-      ] ++ nills ++ bashls;
+      ] ++ nills ++ bashls ++ rustAnalyzerLs;
 
       none-ls = [ editorconfig-checker prettierd ];
     in lsp ++ none-ls;
@@ -165,6 +167,8 @@
     setup("yamlls")
 
     setup("graphql")
+
+    setup("rust_analyzer")
 
     local nls = require("null-ls")
 
