@@ -179,6 +179,29 @@
           })
         '';
 
+      cargo.startup = # lua
+        ''
+          Configs.utils.add_term_keymaps("<Leader>cpb", "cargo build")
+          Configs.utils.add_term_keymaps("<Leader>cpB", "cargo build --release")
+          Configs.utils.add_term_keymaps("<Leader>cpd", "cargo doc --open")
+          Configs.utils.add_term_keymaps("<Leader>cpr", "cargo run")
+          Configs.utils.add_term_keymaps("<Leader>cpt", "cargo test")
+          Configs.utils.add_term_keymaps("<Leader>cpc", "cargo check")
+          Configs.utils.add_term_keymaps("<Leader>cpC", "cargo clean")
+
+          Configs.which_key.register({
+            prefix = "<Leader>cp",
+            map = {
+              b = { name = "Build" },
+              B = { name = "Build release" },
+              d = { name = "Open docs" },
+              r = { name = "Run" },
+              t = { name = "Test" },
+              c = { name = "Check" },
+              C = { name = "Clean" }
+            }
+          })
+        '';
     };
 
     functionConfigs = {
