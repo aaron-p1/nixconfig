@@ -19,7 +19,10 @@ in {
 
         text="$*"
 
-        gh copilot suggest -t "$type" "$text"
+        gh copilot suggest \
+          --target "$type" \
+          --shell-out >(tee /dev/stderr | ( cat; echo >&2 ) | $SHELL -) \
+          "$text"
       '')
     ];
   };
