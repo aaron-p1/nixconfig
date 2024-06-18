@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, ... }: {
+{ config, lib, modulesPath, ... }: {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot = {
@@ -10,8 +10,10 @@
         [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" "i915" ];
       kernelModules = [ ];
 
-      luks.devices."cryptroot".device =
-        "/dev/disk/by-uuid/83d040d2-0747-4ebc-864a-e39b017890cc";
+      luks.devices."cryptroot" = {
+        device = "/dev/disk/by-uuid/83d040d2-0747-4ebc-864a-e39b017890cc";
+        allowDiscards = true;
+      };
     };
   };
 
