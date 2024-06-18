@@ -28,7 +28,6 @@ in {
         enable = true;
         containersConf = {
           settings = { engine.network_cmd_options = cfg.networkOptions; };
-          cniPlugins = [ pkgs.dnsname-cni ];
         };
       };
 
