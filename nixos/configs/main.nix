@@ -182,6 +182,10 @@
       XDG_DATA_HOME = "\${HOME}/.local/share";
 
       PATH = [ "\${XDG_BIN_HOME}" ];
+
+      SYSTEMD_PAGER = "${pkgs.less}/bin/less";
+      SYSTEMD_PAGERSECURE = 1;
+      SYSTEMD_LESS = "FRSM";
     };
   };
 
