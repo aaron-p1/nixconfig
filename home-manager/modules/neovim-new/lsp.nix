@@ -20,7 +20,7 @@
         nodePackages.yaml-language-server
         nodePackages."@tailwindcss/language-server"
         nodePackages.typescript-language-server
-        nodePackages.volar
+        vue-language-server
       ] ++ nills ++ bashls ++ rustAnalyzerLs;
 
       none-ls = [ editorconfig-checker prettierd ];
