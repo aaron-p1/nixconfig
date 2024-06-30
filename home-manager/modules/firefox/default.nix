@@ -107,26 +107,130 @@ let
             win.document.addEventListener("keydown", focusSideberySearch, true);
           }
 
-          // remove app.asana.com key bindings
+          // inject javascript into websites
           {
-            const keyRemover = '${
+            const injection = '${
               toJsString # javascript
               ''
                 (function() {
+                  const injections = {
+                    /**
+                     * Remove keybindings outside of editor on app.asana.com
+                     * @param {Window} window
+                     */
+                    removeAsanaBindings(window) {
+                      if (window.location.hostname !== "app.asana.com") {
+                        return;
+                      }
+
+                      window.document.addEventListener("keydown", e => {
+                        if (e.target && !e.target.className.toLowerCase().includes("editor")) {
+                          e.stopImmediatePropagation();
+                        }
+                      }, true);
+                    },
+
+                    /**
+                     * Add media controls to app.idagio.com
+                     * @param {Window} window
+                     */
+                    addIdagioMediaControls(window) {
+                      if (window.location.hostname !== "app.idagio.com") {
+                        return;
+                      }
+
+                      window.document.addEventListener("DOMContentLoaded", () => {
+                        /* I need the normal js context, so inject script element */
+                        let scriptElem = window.document.createElement("script");
+                        scriptElem.type = "text/javascript";
+
+                        scriptElem.text = "${
+                          replaceStrings [ ''"'' ] [ ''\\\\"'' ]
+                          (toJsString # javascript
+                            ''
+                              const buttonIndices = {
+                                prev: 1,
+                                play: 2,
+                                next: 3
+                              };
+
+                              function getButton(type) {
+                                const mediaButtons = window.document.querySelector(
+                                  "div[class^=player-PlayerControls__controls--]"
+                                );
+
+                                if (!mediaButtons) {
+                                  window.console.error("mediabuttons not found");
+                                  return;
+                                }
+
+                                const result = mediaButtons.children[buttonIndices[type]];
+
+                                if (!result) {
+                                  window.console.error(type + " button not found");
+                                  return;
+                                }
+
+                                return result;
+                              }
+
+                              window.setInterval(() => {
+                                const playerInfoElement = window.document.querySelector(
+                                  "div[class^=player-PlayerInfo__infoEl--]"
+                                );
+
+                                if (!playerInfoElement) {
+                                  return;
+                                }
+
+                                const [artistElem, _, recordingElem, trackElem] = playerInfoElement.children;
+
+                                if (!artistElem || !recordingElem || !trackElem) {
+                                  return;
+                                }
+
+                                const artist = artistElem.textContent;
+                                const recording = recordingElem.textContent;
+                                const track = trackElem.children[1].textContent;
+
+                                window.navigator.mediaSession.metadata = new window.MediaMetadata({
+                                  title: recording + " - " + track,
+                                  artist: artist
+                                });
+                              }, 1000);
+
+                              window.navigator.mediaSession.setActionHandler("play", () => {
+                                getButton("play")?.click();
+                              });
+                              window.navigator.mediaSession.setActionHandler("pause", () => {
+                                getButton("play")?.click();
+                              });
+                              window.navigator.mediaSession.setActionHandler("previoustrack", () => {
+                                getButton("prev")?.click();
+                              });
+                              window.navigator.mediaSession.setActionHandler("nexttrack", () => {
+                                getButton("next")?.click();
+                              });
+                            '')
+                        }";
+
+                        window.document.head.appendChild(scriptElem);
+                      });
+                    },
+                  };
+
                   var observer = {
                     observe(subject, topic, data) {
                       if (topic === "content-document-global-created") {
                         let window = subject;
 
-                        if (window.location.hostname !== "app.asana.com") {
-                          return;
-                        }
-
-                        window.document.addEventListener("keydown", e => {
-                          if (e.target && !e.target.className.toLowerCase().includes("editor")) {
-                            e.stopImmediatePropagation();
+                        try {
+                          for (const [name, injection] of Object.entries(injections)) {
+                            injection(window);
                           }
-                        }, true);
+                        } catch (e) {
+                          window.console.error(e);
+                        }
                       }
                     }
                   };
@@ -141,7 +245,7 @@ let
             }';
 
             // Load the frame script into all existing and future content processes
-            Services.mm.loadFrameScript("data:,(" + win.encodeURIComponent(keyRemover) + ")", true);
+            Services.mm.loadFrameScript("data:,(" + win.encodeURIComponent(injection) + ")", true);
           }
         }
 
