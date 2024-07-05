@@ -10,4 +10,11 @@
 (anonymous_function_creation_expression
   "function" @open.function) @scope.function
 
-(return_statement) @mid.function.1
+(return_statement "return" @mid.function.1)
+
+(method_declaration
+  body: (compound_statement
+          (_) @_return
+          . "}" @close.function
+          .)
+  (#not-kind-eq? @_return "return_statement"))
