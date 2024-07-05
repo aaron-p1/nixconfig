@@ -93,7 +93,7 @@
           },
         }
       })
-      -- require("CopilotChat.integrations.cmp").setup()
+      require("CopilotChat.integrations.cmp").setup()
 
       vim.keymap.set({ "n", "v" }, "<Leader>CC", "<Cmd>CopilotChat<CR>", { desc = "Chat" })
       vim.keymap.set("n", "<Leader>Cb", function()
@@ -104,6 +104,7 @@
       end, { desc = "Copilot chat actions" })
 
       vim.treesitter.language.register("diff", "copilot-diff")
+      vim.treesitter.language.register("markdown", "copilot-chat")
 
       require("nvim-autopairs").setup({
         disable_filetype = { "TelescopePrompt", "dap-repl", "dapui_watches" },
