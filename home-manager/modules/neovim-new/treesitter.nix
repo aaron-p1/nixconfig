@@ -28,6 +28,7 @@ in {
   extraFiles.queries = {
     nix."textobjects.scm" = ./queries/nix/textobjects.scm;
     php = {
+      "injections.scm" = ./queries/php/injections.scm;
       "textobjects.scm" = ./queries/php/textobjects.scm;
       "matchup.scm" = ./queries/php/matchup.scm;
     };
