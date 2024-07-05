@@ -102,5 +102,12 @@
       require("match-visual").setup({ min_length = 2 })
 
       require("virt-notes").setup()
+
+      Configs.which_key.register({
+        prefix = "<Leader>",
+        map = {
+          v = { name = "Virt notes", d = { name = "Delete" } }
+        }
+      })
     '';
 }
