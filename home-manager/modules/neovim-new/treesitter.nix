@@ -40,7 +40,7 @@ in {
     ''
       local t_start = vim.treesitter.start
 
-      local big_file_size = 1024 * 256
+      local big_file_size = 1024 * 1024
       local is_big_file_buffer = {}
 
       local function calc_big_file(bufnr)
@@ -66,6 +66,7 @@ in {
         end
       end
 
+      vim.treesitter.start_force = t_start
       vim.treesitter.start = new_t_start
 
       require("nvim-treesitter.configs").setup({
