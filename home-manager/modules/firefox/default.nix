@@ -365,11 +365,6 @@ in {
 
         userChrome = # CSS
           ''
-            /* context menu no navigation buttons */
-            #context-navigation, #context-sep-navigation {
-              display: none !important;
-            }
-
             /* hide empty tab notifications (e.g. translation) */
             #tab-notification-deck notification:empty {
               display: none !important;
