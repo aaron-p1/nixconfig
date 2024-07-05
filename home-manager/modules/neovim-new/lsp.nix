@@ -58,6 +58,9 @@
       mapkey("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
       mapkey("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
       mapkey("n", "<Leader>ld", vim.diagnostic.open_float, { desc = "Show diagnostic" })
+      mapkey("n", "<Leader>ltd", function()
+        vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+      end, { desc = "Toggle Diagnostics" })
 
       mapkey("n", "<Leader>lf", function()
         local ft = vim.bo[bufnr].filetype
@@ -91,7 +94,7 @@
       Configs.which_key.register({
         prefix = "<Leader>",
         buffer = bufnr,
-        map = { l = { name = "LSP" } }
+        map = { l = { name = "LSP", t = { name = "Toggle" } } }
       })
     end
 
