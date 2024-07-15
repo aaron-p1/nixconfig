@@ -22,8 +22,10 @@ in {
   config = mkIf cfg.u2f.enable {
     security.pam.u2f = {
       enable = true;
-      cue = true;
-      authFile = "/etc/u2f-mappings";
+      settings = {
+        cue = true;
+        authfile = "/etc/u2f-mappings";
+      };
     };
 
     environment.etc."u2f-mappings" = {
