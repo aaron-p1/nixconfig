@@ -34,12 +34,6 @@
             nodejs_16;
         })
       ];
-
-      enableNomRebuilds = { pkgs, config, ... }: {
-        environment.systemPackages = [ pkgs.local.nom-rebuild ];
-        system.build.nom-rebuild =
-          pkgs.local.nom-rebuild.override { nix = config.nix.package.out; };
-      };
     in {
       nixosConfigurations = {
         aaron-pc = lib.nixosSystem {
@@ -47,7 +41,6 @@
           specialArgs = { inherit inputs; };
           modules = [
             { nixpkgs.overlays = overlays; }
-            enableNomRebuilds
 
             nixos-hardware.nixosModules.common-pc-ssd
             nixos-hardware.nixosModules.common-cpu-intel-cpu-only
@@ -75,7 +68,6 @@
           specialArgs = { inherit inputs; };
           modules = [
             { nixpkgs.overlays = overlays; }
-            enableNomRebuilds
 
             nixos-hardware.nixosModules.common-pc-laptop
             nixos-hardware.nixosModules.common-cpu-intel-cpu-only
@@ -110,7 +102,6 @@
             rsync
             git-crypt
             jq
-            local.nom-rebuild
           ];
         };
       });

@@ -1,11 +1,6 @@
 { inputs, ... }:
 final: prev: {
   local = rec {
-    nom-rebuild = prev.callPackage ./pkgs/nom-rebuild {
-      completion-file = inputs.nixpkgs
-        + "/pkgs/os-specific/linux/nixos-rebuild/_nixos-rebuild";
-    };
-
     create-project = prev.callPackage ./pkgs/create-project { };
 
     nix-autobahn = prev.callPackage ./pkgs/nix-autobahn/default.nix { };
