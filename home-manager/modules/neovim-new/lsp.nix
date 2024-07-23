@@ -1,3 +1,4 @@
+# See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 { pkgs, ... }: {
   name = "lsp";
   plugins = with pkgs.vimPlugins; [
@@ -144,6 +145,8 @@
       }
     })
 
+    setup("elixirls", { cmd = { "elixir-ls" } })
+
     setup("intelephense") -- php
 
     setup("html")
@@ -185,7 +188,8 @@
           method = nls.methods.DIAGNOSTICS_ON_SAVE,
           disabled_filetypes = { "gitcommit" }
         }),
-        f.prettierd
+        f.prettierd,
+        d.credo
       },
       should_attach = function(bufnr)
         return not vim.tbl_contains(disabled_filetypes, vim.bo[bufnr].filetype)
