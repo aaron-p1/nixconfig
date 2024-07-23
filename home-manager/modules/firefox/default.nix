@@ -282,6 +282,7 @@ in {
           "general.useragent.locale" = "de-DE";
           "intl.regional_prefs.use_os_locales" = true;
           "media.ffmpeg.vaapi.enabled" = true;
+          "middlemouse.paste" = false;
           "permissions.default.shortcuts" = 2;
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         };
