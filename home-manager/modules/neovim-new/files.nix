@@ -148,9 +148,6 @@
         end
       })
 
-      Configs.which_key.register({
-        prefix = "<Leader>",
-        map = { b = { name = "Nvim Tree" } }
-      })
+      Configs.which_key.add({ { "<Leader>b", group = "Nvim Tree" } })
     '';
 }

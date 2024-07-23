@@ -103,11 +103,9 @@
 
       require("virt-notes").setup()
 
-      Configs.which_key.register({
-        prefix = "<Leader>",
-        map = {
-          v = { name = "Virt notes", d = { name = "Delete" } }
-        }
-      })
+      Configs.which_key.add({
+        { "v",  group = "Virt notes" },
+        { "vd", group = "Delete" },
+      }, { "<Leader>" })
     '';
 }

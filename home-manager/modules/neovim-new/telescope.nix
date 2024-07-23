@@ -75,17 +75,12 @@
         tl.extensions.virt_notes.virt_notes()
       end, { desc = "Virt notes" })
 
-      Configs.which_key.register({
-        prefix = "<Leader>",
-        map = {
-          f = {
-            name = "Telescope",
-            c = { name = "Current buffer" },
-            l = { name = "LSP" },
-            g = { name = "Git" },
-          }
-        }
-      })
+      Configs.which_key.add({
+        { "f",  group = "Telescope" },
+        { "fc", group = "Current buffer" },
+        { "fl", group = "LSP" },
+        { "fg", group = "Git" },
+      }, { "<Leader>" })
 
       return {
         builtin = tb,

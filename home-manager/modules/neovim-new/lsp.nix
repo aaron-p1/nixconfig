@@ -91,11 +91,10 @@
         })
       end
 
-      Configs.which_key.register({
-        prefix = "<Leader>",
-        buffer = bufnr,
-        map = { l = { name = "LSP", t = { name = "Toggle" } } }
-      })
+      Configs.which_key.add({
+        { "l",  group = "LSP" },
+        { "lt", group = "Toggle" }
+      }, { "<Leader>", buffer = bufnr })
     end
 
     local default_config = {

@@ -88,11 +88,11 @@
         local gsa = require("gitsigns.actions")
         kset({ "o", "x" }, "ih", gsa.select_hunk, { desc = "In hunk" })
 
-        Configs.which_key.register({
-          buffer = bufnr,
-          prefix = "<Leader>",
-          map = { g = { name = "Git", h = { name = "Hunk" }, b = { name = "Blame" } } },
-        })
+        Configs.which_key.add({
+          { "g",  group = "Git" },
+          { "gh", group = "Hunk" },
+          { "gb", group = "Blame" },
+        }, { "<Leader>", buffer = bufnr })
       end
 
       gs.setup({
@@ -147,21 +147,12 @@
         dv.file_history(nil, { "--range=ORIG_HEAD..HEAD" })
       end, { silent = true, desc = "Head" })
 
-      Configs.which_key.register({
-        prefix = "<Leader>",
-        map = {
-          g = {
-            name = "Git",
-            b = { name = "Blame" },
-            d = {
-              name = "Diffview",
-              c = {
-                name = "Commits",
-              },
-            },
-          }
-        },
-      })
+      Configs.which_key.add({
+        { "g",   group = "Git" },
+        { "gb",  group = "Blame" },
+        { "gd",  group = "Diffview" },
+        { "gdc", group = "Commits" },
+      }, { "<Leader>" })
     '';
   extraFiles.ftplugin."fugitive.lua" = # lua
     ''
@@ -170,34 +161,24 @@
       vim.opt_local.foldmethod = "syntax"
 
       local maps = {
-        p = "pull",
-        f = "fetch",
-        P = "push",
-        l = "log -" .. log_count,
-        L = "log -" .. (log_count * 2),
+        p = { command = "pull", desc = "Pull" },
+        f = { command = "fetch", desc = "Fetch" },
+        P = { command = "push", desc = "Push" },
+        l = { command = "log -" .. log_count, desc = "Log " .. log_count },
+        L = { command = "log -" .. (log_count * 2), desc = "Log " .. (log_count * 2) },
       }
 
-      for key, command in pairs(maps) do
-        vim.keymap.set("n", "<Leader>g" .. key, "<Cmd>Git " .. command .. "<CR>", { buffer = true })
+      for key, mapping in pairs(maps) do
+        vim.keymap.set(
+          "n", "<Leader>g" .. key,
+          "<Cmd>Git " .. mapping.command .. "<CR>",
+          { desc = mapping.desc, buffer = true })
       end
 
       if vim.b.fugitive_type == "index" then
         vim.keymap.set("n", "R", "<Cmd>Git<CR>", { buffer = true })
       end
 
-      Configs.which_key.register({
-        buffer = 0,
-        prefix = "<Leader>",
-        map = {
-          g = {
-            name = "Git",
-            p = "Pull",
-            f = "Fetch",
-            P = "Push",
-            l = "Log " .. log_count,
-            L = "Log " .. (log_count * 2),
-          },
-        },
-      })
+      Configs.which_key.add({ { "<Leader>g", group = "Git" } })
     '';
 }

@@ -116,21 +116,14 @@
 
       vim.keymap.set("n", "gp", "<Cmd>set operatorfunc=v:lua.Replace_selection<CR>g@", { silent = true })
 
-      Configs.which_key.register({
-        prefix = "<Leader>",
-        map = {
-          d = { name = "Diff" },
-          t = { name = "Tab" },
-          c = {
-            name = "Create buffer",
-            t = {
-              name = "Terminal",
-              t = { name = "Shell here" },
-              s = { name = "Shell home" }
-            },
-          }
-        }
-      })
+      Configs.which_key.add({
+        { "d",   group = "Diff" },
+        { "t",   group = "Tab" },
+        { "c",   group = "Create buffer" },
+        { "ct",  group = "Terminal" },
+        { "ctt", group = "Shell here" },
+        { "cts", group = "Shell home" }
+      }, { "<Leader>" })
 
       local term_augroup = vim.api.nvim_create_augroup("Terminal", {})
 

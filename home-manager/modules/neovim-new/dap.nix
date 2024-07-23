@@ -116,9 +116,6 @@
         },
       }
 
-      Configs.which_key.register({
-        prefix = "<Leader>",
-        map = { d = { name = "dap" } }
-      })
+      Configs.which_key.add({ { "<Leader>d", group = "DAP" } })
     '';
 }

@@ -13,27 +13,18 @@
       nixconfig.startup = # lua
         ''
           Configs.utils.add_term_keymaps("<Leader>cps", "sudo make switch")
-          Configs.utils.add_term_keymaps("<Leader>cpS", "sudo make nom switch")
           Configs.utils.add_term_keymaps("<Leader>cpb", "sudo make boot")
-          Configs.utils.add_term_keymaps("<Leader>cpB", "sudo make nom boot")
 
           Configs.utils.add_term_keymaps("<Leader>cpn", "nix shell --show-trace ${neovim-package-path}")
           Configs.utils.add_term_keymaps("<Leader>cpN", "nix run --show-trace ${neovim-package-path}")
 
-          Configs.which_key.register({
-            prefix = "<Leader>c",
-            map = {
-              p = {
-                name = "Profile",
-                s = { name = "Switch config" },
-                S = { name = "Switch config with nom-rebuild" },
-                b = { name = "Boot config" },
-                B = { name = "Boot config with nom-rebuild" },
-                n = { name = "Shell neovim" },
-                N = { name = "Run neovim" }
-              }
-            }
-          })
+          Configs.which_key.add({
+            { "p",  group = "Profile" },
+            { "ps", group = "Switch config" },
+            { "pb", group = "Boot config" },
+            { "pn", group = "Shell neovim" },
+            { "pN", group = "Run neovim" }
+          }, { "<Leader>c" })
         '';
 
       nixserver.startup = # lua
@@ -45,15 +36,12 @@
           Configs.utils.add_term_keymaps("<Leader>cps", "ssh " .. host)
           Configs.utils.add_term_keymaps("<Leader>cpS", "ssh " .. host .. " -- exit")
 
-          Configs.which_key.register({
-            prefix = "<Leader>cp",
-            map = {
-              d = { name = "Deploy to server" },
-              b = { name = "Deploy to server without switching" },
-              s = { name = "SSH to server" },
-              S = { name = "Only create SSH connection" }
-            }
-          })
+          Configs.which_key.add({
+            { "d", group = "Deploy to server" },
+            { "b", group = "Deploy to server without switching" },
+            { "s", group = "SSH to server" },
+            { "S", group = "Only create SSH connection" }
+          }, { "<Leader>cp" })
         '';
 
       laravel.startup = # lua
@@ -78,29 +66,19 @@
 
           Configs.utils.add_term_keymaps("<Leader>cpt", tinker_cmd)
 
-          Configs.which_key.register({
-            prefix = "<Leader>c",
-            map = {
-              p = {
-                name = "Profile",
-                t = { name = "Tinker" },
-                l = { name = "Tail laravel log" },
-                L = { name = "Less laravel log" }
-              }
-            }
-          })
+          Configs.which_key.add({
+            { "p",  group = "Profile" },
+            { "pt", name = "Tinker" },
+            { "pl", name = "Tail laravel log" },
+            { "pL", name = "Less laravel log" }
+          }, { "<Leader>c" })
 
           if has_sail or has_podman_compose then
             local shell_cmd = has_sail and "sail root-shell" or get_compose_cmd("bash")
 
             Configs.utils.add_term_keymaps("<Leader>cps", shell_cmd)
 
-            Configs.which_key.register({
-              prefix = "<Leader>cp",
-              map = {
-                s = { name = "Shell" }
-              }
-            })
+            Configs.which_key.add({ { "<Leader>cps", group = "Shell" } })
           end
 
           if has_profile("tenancy_for_laravel") then
@@ -113,12 +91,7 @@
 
             Configs.utils.add_term_keymaps("<Leader>cpT", tinker_tenant_cmd)
 
-            Configs.which_key.register({
-              prefix = "<Leader>cp",
-              map = {
-                T = { name = "Tenant tinker" }
-              }
-            })
+            Configs.which_key.add({ { "<Leader>cpT", group = "Tenant tinker" } })
           end
 
           if has_profile("npm") then
@@ -137,13 +110,10 @@
             Configs.utils.add_term_keymaps("<Leader>cpw", host_watch_cmd)
             Configs.utils.add_term_keymaps("<Leader>cpp", host_prod_cmd)
 
-            Configs.which_key.register({
-              prefix = "<Leader>cp",
-              map = {
-                w = { name = "Npm watch" },
-                p = { name = "Npm prod" }
-              }
-            })
+            Configs.which_key.add({
+              { "w", group = "Npm watch" },
+              { "p", group = "Npm prod" }
+            }, { "<Leader>cp" })
           end
         '';
 
@@ -167,16 +137,13 @@
           Configs.utils.add_term_keymaps("<Leader>cpI", "iex -S mix phx.server")
           Configs.utils.add_term_keymaps("<Leader>cpt", "mix test")
 
-          Configs.which_key.register({
-            prefix = "<Leader>cp",
-            map = {
-              d = { name = "Get deps" },
-              s = { name = "Start server" },
-              i = { name = "Iex" },
-              I = { name = "Iex with server" },
-              t = { name = "Test" }
-            }
-          })
+          Configs.which_key.add({
+            { "d", group = "Get deps" },
+            { "s", group = "Start server" },
+            { "i", group = "Iex" },
+            { "I", group = "Iex with server" },
+            { "t", group = "Test" }
+          }, { "<Leader>cp" })
         '';
 
       cargo.startup = # lua
@@ -189,18 +156,15 @@
           Configs.utils.add_term_keymaps("<Leader>cpc", "cargo check")
           Configs.utils.add_term_keymaps("<Leader>cpC", "cargo clean")
 
-          Configs.which_key.register({
-            prefix = "<Leader>cp",
-            map = {
-              b = { name = "Build" },
-              B = { name = "Build release" },
-              d = { name = "Open docs" },
-              r = { name = "Run" },
-              t = { name = "Test" },
-              c = { name = "Check" },
-              C = { name = "Clean" }
-            }
-          })
+          Configs.which_key.add({
+            { "b", group = "Build" },
+            { "B", group = "Build release" },
+            { "d", group = "Open docs" },
+            { "r", group = "Run" },
+            { "t", group = "Test" },
+            { "c", group = "Check" },
+            { "C", group = "Clean" },
+          }, { "<Leader>cp" })
         '';
     };
 

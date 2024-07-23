@@ -128,12 +128,7 @@
         }
       })
 
-      Configs.which_key.register({
-        prefix = "<Leader>",
-        map = {
-          C = { name = "Copilot chat" }
-        }
-      })
+      Configs.which_key.add({ { "<Leader>C", group = "Copilot chat" } })
 
       return {
         cmp_setup = cmp.setup,
