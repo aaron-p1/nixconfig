@@ -18,11 +18,6 @@ homeManagerBranch := master
 
 default: existing
 
-nom:
-	$(eval rebuildCmd := nom-rebuild)
-	@# hide message 'Nothing to be done'
-	@true
-
 existing: path := ${systemPath}
 new: path := ${newSystemPath}
 
@@ -32,7 +27,7 @@ existing new:
 	rsync --verbose --delete-after --recursive --cvs-exclude --filter=':- .gitignore' --filter=':- .rsyncignore' --checksum . ${path}
 
 ${rebuildCmds}: existing
-	${rebuildCmd} ${nixargs} $@
+	nixos-rebuild ${nixargs} $@
 
 update:
 	cat ./afterupdate.txt
@@ -67,4 +62,4 @@ check-release-notes-home-manager: flakeInputName := home-manager
 check-release-notes-home-manager: showLine := ^===
 check-release-notes-home-manager: check-release-notes
 
-.PHONY: default nom existing new ${rebuildCmds} update listChanges check-release-notes check-release-notes-home-manager
+.PHONY: default existing new ${rebuildCmds} update listChanges check-release-notes check-release-notes-home-manager
