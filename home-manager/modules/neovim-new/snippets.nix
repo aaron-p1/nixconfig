@@ -1,7 +1,27 @@
-{ pkgs, ... }: {
+# https://github.com/L3MON4D3/LuaSnip/blob/master/DOC.md
+{ pkgs, lib, ... }:
+let
+  inherit (builtins) readDir mapAttrs readFile;
+  inherit (lib) pipe filterAttrs replaceStrings mapAttrsToList concatStringsSep;
+
+  extraSnippetFiles = pipe ./snippets [
+    readDir
+    (filterAttrs (_: v: v == "regular"))
+    (mapAttrs (file: _: readFile (./snippets + "/${file}")))
+  ];
+
+  withoutExtension = replaceStrings [ ".lua" ] [ "" ];
+
+  luaContent = pipe extraSnippetFiles [
+    (mapAttrsToList (file: _: # lua
+      "require('my_snippets.${withoutExtension file}')"))
+    (concatStringsSep "\n")
+  ];
+in {
   name = "snippets";
   plugins = with pkgs.vimPlugins; [ luasnip ];
   luaPackages = ps: [ ps.jsregexp ];
+  extraFiles.lua.my_snippets = extraSnippetFiles;
   config = # lua
     ''
       local ls = require("luasnip")
@@ -65,6 +85,8 @@
         shell_snippet("datetime", { "date", "--rfc-3339=seconds" }),
         shell_snippet("datetimei", { "date", "--iso-8601=seconds" }),
       })
+
+      ${luaContent}
 
       return {
         lsp_expand = ls.lsp_expand
