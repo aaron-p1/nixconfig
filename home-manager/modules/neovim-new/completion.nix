@@ -21,6 +21,7 @@
     ''
       local cmp = require("cmp")
       local lk = require("lspkind")
+      local cc = require("cmp.config.compare")
 
       local default_sources = {
         nvim_lsp = { name = "nvim_lsp" },
@@ -32,6 +33,19 @@
 
       cmp.setup({
         sources = vim.tbl_values(default_sources),
+        sorting = {
+          priority_weight = 4,
+          comparators = {
+            cc.offset,
+            cc.exact,
+            cc.score,
+            cc.recently_used,
+            cc.kind,
+            cc.sort_text,
+            cc.length,
+            cc.order,
+          },
+        },
         snippet = {
           expand = function(args)
             Configs.snippets.lsp_expand(args.body)
@@ -81,12 +95,12 @@
       vim.keymap.set("i", "<M-[>", "<Cmd>call copilot#Previous()<CR>", { silent = true })
       vim.keymap.set("i", "<M-]>", "<Cmd>call copilot#Next()<CR>", { silent = true })
 
-      local cc = require("CopilotChat")
+      local cch = require("CopilotChat")
       local ccs = require("CopilotChat")
       local cca = require("CopilotChat.actions")
       local ccit = require("CopilotChat.integrations.telescope")
 
-      cc.setup({
+      cch.setup({
         mappings = {
           complete = {
             insert = "",
@@ -97,7 +111,7 @@
 
       vim.keymap.set({ "n", "v" }, "<Leader>CC", "<Cmd>CopilotChat<CR>", { desc = "Chat" })
       vim.keymap.set("n", "<Leader>Cb", function()
-        cc.open({ selection = ccs.buffer })
+        cch.open({ selection = ccs.buffer })
       end, { desc = "Chat buffer" })
       vim.keymap.set("n", "<Leader>fC", function()
         ccit.pick(cca.help_actions())
