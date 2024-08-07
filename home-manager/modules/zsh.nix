@@ -22,6 +22,8 @@ in {
         };
         dotDir = ".config/zsh";
         shellAliases = {
+          ":q" = "exit";
+
           free = "free -h";
           df = "df -h";
           cdtmp = "cd $(mktemp -d)";
