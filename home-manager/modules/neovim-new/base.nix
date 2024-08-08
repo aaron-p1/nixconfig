@@ -87,17 +87,18 @@
       -- tab maps
       local function close_tab()
         local count = vim.v.count == 0 and 1 or vim.v.count
-        local go_prev = vim.api.nvim_tabpage_get_number(0) + count <= #vim.api.nvim_list_tabpages()
+        local tabcount = #vim.api.nvim_list_tabpages()
+        local current = vim.api.nvim_tabpage_get_number(vim.api.nvim_get_current_tabpage())
 
         pcall(function()
-          for _ = 1, count do
+          for i = 1, count do
             vim.cmd.tabclose()
+
+            if i ~= count and current <= tabcount - i then
+              vim.cmd.tabnext()
+            end
           end
         end)
-
-        if go_prev and vim.api.nvim_tabpage_get_number(0) > 1 then
-          vim.cmd.tabprevious()
-        end
       end
 
       vim.keymap.set("n", "<C-w><C-t>", "<Cmd>tab split<CR>", { silent = true, desc = "Open in new tab" })
@@ -127,6 +128,21 @@
         { "ctt", group = "Shell here" },
         { "cts", group = "Shell home" }
       }, { "<Leader>" })
+
+      local tab_closing_group = vim.api.nvim_create_augroup("TabClosing", {})
+
+      vim.api.nvim_create_autocmd("TabClosed", {
+        group = tab_closing_group,
+        callback = function(ev)
+          local num = tonumber(ev.match)
+
+          local tabs = vim.api.nvim_list_tabpages()
+
+          if num <= #tabs then
+            vim.api.nvim_set_current_tabpage(tabs[math.max(1, num - 1)])
+          end
+        end
+      })
 
       local term_augroup = vim.api.nvim_create_augroup("Terminal", {})
 
