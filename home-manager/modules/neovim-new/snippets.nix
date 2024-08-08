@@ -39,6 +39,7 @@ in {
       ls.setup({
         update_events = { "TextChanged", "TextChangedI" },
         region_check_events = { "InsertEnter" },
+        enable_autosnippets = true,
         ext_opts = {
           [lt.choiceNode] = {
             active = { virt_text = { { "●", "LuasnipChoiceActive" } } },

@@ -1,17 +1,20 @@
 local ls = require("luasnip")
 local extras = require("luasnip.extras")
 local conds = require("luasnip.extras.expand_conditions")
+local ts_postfix = require("luasnip.extras.treesitter_postfix").treesitter_postfix
 
 local s = ls.snippet
 local sn = ls.snippet_node
 local t = ls.text_node
 local i = ls.insert_node
 local c = ls.choice_node
+local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
 local fmta = require("luasnip.extras.fmt").fmta
 local n = extras.nonempty
 local dl = extras.dynamic_lambda
 local l = extras.lambda
+local ms = ls.multi_snippet
 
 ls.add_snippets("php", {
   -- common
@@ -69,4 +72,40 @@ ls.add_snippets("php", {
     c(2, { i(nil), sn(nil, fmt("{} => {}", { i(1), i(2) })) }),
     i(0),
   })),
+  -- dot alias
+  ts_postfix({
+    matchTSNode = {
+      query = --[[ query ]] [[
+        [
+          (variable_name)
+          (function_call_expression)
+          (member_access_expression)
+          (member_call_expression)
+        ] @prefix
+      ]],
+      query_lang = "php"
+    },
+    trig = ".",
+    snippetType = "autosnippet",
+  }, l(l.LS_TSMATCH .. "->")),
+  ms({
+      common = { snippetType = "autosnippet" },
+      "parent.",
+      "self.",
+      "static.",
+    },
+    f(function(_, snip)
+      return snip.trigger:match("%w+") .. "::"
+    end)
+  ),
+  ts_postfix({
+    matchTSNode = {
+      query = --[[ query ]] [[
+        (array_element_initializer) @prefix
+      ]],
+      query_lang = "php"
+    },
+    trig = ":",
+    snippetType = "autosnippet",
+  }, l(l.LS_TSMATCH .. " =>")),
 })
