@@ -232,6 +232,19 @@
         callback = function() vim.bo.bufhidden = "delete" end
       })
 
+      -- netrw toggle keepdir
+      local netrw_augroup = vim.api.nvim_create_augroup("Netrw", {})
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = netrw_augroup,
+        pattern = "netrw",
+        callback = function()
+          vim.keymap.set("n", "<Leader>K", function()
+            vim.g.netrw_keepdir = vim.g.netrw_keepdir == 0 and 1 or 0
+          end, { buffer = true, desc = "Toggle keepdir" })
+        end
+      })
+
       Configs.profiles.startup()
 
       return { spelldir = spelldir, test = remove_pid_from_term_title }
