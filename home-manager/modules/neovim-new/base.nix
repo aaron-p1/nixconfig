@@ -72,6 +72,8 @@
 
       vim.cmd.language("en_US.utf8")
 
+      vim.g.maplocalleader = "|"
+
       vim.keymap.set("n", "<PageUp>", "<nop>")
       vim.keymap.set("n", "<PageDown>", "<nop>")
       -- alt + Esc for leaving terminal
