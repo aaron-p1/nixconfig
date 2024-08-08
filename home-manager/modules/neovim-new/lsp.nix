@@ -119,6 +119,41 @@
       table.insert(lua_rtp, "lua/?.lua")
       table.insert(lua_rtp, "lua/?/init.lua")
 
+      local function get_plugin_paths()
+        local packpaths = vim.split(vim.o.packpath, ',')
+
+        local plugins_path = nil
+
+        for _, path in ipairs(packpaths) do
+          local p = path .. '/pack/myNeovimPackages/start'
+
+          if vim.fn.isdirectory(p) == 1 then
+            plugins_path = p
+            break
+          end
+        end
+
+        if not plugins_path then
+          return {}
+        end
+
+        local plugins = {}
+
+        for name, type in vim.fs.dir(plugins_path) do
+          if type == 'link' then
+            local target = vim.uv.fs_readlink(plugins_path .. '/' .. name) .. "/lua"
+
+            if vim.fn.isdirectory(target) == 1 then
+              table.insert(plugins, target)
+            end
+          end
+        end
+
+        return plugins
+      end
+
+      local library_paths = { vim.env.VIMRUNTIME, unpack(get_plugin_paths()) }
+
       setup("lua_ls", {
         settings = {
           Lua = {
@@ -126,7 +161,7 @@
             diagnostics = { globals = { "vim", "Configs" } },
             workspace = {
               checkThirdParty = false,
-              library = { vim.env.VIMRUNTIME }
+              library = library_paths
             }
           }
         }
