@@ -16,6 +16,7 @@
         timeoutlen = 500,
         shelltemp = false,
         mouse = "",
+        shada = "!,'100,<50,s10,h,f0",
 
         -- menu
         showcmd = true,
