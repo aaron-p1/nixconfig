@@ -4,6 +4,60 @@ _: {
     ''
       local M = {}
 
+      ---remove common indent of multi line string
+      ---@param str string
+      ---@return string
+      function M.dedent(str)
+        local lines = vim.split(str, "\n")
+        local min_indent = math.huge
+
+        for _, line in ipairs(lines) do
+          local indent = string.match(line, "^%s+")
+
+          if indent ~= nil and #indent < min_indent then
+            min_indent = #indent
+          end
+        end
+
+        for i, line in ipairs(lines) do
+          lines[i] = string.sub(line, min_indent + 1)
+        end
+
+        return table.concat(lines, "\n")
+      end
+
+      ---get indent level of string
+      ---@param str string
+      ---@param indent string
+      ---@return string
+      local function get_indent_level(str, indent)
+        local indent_level = 0
+
+        while string.match(str, "^" .. indent) do
+          indent_level = indent_level + 1
+          str = string.sub(str, #indent + 1)
+        end
+
+        return indent_level
+      end
+
+      ---replace indent `old_indent` with tab char
+      ---@param str string
+      ---@param old_indent string
+      ---@return string
+      function M.indent_with_tab(str, old_indent)
+        assert(old_indent ~= nil and #old_indent > 0, "old_indent must be non-empty string")
+
+        local lines = vim.split(str, "\n")
+
+        for i, line in ipairs(lines) do
+          local indent_level = get_indent_level(line, old_indent)
+          lines[i] = string.rep("\t", indent_level) .. string.sub(line, #old_indent * indent_level + 1)
+        end
+
+        return table.concat(lines, "\n")
+      end
+
       ---open new terminal buffer with split command
       ---@param cmd string command to run in terminal
       ---@param opts table options for split command
