@@ -26,6 +26,7 @@ in {
     vim-matchup
   ];
   extraFiles.queries = {
+    lua."injections.scm" = ./queries/lua/injections.scm;
     nix."textobjects.scm" = ./queries/nix/textobjects.scm;
     php = {
       "injections.scm" = ./queries/php/injections.scm;
