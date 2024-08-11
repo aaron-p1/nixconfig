@@ -170,6 +170,8 @@
       git
       wget
       neovim
+      file
+      mediainfo
 
       anki
 
