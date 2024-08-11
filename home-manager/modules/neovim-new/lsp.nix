@@ -152,7 +152,11 @@
         return plugins
       end
 
-      local library_paths = { vim.env.VIMRUNTIME, unpack(get_plugin_paths()) }
+      local library_paths = {
+        vim.env.VIMRUNTIME,
+        "''${3rd}/luv/library",
+        unpack(get_plugin_paths())
+      }
 
       setup("lua_ls", {
         settings = {
