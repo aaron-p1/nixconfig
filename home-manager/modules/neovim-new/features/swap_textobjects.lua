@@ -72,6 +72,6 @@ function Swap_textobjects(motion_type)
 end
 
 vim.keymap.set({ "n", "v" }, "gs", "<Cmd>set operatorfunc=v:lua.Swap_textobjects<CR>g@")
-vim.keymap.set("n", "<Leader>S", function()
+vim.keymap.set("n", "<Leader>s", function()
   clear_range(vim.api.nvim_get_current_buf())
 end, { desc = "Clear swap source" })

@@ -84,6 +84,12 @@
 
       vim.keymap.set("n", "<Leader>n", "<Cmd>nohlsearch<CR>", { silent = true })
 
+      vim.keymap.set("n", "<Leader>S", function()
+        if vim.api.nvim_buf_get_name(0):match(".lua$") then
+          vim.cmd.source("%")
+        end
+      end, { desc = "Source current file" })
+
       -- tab maps
       local function close_tab()
         local count = vim.v.count == 0 and 1 or vim.v.count
