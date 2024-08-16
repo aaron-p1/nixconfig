@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, osConfig, ... }: {
   imports = [ ../modules ];
 
   within = {
@@ -95,5 +95,11 @@
     ];
 
     stateVersion = "21.05";
+  };
+
+  nix.gc = {
+    automatic = osConfig.nix.gc.automatic;
+    options = osConfig.nix.gc.options;
+    frequency = osConfig.nix.gc.dates;
   };
 }
