@@ -12,6 +12,7 @@
     localVimPlugins.compare-remotes-nvim
     localVimPlugins.match-visual-nvim
     localVimPlugins.virt-notes-nvim
+    localVimPlugins.handle-lua-errors-nvim
   ];
   config = # lua
     ''
@@ -102,6 +103,8 @@
       require("match-visual").setup({ min_length = 2 })
 
       require("virt-notes").setup()
+
+      require("handle_lua_errors").set_on_error()
 
       Configs.which_key.add({
         { "v",  group = "Virt notes" },

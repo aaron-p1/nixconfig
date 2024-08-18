@@ -3,6 +3,20 @@ let
   inherit (pkgs) fetchFromGitHub;
   inherit (pkgs.vimUtils) buildVimPlugin;
 in {
+  handle-lua-errors-nvim = buildVimPlugin {
+    pname = "handle_lua_errors.nvim";
+    version = "2024-08-18";
+    src = fetchFromGitHub {
+      owner = "aaron-p1";
+      repo = "handle_lua_errors.nvim";
+      rev = "b112f69b7a597e02f948f27f83e5d17ed46e88f7";
+      hash = "sha256-rOpCCVHnp+9fI3NREpYP9A/6J4FyhXGlQ97u/gCsW58=";
+    };
+    buildInputs = [ pkgs.luajit ];
+    buildPhase = "make";
+    meta.homepage = "https://github.com/aaron-p1/handle_lua_errors.nvim";
+    meta.platforms = [ "x86_64-linux" ];
+  };
   match-visual-nvim = buildVimPlugin {
     pname = "match-visual.nvim";
     version = "2024-04-29";
