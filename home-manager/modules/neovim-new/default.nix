@@ -183,7 +183,7 @@ let
     pipe fileAttrs [
       (mapAttrsToList (name: value: # bash
         ''
-          cat > $out${name} <<EOF
+          cat > $out${name} <<'EOF'
           ${value}
           EOF
         ''))
@@ -196,6 +196,10 @@ let
 
       ${toExtraFileDirCommands files}
       ${toExtraFileCommands files}
+
+      ${pkgs.buildPackages.luaPackages.luacheck}/bin/luacheck \
+        --std luajit --globals vim Configs --no-max-line-length \
+        --no-unused -- $out
     '') extraFileLists;
 
   rtpCommands = pipe extraFilePackages [

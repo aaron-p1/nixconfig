@@ -1,27 +1,29 @@
 # https://github.com/L3MON4D3/LuaSnip/blob/master/DOC.md
 { pkgs, lib, ... }:
 let
-  inherit (builtins) readDir mapAttrs readFile;
+  inherit (builtins) readDir mapAttrs;
   inherit (lib) pipe filterAttrs replaceStrings mapAttrsToList concatStringsSep;
+
+  snippetScopeName = "my_snippets";
 
   extraSnippetFiles = pipe ./snippets [
     readDir
     (filterAttrs (_: v: v == "regular"))
-    (mapAttrs (file: _: readFile (./snippets + "/${file}")))
+    (mapAttrs (file: _: ./snippets + "/${file}"))
   ];
 
   withoutExtension = replaceStrings [ ".lua" ] [ "" ];
 
   luaContent = pipe extraSnippetFiles [
     (mapAttrsToList (file: _: # lua
-      "require('my_snippets.${withoutExtension file}')"))
+      "require('${snippetScopeName}.${withoutExtension file}')"))
     (concatStringsSep "\n")
   ];
 in {
   name = "snippets";
   plugins = with pkgs.vimPlugins; [ luasnip ];
   luaPackages = ps: [ ps.jsregexp ];
-  extraFiles.lua.my_snippets = extraSnippetFiles;
+  extraFiles.lua.${snippetScopeName} = extraSnippetFiles;
   config = # lua
     ''
       local ls = require("luasnip")
