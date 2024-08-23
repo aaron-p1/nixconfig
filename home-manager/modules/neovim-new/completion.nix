@@ -136,6 +136,12 @@
         })
       )
 
+      local function cmp_text_changed()
+        if require("cmp.config").enabled() then
+          cmp.core:on_change("TextChanged")
+        end
+      end
+
       require("nvim-ts-autotag").setup({
         opts = {
           enable_close_on_slash = true
@@ -148,6 +154,7 @@
         cmp_setup = cmp.setup,
         default_sources = default_sources,
         lsp_capabilities = require("cmp_nvim_lsp").default_capabilities(),
+        text_changed = cmp_text_changed
       }
     '';
 }
