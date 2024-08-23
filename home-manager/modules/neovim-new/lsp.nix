@@ -22,6 +22,7 @@
         nodePackages."@tailwindcss/language-server"
         nodePackages.typescript-language-server
         vue-language-server
+        clang-tools
       ] ++ nills ++ bashls ++ rustAnalyzerLs;
 
       none-ls = [ editorconfig-checker prettierd ];
@@ -213,6 +214,8 @@
     setup("graphql")
 
     setup("rust_analyzer")
+
+    setup("clangd")
 
     local nls = require("null-ls")
 
