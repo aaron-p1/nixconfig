@@ -13,6 +13,7 @@
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
+    open = false;
     modesetting.enable = true;
     prime = {
       nvidiaBusId = "PCI:1:0:0";
