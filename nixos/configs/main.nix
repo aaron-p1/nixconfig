@@ -53,7 +53,7 @@
       uid = 1000;
 
       sshKeys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxODlfZI53dTGjJ+Qze1XNHH0Tkm3wrd1kOLYiU48s2 iPhone Termius"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHH+KaiMdH9pUqDNkKCcChE74HFQ3Es76jWeHLEpelBe iPhone Termius"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEUW3ZgzN7QomJwZAgKrvVeex4CkhZbQCcBlcZ33GatS iPhone Shortcuts"
 
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJD03U205n7+0gD/PVRywPVssw7av+xBKwWPkbBYADhjAAAABHNzaDo= pc key1"
