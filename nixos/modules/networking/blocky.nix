@@ -77,7 +77,7 @@ in {
         upstreams.groups.default = cfg.nameservers;
         customDNS.mapping = cfg.mapDomains;
         blocking = {
-          blackLists.default = blockLists;
+          denylists.default = blockLists;
           clientGroupsBlock.default = [ "default" ];
           loading.downloads = {
             attempts = 0;
