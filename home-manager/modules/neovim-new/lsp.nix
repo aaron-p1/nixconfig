@@ -192,7 +192,7 @@
     setup("html")
     setup("cssls")
     setup("tailwindcss", { filetypes = { "html", "blade", "scss", "javascript", "typescript", "vue" } })
-    setup("tsserver")
+    setup("ts_ls")
     setup("volar", { init_options = { typescript = { tsdk = "${tsLib}" } } })
 
     local json_schemas = require("schemastore").json.schemas({ ignore = { "task.json" } })
