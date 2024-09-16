@@ -97,7 +97,7 @@ ls.add_snippets("php", {
     {
       matchTSNode = {
         query = --[[ query ]] [[
-          (anonymous_function_creation_expression
+          (anonymous_function
             parameters: (_) @params
             body: [
               (compound_statement

@@ -7,7 +7,7 @@
 (method_declaration
   "function" @open.function) @scope.function
 
-(anonymous_function_creation_expression
+(anonymous_function
   "function" @open.function) @scope.function
 
 (return_statement "return" @mid.function.1)

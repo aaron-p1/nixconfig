@@ -132,7 +132,7 @@
 (conditional_expression
   alternative: (_) @expression.inner)
 
-(anonymous_function_creation_expression
+(anonymous_function
   body: (_) @function.inner) @function.outer
 
 (if_statement
