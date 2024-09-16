@@ -55,14 +55,14 @@ ls.add_snippets("php", {
     n(4, ": "),
     i(4),
     i(0),
-  }, { condition = conds.line_begin })),
+  }), { condition = conds.line_begin }),
   s("fn", fmta("function (<>) <><><>{\n\t<>\n}", {
     i(1),
     n(2, "use ("),
     i(2),
     n(2, ") "),
     i(0),
-  }, { condition = -conds.line_begin })),
+  }), { condition = -conds.line_begin }),
   s("fnn", fmta("fn (<>) =>> <>", { i(1), i(0) })),
   s("phpdoc", fmta("/**\n * <>\n */", i(0))),
 
@@ -163,12 +163,14 @@ ls.add_snippets("php", {
             (function_call_expression)
             (member_access_expression)
             (member_call_expression)
+            (scoped_call_expression)
           ] @prefix
         ]],
         query_lang = "php"
       },
       trig = ".",
       snippetType = "autosnippet",
+      hidden = true
     },
     isn(1, l(l.LS_TSMATCH .. "->"), ""),
     { callbacks = cmp_callback }
@@ -201,7 +203,7 @@ ls.add_snippets("php", {
     snippetType = "autosnippet",
   }, l(l.LS_TSMATCH .. "::"), { callbacks = cmp_callback }),
   ms({
-      common = { snippetType = "autosnippet" },
+      common = { snippetType = "autosnippet", hidden = true },
       "parent.",
       "self.",
       "static.",
@@ -220,5 +222,6 @@ ls.add_snippets("php", {
     },
     trig = ":",
     snippetType = "autosnippet",
+    hidden = true
   }, l(l.LS_TSMATCH .. " =>")),
 })
