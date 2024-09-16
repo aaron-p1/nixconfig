@@ -67,6 +67,9 @@
 
     # ../modules/gh.nix
     gh.enable = true;
+
+    # ../modules/nsxiv/default.nix
+    nsxiv.enable = true;
   };
 
   home = {
@@ -85,7 +88,6 @@
       thunderbird
       qalculate-gtk
       gImageReader
-      feh
       obsidian
       bitwarden
 

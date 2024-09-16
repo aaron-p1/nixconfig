@@ -16,6 +16,7 @@ in {
     ./mpv.nix
     ./neovim.nix
     ./neovim-new
+    ./nsxiv
     ./obs-studio.nix
     ./plasma.nix
     ./shell-scripts.nix

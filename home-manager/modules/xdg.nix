@@ -26,17 +26,17 @@ in {
       mimeApps = {
         enable = true;
         defaultApplications = let
-          feh = "feh.desktop";
+          nsxiv = "nsxiv.desktop";
           firefox = "firefox.desktop";
           nvim = "nvim.desktop";
           zathura = "org.pwmt.zathura.desktop";
         in {
           # Images
-          "image/png" = feh;
-          "image/jpeg" = feh;
-          "image/gif" = feh;
-          "image/bmp" = feh;
-          "image/tiff" = feh;
+          "image/png" = nsxiv;
+          "image/jpeg" = nsxiv;
+          "image/gif" = nsxiv;
+          "image/bmp" = nsxiv;
+          "image/tiff" = nsxiv;
           # Documents
           "application/pdf" = zathura;
           "text/csv" = nvim;
