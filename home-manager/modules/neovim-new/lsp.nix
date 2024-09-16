@@ -246,7 +246,18 @@
 
     setup("html")
     setup("cssls")
-    setup("tailwindcss", { filetypes = { "html", "blade", "scss", "javascript", "typescript", "vue" } })
+    setup("tailwindcss", {
+      filetypes = { "html", "blade", "scss", "javascript", "typescript", "vue", "heex" },
+      settings = {
+        tailwindCSS = {
+          includeLanguages = {
+            elixir = "html-eex",
+            eelixir = "html-eex",
+            heex = "html-eex",
+          },
+        }
+      }
+    })
     setup("ts_ls")
     setup("volar", { init_options = { typescript = { tsdk = "${tsLib}" } } })
 
