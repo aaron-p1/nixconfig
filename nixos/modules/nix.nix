@@ -31,7 +31,7 @@ in {
       nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
       settings = {
-        trusted-users = [ "root" "@wheel" ];
+        trusted-users = [ "root" ];
 
         substituters = [ "https://nix-community.cachix.org/" ];
         trusted-public-keys = [
