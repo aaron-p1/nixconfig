@@ -151,7 +151,13 @@ ls.add_snippets("php", {
   ),
 
   -- auto snippets
-  s({ trig = "this", snippetType = "autosnippet" }, t("$this")),
+  s({
+    trig = "([(%[{ \t])this",
+    wordTrig = false,
+    trigEngine = "pattern",
+    snippetType = "autosnippet",
+    hidden = true
+  }, { l(l.CAPTURE1), t("$this") }),
 
   -- dot alias
   ts_postfix(
