@@ -198,6 +198,11 @@ ls.add_snippets("php", {
     end),
     { callbacks = cmp_callback }
   ),
+  s({
+    trig = "\\.",
+    snippetType = "autosnippet",
+    hidden = true
+  }, t("."), { condition = conds.line_begin }),
   ts_postfix({
     matchTSNode = {
       query = --[[ query ]] [[
