@@ -177,6 +177,8 @@
       htop
       git
       wget
+      file
+      mediainfo
       neovim
       file
       mediainfo
