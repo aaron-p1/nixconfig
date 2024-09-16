@@ -42,6 +42,57 @@
       vue = "null-ls",
     }
 
+    ---@type table<string, string[]> {client_name: filename[]}
+    local file_blocklist = {}
+
+    local function file_blocklist_add(client_name, patterns)
+      if type(patterns) == "string" then
+        patterns = { patterns }
+      end
+
+      if not file_blocklist[client_name] then
+        file_blocklist[client_name] = {}
+      end
+
+      vim.list_extend(file_blocklist[client_name], patterns)
+    end
+
+    local function is_blocked(clientname, bufnr)
+      local buf_name = vim.api.nvim_buf_get_name(bufnr)
+      local patterns = file_blocklist[clientname] or {}
+
+      return vim.iter(patterns):any(function(pattern)
+        return buf_name:match(pattern)
+      end)
+    end
+
+    lc.util.on_setup = lc.util.add_hook_before(lc.util.on_setup, function(config)
+      config.autostart = false
+
+      local event_conf = config.filetypes
+          and { event = "FileType", pattern = config.filetypes }
+          or { event = "BufReadPost" }
+
+      vim.api.nvim_create_autocmd(event_conf.event, {
+        pattern = event_conf.pattern or "*",
+        group = vim.api.nvim_create_augroup('lspconfig', { clear = false }),
+        callback = function(ev)
+          if is_blocked(config.name, ev.buf) then
+            return
+          end
+
+          local client = vim.lsp.get_clients({ name = config.name })[1]
+
+          if client then
+            vim.lsp.buf_attach_client(ev.buf, client.id)
+          else
+            require('lspconfig.configs')[config.name].launch()
+          end
+        end
+      })
+    end)
+
+
     local function on_attach(client, bufnr)
       local tb = Configs.telescope.builtin
 
@@ -242,5 +293,11 @@
       on_attach = default_config.on_attach,
       capabilities = default_config.capabilities
     })
+
+    return {
+      file_blocklist = {
+        add = file_blocklist_add
+      }
+    }
   '';
 }
