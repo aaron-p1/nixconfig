@@ -224,10 +224,19 @@
       paths = [ "/home/aaron/Documents" ];
       repository = "rest:http://home-server:54321";
       passwordFile = "/etc/secrets/restic_remote";
+      inhibitsSleep = true;
       timerConfig = {
         OnCalendar = "weekly";
         Persistent = true;
       };
+      backupPrepareCommand = # bash
+        ''
+          until systemctl is-active --quiet tailscaled.service
+          do
+            sleep 5
+          done
+          sleep 10
+        '';
     };
   };
 
