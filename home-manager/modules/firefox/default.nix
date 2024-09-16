@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (builtins) head match readFile;
+  inherit (builtins) head match readFile toJSON;
   inherit (lib) replaceStrings mkEnableOption mkIf;
 
   cfg = config.within.firefox;
@@ -25,6 +25,20 @@ let
         function runInWindow(win){
           function getElem(elem){
             return win.document.getElementById(elem);
+          }
+
+          function toggleSidebar(cmd) {
+            const controller = win.SidebarController;
+
+            if (!controller) {
+              return;
+            }
+
+            if (controller.currentID === cmd && controller.isOpen) {
+              controller.hide();
+            } else {
+              controller.show(cmd);
+            }
           }
 
           // make Esc focus website
@@ -71,6 +85,43 @@ let
             }
 
             win.document.addEventListener("keydown", loadHttp, true);
+          }
+
+          // alt+s to toggle "userresizable" attribute on #sidebar-box
+          {
+            function toggleSidebarResizable(event) {
+              if (!event.altKey || event.key !== 's') {
+                return;
+              }
+
+              event.preventDefault();
+
+              const sidebarBox = win.document.getElementById("sidebar-box");
+
+              if (!sidebarBox) {
+                return;
+              }
+
+              const isResizable = sidebarBox.getAttribute("userresizable") === "true";
+              sidebarBox.setAttribute("userresizable", isResizable ? "false" : "true");
+            }
+
+            win.document.addEventListener("keydown", toggleSidebarResizable, true);
+          }
+
+          // alt+c to toggle sidebar "viewGenaiChatSidebar"
+          {
+            function toggleChatSidebar(event) {
+              if (!event.altKey || event.key !== 'c') {
+                return;
+              }
+
+              event.preventDefault();
+
+              toggleSidebar("viewGenaiChatSidebar");
+            }
+
+            win.document.addEventListener("keydown", toggleChatSidebar, true);
           }
 
           // ctrl+o will be used for Sidebery prev active tab
@@ -263,11 +314,52 @@ in {
       profiles.main = {
         id = 0;
         isDefault = true;
-        settings = {
+        settings = let
+          mlSelectionPromptPrefix = ''
+            I'm on a website with the title “%tabTitle%” and I have the following content selected: <<EOSEL
+            %selection|12000%
+            EOSEL
+          '';
+        in {
           "browser.aboutConfig.showWarning" = false;
           "browser.download.always_ask_before_handling_new_types" = true;
           "browser.download.improvements_to_download_panel" = false;
           "browser.download.start_downloads_in_tmp_dir" = true;
+
+          "browser.ml.chat.enabled" = true;
+          "browser.ml.chat.prompt.prefix" = mlSelectionPromptPrefix;
+          "browser.ml.chat.prompts.0" = toJSON {
+            priority = 100;
+            label = "Summarize";
+            value = ''
+              Please summarize the selection using precise and concise language.
+              Use headers and bulleted lists in the summary, to make it scannable.
+              Maintain the meaning and factual accuracy.
+            '';
+          };
+          "browser.ml.chat.prompts.1" = toJSON {
+            priority = 90;
+            label = "Explain";
+            value = ''
+              Please explain the key concepts in this selection, using simple words.
+              Also, use examples.
+            '';
+          };
+          "browser.ml.chat.prompts.2" = toJSON {
+            priority = 80;
+            label = "Simplify language";
+            value = ''
+              Please simplify the selection using easy-to-understand language.
+              Use short sentences and common words.
+              Maintain the meaning and factual accuracy.
+            '';
+          };
+          "browser.ml.chat.prompts.3" = toJSON { targeting = "false"; };
+          "browser.ml.chat.provider" =
+            "https://chatgpt.com/?temporary-chat=true";
+          "browser.ml.chat.shortcuts" = true;
+          "browser.ml.chat.shortcuts.custom" = true;
+
           "browser.newtabpage.enabled" = false;
           "browser.search.isUS" = false;
           "browser.search.region" = "DE";
@@ -371,6 +463,19 @@ in {
               display: none !important;
             }
 
+            /* chat sidebar */
+            #main-window:has(
+              #sidebar-box[sidebarcommand="viewGenaiChatSidebar"]:not([hidden="true"])
+            ) {
+              #sidebar-header {
+                display: none !important;;
+              }
+
+              #sidebar-box:not([userresizable="true"]) {
+                width: 750px !important;
+              }
+            }
+
             /* Sidebery hide tab bar and side bar title
                 if Sidebery is open in sidebar */
             #main-window:has(
@@ -382,6 +487,10 @@ in {
 
               #sidebar-header {
                 display: none !important;;
+              }
+
+              #sidebar-box:not([userresizable="true"]) {
+                width: 220px !important;
               }
 
               /** change style of sidebar splitter:
