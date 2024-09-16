@@ -59,18 +59,24 @@
           local has_podman_compose = has_profile("podman_compose")
           local php_tinker_cmd = "php artisan tinker"
           local tinker_cmd =
-              has_sail and "sail tinker"
-              or has_podman_compose and get_compose_cmd(php_tinker_cmd)
-              or php_tinker_cmd
+            has_sail and "sail tinker"
+            or has_podman_compose and get_compose_cmd(php_tinker_cmd)
+            or php_tinker_cmd
+          local queue_cmd =
+            has_sail and "sail artisan queue:listen"
+            or has_podman_compose and get_compose_cmd("php artisan queue:listen")
+            or "php artisan queue:listen"
 
           Configs.utils.add_term_keymaps("<Leader>cpl", "tail -f storage/logs/laravel.log")
           Configs.utils.add_term_keymaps("<Leader>cpL", "less storage/logs/laravel.log")
 
           Configs.utils.add_term_keymaps("<Leader>cpt", tinker_cmd)
+          Configs.utils.add_term_keymaps("<Leader>cpq", queue_cmd)
 
           Configs.which_key.add({
             { "p",  group = "Profile" },
             { "pt", name = "Tinker" },
+            { "pq", name = "Queue listen" },
             { "pl", name = "Tail laravel log" },
             { "pL", name = "Less laravel log" }
           }, { "<Leader>c" })
