@@ -54,6 +54,7 @@ in {
           setopt HIST_IGNORE_ALL_DUPS
         '';
         history = {
+          append = true;
           ignoreDups = true;
           share = false;
           ignoreSpace = true;
