@@ -38,7 +38,7 @@ ls.add_snippets("nix", {
         {
           inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-          output = { self, nixpkgs }: {
+          outputs = { self, nixpkgs }: {
             <>
           };
         }
