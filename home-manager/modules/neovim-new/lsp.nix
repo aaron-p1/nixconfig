@@ -23,6 +23,7 @@
         nodePackages.typescript-language-server
         vue-language-server
         clang-tools
+        pyright
       ] ++ nills ++ bashls ++ rustAnalyzerLs;
 
       none-ls = [ editorconfig-checker prettierd ];
@@ -216,6 +217,8 @@
     setup("rust_analyzer")
 
     setup("clangd")
+
+    setup("pyright")
 
     local nls = require("null-ls")
 
