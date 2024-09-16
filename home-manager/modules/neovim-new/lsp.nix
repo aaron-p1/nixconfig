@@ -239,7 +239,10 @@
 
     setup("elixirls", { cmd = { "elixir-ls" } })
 
-    setup("intelephense") -- php
+    -- php
+    setup("intelephense", {
+      settings = { intelephense = { files = { maxSize = 2 * 1000 * 1000 } } }
+    })
 
     setup("html")
     setup("cssls")
