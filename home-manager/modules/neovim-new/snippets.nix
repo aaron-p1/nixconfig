@@ -22,7 +22,6 @@ let
 in {
   name = "snippets";
   plugins = with pkgs.vimPlugins; [ luasnip ];
-  luaPackages = ps: [ ps.jsregexp ];
   extraFiles.lua.${snippetScopeName} = extraSnippetFiles;
   config = # lua
     ''
