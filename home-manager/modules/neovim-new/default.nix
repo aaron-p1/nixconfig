@@ -213,10 +213,7 @@ let
     + domainConfigs;
 
   neovim = (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
-    packpathDirs.myNeovimPackages = {
-      start = plugins;
-      opt = [ ];
-    };
+    plugins = map (plugin: { inherit plugin; }) plugins;
     inherit wrapperArgs luaRcContent;
 
     # CopilotChat-nvim
