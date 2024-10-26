@@ -7,7 +7,7 @@
     (vim-dadbod-ui.overrideAttrs (old: { dependencies = [ ]; }))
     vim-dadbod-completion
   ];
-  packages = with pkgs; [ mysql ];
+  packages = with pkgs; [ mariadb ];
   config = # lua
     ''
       ---@param lines table[]
