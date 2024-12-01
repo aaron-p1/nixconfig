@@ -7,7 +7,7 @@ in {
   options.within.alacritty = { enable = mkEnableOption "Alacritty"; };
 
   config = mkIf cfg.enable {
-    home.packages = [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; }) ];
+    home.packages = [ pkgs.nerd-fonts.fira-code ];
 
     programs.alacritty = {
       enable = true;
