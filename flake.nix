@@ -1,6 +1,6 @@
 {
   inputs = {
-    stable.url = "github:nixos/nixpkgs/nixos-23.11";
+    stable.url = "github:nixos/nixpkgs/nixos-24.11";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.follows = "unstable";
 
