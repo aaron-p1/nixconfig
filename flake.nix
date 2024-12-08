@@ -22,7 +22,7 @@
       inherit (unstable) lib; # unstable for home manager
       overlays = [
         (final: prev: { stable = import stable { inherit (final) system; }; })
-        nur.overlay
+        nur.overlays.default
         (import ./localpkgs { inherit inputs; })
         (import ./dotfiles { })
         (final: prev: {
