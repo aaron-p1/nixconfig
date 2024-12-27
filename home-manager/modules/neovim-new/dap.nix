@@ -23,8 +23,8 @@
         dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
       end, { desc = "Set breakpoint with condition" })
       vim.keymap.set("n", "<F9>", dap.list_breakpoints, { desc = "List breakpoints" })
-      vim.keymap.set("n", "<F10>", dap.up, { desc = "Stack up" })
-      vim.keymap.set("n", "<Leader><F10>", dap.down, { desc = "Stack down" })
+      vim.keymap.set("n", "<F12>", dap.up, { desc = "Stack up" })
+      vim.keymap.set("n", "<Leader><F12>", dap.down, { desc = "Stack down" })
 
       vim.keymap.set("n", "<Leader>dd", du.toggle, { desc = "Toggle dap UI" })
       vim.keymap.set({ "n", "v" }, "<Leader>de", du.eval, { desc = "Evaluate expression" })
@@ -49,12 +49,12 @@
           {
             elements = {
               {
-                id = "scopes",
-                size = 0.45,
-              },
-              {
                 id = "watches",
                 size = 0.25,
+              },
+              {
+                id = "scopes",
+                size = 0.45,
               },
               {
                 id = "breakpoints",
