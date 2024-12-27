@@ -78,7 +78,13 @@
     ];
   };
 
-  programs.gamemode.enable = true;
+  programs = {
+    gamemode.enable = true;
+    gamescope = {
+      enable = true;
+      capSysNice = true;
+    };
+  };
 
   environment.systemPackages = with pkgs; [ mangohud ];
 
