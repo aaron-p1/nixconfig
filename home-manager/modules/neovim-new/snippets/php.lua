@@ -38,11 +38,11 @@ ls.add_snippets("php", {
   s("r", t("return")),
 
   -- keywords
-  s("pu", t("public")),
-  s("po", t("protected")),
-  s("pi", t("private")),
-  s("ab", t("abstract")),
-  s("st", t("static")),
+  s("pu", t("public ")),
+  s("po", t("protected ")),
+  s("pi", t("private ")),
+  s("ab", t("abstract ")),
+  s("st", t("static ")),
 
   -- functions
   s("ufn", t("public function ")),
@@ -188,7 +188,6 @@ ls.add_snippets("php", {
       snippetType = "autosnippet",
     },
     f(function(_, parent)
-      vim.print(parent.env)
       local linenr = parent.env.TM_LINE_NUMBER
       local prev_line = vim.api.nvim_buf_get_lines(0, linenr - 2, linenr - 1, false)[1] or ""
       local indent, after_indent = prev_line:match("^(%s*)(.*)")
