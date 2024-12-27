@@ -105,9 +105,10 @@
           complete = {
             insert = "",
           },
-        }
+        },
+        model = "claude-3.5-sonnet",
+        chat_autocomplete = true
       })
-      require("CopilotChat.integrations.cmp").setup()
 
       vim.keymap.set({ "n", "v" }, "<Leader>CC", "<Cmd>CopilotChat<CR>", { desc = "Chat" })
       vim.keymap.set("n", "<Leader>Cb", function()
