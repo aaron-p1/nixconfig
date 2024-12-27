@@ -45,7 +45,7 @@
       vue = "null-ls",
     }
 
-    ---@type table<string, string[]> {client_name: filename[]}
+    ---@type table<string, string[]> {client_name: filename[]} `all` for all clients
     local file_blocklist = {}
 
     local function file_blocklist_add(client_name, patterns)
@@ -62,7 +62,9 @@
 
     local function is_blocked(clientname, bufnr)
       local buf_name = vim.api.nvim_buf_get_name(bufnr)
-      local patterns = file_blocklist[clientname] or {}
+      local client_patterns = file_blocklist[clientname] or {}
+      local all_patterns = file_blocklist["all"] or {}
+      local patterns = vim.list_extend(vim.list_slice(client_patterns), all_patterns)
 
       return vim.iter(patterns):any(function(pattern)
         return buf_name:match(pattern)
