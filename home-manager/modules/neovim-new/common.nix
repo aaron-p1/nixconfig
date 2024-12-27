@@ -96,7 +96,9 @@
 
         require("compare-remotes").setup({
           remotes = remotes,
-          mapping = { key = "<Leader>cr" }
+          mapping = { key = "<Leader>cr" },
+          project_file_schemes = { "oil" },
+          scheme_replacements = { dir = { scp = "oil-ssh" } },
         })
       end
 

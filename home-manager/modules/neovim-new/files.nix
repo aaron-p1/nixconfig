@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   name = "files";
-  plugins = with pkgs.vimPlugins; [ nvim-web-devicons nvim-tree-lua ];
+  plugins = with pkgs.vimPlugins; [ nvim-web-devicons nvim-tree-lua oil-nvim ];
   packages = with pkgs; [ fd ];
   config = # lua
     ''
@@ -149,5 +149,21 @@
       })
 
       Configs.which_key.add({ { "<Leader>b", group = "Nvim Tree" } })
+
+      local oil = require("oil")
+
+      local function select_tab()
+        oil.select({ horizontal = true })
+        local keys = vim.api.nvim_replace_termcodes("<C-w>T", true, false, true)
+        vim.api.nvim_feedkeys(keys, "n", true)
+      end
+
+      oil.setup({
+        default_file_explorer = false,
+        columns = { "icon", "permissions", "size" },
+        view_options = { show_hidden = true },
+        keymaps = { ["<C-t>"] = select_tab },
+        silence_scp_warning = true
+      })
     '';
 }
