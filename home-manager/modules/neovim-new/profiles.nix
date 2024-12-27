@@ -164,6 +164,27 @@
             { "C", group = "Clean" },
           }, { "<Leader>cp" })
         '';
+
+      flask.startup = # lua
+        ''
+          Configs.utils.add_term_keymaps("<Leader>cpr", "python run.py")
+
+          Configs.which_key.add({
+            { "r", group = "Run" },
+          }, { "<Leader>cp" })
+        '';
+
+      vite.startup = # lua
+        ''
+          Configs.utils.add_term_keymaps("<Leader>cpnd", "npm run dev")
+          Configs.utils.add_term_keymaps("<Leader>cpnb", "npm run build")
+
+          Configs.which_key.add({
+            { "n", group = "Npm" },
+            { "nd", group = "Npm dev" },
+            { "nb", group = "Npm build" },
+          }, { "<Leader>cp" })
+        '';
     };
 
     functionConfigs = {
