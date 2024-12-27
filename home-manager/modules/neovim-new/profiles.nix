@@ -52,6 +52,9 @@
 
       laravel.startup = # lua
         ''
+          local has_sail = has_profile("sail")
+          local has_podman_compose = has_profile("podman_compose")
+
           local function get_compose_cmd(cmd)
             local container_options = vim.env.NVIM_PROFILE_PHP_CONTAINER_OPTIONS or ""
             local container = vim.env.NVIM_PROFILE_PHP_CONTAINER or ""
@@ -59,23 +62,20 @@
             return "podman-compose exec " .. container_options .. " " .. container .. " " .. (cmd or "")
           end
 
-          local has_sail = has_profile("sail")
-          local has_podman_compose = has_profile("podman_compose")
-          local php_tinker_cmd = "php artisan tinker"
-          local tinker_cmd =
-            has_sail and "sail tinker"
-            or has_podman_compose and get_compose_cmd(php_tinker_cmd)
-            or php_tinker_cmd
-          local queue_cmd =
-            has_sail and "sail artisan queue:listen"
-            or has_podman_compose and get_compose_cmd("php artisan queue:listen")
-            or "php artisan queue:listen"
+          local function get_host_cmd(cmd, cmd_prefix)
+            cmd_prefix = (cmd_prefix or "") .. " "
+
+            return
+                has_sail and "sail " .. cmd
+                or has_podman_compose and get_compose_cmd(cmd_prefix .. cmd)
+                or cmd_prefix .. cmd
+          end
 
           Configs.utils.add_term_keymaps("<Leader>cpl", "tail -f storage/logs/laravel.log")
-          Configs.utils.add_term_keymaps("<Leader>cpL", "less storage/logs/laravel.log")
+          Configs.utils.add_term_keymaps("<Leader>cpL", "less storage/logs/laravel.log", {}, true)
 
-          Configs.utils.add_term_keymaps("<Leader>cpt", tinker_cmd)
-          Configs.utils.add_term_keymaps("<Leader>cpq", queue_cmd)
+          Configs.utils.add_term_keymaps("<Leader>cpt", get_host_cmd("tinker", "php artisan"))
+          Configs.utils.add_term_keymaps("<Leader>cpq", get_host_cmd("artisan queue:listen", "php"))
 
           Configs.which_key.add({
             { "p",  group = "Profile" },
@@ -94,37 +94,23 @@
           end
 
           if has_profile("tenancy_for_laravel") then
-            local tinker_tenant_artisan_cmd = " artisan tenants:run tinker"
-            local php_tinker_tenant_cmd = "php" .. tinker_tenant_artisan_cmd
-            local tinker_tenant_cmd =
-                has_sail and "sail" .. tinker_tenant_artisan_cmd
-                or has_podman_compose and get_compose_cmd(php_tinker_tenant_cmd)
-                or php_tinker_tenant_cmd
-
-            Configs.utils.add_term_keymaps("<Leader>cpT", tinker_tenant_cmd)
+            Configs.utils.add_term_keymaps("<Leader>cpT", get_host_cmd("artisan tenants:run tinker", "php"))
 
             Configs.which_key.add({ { "<Leader>cpT", group = "Tenant tinker" } })
           end
 
           if has_profile("npm") then
-            local watch_cmd = "npm run watch"
-            local prod_cmd = "npm run prod"
-
-            local host_watch_cmd =
-                has_sail and "sail " .. watch_cmd
-                or has_podman_compose and get_compose_cmd(watch_cmd)
-                or watch_cmd
-            local host_prod_cmd =
-                has_sail and "sail " .. prod_cmd
-                or has_podman_compose and get_compose_cmd(prod_cmd)
-                or prod_cmd
-
-            Configs.utils.add_term_keymaps("<Leader>cpw", host_watch_cmd)
-            Configs.utils.add_term_keymaps("<Leader>cpp", host_prod_cmd)
+            Configs.utils.add_term_keymaps("<Leader>cpnw", get_host_cmd("npm run watch"))
+            Configs.utils.add_term_keymaps("<Leader>cpnd", get_host_cmd("npm run dev"))
+            Configs.utils.add_term_keymaps("<Leader>cpnp", get_host_cmd("npm run prod"))
+            Configs.utils.add_term_keymaps("<Leader>cpnb", get_host_cmd("npm run build"))
 
             Configs.which_key.add({
-              { "w", group = "Npm watch" },
-              { "p", group = "Npm prod" }
+              { "n", group = "Npm" },
+              { "nw", group = "Npm watch" },
+              { "nd", group = "Npm dev" },
+              { "np", group = "Npm prod" },
+              { "nb", group = "Npm build" },
             }, { "<Leader>cp" })
           end
         '';
