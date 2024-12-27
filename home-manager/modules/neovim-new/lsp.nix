@@ -26,7 +26,7 @@
         pyright
       ] ++ nills ++ bashls ++ rustAnalyzerLs;
 
-      none-ls = [ editorconfig-checker prettierd ];
+      none-ls = [ editorconfig-checker prettierd isort black ];
     in lsp ++ none-ls;
   config = let
     tsLib = "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib";
@@ -299,7 +299,11 @@
           disabled_filetypes = { "gitcommit" }
         }),
         f.prettierd,
-        d.credo
+        d.credo,
+
+        -- python
+        f.isort,
+        f.black,
       },
       should_attach = function(bufnr)
         return not vim.tbl_contains(disabled_filetypes, vim.bo[bufnr].filetype)
