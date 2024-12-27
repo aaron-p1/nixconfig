@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ../../nixos/modules ];
 
   networking = {
@@ -12,12 +12,16 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  hardware.nvidia = {
-    open = false;
-    modesetting.enable = true;
-    prime = {
-      nvidiaBusId = "PCI:1:0:0";
-      intelBusId = "PCI:0:2:0";
+  hardware = {
+    graphics.extraPackages = [ pkgs.intel-media-driver ];
+    nvidia = {
+      open = false;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      modesetting.enable = true;
+      prime = {
+        nvidiaBusId = "PCI:1:0:0";
+        intelBusId = "PCI:0:2:0";
+      };
     };
   };
 
