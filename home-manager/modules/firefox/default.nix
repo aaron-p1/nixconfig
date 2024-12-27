@@ -380,6 +380,7 @@ in {
         };
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
           bitwarden
+          consent-o-matic
           ff2mpv
           multi-account-containers
           onepassword-password-manager
