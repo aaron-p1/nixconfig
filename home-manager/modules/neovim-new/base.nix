@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   name = "base";
   packages = with pkgs; [ wl-clipboard ];
   config = # lua
@@ -259,5 +259,13 @@
 
       return { spelldir = spelldir, test = remove_pid_from_term_title }
     '';
-  extraFiles.ftplugin."checkhealth.lua" = "vim.opt_local.spell = false";
+  extraFiles = let
+    inherit (builtins) readDir;
+    inherit (lib) mapAttrs optionalAttrs;
+
+    ftdetects =
+      mapAttrs (file: _: ./ftdetect + "/${file}") (readDir ./ftdetect);
+  in {
+    ftplugin."checkhealth.lua" = "vim.opt_local.spell = false";
+  } // optionalAttrs (ftdetects != { }) { ftdetect = ftdetects; };
 }

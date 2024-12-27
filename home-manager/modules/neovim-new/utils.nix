@@ -2,7 +2,19 @@ _: {
   name = "utils";
   config = # lua
     ''
-      local M = {}
+      local M = { ftdetect = {} }
+
+      ---add ft detect by file name
+      ---@param pattern string|string[]
+      ---@param ft string
+      function M.ftdetect.fname(pattern, ft)
+        vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+          pattern = pattern,
+          callback = function()
+            vim.bo.filetype = ft
+          end
+        })
+      end
 
       ---remove common indent of multi line string
       ---@param str string
