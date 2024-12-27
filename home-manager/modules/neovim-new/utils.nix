@@ -41,7 +41,7 @@ _: {
       ---get indent level of string
       ---@param str string
       ---@param indent string
-      ---@return string
+      ---@return integer
       local function get_indent_level(str, indent)
         local indent_level = 0
 
@@ -73,44 +73,60 @@ _: {
       ---open new terminal buffer with split command
       ---@param cmd string command to run in terminal
       ---@param opts table options for split command
-      function M.new_term(cmd, opts)
+      ---@param no_normal boolean? start insert mode and close on exit
+      function M.new_term(cmd, opts, no_normal)
         local name = "term://" .. cmd
         local split_opts = vim.tbl_deep_extend("keep", { name }, opts)
 
         vim.cmd.split(split_opts)
+
+        if no_normal then
+          vim.api.nvim_create_autocmd("TermClose", {
+            buffer = 0,
+            callback = function(ev)
+              vim.api.nvim_buf_delete(ev.buf, { force = true })
+            end
+          })
+
+          vim.cmd("startinsert")
+        end
       end
 
       ---open terminal buffer with horizontal split
       ---@param cmd string
-      function M.open_term_hor(cmd)
-        M.new_term(cmd, {})
+      ---@param no_normal boolean?
+      function M.open_term_hor(cmd, no_normal)
+        M.new_term(cmd, {}, no_normal)
       end
 
       ---open terminal buffer with vertical split
       ---@param cmd string
-      function M.open_term_ver(cmd)
-        M.new_term(cmd, { mods = { vertical = true } })
+      ---@param no_normal boolean?
+      function M.open_term_ver(cmd, no_normal)
+        M.new_term(cmd, { mods = { vertical = true } }, no_normal)
       end
 
       ---open terminal buffer with tab split
       ---@param cmd string
-      function M.open_term_tab(cmd)
+      ---@param no_normal boolean?
+      function M.open_term_tab(cmd, no_normal)
         local tabnr = vim.api.nvim_tabpage_get_number(0)
-        M.new_term(cmd, { mods = { tab = tabnr } })
+        M.new_term(cmd, { mods = { tab = tabnr } }, no_normal)
       end
 
       ---add 3 keymaps for opening terminal with different split kinds
       ---@param key string keymap prefix
       ---@param cmd string command to run in terminal
       ---@param opts table keymap options
-      function M.add_term_keymaps(key, cmd, opts)
+      ---@param no_normal boolean? start insert mode and close on exit
+      function M.add_term_keymaps(key, cmd, opts, no_normal)
         opts = opts or {}
 
-        vim.keymap.set("n", key .. "x", function() M.open_term_hor(cmd) end,
+        vim.keymap.set("n", key .. "x", function() M.open_term_hor(cmd, no_normal) end,
           vim.tbl_extend("force", opts, { desc = "Horizontal" }))
-        vim.keymap.set("n", key .. "v", function() M.open_term_ver(cmd) end,
+        vim.keymap.set("n", key .. "v", function() M.open_term_ver(cmd, no_normal) end,
           vim.tbl_extend("force", opts, { desc = "Vertical" }))
-        vim.keymap.set("n", key .. "t", function() M.open_term_tab(cmd) end,
+        vim.keymap.set("n", key .. "t", function() M.open_term_tab(cmd, no_normal) end,
           vim.tbl_extend("force", opts, { desc = "Tab" }))
       end
 

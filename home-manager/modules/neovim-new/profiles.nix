@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ lib, pkgs, ... }: {
   name = "profiles";
   config = let
     inherit (builtins) toJSON;
@@ -15,6 +15,8 @@
           Configs.utils.add_term_keymaps("<Leader>cps", "sudo make switch")
           Configs.utils.add_term_keymaps("<Leader>cpb", "sudo make boot")
 
+          Configs.utils.add_term_keymaps("<Leader>cpc", "${pkgs.nix-inspect}/bin/nix-inspect", {}, true)
+
           Configs.utils.add_term_keymaps("<Leader>cpn", "nix shell --show-trace ${neovim-package-path}")
           Configs.utils.add_term_keymaps("<Leader>cpN", "nix run --show-trace ${neovim-package-path}")
 
@@ -24,6 +26,7 @@
             { "p",  group = "Profile" },
             { "ps", group = "Switch config" },
             { "pb", group = "Boot config" },
+            { "pc", group = "Explore config" },
             { "pn", group = "Shell neovim" },
             { "pN", group = "Run neovim" }
           }, { "<Leader>c" })
