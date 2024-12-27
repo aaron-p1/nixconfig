@@ -105,7 +105,7 @@
           css = true,
           css_fn = true,
           tailwind = true,
-          sass = { enable = true },
+          sass = { enable = false },
         }
       })
 
