@@ -179,6 +179,7 @@
 
           vim.keymap.set("n", "cd", function() send_to_terminal("\004") end, { buffer = buf, desc = "Send <C-d>" })
           vim.keymap.set("n", "cc", function() send_to_terminal("\003") end, { buffer = buf, desc = "Send <C-c>" })
+          vim.keymap.set("n", "cp", function() send_to_terminal("\027[A\013") end, { buffer = buf, desc = "Send <Up><Cr>" })
         end
       })
 
