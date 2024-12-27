@@ -31,6 +31,9 @@
   config = let
     tsLib = "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib";
 
+    vueTSPlugin = pkgs.vue-language-server
+      + "/lib/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin";
+
     # lua
   in ''
     local lc = require("lspconfig")
@@ -91,7 +94,6 @@
         end
       })
     end)
-
 
     local function on_attach(client, bufnr)
       local tb = Configs.telescope.builtin
@@ -258,8 +260,22 @@
         }
       }
     })
-    setup("ts_ls")
-    setup("volar", { init_options = { typescript = { tsdk = "${tsLib}" } } })
+    setup("ts_ls", {
+      init_options = {
+        plugins = { {
+          name = "@vue/typescript-plugin",
+          location = "${vueTSPlugin}",
+          languages = { "vue" }
+        } }
+      },
+      filetypes = { "javascript", "typescript", "vue" }
+    })
+    setup("volar", {
+      init_options = {
+        typescript = { tsdk = "${tsLib}" },
+        vue = { hybridMode = true }
+      }
+    })
 
     local json_schemas = require("schemastore").json.schemas({ ignore = { "task.json" } })
 
