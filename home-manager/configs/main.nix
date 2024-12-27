@@ -88,7 +88,6 @@
       thunderbird
       qalculate-gtk
       gImageReader
-      obsidian
       bitwarden
 
       local.create-project
