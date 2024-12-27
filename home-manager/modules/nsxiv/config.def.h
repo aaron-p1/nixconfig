@@ -159,7 +159,7 @@ static const keymap_t keys[] = {
   {ControlMask, XK_n, i_navigate_frame, +1},
   {ControlMask, XK_p, i_navigate_frame, -1},
   {ControlMask, XK_space, i_toggle_animation, None},
-  {ControlMask, XK_a, i_toggle_animation, None},
+  // {ControlMask, XK_a, i_toggle_animation, None},
   {0, XK_h, i_scroll, DIR_LEFT},
   {0, XK_Left, i_scroll, DIR_LEFT},
   {0, XK_j, i_scroll, DIR_DOWN},
@@ -184,7 +184,7 @@ static const keymap_t keys[] = {
   {0, XK_question, i_rotate, DEGREE_180},
   {0, XK_bar, i_flip, FLIP_HORIZONTAL},
   {0, XK_underscore, i_flip, FLIP_VERTICAL},
-  // {0, XK_a, i_toggle_antialias, None},
+  {ControlMask, XK_a, i_toggle_antialias, None},
   {0, XK_A, i_toggle_alpha, None},
   // {0, XK_s, i_slideshow, None},
 
