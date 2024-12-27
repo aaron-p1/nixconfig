@@ -8,7 +8,7 @@
       local tv = require("nvim-tree.view")
       local ta = require("nvim-tree.api")
       local tl = require("nvim-tree.lib")
-      local tef = require("nvim-tree.explorer.filters")
+      local tc = require("nvim-tree.core")
 
       local open_file = require("nvim-tree.actions.node.open-file").fn
 
@@ -66,7 +66,7 @@
 
       ---find directory and navigate to it
       local function find_directory()
-        local explorer_config = tef.config
+        local explorer_filters = tc.get_explorer().opts.filters;
 
         Configs.telescope.builtin.find_files({
           find_command = {
@@ -74,8 +74,8 @@
             "--type=directory",
             "--strip-cwd-prefix",
             "--exclude=.git",
-            explorer_config.filter_dotfiles and "--hidden" or nil,
-            explorer_config.filter_git_ignored and "--no-ignore" or nil
+            explorer_filters.dotfiles and "--hidden" or nil,
+            explorer_filters.git_ignored and "--no-ignore" or nil
           },
           attach_mappings = function(_, map)
             map({ "n", "i" }, "<CR>", function(prompt_bufnr)
