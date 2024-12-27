@@ -36,7 +36,6 @@
       nameservers = [
         "https://dns.quad9.net/dns-query"
         "https://dns.digitale-gesellschaft.ch/dns-query"
-        "https://dnsforge.de/dns-query"
       ];
 
       nm = {
