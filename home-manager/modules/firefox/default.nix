@@ -500,7 +500,7 @@ in {
               #sidebar-splitter {
                 width: 6px !important;
                 margin-right: -5px !important;
-                z-index: 1 !important;
+                z-index: 4 !important;
                 background: transparent !important;
                 border: none !important;
                 border-left: 1px solid var(--chrome-content-separator-color) !important;
