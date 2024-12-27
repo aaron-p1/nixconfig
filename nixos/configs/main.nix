@@ -182,6 +182,8 @@
       file
       mediainfo
 
+      restic
+
       anki
 
       local.initdev
