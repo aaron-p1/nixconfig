@@ -2,12 +2,12 @@
 let
   ts = pkgs.vimPlugins.nvim-treesitter;
 
-  bladeParserVersion = "0.10.0";
+  bladeParserVersion = "0.11.0";
   bladeParserRepo = pkgs.fetchFromGitHub {
     owner = "EmranMR";
     repo = "tree-sitter-blade";
     rev = "v${bladeParserVersion}";
-    sha256 = "sha256-sxnu2TvAvEnd2ftP+0hbhQGeiwWN1XY0RWHbDxQ3j88=";
+    sha256 = "sha256-PTGdsXlLoE+xlU0uWOU6LQalX4fhJ/qhpyEKmTAazLU=";
   };
 
   bladeParser = pkgs.tree-sitter.buildGrammar {
