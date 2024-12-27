@@ -20,6 +20,7 @@
           Configs.utils.add_term_keymaps("<Leader>cpn", "nix shell --show-trace ${neovim-package-path}")
           Configs.utils.add_term_keymaps("<Leader>cpN", "nix run --show-trace ${neovim-package-path}")
 
+          Configs.lsp.file_blocklist.add("all", "/snippets/init/")
           Configs.lsp.file_blocklist.add("clangd", "nsxiv/config.def.h$")
 
           Configs.which_key.add({
