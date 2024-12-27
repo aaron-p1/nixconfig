@@ -15,16 +15,6 @@ local function to_fmt_string(str)
   return Configs.utils.indent_with_tab(Configs.utils.dedent(str), "  ")
 end
 
-local first_col = function(trigger)
-  return conds.make_condition(function(line_to_cursor)
-    return vim.startswith(trigger, line_to_cursor)
-  end)
-end
-
-local first_line = conds.make_condition(function()
-  return vim.api.nvim_win_get_cursor(0)[1] == 1
-end)
-
 local file_name = function(pattern)
   return conds.make_condition(function()
     return vim.api.nvim_buf_get_name(0):match(pattern) ~= nil
@@ -32,23 +22,6 @@ local file_name = function(pattern)
 end
 
 ls.add_snippets("nix", {
-  s(
-    "initflake",
-    fmta(to_fmt_string( --[[ nix ]] [[
-        {
-          inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
-          outputs = { self, nixpkgs }: {
-            <>
-          };
-        }
-      ]]),
-      { i(0) }
-    ), {
-      condition = first_line * first_col("initflake") * file_name("flake.nix"),
-      show_condition = first_line * first_col("initflake") * file_name("flake.nix")
-    }
-  ),
   s(
     "devshell",
     fmta(to_fmt_string( --[[ nix ]] [[
