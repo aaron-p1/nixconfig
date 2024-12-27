@@ -251,7 +251,6 @@
     setup("html")
     setup("cssls")
     setup("tailwindcss", {
-      filetypes = { "html", "blade", "scss", "javascript", "typescript", "vue", "heex" },
       settings = {
         tailwindCSS = {
           includeLanguages = {
