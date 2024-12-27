@@ -22,8 +22,10 @@
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.beta;
     modesetting.enable = true;
+    nvidiaSettings = false;
+    open = false;
   };
-  boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
+  boot.kernelParams = [ ];
 
   within = {
     # ../../nixos/modules/boot.nix
