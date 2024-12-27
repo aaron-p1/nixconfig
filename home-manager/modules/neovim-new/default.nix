@@ -38,9 +38,17 @@ let
 
   localVimPlugins = import ./local-plugins.nix { inherit lib pkgs; };
 
+  symlinkPkgTo = target:
+    pkgs.stdenv.mkDerivation {
+      name = "symlink-to-impure";
+      buildCommand = ''
+        ln -s "${target}" $out
+      '';
+    };
+
   domainsValues = pipe domains [
     (map (domain:
-      defaultValues // import domain { inherit lib pkgs localVimPlugins; }))
+      defaultValues // import domain { inherit lib pkgs localVimPlugins symlinkPkgTo; }))
 
     (map (values:
       if isPath values.config then
