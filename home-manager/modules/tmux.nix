@@ -21,7 +21,7 @@ in {
       terminal = "tmux-256color";
 
       extraConfig = ''
-        set -as terminal-features "alacritty:RGB:extkeys"
+        set -as terminal-features "alacritty:RGB:extkeys:focus"
 
         # Underline
         set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
@@ -30,6 +30,9 @@ in {
 
         # key sequences
         set -s extended-keys always
+
+        # focus events
+        set -s focus-events on
 
         bind-key -N "Kills session" K confirm-before -p "Kill session?" kill-session
       '';
