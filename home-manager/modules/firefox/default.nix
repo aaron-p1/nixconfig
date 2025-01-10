@@ -357,7 +357,7 @@ in {
           "browser.ml.chat.prompts.3" = toJSON { targeting = "false"; };
           "browser.ml.chat.provider" =
             "https://chatgpt.com/?temporary-chat=true";
-          "browser.ml.chat.shortcuts" = true;
+          "browser.ml.chat.shortcuts" = false;
           "browser.ml.chat.shortcuts.custom" = true;
 
           "browser.newtabpage.enabled" = false;
