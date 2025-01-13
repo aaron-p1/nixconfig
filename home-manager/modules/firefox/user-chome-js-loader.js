@@ -17,13 +17,16 @@ class ConfigJS {
     });
   }
 
-  handleEvent(aEvent) {
+  async handleEvent(aEvent) {
     const document = aEvent.originalTarget;
     const window = document.defaultView;
     const location = window.location;
 
     if (regex.test(location.href)) {
-      if (window._gBrowser) {
+      // wait for 100 ms
+      await new Promise((resolve) => window.setTimeout(resolve, 100));
+
+      if (window.gBrowser) {
         runInWindow(window);
       }
     }

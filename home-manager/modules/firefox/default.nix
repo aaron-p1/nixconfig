@@ -23,6 +23,8 @@ let
     extraPrefs = # javascript
       ''
         function runInWindow(win){
+          win.console.log("---------------- Loading userChrome.js in " + win.location + " ----------------");
+
           function getElem(elem){
             return win.document.getElementById(elem);
           }
