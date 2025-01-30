@@ -43,8 +43,7 @@
         dns = "none";
       };
 
-      blocky.blockListFile =
-        [ ../../secrets/inline-secrets/blocked-domains.txt ];
+      blocky.blockListFile = ../../secrets/inline-secrets/blocked-domains.txt;
     };
 
     # ../modules/users.nix

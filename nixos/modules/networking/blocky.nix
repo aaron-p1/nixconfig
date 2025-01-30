@@ -3,8 +3,6 @@ let
   inherit (lib) mkEnableOption mkOption types mkIf;
 
   cfg = config.within.networking.blocky;
-
-  blockLists = cfg.blockLists ++ cfg.blockListFile;
 in {
   options.within.networking.blocky =
     let inherit (types) str nullOr listOf path attrsOf bool;
@@ -43,8 +41,8 @@ in {
         description = "lists to enable blocking on";
       };
       blockListFile = mkOption {
-        type = listOf path;
-        default = [ ];
+        type = nullOr path;
+        default = null;
         description = "list of paths to blocklist file";
       };
 
@@ -61,7 +59,18 @@ in {
       };
     };
 
-  config = mkIf cfg.enable {
+  config = let
+    inherit (lib) optional;
+
+    fileToUnlock = cfg.blockListFile;
+    autoUnlockStateDir = "dns-auto-unblock";
+    autoUnlockDenyListFileName = "denylist.txt";
+    autoUnlockDenyListFilePath =
+      "/var/lib/${autoUnlockStateDir}/${autoUnlockDenyListFileName}";
+
+    blockLists = cfg.blockLists
+      ++ (optional (cfg.blockListFile != null) autoUnlockDenyListFilePath);
+  in mkIf cfg.enable {
     assertions = [{
       assertion = cfg.prometheus -> cfg.httpPort != null;
       message = "httpPort needed if prometheus is enabled";
@@ -87,6 +96,37 @@ in {
         log.level = "warn";
         prometheus.enable = cfg.prometheus;
       };
+    };
+
+    systemd = mkIf (cfg.blockListFile != null) {
+      services.dns-auto-unblock = {
+        description = "Auto unblock domains on a certain day";
+        startAt = "daily";
+        wantedBy = [ "blocky.service" ];
+        serviceConfig = {
+          Type = "oneshot";
+          # for restarting when changed
+          RemainAfterExit = true;
+          StateDirectory = autoUnlockStateDir;
+          ExecStartPost = "systemctl try-reload-or-restart blocky.service";
+        };
+        script = ''
+          DAY_OF_WEEK=$(date +%u)
+          DAY_OF_MONTH=$(date +%d)
+
+          # every first Saturday of the month
+          if [[ $DAY_OF_WEEK -eq 6 && $DAY_OF_MONTH -le 7 ]]; then
+            echo "Unblocking domains"
+            touch $STATE_DIRECTORY/tmp.txt
+          else
+            echo "Blocking domains"
+            ln -s ${fileToUnlock} $STATE_DIRECTORY/tmp.txt
+          fi
+
+          mv $STATE_DIRECTORY/tmp.txt $STATE_DIRECTORY/${autoUnlockDenyListFileName}
+        '';
+      };
+      timers.dns-auto-unblock.timerConfig.Persistent = true;
     };
   };
 }
