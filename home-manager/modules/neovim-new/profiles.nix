@@ -9,13 +9,15 @@
     neovim-package-path = ".\\\\#nixosConfigurations.aaron-pc.config"
       + ".home-manager.users.aaron.within.neovim-new.finalPackage";
 
+    nix-inspect-bin = "${pkgs.nix-inspect}/bin/nix-inspect";
+
     profiles = {
       nixconfig.startup = # lua
         ''
           Configs.utils.add_term_keymaps("<Leader>cps", "sudo make switch")
           Configs.utils.add_term_keymaps("<Leader>cpb", "sudo make boot")
 
-          Configs.utils.add_term_keymaps("<Leader>cpc", "${pkgs.nix-inspect}/bin/nix-inspect", {}, true)
+          Configs.utils.add_term_keymaps("<Leader>cpc", "${nix-inspect-bin} --path .", {}, true)
 
           Configs.utils.add_term_keymaps("<Leader>cpn", "nix shell --show-trace ${neovim-package-path}")
           Configs.utils.add_term_keymaps("<Leader>cpN", "nix run --show-trace ${neovim-package-path}")
