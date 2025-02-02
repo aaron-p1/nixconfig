@@ -48,12 +48,16 @@
           Configs.utils.add_term_keymaps("<Leader>cps", "ssh " .. host)
           Configs.utils.add_term_keymaps("<Leader>cpS", "ssh " .. host .. " -- exit")
 
+          Configs.utils.add_term_keymaps("<Leader>cpc", "${nix-inspect-bin} --path .", {}, true)
+
           Configs.which_key.add({
-            { "d", group = "Deploy to server" },
-            { "b", group = "Deploy to server without switching" },
-            { "s", group = "SSH to server" },
-            { "S", group = "Only create SSH connection" }
-          }, { "<Leader>cp" })
+            { "p",  group = "Profile" },
+            { "pd", group = "Deploy to server" },
+            { "pb", group = "Deploy to server without switching" },
+            { "ps", group = "SSH to server" },
+            { "pS", group = "Only create SSH connection" },
+            { "pc", group = "Explore config" }
+          }, { "<Leader>c" })
         '';
 
       laravel.startup = # lua
