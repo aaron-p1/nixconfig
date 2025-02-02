@@ -90,6 +90,8 @@
       gImageReader
       bitwarden
 
+      code-cursor
+
       local.create-project
       local.nix-autobahn
       local.ask
