@@ -89,7 +89,7 @@
   environment.systemPackages = with pkgs; [ mangohud ];
 
   virtualisation.libvirtd = {
-    enable = true;
+    enable = false;
     qemu = { package = pkgs.qemu_kvm; };
   };
 
