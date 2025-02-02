@@ -1,38 +1,8 @@
 --------------------------------------------------------------------------------
-Check:
-  nixos:
-    nixpkgs Breaking Changes:
-      https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/doc/manual/release-notes/rl-2405.section.md
-
-    nvidia driver:
-      495.44
-      nvlax might fail
-      https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix
-      https://github.com/illnyang/nvlax
-      if updating:
-        update with dependencies:
-          https://github.com/zyantific/zydis
-
-  home-manager:
-    breaking changes:
-      https://github.com/nix-community/home-manager/blob/master/docs/release-notes/rl-2405.md
-
-  dotfiles:
-
 Broken Stuff:
   nixos:
-    nix develop copying files:
-      workaround: filter source not working
-      https://github.com/NixOS/nix/issues/3121
     podman user service not finding newuidmap:
       https://github.com/NixOS/nixpkgs/issues/138423
       workaround:
         https://github.com/NixOS/nixpkgs/issues/138423#issuecomment-947888673
-
-  home-manager:
-
-  dotfiles:
-
-  localpkgs:
-
 --------------------------------------------------------------------------------
