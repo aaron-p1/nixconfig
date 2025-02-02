@@ -1,18 +1,9 @@
 { config, lib, ... }:
 let
-  inherit (builtins) length head match;
-  inherit (lib)
-    mkEnableOption mkOption mkIf attrValues hasPrefix hasSuffix filter optionals
-    allUnique all;
+  inherit (lib) mkEnableOption mkOption mkIf;
   inherit (lib.types) attrsOf strMatching;
 
   cfg = config.within.networking;
-
-  bindAddrList = attrValues cfg.bindAddrsV4;
-
-  reservesPort = addr: hasPrefix "127.0.0.1:" addr || hasPrefix "0.0.0.0:" addr;
-  onlyOneWithPort = port:
-    length (filter (hasSuffix ":${port}") bindAddrList) == 1;
 in {
   imports = [ ./dnscrypt.nix ];
 
@@ -25,10 +16,10 @@ in {
       };
 
     bindAddrsV4 = mkOption {
-      type = attrsOf (strMatching "^(127\\..*|0\\.0\\.0\\.0):[0-9]+$");
+      type = attrsOf (strMatching "^(127\\.[0-9.]*|0\\.0\\.0\\.0)(:[0-9]+)?$");
       default = { };
       description = ''
-        Bind addresses for services. { name = "ipv4:port"; }
+        Bind addresses for services. { name = "ipv4:port"; name2 = "ipv4"; }
 
         Ip must be unique, ipv4, start with 127. or 0.0.0.0.
         If 127.0.0.1 or 0.0.0.0 is used, no other bindAddr can use the same port
@@ -37,19 +28,54 @@ in {
   };
 
   config = mkIf cfg.enable {
-    assertions = optionals cfg.enableBindAddrChecking [
+    assertions = let
+      inherit (builtins) partition length elemAt;
+      inherit (lib)
+        mapAttrsToList optionalAttrs attrValues findFirst any optionals
+        allUnique splitString;
+
+      bindV4List = mapAttrsToList (name: addr:
+        let split = splitString ":" addr;
+        in {
+          inherit name;
+          ip = elemAt split 0;
+        } // optionalAttrs (length split == 2) { port = elemAt split 1; })
+        cfg.bindAddrsV4;
+
+      portBinds = partition (bind: bind ? port) bindV4List;
+
+      zeroOnly = findFirst (bind: bind.ip == "0.0.0.0") null portBinds.wrong;
+
+      wholeIpAndPort =
+        findFirst (bind: (any (pb: bind.ip == pb.ip) portBinds.right)) null
+        portBinds.wrong;
+
+      zeroAndIp = findFirst (bind:
+        bind.ip != "0.0.0.0"
+        && (any (b: b.ip == "0.0.0.0" && b.port == bind.port) portBinds.right))
+        null portBinds.right;
+    in optionals cfg.enableBindAddrChecking [
       {
-        assertion = allUnique bindAddrList;
+        assertion = allUnique (attrValues cfg.bindAddrsV4);
         message =
           "within.networking.bindAddrsV4: all bind addresses must be unique";
       }
       {
-        assertion = all (addr:
-          let port = head (match ".*:(.*)$" addr);
-          in reservesPort addr -> onlyOneWithPort port) bindAddrList;
+        assertion = zeroOnly == null;
         message =
-          "within.networking.bindAddrsV4: only one address can use a port"
-          + " if addr is 127.0.0.1 or 0.0.0.0";
+          "within.networking.bindAddrsV4: ${zeroOnly.name} is bound to 0.0.0.0";
+      }
+
+      {
+        assertion = wholeIpAndPort == null;
+        message =
+          "within.networking.bindAddrsV4: ${wholeIpAndPort.name} binds whole ip, but port bind exists";
+      }
+
+      {
+        assertion = zeroAndIp == null;
+        message =
+          "within.networking.bindAddrsV4: port ${zeroAndIp.port} is bound to 0.0.0.0 and ${zeroAndIp.ip}";
       }
     ];
 

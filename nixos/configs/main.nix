@@ -19,10 +19,7 @@
     networking = {
       enable = true;
 
-      bindAddrsV4 = {
-        exo-web = "127.32.0.2:8000";
-        exo-db = "127.32.0.2:3306";
-      };
+      bindAddrsV4 = { exo = "127.32.0.2"; };
 
       dnscrypt = {
         enable = true;
