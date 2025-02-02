@@ -3,7 +3,6 @@ let inherit (lib) mkOption types;
 in {
   imports = [
     ./graphics
-    ./monitoring
     ./networking
 
     ./bluetooth.nix

@@ -143,8 +143,6 @@
         dir = "/home/aaron/Downloads/Tailscale";
       };
     };
-
-    monitoring.enable = false;
   };
 
   systemd = {
