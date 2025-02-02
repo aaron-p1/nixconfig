@@ -19,31 +19,15 @@
     networking = {
       enable = true;
 
-      v4.redirectLoopback80 = true;
-      v6.redirectLoopback80 = true;
-
-      localDomains = {
-        exo = "127.32.0.2";
-        sso = "127.32.0.3";
-        plat = "127.32.0.4";
-
-        syncthing = "127.32.0.101";
+      bindAddrsV4 = {
+        exo-web = "127.32.0.2:8000";
+        exo-db = "127.32.0.2:3306";
       };
-      networkDomains = { };
 
-      dns = "blocky";
-
-      nameservers = [
-        "https://dns.quad9.net/dns-query"
-        "https://dns.digitale-gesellschaft.ch/dns-query"
-      ];
-
-      nm = {
+      dnscrypt = {
         enable = true;
-        dns = "none";
+        cloak = { exo = "127.32.0.2"; };
       };
-
-      blocky.blockListFile = ../../secrets/inline-secrets/blocked-domains.txt;
     };
 
     # ../modules/users.nix

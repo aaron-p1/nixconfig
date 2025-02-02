@@ -33,12 +33,6 @@
       kernelPackages = pkgs.linuxPackages_latest;
     };
 
-    # ../../nixos/modules/networking/default.nix
-    networking.v6 = {
-      loopbackPrefix = "fd70:a008:85df:ffb2";
-      loopbackPrefixLength = 64;
-    };
-
     # ../../nixos/modules/swap.nix
     swap.file = 20;
 

@@ -32,11 +32,6 @@
       kernelPackages = pkgs.linuxPackages_latest;
     };
 
-    networking.v6 = {
-      loopbackPrefix = "fdfd:3ea0:fd08:44cc";
-      loopbackPrefixLength = 64;
-    };
-
     swap.file = 20;
 
     users.aaron.u2fKeys = [

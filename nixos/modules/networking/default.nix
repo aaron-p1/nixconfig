@@ -1,177 +1,73 @@
 { config, lib, ... }:
 let
+  inherit (builtins) length head match;
   inherit (lib)
-    optionalString mapAttrs mapAttrsToList nameValuePair partition hasInfix
-    listToAttrs attrValues mkEnableOption mkOption types mkIf mkMerge length
-    remove splitString hasSuffix;
+    mkEnableOption mkOption mkIf attrValues hasPrefix hasSuffix filter optionals
+    allUnique all;
+  inherit (lib.types) attrsOf strMatching;
 
   cfg = config.within.networking;
 
-  v6Prefix = cfg.v6.loopbackPrefix;
-  v6PrefixString = optionalString (v6Prefix != null) v6Prefix;
-  prependV6Prefix = mapAttrs (name: value: v6PrefixString + value);
+  bindAddrList = attrValues cfg.bindAddrsV4;
 
-  splitLocalAddresses = let
-    attrList = mapAttrsToList nameValuePair cfg.localDomains;
-    partitionList = partition (attr: hasInfix "." attr.value) attrList;
-  in {
-    v4 = listToAttrs partitionList.right;
-    v6 = listToAttrs partitionList.wrong;
-  };
-
-  realLocalDomains = splitLocalAddresses.v4
-    // prependV6Prefix splitLocalAddresses.v6;
-
-  v6LoopbackAddresses = cfg.v6.loopbackAddresses
-    ++ attrValues splitLocalAddresses.v6;
-
-  mappedV6LoopbackAddresses = map (value: {
-    address = cfg.v6.loopbackPrefix + value;
-    prefixLength = cfg.v6.loopbackPrefixLength;
-  }) v6LoopbackAddresses;
-
-  mkDefaultTrue = name:
-    mkOption {
-      type = types.bool;
-      default = true;
-      description = name;
-    };
-
-  mkDomainOption = name:
-    mkOption {
-      type = types.attrsOf types.str;
-      default = { };
-      description = name;
-    };
-
+  reservesPort = addr: hasPrefix "127.0.0.1:" addr || hasPrefix "0.0.0.0:" addr;
+  onlyOneWithPort = port:
+    length (filter (hasSuffix ":${port}") bindAddrList) == 1;
 in {
-  imports = [ ./networkmanager.nix ./dnsmasq.nix ./blocky.nix ];
+  imports = [ ./dnscrypt.nix ];
 
-  options.within.networking = let inherit (types) nullOr str int listOf enum;
-  in {
-    enable = mkEnableOption "basic setup";
+  options.within.networking = {
+    enable = mkEnableOption "Custom networking options";
 
-    allowPing = mkDefaultTrue "allow ping";
-
-    v4.redirectLoopback80 = mkDefaultTrue "redirect port 80 to 8000";
-
-    v6 = {
-      redirectLoopback80 = mkDefaultTrue "redirect port 80 to 8000";
-
-      loopbackPrefix = mkOption {
-        type = nullOr str;
-        default = null;
-        description = ''
-          loopback prefix. Must not end with ":".
-          Generate via https://simpledns.plus/private-ipv6
-        '';
-      };
-      loopbackPrefixLength = mkOption {
-        type = int;
-        default = 0;
-        description = "loopback prefix length";
+    enableBindAddrChecking =
+      mkEnableOption "Enable bind addrs checking for services" // {
+        default = true;
       };
 
-      loopbackAddresses = mkOption {
-        type = listOf str;
-        default = [ ];
-        description = "host parts of addresses to assign to dev lo";
-      };
-    };
+    bindAddrsV4 = mkOption {
+      type = attrsOf (strMatching "^(127\\..*|0\\.0\\.0\\.0):[0-9]+$");
+      default = { };
+      description = ''
+        Bind addresses for services. { name = "ipv4:port"; }
 
-    dns = mkOption {
-      type = enum [ "none" "networkmanager" "dnsmasq" "blocky" ];
-      default = "none";
-      description = "dns server to use";
+        Ip must be unique, ipv4, start with 127. or 0.0.0.0.
+        If 127.0.0.1 or 0.0.0.0 is used, no other bindAddr can use the same port
+      '';
     };
-
-    nameservers = mkOption {
-      type = listOf str;
-      default = [ ];
-      description = "nameservers to use";
-    };
-
-    localDomains = mkDomainOption ''
-      local domains. Only IPv6 specify host part of IPv6 addresses
-    '';
-    networkDomains = mkDomainOption "network domains";
   };
 
-  config = mkIf cfg.enable (mkMerge [{
-    assertions = let
-      c6LP = cfg.v6.loopbackPrefix;
-      c6LPL = cfg.v6.loopbackPrefixLength;
-    in [
+  config = mkIf cfg.enable {
+    assertions = optionals cfg.enableBindAddrChecking [
       {
-        assertion = length v6LoopbackAddresses > 0 -> c6LP != null;
-        message = ''
-          If local IPv6 loopback addresses are defined, you have to define
-          within.networking.v6.ipv6LoopbackPrefix and
-          within.networking.v6.ipv6LoopbackPrefixLength because
-          within.networking.v6.loopbackAddresses only contains the host part.
-        '';
+        assertion = allUnique bindAddrList;
+        message =
+          "within.networking.bindAddrsV4: all bind addresses must be unique";
       }
       {
-        assertion = c6LP != null -> length (remove "" (splitString ":" c6LP))
-          == builtins.ceil (c6LPL / 16.0);
-        message = ''
-          The option within.networking.v6.ipv6LoopbackPrefix defines more bits
-          than there are defined in within.networking.v6.ipv6LoopbackPrefixLength.
-        '';
-      }
-      {
-        assertion = c6LP != null -> !(hasSuffix ":" c6LP || hasInfix "::" c6LP);
-        message = ''
-          The option within.networking.v6.ipv6LoopbackPrefix must not end
-          with ':' and must not use '::'.
-        '';
-      }
-      {
-        assertion = length (attrValues (cfg.localDomains // cfg.networkDomains))
-          > 0 -> builtins.elem cfg.dns [ "dnsmasq" "blocky" ];
-        message = ''
-          The option within.networking.localDomains or
-          within.networking.networkDomains is defined, but the dns backend
-          is not compatible.
-        '';
+        assertion = all (addr:
+          let port = head (match ".*:(.*)$" addr);
+          in reservesPort addr -> onlyOneWithPort port) bindAddrList;
+        message =
+          "within.networking.bindAddrsV4: only one address can use a port"
+          + " if addr is 127.0.0.1 or 0.0.0.0";
       }
     ];
 
     networking = {
-      nameservers =
-        if (cfg.dns == "none") then cfg.nameservers else [ "127.0.0.1" ];
-      useDHCP = false; # discouraged
+      useDHCP = false;
 
       firewall = {
-        inherit (cfg) allowPing;
         enable = true;
-        extraCommands = optionalString cfg.v4.redirectLoopback80 ''
+        allowPing = true;
+        pingLimit = "--limit 1/minute --limit-burst 5";
+
+        extraCommands = ''
           iptables -t nat -A OUTPUT -d 127.32.0.0/16 -p tcp -m tcp --dport 80 -j DNAT --to-destination ':8000'
-        '' + optionalString
-          (cfg.v6.redirectLoopback80 && cfg.v6.loopbackPrefix != null) ''
-            ip6tables -t nat -A OUTPUT -d ${cfg.v6.loopbackPrefix}::/64 -p tcp -m tcp --dport 80 -j DNAT --to-destination ':8000'
-          '';
+        '';
       };
 
-      interfaces.lo.ipv6.addresses = mappedV6LoopbackAddresses;
+      networkmanager.enable = true;
+      dhcpcd.enable = false;
     };
-
-    within.networking = {
-      nm = mkIf (cfg.dns == "networkmanager") {
-        enable = true;
-        dns = "internal";
-        inherit (cfg) nameservers;
-      };
-      dnsmasq = mkIf (cfg.dns == "dnsmasq") {
-        enable = true;
-        mapDomains = cfg.networkDomains // realLocalDomains;
-        servers = cfg.nameservers;
-      };
-      blocky = mkIf (cfg.dns == "blocky") {
-        enable = true;
-        mapDomains = cfg.networkDomains // realLocalDomains;
-        inherit (cfg) nameservers;
-      };
-    };
-  }]);
+  };
 }
