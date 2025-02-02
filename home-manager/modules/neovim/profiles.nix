@@ -7,7 +7,7 @@
       mapAttrsToList filterAttrs;
 
     neovim-package-path = ".\\\\#nixosConfigurations.aaron-pc.config"
-      + ".home-manager.users.aaron.within.neovim-new.finalPackage";
+      + ".home-manager.users.aaron.within.neovim.finalPackage";
 
     nix-inspect-bin = "${pkgs.nix-inspect}/bin/nix-inspect";
 

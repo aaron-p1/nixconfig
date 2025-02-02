@@ -6,7 +6,7 @@ let
     makeBinPath mapAttrs mapAttrsToList mkEnableOption mkIf optionals
     optionalString pipe throwIfNot unique;
 
-  cfg = config.within.neovim-new;
+  cfg = config.within.neovim;
 
   domains = [
     ./utils.nix
@@ -240,8 +240,8 @@ let
     '';
   });
 in {
-  options.within.neovim-new = {
-    enable = mkEnableOption "Neovim New";
+  options.within.neovim = {
+    enable = mkEnableOption "Neovim config";
 
     finalPackage = lib.mkOption {
       type = lib.types.package;

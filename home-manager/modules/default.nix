@@ -14,8 +14,7 @@ in {
     ./kde-service-menus
     ./libreoffice.nix
     ./mpv.nix
-    ./neovim.nix
-    ./neovim-new
+    ./neovim
     ./nsxiv
     ./obs-studio.nix
     ./plasma.nix

@@ -1,1 +1,1 @@
-_: final: prev: { dotfiles = { nvim = prev.callPackage ./nvim.nix { }; }; }
+_: final: prev: { dotfiles = { }; }

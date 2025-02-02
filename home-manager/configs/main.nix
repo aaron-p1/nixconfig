@@ -38,11 +38,8 @@
     # ../modules/git.nix
     git.enable = true;
 
-    # ../modules/neovim.nix
-    neovim.enable = false;
-
-    # ../modules/neovim-new
-    neovim-new.enable = true;
+    # ../modules/neovim/default.nix
+    neovim.enable = true;
 
     # ../modules/mpv.nix
     mpv.enable = true;
