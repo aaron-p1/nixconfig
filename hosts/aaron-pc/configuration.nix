@@ -25,7 +25,6 @@
     nvidiaSettings = false;
     open = false;
   };
-  boot.kernelParams = [ ];
 
   within = {
     # ../../nixos/modules/boot.nix
