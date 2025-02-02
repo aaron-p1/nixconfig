@@ -5,7 +5,7 @@ let
 
   cfg = config.within.networking;
 in {
-  imports = [ ./dnscrypt.nix ];
+  imports = [ ./dnscrypt.nix ./reverse-proxy.nix ];
 
   options.within.networking = {
     enable = mkEnableOption "Custom networking options";

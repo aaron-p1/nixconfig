@@ -25,6 +25,11 @@
         enable = true;
         cloak = { exo = "127.32.0.2"; };
       };
+
+      reverseProxy = {
+        enable = true;
+        devHosts = { };
+      };
     };
 
     # ../modules/users.nix
