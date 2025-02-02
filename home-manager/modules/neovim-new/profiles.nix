@@ -15,7 +15,9 @@
       nixconfig.startup = # lua
         ''
           Configs.utils.add_term_keymaps("<Leader>cps", "sudo make switch")
+          Configs.utils.add_term_keymaps("<Leader>cpS", "sudo make nixargs=--offline switch")
           Configs.utils.add_term_keymaps("<Leader>cpb", "sudo make boot")
+          Configs.utils.add_term_keymaps("<Leader>cpB", "sudo make nixargs=--offline boot")
 
           Configs.utils.add_term_keymaps("<Leader>cpc", "${nix-inspect-bin} --path .", {}, true)
 
@@ -28,7 +30,9 @@
           Configs.which_key.add({
             { "p",  group = "Profile" },
             { "ps", group = "Switch config" },
+            { "pS", group = "Switch config offline" },
             { "pb", group = "Boot config" },
+            { "pB", group = "Boot config offline" },
             { "pc", group = "Explore config" },
             { "pn", group = "Shell neovim" },
             { "pN", group = "Run neovim" }
