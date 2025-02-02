@@ -219,6 +219,12 @@
       enable = true;
       drivers = [ pkgs.hplip ];
     };
+    # for printer discovery
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
 
     restic.backups.documentsRemote = {
       paths = [ "/home/aaron/Documents" ];
