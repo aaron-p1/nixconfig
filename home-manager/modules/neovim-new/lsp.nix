@@ -5,6 +5,7 @@
     nvim-lspconfig
     SchemaStore-nvim
     none-ls-nvim
+    elixir-tools-nvim
   ];
   packages = with pkgs;
     let
@@ -13,6 +14,8 @@
       bashls = [ bash-language-server shellcheck shfmt ];
 
       rustAnalyzerLs = [ rust-analyzer rustfmt ];
+
+      elixir = [ elixir-ls inotify-tools ];
 
       lsp = [
         sumneko-lua-language-server
@@ -24,7 +27,7 @@
         vue-language-server
         clang-tools
         pyright
-      ] ++ nills ++ bashls ++ rustAnalyzerLs;
+      ] ++ nills ++ bashls ++ rustAnalyzerLs ++ elixir;
 
       none-ls = [ editorconfig-checker prettierd isort black ];
     in lsp ++ none-ls;
@@ -241,8 +244,6 @@
       }
     })
 
-    setup("elixirls", { cmd = { "elixir-ls" } })
-
     -- php
     setup("intelephense", {
       settings = { intelephense = { files = { maxSize = 2 * 1000 * 1000 } } }
@@ -301,6 +302,22 @@
     setup("clangd")
 
     setup("pyright")
+
+    local elixirls = require("elixir.elixirls")
+    require("elixir").setup({
+      projectionist = { enabled = false },
+      nextls = { enable = false },
+      elixirls = {
+        enable = true,
+        cmd = { "elixir-ls" },
+        settings = elixirls.settings({
+          enableTestLenses = true,
+          suggestSpecs = true,
+        }),
+        on_attach = default_config.on_attach,
+        capabilities = default_config.capabilities,
+      }
+    })
 
     local nls = require("null-ls")
 
