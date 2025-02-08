@@ -87,12 +87,18 @@
           Configs.utils.add_term_keymaps("<Leader>cpt", get_host_cmd("tinker", "php artisan"))
           Configs.utils.add_term_keymaps("<Leader>cpq", get_host_cmd("artisan queue:listen", "php"))
 
+          Configs.utils.add_term_keymaps("<Leader>cpmm", get_host_cmd("artisan migrate", "php"))
+          Configs.utils.add_term_keymaps("<Leader>cpmr", get_host_cmd("artisan migrate:rollback", "php"))
+
           Configs.which_key.add({
             { "p",  group = "Profile" },
             { "pt", name = "Tinker" },
             { "pq", name = "Queue listen" },
             { "pl", name = "Tail laravel log" },
-            { "pL", name = "Less laravel log" }
+            { "pL", name = "Less laravel log" },
+            { "pm", group = "Migrate" },
+            { "pmm", name = "Migrate" },
+            { "pmr", name = "Rollback" },
           }, { "<Leader>c" })
 
           if has_sail or has_podman_compose then
@@ -106,7 +112,14 @@
           if has_profile("tenancy_for_laravel") then
             Configs.utils.add_term_keymaps("<Leader>cpT", get_host_cmd("artisan tenants:run tinker", "php"))
 
-            Configs.which_key.add({ { "<Leader>cpT", group = "Tenant tinker" } })
+            Configs.utils.add_term_keymaps("<Leader>cpmt", get_host_cmd("artisan tenants:migrate", "php"))
+            Configs.utils.add_term_keymaps("<Leader>cpmT", get_host_cmd("artisan tenants:rollback", "php"))
+
+            Configs.which_key.add({
+              { "T", group = "Tenant tinker" },
+              { "mt", name = "Tenant migrate" },
+              { "mT", name = "Tenant rollback" },
+            }, { "<Leader>cp" })
           end
 
           if has_profile("npm") then
