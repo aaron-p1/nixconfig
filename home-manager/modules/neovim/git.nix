@@ -153,32 +153,48 @@
         { "gd",  group = "Diffview" },
         { "gdc", group = "Commits" },
       }, { "<Leader>" })
-    '';
-  extraFiles.ftplugin."fugitive.lua" = # lua
-    ''
-      local log_count = 50
 
-      vim.opt_local.foldmethod = "syntax"
+      local function patch_include()
+        local fname = vim.v.fname
+        return fname:gsub("^[ab]/", "")
+      end
 
-      local maps = {
-        p = { command = "pull", desc = "Pull" },
-        f = { command = "fetch", desc = "Fetch" },
-        P = { command = "push", desc = "Push" },
-        l = { command = "log -" .. log_count, desc = "Log " .. log_count },
-        L = { command = "log -" .. (log_count * 2), desc = "Log " .. (log_count * 2) },
+      return {
+        patch_include = patch_include,
       }
-
-      for key, mapping in pairs(maps) do
-        vim.keymap.set(
-          "n", "<Leader>g" .. key,
-          "<Cmd>Git " .. mapping.command .. "<CR>",
-          { desc = mapping.desc, buffer = true })
-      end
-
-      if vim.b.fugitive_type == "index" then
-        vim.keymap.set("n", "R", "<Cmd>Git<CR>", { buffer = true })
-      end
-
-      Configs.which_key.add({ { "<Leader>g", group = "Git" } })
     '';
+  extraFiles.ftplugin = {
+    "git.lua" = # lua
+      ''
+        vim.opt_local.includeexpr = "v:lua.Configs.git.patch_include()"
+      '';
+
+    "fugitive.lua" = # lua
+      ''
+        local log_count = 50
+
+        vim.opt_local.foldmethod = "syntax"
+
+        local maps = {
+          p = { command = "pull", desc = "Pull" },
+          f = { command = "fetch", desc = "Fetch" },
+          P = { command = "push", desc = "Push" },
+          l = { command = "log -" .. log_count, desc = "Log " .. log_count },
+          L = { command = "log -" .. (log_count * 2), desc = "Log " .. (log_count * 2) },
+        }
+
+        for key, mapping in pairs(maps) do
+          vim.keymap.set(
+            "n", "<Leader>g" .. key,
+            "<Cmd>Git " .. mapping.command .. "<CR>",
+            { desc = mapping.desc, buffer = true })
+        end
+
+        if vim.b.fugitive_type == "index" then
+          vim.keymap.set("n", "R", "<Cmd>Git<CR>", { buffer = true })
+        end
+
+        Configs.which_key.add({ { "<Leader>g", group = "Git" } })
+      '';
+  };
 }
