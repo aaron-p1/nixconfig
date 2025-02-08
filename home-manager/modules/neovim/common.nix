@@ -92,7 +92,25 @@
           return remotes_json[profile] or {}
         end, remote_keys)
 
-        local remotes = vim.tbl_extend("force", {}, {}, unpack(remotes_list))
+        local profile_remotes = vim.tbl_extend("force", {}, {}, unpack(remotes_list))
+
+        -- Format: 'Name1:path1,Name2:path2'
+        local env_string = vim.env.NVIM_COMPARABLE_REMOTES
+
+        local env_remotes = vim.iter(vim.gsplit(env_string or "", ","))
+          :filter(function(remote)
+            return remote:match("^[^:]+:.+$")
+          end)
+          :map(function(remote)
+            local parts = vim.split(remote, ":")
+            return { name = parts[1], path = parts[2] }
+          end)
+          :fold({}, function(acc, remote)
+            acc[remote.name] = remote.path
+            return acc
+          end)
+
+        local remotes = vim.tbl_extend("force", profile_remotes, env_remotes)
 
         require("compare-remotes").setup({
           remotes = remotes,
