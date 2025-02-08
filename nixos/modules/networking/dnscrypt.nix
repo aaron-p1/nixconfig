@@ -87,7 +87,7 @@ in {
               (readFile originalScriptPath);
 
             # https://github.com/DNSCrypt/dnscrypt-proxy/blob/master/utils/generate-domains-blocklist/domains-blocklist.conf
-            blocklistConf = pkgs.writeText "blocklist.conf" ''
+            blocklists = pkgs.writeText "blocklist.conf" ''
               # Peter Lowe's Ad and tracking server list
               https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml
 
@@ -112,11 +112,16 @@ in {
               # OISD.NL (smaller subset) - Blocks ads, phishing, malware, tracking and more. Tries to minimize false positives.
               https://dblw.oisd.nl/basic/
             '';
+
+            allowList = pkgs.writeText "allowlist.conf" ''
+              sentry.io
+              sentry-cdn.com
+            '';
           in ''
             ${genBlockList} \
-              --config ${blocklistConf} \
+              --config ${blocklists} \
               --time-restricted "" \
-              --allowlist "" \
+              --allowlist ${allowList} \
               --output-file $STATE_DIRECTORY/${publicBlockListFileName}
           '';
         };
