@@ -71,8 +71,11 @@ in {
           wants = [ "network-online.target" ];
           after = [ "network-online.target" "dnscrypt-proxy2.service" ];
           serviceConfig = {
+            RemainAfterExit = true;
             Type = "oneshot";
             StateDirectory = dnsFilteringStateDir;
+            ExecStartPost =
+              "systemctl --no-block restart dns-auto-unblock.service";
           };
           script = let
             inherit (builtins) readFile;
@@ -138,7 +141,7 @@ in {
             TMP_COMBINED=$STATE_DIRECTORY/tmp-combined.txt
 
             if [[ ! -f $PUBLIC_BLOCK_LIST_FILE ]]; then
-              systemctl start dns-gen-block-list.service
+              systemctl restart dns-gen-block-list.service
             fi
 
             [[ ! -f $PUBLIC_BLOCK_LIST_FILE ]] && touch $PUBLIC_BLOCK_LIST_FILE
