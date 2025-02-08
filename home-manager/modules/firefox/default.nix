@@ -457,6 +457,7 @@ in {
 
           "Google".metaData.alias = "@g";
           "Bing".metaData.hidden = true;
+          "Ecosia".metaData.hidden = true;
         };
 
         userChrome = # CSS
