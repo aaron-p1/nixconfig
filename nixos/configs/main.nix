@@ -28,7 +28,12 @@
 
       reverseProxy = {
         enable = true;
-        devHosts = { };
+        devHosts = {
+          exo = {
+            dst = "http://127.32.0.2";
+            allSubDomains = true;
+          };
+        };
       };
     };
 
