@@ -77,8 +77,10 @@
       vim.keymap.set("n", "<PageUp>", "<nop>")
       vim.keymap.set("n", "<PageDown>", "<nop>")
 
-      vim.keymap.set("n", "<C-s>", "<Cmd>:write<CR>", { silent = true, desc = "Save" })
-      vim.keymap.set("n", "<C-S-s>", "<Cmd>:quit<CR>", { silent = true, desc = "Quit" })
+      vim.keymap.set("n", "<C-s>", "<Cmd>:w<CR>", { silent = true, desc = "Save" })
+      vim.keymap.set("n", "<C-S-s>", "<Cmd>:wq<CR>", { silent = true, desc = "Save and quit" })
+      vim.keymap.set("n", "<C-q>", "<Cmd>:q<CR>", { silent = true, desc = "Quit" })
+      vim.keymap.set("n", "<C-S-q>", "<Cmd>:q!<CR>", { silent = true, desc = "Quit!" })
       -- alt + Esc for leaving terminal
       vim.keymap.set("t", "<A-Esc>", "<C-\\><C-n>")
       -- diff maps
