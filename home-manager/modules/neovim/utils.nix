@@ -16,6 +16,15 @@ _: {
         })
       end
 
+      ---return function that runs fn with args
+      ---@param fn function
+      ---@param args table
+      function M.run(fn, args)
+        return function()
+          fn(unpack(args))
+        end
+      end
+
       ---remove common indent of multi line string
       ---@param str string
       ---@return string

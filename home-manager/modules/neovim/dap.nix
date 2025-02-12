@@ -10,6 +10,8 @@
       local dap = require("dap")
       local du = require("dapui")
 
+      local run = Configs.utils.run
+
       vim.keymap.set("n", "<F1>", dap.repl.toggle, { desc = "Toggle dap repl" })
       vim.keymap.set("n", "<F2>", dap.step_over, { desc = "Step over" })
       vim.keymap.set("n", "<F3>", dap.step_into, { desc = "Step into" })
@@ -27,7 +29,12 @@
       vim.keymap.set("n", "<Leader><F12>", dap.down, { desc = "Stack down" })
 
       vim.keymap.set("n", "<Leader>dd", du.toggle, { desc = "Toggle dap UI" })
-      vim.keymap.set({ "n", "v" }, "<Leader>de", du.eval, { desc = "Evaluate expression" })
+      vim.keymap.set(
+        { "n", "v" },
+        "<Leader>de",
+        run(du.eval, { nil, { context = "repl" } }),
+        { desc = "Evaluate expression" }
+      )
 
       du.setup({
         controls = { enabled = false },
