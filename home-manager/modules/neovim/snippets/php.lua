@@ -2,7 +2,6 @@ local ls = require("luasnip")
 local extras = require("luasnip.extras")
 local conds = require("luasnip.extras.conditions.expand")
 local ts_postfix = require("luasnip.extras.treesitter_postfix").treesitter_postfix
-local events = require("luasnip.util.events")
 
 local s = ls.snippet
 local sn = ls.snippet_node
@@ -16,17 +15,6 @@ local fmta = require("luasnip.extras.fmt").fmta
 local n = extras.nonempty
 local dl = extras.dynamic_lambda
 local l = extras.lambda
-local ms = ls.multi_snippet
-
-local cmp_callback = {
-  [-1] = {
-    [events.leave] = function()
-      vim.schedule(function()
-        Configs.completion.text_changed()
-      end)
-    end
-  }
-}
 
 ls.add_snippets("php", {
   -- common
@@ -160,26 +148,24 @@ ls.add_snippets("php", {
   }, { l(l.CAPTURE1), t("$this") }),
 
   -- dot alias
-  ts_postfix(
+  s(
     {
-      matchTSNode = {
-        query = --[[ query ]] [[
-          [
-            (variable_name)
-            (function_call_expression)
-            (member_access_expression)
-            (member_call_expression)
-            (scoped_call_expression)
-          ] @prefix
-        ]],
-        query_lang = "php"
-      },
-      trig = ".",
+      trig = "(%S*[^ \t\"'])%.",
+      wordTrig = false,
+      trigEngine = "pattern",
       snippetType = "autosnippet",
-      hidden = true
+      hidden = true,
+      resolveExpandParams = function(_, _, _, captures)
+        local prefix = captures[1]
+
+        if prefix:match("^[a-zA-Z0-9_\\]+$") then
+          return {trigger = ".", captures = {"::"}}
+        end
+
+        return {trigger = ".", captures = {"->"}}
+      end
     },
-    isn(1, l(l.LS_TSMATCH .. "->"), ""),
-    { callbacks = cmp_callback }
+    l(l.CAPTURE1)
   ),
   s(
     {
@@ -194,44 +180,11 @@ ls.add_snippets("php", {
       local indent_more = after_indent ~= ")" and not vim.startswith(after_indent, "->")
       local indent_suffix = indent_more and "\t" or ""
       return indent .. indent_suffix .. "->"
-    end),
-    { callbacks = cmp_callback }
+    end)
   ),
   s({
     trig = "\\.",
     snippetType = "autosnippet",
     hidden = true
-  }, t("."), { condition = conds.line_begin }),
-  ts_postfix({
-    matchTSNode = {
-      query = --[[ query ]] [[
-        (name) @prefix
-      ]],
-      query_lang = "php"
-    },
-    trig = ".",
-    snippetType = "autosnippet",
-  }, l(l.LS_TSMATCH .. "::"), { callbacks = cmp_callback }),
-  ms({
-      common = { snippetType = "autosnippet", hidden = true },
-      "parent.",
-      "self.",
-      "static.",
-    },
-    f(function(_, snip)
-      return snip.trigger:match("%w+") .. "::"
-    end),
-    { callbacks = cmp_callback }
-  ),
-  ts_postfix({
-    matchTSNode = {
-      query = --[[ query ]] [[
-        (array_element_initializer) @prefix
-      ]],
-      query_lang = "php"
-    },
-    trig = ":",
-    snippetType = "autosnippet",
-    hidden = true
-  }, l(l.LS_TSMATCH .. " =>")),
+  }, t(".")),
 })
