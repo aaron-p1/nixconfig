@@ -5,7 +5,6 @@
       (old: { patches = [ ./patches/dadbod-fix-output-newlines.patch ]; }))
     # remove vim-dadbod dependency
     (vim-dadbod-ui.overrideAttrs (old: { dependencies = [ ]; }))
-    vim-dadbod-completion
   ];
   packages = with pkgs; [ mariadb ];
   config = # lua
@@ -79,20 +78,6 @@
       vim.g.db_ui_save_location = vim.fn.stdpath('data') .. '/dbui'
 
       vim.keymap.set("n", "<Leader>D", "<Cmd>tab DBUI<CR>", { silent = true, desc = "Open DBUI" })
-
-      local default_sources = Configs.completion.default_sources
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "sql", "mysql", "plsql" },
-        callback = function()
-          Configs.completion.cmp_setup.buffer({
-            sources = {
-              { name = "vim-dadbod-completion" },
-              default_sources.buffer
-            }
-          })
-        end
-      })
 
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "dbout" },

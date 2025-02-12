@@ -1,13 +1,9 @@
 { pkgs, lib, ... }: {
   name = "completion";
   plugins = with pkgs.vimPlugins; [
-    nvim-cmp
-    lspkind-nvim
-    cmp-buffer
-    cmp-path
-    cmp-calc
-    cmp-nvim-lsp
-    cmp_luasnip
+    blink-cmp
+    vim-dadbod-completion
+
     copilot-vim
     (CopilotChat-nvim.overrideAttrs (old: {
       dependencies = lib.remove pkgs.vimPlugins.copilot-lua old.dependencies;
@@ -19,71 +15,71 @@
   packages = with pkgs; [ fd ];
   config = # lua
     ''
-      local cmp = require("cmp")
-      local lk = require("lspkind")
-      local cc = require("cmp.config.compare")
+      local bcmp = require("blink.cmp")
 
-      local default_sources = {
-        nvim_lsp = { name = "nvim_lsp" },
-        luasnip = { name = "luasnip" },
-        path = { name = "path", options = { fd_timeout_msec = 1000, fd_cmd = { "fd", "-d", "4", "-p" } } },
-        calc = { name = "calc" },
-        buffer = { name = "buffer", option = { get_bufnrs = function() return vim.api.nvim_list_bufs() end } },
-      }
+      bcmp.setup({
+        sources = {
+          default = { "lsp", "path", "snippets", "buffer", "dadbod" },
 
-      cmp.setup({
-        sources = vim.tbl_values(default_sources),
-        sorting = {
-          priority_weight = 4,
-          comparators = {
-            cc.offset,
-            cc.exact,
-            cc.score,
-            cc.recently_used,
-            cc.kind,
-            cc.sort_text,
-            cc.length,
-            cc.order,
+          providers = {
+            dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
           },
-        },
-        snippet = {
-          expand = function(args)
-            Configs.snippets.lsp_expand(args.body)
+
+          cmdline = function()
+            local type = vim.fn.getcmdtype()
+            if type == ':' or type == '@' then return { 'cmdline' } end
+            return { }
           end,
         },
-        mapping = {
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-y>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-          ["<C-e>"] = cmp.mapping({ i = cmp.mapping.abort(), c = cmp.mapping.close() }),
-          ["<M-e>"] = cmp.mapping.close(),
-          ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-d>"] = cmp.mapping.scroll_docs(4),
-          ["<C-n>"] = cmp.mapping(
-            cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert, select = true }),
-            { "i", "c" }
-          ),
-          ["<C-p>"] = cmp.mapping(
-            cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert, select = true }),
-            { "i", "c" }
-          ),
-        },
-        preselect = cmp.PreselectMode.Item,
-        formatting = {
-          format = lk.cmp_format({
-            mode = "symbol_text",
-            menu = {
-              nvim_lsp = "[LSP]",
-              luasnip = "[SNIP]",
-              path = "[P]",
-              buffer = "[B]",
-              calc = "[C]",
-              ["vim-dadbod-completion"] = "[DB]",
+
+        snippets = { preset = "luasnip" },
+
+        completion = {
+          list = {
+            selection = {
+              preselect = false,
             }
-          })
+          },
+
+          accept = {
+            create_undo_point = false,
+          },
+
+          documentation = {
+            auto_show = true,
+            auto_show_delay_ms = 200,
+          },
+
+          ghost_text = {
+            enabled = false,
+            show_with_selection = false,
+            show_without_selection = true,
+          }
         },
-        experimental = {
-          ghost_text = true,
+
+        signature = {
+          enabled = true,
         },
+
+        keymap = {
+          preset = "none",
+          ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+          ["<C-e>"] = { "hide" },
+          ["<C-y>"] = { "select_and_accept" },
+
+          ["<C-p>"] = { "select_prev", "fallback" },
+          ["<C-n>"] = { "select_next", "fallback" },
+
+          ["<C-u>"] = { "scroll_documentation_up", "fallback" },
+          ["<C-d>"] = { "scroll_documentation_down", "fallback" },
+
+          ["<Tab>"] = { "select_next", "fallback" },
+          ["<S-Tab>"] = { "select_prev", "fallback" },
+
+          ["<C-S-e>"] = { "show_signature", "hide_signature", "fallback" },
+        },
+
+        appearance = { use_nvim_cmp_as_default = true },
       })
 
       vim.g.copilot_no_maps = true
@@ -125,24 +121,6 @@
         disable_filetype = { "TelescopePrompt", "dap-repl", "dapui_watches" },
       })
 
-      cmp.event:on(
-        "confirm_done",
-        require("nvim-autopairs.completion.cmp").on_confirm_done({
-          -- map <CR> on insert mode
-          map_cr = false,
-          -- it will auto insert `()` after select function or method item
-          map_complete = true,
-          -- automatically select the first item
-          auto_select = true
-        })
-      )
-
-      local function cmp_text_changed()
-        if require("cmp.config").enabled() then
-          cmp.core:on_change("TextChanged")
-        end
-      end
-
       require("nvim-ts-autotag").setup({
         opts = {
           enable_close_on_slash = true
@@ -152,10 +130,7 @@
       Configs.which_key.add({ { "<Leader>C", group = "Copilot chat" } })
 
       return {
-        cmp_setup = cmp.setup,
-        default_sources = default_sources,
-        lsp_capabilities = require("cmp_nvim_lsp").default_capabilities(),
-        text_changed = cmp_text_changed
+        lsp_capabilities = require("blink.cmp").get_lsp_capabilities(),
       }
     '';
 }
