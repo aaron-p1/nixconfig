@@ -32,7 +32,7 @@ in {
       };
       userName = "Aaron Pietscher";
       signing = mkIf (cfg.signingKey != null) {
-        gpgPath = "${config.programs.gpg.package}/bin/gpg2";
+        signer = "${config.programs.gpg.package}/bin/gpg2";
         signByDefault = true;
         key = cfg.signingKey;
       };
