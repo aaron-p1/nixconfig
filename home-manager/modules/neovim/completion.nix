@@ -22,14 +22,28 @@
           default = { "lsp", "path", "snippets", "buffer", "dadbod" },
 
           providers = {
-            dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+            lsp = {
+              name = "LSP",
+              fallbacks = {}
+            },
+            path = {
+              name = "PTH",
+              fallbacks = {}
+            },
+            snippets = { name = "SNP" },
+            buffer = { name = "BUF" },
+
+            dadbod = { name = "DBD", module = "vim_dadbod_completion.blink" },
           },
 
-          cmdline = function()
+        },
+
+        cmdline = {
+          sources = function()
             local type = vim.fn.getcmdtype()
             if type == ':' or type == '@' then return { 'cmdline' } end
-            return { }
-          end,
+            return {}
+          end
         },
 
         snippets = { preset = "luasnip" },
@@ -38,6 +52,16 @@
           list = {
             selection = {
               preselect = false,
+            }
+          },
+
+          menu = {
+            draw = {
+              columns = {
+                { 'kind_icon' },
+                { 'label', 'label_description', gap = 1 },
+                { 'source_name' },
+              }
             }
           },
 
