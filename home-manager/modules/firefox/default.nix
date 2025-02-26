@@ -380,7 +380,7 @@ in {
           "permissions.default.shortcuts" = 2;
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         };
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+        extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           bitwarden
           consent-o-matic
           ff2mpv
