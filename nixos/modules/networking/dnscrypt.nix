@@ -30,6 +30,7 @@ in {
     networking = {
       nameservers = [ "127.0.0.1" ];
       networkmanager.dns = "none";
+      resolvconf.useLocalResolver = true;
     };
 
     services.dnscrypt-proxy2 = {
@@ -39,10 +40,7 @@ in {
         ipv6_servers = true;
         require_dnssec = true;
 
-        server_names = [
-          "quad9-doh-ip4-port443-filter-pri"
-          "quad9-doh-ip6-port443-filter-pri"
-        ];
+        server_names = [ "quad9-doh-ip4-port443-filter-pri" ];
 
         blocked_names.blocked_names_file = finalBlockList;
 
@@ -51,6 +49,10 @@ in {
           internal  $DHCP
           intranet  $DHCP
           fritz.box $DHCP
+
+          ts.net      100.100.100.100
+          home.arpa   100.100.100.100
+          home-server 100.100.100.100
         '';
 
         cloaking_rules = let
