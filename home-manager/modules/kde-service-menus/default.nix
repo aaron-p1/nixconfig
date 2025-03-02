@@ -29,7 +29,7 @@ let
 
   tailscaleBin = "${pkgs.tailscale}/bin/tailscale";
   jqBin = "${pkgs.jq}/bin/jq";
-  kdialogBin = "${pkgs.kdialog}/bin/kdialog";
+  kdialogBin = "${pkgs.kdePackages.kdialog}/bin/kdialog";
 
   taildropScript = pkgs.writeShellScript "taildrop" ''
     set -eu

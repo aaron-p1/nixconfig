@@ -539,8 +539,10 @@ in {
           '';
       };
 
-      nativeMessagingHosts =
-        [ pkgs.local.ff2mpv-native-client pkgs.plasma-browser-integration ];
+      nativeMessagingHosts = [
+        pkgs.local.ff2mpv-native-client
+        pkgs.kdePackages.plasma-browser-integration
+      ];
     };
   };
 }
