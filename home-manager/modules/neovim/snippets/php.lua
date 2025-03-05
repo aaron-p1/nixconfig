@@ -150,13 +150,23 @@ ls.add_snippets("php", {
   -- dot alias
   s(
     {
-      trig = "(%S*[^ \t\"'])%.",
+      trig = "([^ \t()%[%]]*%S)%.",
       wordTrig = false,
       trigEngine = "pattern",
       snippetType = "autosnippet",
       hidden = true,
-      resolveExpandParams = function(_, _, _, captures)
+      resolveExpandParams = function(_, line, _, captures)
         local prefix = captures[1]
+
+        if not prefix:match("[a-zA-Z0-9_)%]]$") then
+          return nil
+        end
+
+        local count_single = select(2, line:gsub("'", ""))
+        local count_double = select(2, line:gsub('"', ""))
+        if (count_single % 2 == 1) or (count_double % 2 == 1) then
+          return nil
+        end
 
         if prefix:match("^[a-zA-Z0-9_\\]+$") then
           return {trigger = ".", captures = {"::"}}
@@ -184,6 +194,7 @@ ls.add_snippets("php", {
   ),
   s({
     trig = "\\.",
+    wordTrig = false,
     snippetType = "autosnippet",
     hidden = true
   }, t(".")),
