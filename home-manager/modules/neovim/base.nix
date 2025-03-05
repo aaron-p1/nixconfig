@@ -112,9 +112,25 @@
         end)
       end
 
+      local prev_tab = nil
+
+      vim.api.nvim_create_autocmd('TabLeave', {
+        group = vim.api.nvim_create_augroup('PrevTab', {}),
+        callback = function()
+          prev_tab = vim.api.nvim_get_current_tabpage()
+        end
+      })
+
+      local function goto_prev_tab()
+        if prev_tab and vim.api.nvim_tabpage_is_valid(prev_tab) then
+          vim.api.nvim_set_current_tabpage(prev_tab)
+        end
+      end
+
       vim.keymap.set("n", "<C-w><C-t>", "<Cmd>tab split<CR>", { silent = true, desc = "Open in new tab" })
       vim.keymap.set("n", "<Leader>tc", close_tab, { desc = "Tab close" })
       vim.keymap.set("n", "<Leader>to", "<Cmd>tabonly<CR>", { silent = true })
+      vim.keymap.set("n", "<C-S-g>", goto_prev_tab, { desc = "Go to previous tab" })
 
       -- terminal
       Configs.utils.add_term_keymaps("<Leader>ctt", vim.o.shell)
