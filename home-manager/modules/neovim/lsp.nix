@@ -174,11 +174,6 @@
     end
 
     do
-      local lua_rtp = vim.split(package.path, ";")
-
-      table.insert(lua_rtp, "lua/?.lua")
-      table.insert(lua_rtp, "lua/?/init.lua")
-
       local function get_plugin_paths()
         local packpaths = vim.split(vim.o.packpath, ',')
 
@@ -221,7 +216,7 @@
       setup("lua_ls", {
         settings = {
           Lua = {
-            runtime = { version = "LuaJIT", path = lua_rtp },
+            runtime = { version = "LuaJIT" },
             diagnostics = { globals = { "vim", "Configs" } },
             workspace = {
               checkThirdParty = false,
