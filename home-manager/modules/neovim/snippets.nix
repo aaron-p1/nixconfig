@@ -157,9 +157,10 @@ in {
       end, { expr = true, desc = "Next choice" })
 
       ls.setup({
+        load_ft_func = require("luasnip.extras.filetype_functions").from_cursor_pos,
+        enable_autosnippets = true,
         update_events = { "TextChanged", "TextChangedI" },
         region_check_events = { "InsertEnter" },
-        enable_autosnippets = true,
         ext_opts = {
           [lt.choiceNode] = {
             active = { virt_text = { { "●", "LuasnipChoiceActive" } } },
