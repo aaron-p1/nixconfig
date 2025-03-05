@@ -22,20 +22,16 @@
           default = { "lsp", "path", "snippets", "buffer", "dadbod" },
 
           providers = {
-            lsp = {
-              name = "LSP",
-              fallbacks = {}
+            lsp = { name = "LSP" },
+            path = { name = "PTH" },
+            snippets = {
+              name = "SNP",
+              score_offset = 0
             },
-            path = {
-              name = "PTH",
-              fallbacks = {}
-            },
-            snippets = { name = "SNP" },
             buffer = { name = "BUF" },
 
             dadbod = { name = "DBD", module = "vim_dadbod_completion.blink" },
           },
-
         },
 
         cmdline = {
