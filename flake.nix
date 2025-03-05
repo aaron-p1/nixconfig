@@ -51,12 +51,20 @@
             home-manager.nixosModules.home-manager
             {
               home-manager = {
-                useGlobalPkgs = true;
+                useGlobalPkgs = false;
                 useUserPackages = true;
                 users.aaron = {
                   imports = [
                     ./home-manager/configs/main.nix
                     ./hosts/aaron-pc/home.nix
+                    ({ osConfig, lib, ... }: {
+                      nixpkgs = {
+                        config = lib.mapAttrs (n: v: lib.mkDefault v)
+                          osConfig.nixpkgs.config;
+                        # mkOrder 900 is after mkBefore but before default order
+                        overlays = lib.mkOrder 900 osConfig.nixpkgs.overlays;
+                      };
+                    })
                   ];
                 };
               };
@@ -80,12 +88,20 @@
             home-manager.nixosModules.home-manager
             {
               home-manager = {
-                useGlobalPkgs = true;
+                useGlobalPkgs = false;
                 useUserPackages = true;
                 users.aaron = {
                   imports = [
                     ./home-manager/configs/main.nix
                     ./hosts/aaron-laptop/home.nix
+                    ({ osConfig, lib, ... }: {
+                      nixpkgs = {
+                        config = lib.mapAttrs (n: v: lib.mkDefault v)
+                          osConfig.nixpkgs.config;
+                        # mkOrder 900 is after mkBefore but before default order
+                        overlays = lib.mkOrder 900 osConfig.nixpkgs.overlays;
+                      };
+                    })
                   ];
                 };
               };
@@ -97,12 +113,7 @@
       let pkgs = import nixpkgs { inherit system overlays; };
       in {
         devShell = pkgs.mkShell {
-          packages = with pkgs; [
-            gnumake
-            rsync
-            git-crypt
-            jq
-          ];
+          packages = with pkgs; [ gnumake rsync git-crypt jq ];
         };
       });
 }

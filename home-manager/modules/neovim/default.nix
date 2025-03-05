@@ -1,75 +1,24 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (builtins) match readFile isAttrs listToAttrs concatLists;
+  inherit (builtins) readFile isAttrs listToAttrs concatLists;
   inherit (lib)
-    concatMap concatMapAttrs concatStringsSep filter isPath hasPrefix isString
-    makeBinPath mapAttrs mapAttrsToList mkEnableOption mkIf optionals
-    optionalString pipe throwIfNot unique;
+    attrValues concatMap concatMapAttrs concatStringsSep filter isPath hasPrefix
+    isString makeBinPath mapAttrs mapAttrsToList mkEnableOption mkIf optionals
+    optionalString pipe unique;
 
   cfg = config.within.neovim;
 
-  domains = [
-    ./utils.nix
-    ./which_key.nix
-    ./base.nix
-    ./features.nix
-    ./common.nix
-    ./profiles.nix
-    ./ui.nix
-    ./treesitter.nix
-    ./snippets.nix
-    ./completion.nix
-    ./git.nix
-    ./telescope.nix
-    ./lsp.nix
-    ./files.nix
-    ./dap.nix
-    ./db.nix
-  ];
+  domainList = attrValues cfg.configDomains;
 
-  defaultValues = {
-    name = null;
-    plugins = [ ];
-    packages = [ ];
-    luaPackages = _: [ ];
-    config = null;
-    extraFiles = { };
-  };
-
-  localVimPlugins = import ./local-plugins.nix { inherit lib pkgs; };
-
-  symlinkPkgTo = target:
-    pkgs.stdenv.mkDerivation {
-      name = "symlink-to-impure";
-      buildCommand = ''
-        ln -s "${target}" $out
-      '';
-    };
-
-  domainsValues = pipe domains [
-    (map (domain:
-      defaultValues // import domain { inherit lib pkgs localVimPlugins symlinkPkgTo; }))
-
-    (map (values:
-      if isPath values.config then
-        values // { config = readFile values.config; }
-      else
-        values))
-
-    (map (values:
-      let cond = values.name != null && (match "[a-z_]*" values.name) != null;
-      in throwIfNot cond "Neovim config domain name invalid" values))
-  ];
-
-  plugins = pipe domainsValues [ (concatMap (domain: domain.plugins)) unique ];
-
-  packages =
-    pipe domainsValues [ (concatMap (domain: domain.packages)) unique ];
+  overlays = filter (o: o != null) (map (domain: domain.overlay) domainList);
+  plugins = unique (concatMap (domain: domain.plugins) domainList);
+  packages = unique (concatMap (domain: domain.packages) domainList);
 
   lua = pkgs.neovim-unwrapped.lua;
 
   luaEnv = lua.withPackages (ps:
-    pipe domainsValues [
+    pipe domainList [
+      (filter (domain: domain.luaPackages != null))
       (map (domain: domain.luaPackages ps))
       concatLists
       unique
@@ -132,21 +81,27 @@ let
       ${configAttrs.inits}
     '';
 
-  singleDomainConfig = domain:
+  singleDomainConfig = { name, config }:
     # lua
     ''
-      function Configs._${domain.name}()
-        ${domain.config}
+      function Configs._${name}()
+        ${config}
       end
     '';
 
-  domainConfigs = pipe domainsValues [
+  domainConfigs = pipe domainList [
     (filter (domain: domain.config != null))
 
-    (domains: {
-      functions = concatStringsSep "\n" (map singleDomainConfig domains);
+    (map (domain: {
+      name = domain.name;
+      config =
+        if isPath domain.config then readFile domain.config else domain.config;
+    }))
+
+    (configs: {
+      functions = concatStringsSep "\n" (map singleDomainConfig configs);
       inits = concatStringsSep "\n"
-        (map (domain: ''Configs:init("${domain.name}")'') domains);
+        (map (config: ''Configs:init("${config.name}")'') configs);
     })
 
     toConfig
@@ -170,11 +125,11 @@ let
     else
       throw "Extra file must be path or string");
 
-  extraFileLists = pipe domainsValues [
-    (filter (values: isAttrs values.extraFiles && values.extraFiles != { }))
-    (map (values: {
-      inherit (values) name;
-      value = readExtraFiles (flattenAttrs values.extraFiles);
+  extraFileLists = pipe domainList [
+    (filter (domain: domain.extraFiles != { }))
+    (map (domain: {
+      inherit (domain) name;
+      value = readExtraFiles (flattenAttrs domain.extraFiles);
     }))
     listToAttrs
   ];
@@ -240,6 +195,25 @@ let
     '';
   });
 in {
+  imports = [
+    ./utils.nix
+    ./which-key.nix
+    ./base.nix
+    ./features.nix
+    ./common.nix
+    ./profiles.nix
+    ./ui.nix
+    ./treesitter.nix
+    ./snippets.nix
+    ./completion.nix
+    ./git.nix
+    ./telescope.nix
+    ./lsp.nix
+    ./files.nix
+    ./dap.nix
+    ./db.nix
+  ];
+
   options.within.neovim = {
     enable = mkEnableOption "Neovim config";
 
@@ -248,7 +222,80 @@ in {
       default = neovim;
       readOnly = true;
     };
+
+    configDomains = let
+      inherit (lib) mkOption mergeOneOption isFunction;
+      inherit (lib.types)
+        mkOptionType attrs attrsOf submodule str nullOr oneOf path listOf
+        package;
+
+      function = mkOptionType {
+        name = "function";
+        description = "function";
+        check = isFunction;
+        merge = mergeOneOption;
+      };
+
+      domainModule = { name, config, ... }: {
+        options = {
+          name = mkOption {
+            type = str;
+            default = name;
+            description = "Name";
+          };
+
+          overlay = mkOption {
+            type = nullOr function;
+            default = null;
+            description = "Package overlay";
+          };
+          plugins = mkOption {
+            type = listOf package;
+            default = [ ];
+            description = "Neovim plugins";
+          };
+          luaPackages = mkOption {
+            type = nullOr function;
+            default = null;
+            description = "Lua packages to add to neovim";
+          };
+          packages = mkOption {
+            type = listOf package;
+            default = [ ];
+            description = "Packages";
+          };
+
+          config = mkOption {
+            type = oneOf [ (nullOr str) path ];
+            default = null;
+            description = "Lua config";
+          };
+          extraFiles = mkOption {
+            type = attrs;
+            default = { };
+            description = "Extra files in rtp. `{ path = { to = content; }; }";
+          };
+        };
+      };
+    in mkOption {
+      type = attrsOf (submodule domainModule);
+      default = { };
+      description = "Neovim config split in domains";
+    };
   };
 
-  config = mkIf cfg.enable { home.packages = [ neovim ]; };
+  config = mkIf cfg.enable {
+    _module.args.nvimUtil.pluginOverlay = fn:
+      (final: prev: {
+        vimPlugins = prev.vimPlugins.extend (_: _:
+          fn {
+            inherit prev final;
+            pvP = prev.vimPlugins;
+          });
+      });
+
+    home.packages = [ neovim ];
+
+    nixpkgs.overlays = overlays;
+  };
 }
