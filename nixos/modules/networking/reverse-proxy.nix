@@ -1,40 +1,51 @@
 { config, lib, ... }:
 let
   inherit (builtins) attrNames isString;
-  inherit (lib) mapAttrs' mkEnableOption mkOption mkIf mkDefault optional;
-  inherit (lib.types) attrsOf either str submodule bool;
+  inherit (lib)
+    listToAttrs flatten mapAttrsToList nameValuePair mkEnableOption mkOption
+    mkIf mkDefault;
+  inherit (lib.types) attrsOf either str submodule nullOr;
 
   cfg = config.within.networking.reverseProxy;
 
-  devDomain = "dev.home.arpa";
-
-  defaultHostConfig = { allSubDomains = false; };
+  defaultHostConfig = { redirectRoot = null; };
 
   hostMapping = name: host:
     let
-      serverName = "${name}.${devDomain}";
+      serverName = "${name}.${cfg.devDomain}";
 
       hostConfig = defaultHostConfig
         // (if isString host then { dst = host; } else host);
-    in {
-      name = serverName;
-      value = {
-        serverAliases = optional hostConfig.allSubDomains "*.${serverName}";
-        locations."/" = {
-          proxyPass = hostConfig.dst;
-          proxyWebsockets = true;
-          recommendedProxySettings = true;
-          extraConfig = ''
-            proxy_pass_header Authorization;
-          '';
-        };
-      };
-    };
 
-  addedHosts = mapAttrs' hostMapping cfg.devHosts;
+      proxyConfig = {
+        proxyPass = hostConfig.dst;
+        proxyWebsockets = true;
+        recommendedProxySettings = true;
+        extraConfig = ''
+          proxy_pass_header Authorization;
+        '';
+      };
+    in if host.redirectRoot != null then [
+      (nameValuePair serverName {
+        locations."/".return = "302 ${hostConfig.redirectRoot}";
+      })
+      (nameValuePair "*.${serverName}" { locations."/" = proxyConfig; })
+    ] else
+      nameValuePair serverName {
+        serverAliases = [ "*.${serverName}" ];
+        locations."/" = proxyConfig;
+      };
+
+  addedHosts = listToAttrs (flatten (mapAttrsToList hostMapping cfg.devHosts));
 in {
   options.within.networking.reverseProxy = {
     enable = mkEnableOption "Reverse Proxy";
+
+    devDomain = mkOption {
+      type = str;
+      default = "dev.home.arpa";
+      description = "Domain to use for development services";
+    };
 
     devHosts = mkOption {
       type = attrsOf (either str (submodule ({ ... }: {
@@ -43,16 +54,16 @@ in {
             type = str;
             description = "URL to proxy to";
           };
-          allSubDomains = mkOption {
-            type = bool;
-            default = defaultHostConfig.allSubDomains;
-            description = "Proxy all subdomains";
+          redirectRoot = mkOption {
+            type = nullOr str;
+            default = defaultHostConfig.redirectRoot;
+            description = "Redirect / on domain to this URL";
           };
         };
       })));
       default = { };
       description = ''
-        Virtual host accessible at <name>.${devDomain}
+        Virtual host accessible at <name>.${cfg.devDomain}
 
         Either str `dst` or submodule
       '';

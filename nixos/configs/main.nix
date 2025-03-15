@@ -19,19 +19,24 @@
     networking = {
       enable = true;
 
-      bindAddrsV4 = { exo = "127.32.0.2"; };
+      bindAddrsV4 = {
+        exo = "127.32.0.2";
+        exo-wp = "127.32.0.3";
+        scrapp = "127.32.0.5";
+      };
 
       dnscrypt = {
         enable = true;
-        cloak = { exo = "127.32.0.2"; };
+        cloak = { exo-wp = "127.32.0.3"; };
       };
 
-      reverseProxy = {
+      devService = {
         enable = true;
-        devHosts = {
-          exo = {
-            dst = "http://127.32.0.2";
-            allSubDomains = true;
+        services = {
+          exo.ip = config.within.networking.bindAddrsV4.exo;
+          scrapp = {
+            ip = config.within.networking.bindAddrsV4.scrapp;
+            redirectRoot = "http://system.scrapp.dev.home.arpa";
           };
         };
       };
