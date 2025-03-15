@@ -2,7 +2,7 @@
 let
   inherit (lib)
     mkEnableOption mkOption types mkIf mkDefault versionAtLeast optionalAttrs
-    optional;
+    optional optionals;
 
   cfg = config.within.containers;
 in {
@@ -43,6 +43,11 @@ in {
     # https://github.com/NixOS/nixpkgs/issues/138423#issuecomment-947888673
     systemd.user.services.podman.path = optional cfg.podman "/run/wrappers";
 
-    environment.systemPackages = optional cfg.podman pkgs.podman-compose;
+    environment.systemPackages = optionals cfg.podman [
+      pkgs.podman-compose
+      (pkgs.writeShellScriptBin "podman-remote" ''
+        exec ${pkgs.podman}/bin/podman --remote "$@"
+      '')
+    ];
   };
 }
