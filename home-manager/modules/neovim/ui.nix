@@ -8,7 +8,10 @@
       nvim-web-devicons
       lualine-nvim
 
+      # input
       dressing-nvim
+      # messages
+      fidget-nvim
     ];
     config = # lua
       ''
@@ -184,6 +187,23 @@
                 height = get_select_float_height
               }
             }),
+          }
+        })
+
+        require("fidget").setup({
+          progress = {
+            display = {
+              done_ttl = 1,
+            }
+          },
+          notification = {
+            override_vim_notify = true,
+            window = {
+              align = "top"
+            },
+            view = {
+              stack_upwards = false
+            }
           }
         })
       '';
