@@ -20,6 +20,7 @@ in {
     ./swap.nix
     ./syncthing.nix
     ./tailscale.nix
+    ./uxplay.nix
     ./vmclient.nix
 
     ./users.nix

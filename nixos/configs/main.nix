@@ -134,6 +134,9 @@
         dir = "/home/aaron/Downloads/Tailscale";
       };
     };
+
+    # ../modules/uxplay.nix
+    uxplay.enable = true;
   };
 
   systemd = {
