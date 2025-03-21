@@ -82,7 +82,7 @@
           keymap = {
             preset = "none",
             ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-            ["<C-e>"] = { "hide" },
+            ["<C-e>"] = { "hide", "fallback" },
             ["<C-y>"] = { "select_and_accept" },
 
             ["<C-p>"] = { "select_prev", "fallback" },
