@@ -397,14 +397,15 @@ in {
           vue-js-devtools
         ];
 
-        search.default = "DuckDuckGo";
-        search.privateDefault = "DuckDuckGo";
+        search.default = "ddg";
+        search.privateDefault = "ddg";
         search.force = true;
         search.engines = let
           nixIcon =
             "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
         in {
-          "Nix Packages" = {
+          nix-pkgs = {
+            name = "Nix Packages";
             urls = [{
               template = "https://search.nixos.org/packages";
               params = [
@@ -423,7 +424,8 @@ in {
             definedAliases = [ "@np" ];
           };
 
-          "Nix Options" = {
+          nix-opts = {
+            name = "Nix Options";
             urls = [{
               template = "https://search.nixos.org/options";
               params = [
@@ -442,7 +444,8 @@ in {
             definedAliases = [ "@no" ];
           };
 
-          "NixOS Wiki" = {
+          nixos-wiki = {
+            name = "NixOS Wiki";
             urls = [{
               template = "https://wiki.nixos.org/w/index.php";
               params = [{
@@ -455,9 +458,9 @@ in {
             definedAliases = [ "@nw" ];
           };
 
-          "Google".metaData.alias = "@g";
-          "Bing".metaData.hidden = true;
-          "Ecosia".metaData.hidden = true;
+          google.metaData.alias = "@g";
+          bing.metaData.hidden = true;
+          ecosia.metaData.hidden = true;
         };
 
         userChrome = # CSS
