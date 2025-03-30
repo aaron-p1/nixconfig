@@ -4,8 +4,14 @@
       blink-cmp
       vim-dadbod-completion
 
-      copilot-vim
-      codecompanion-nvim
+      {
+        plugin = copilot-vim;
+        optional = true;
+      }
+      {
+        plugin = codecompanion-nvim;
+        optional = true;
+      }
 
       nvim-autopairs
       nvim-ts-autotag
@@ -91,8 +97,8 @@
             ["<C-u>"] = { "scroll_documentation_up", "fallback" },
             ["<C-d>"] = { "scroll_documentation_down", "fallback" },
 
-            ["<Tab>"] = { "select_next", "fallback" },
-            ["<S-Tab>"] = { "select_prev", "fallback" },
+            ["<Tab>"] = { "fallback" },
+            ["<S-Tab>"] = { "fallback" },
 
             ["<C-S-e>"] = { "show_signature", "hide_signature", "fallback" },
           },
@@ -100,54 +106,62 @@
           appearance = { use_nvim_cmp_as_default = true },
         })
 
-        vim.g.copilot_no_maps = true
-        vim.g.copilot_filetypes = { TelescopePrompt = false, DressingInput = false }
+        if not vim.env.NVIM_PRIVATE_CODE then
+          vim.cmd("packadd copilot.vim")
 
-        vim.keymap.set("i", "<C-o>", 'copilot#Accept("")', { expr = true, replace_keycodes = false })
-        vim.keymap.set("i", "<C-S-o>", "copilot#AcceptLine()", { expr = true, replace_keycodes = false })
-        vim.keymap.set("i", "<M-o>", "copilot#AcceptWord()", { expr = true, replace_keycodes = false })
-        vim.keymap.set("i", "<M-[>", "<Cmd>call copilot#Previous()<CR>", { silent = true })
-        vim.keymap.set("i", "<M-]>", "<Cmd>call copilot#Next()<CR>", { silent = true })
+          vim.g.copilot_no_maps = true
+          vim.g.copilot_filetypes = { TelescopePrompt = false, DressingInput = false }
 
-        require("codecompanion").setup({
-          strategies = {
-            chat = {
-              adapter = "copilot",
+          vim.keymap.set("i", "<C-o>", 'copilot#Accept("")', { expr = true, replace_keycodes = false })
+          vim.keymap.set("i", "<C-S-o>", "copilot#AcceptLine()", { expr = true, replace_keycodes = false })
+          vim.keymap.set("i", "<M-o>", "copilot#AcceptWord()", { expr = true, replace_keycodes = false })
+          vim.keymap.set("i", "<M-[>", "<Cmd>call copilot#Previous()<CR>", { silent = true })
+          vim.keymap.set("i", "<M-]>", "<Cmd>call copilot#Next()<CR>", { silent = true })
+
+          vim.cmd("packadd codecompanion.nvim")
+
+          require("codecompanion").setup({
+            strategies = {
+              chat = {
+                adapter = "copilot",
+              },
+              inline = {
+                adapter = "copilot",
+              },
             },
-            inline = {
-              adapter = "copilot",
+            adapters = {
+              copilot = function()
+                return require("codecompanion.adapters").extend("copilot", {
+                  schema = {
+                    model = {
+                      default = "claude-3.5-sonnet",
+                    },
+                    max_tokens = {
+                      default = 65536,
+                    },
+                  },
+                })
+              end,
             },
-          },
-          adapters = {
-            copilot = function()
-              return require("codecompanion.adapters").extend("copilot", {
-                schema = {
-                  model = {
-                    default = "claude-3.5-sonnet",
-                  },
-                  max_tokens = {
-                    default = 65536,
-                  },
-                },
-              })
-            end,
-          },
-          display = {
-            chat = {
-              intro_message = "Press ? for options",
-              -- show_settings = true,
+            display = {
+              chat = {
+                intro_message = "Press ? for options",
+                -- show_settings = true,
+              }
             }
-          }
-        })
+          })
 
-        require("plugins.codecompanion.fidget-spinner"):init()
+          require("plugins.codecompanion.fidget-spinner"):init()
 
-        vim.keymap.set({ "n", "v" }, "<Leader>Ca", "<Cmd>CodeCompanionActions<CR>", { desc = "Actions", silent = true })
-        vim.keymap.set({ "n", "v" }, "<Leader>Cc", "<Cmd>CodeCompanionChat Toggle<CR>", { desc = "Chat", silent = true })
-        vim.keymap.set("v", "<Leader>Cv", "<Cmd>CodeCompanionChat Add<CR>", { desc = "Add text to chat", silent = true })
+          vim.keymap.set({ "n", "v" }, "<Leader>Ca", "<Cmd>CodeCompanionActions<CR>", { desc = "Actions", silent = true })
+          vim.keymap.set({ "n", "v" }, "<Leader>Cc", "<Cmd>CodeCompanionChat Toggle<CR>", { desc = "Chat", silent = true })
+          vim.keymap.set("v", "<Leader>Cv", "<Cmd>CodeCompanionChat Add<CR>", { desc = "Add text to chat", silent = true })
 
-        -- Expand 'cc' into 'CodeCompanion' in the command line
-        vim.cmd([[cabbrev cc CodeCompanion]])
+          -- Expand 'cc' into 'CodeCompanion' in the command line
+          vim.cmd([[cabbrev cc CodeCompanion]])
+
+          Configs.which_key.add({ { "<Leader>C", group = "Code Companion" } })
+        end
 
         require("nvim-autopairs").setup({
           disable_filetype = { "TelescopePrompt", "dap-repl", "dapui_watches" },
@@ -158,8 +172,6 @@
             enable_close_on_slash = true
           }
         })
-
-        Configs.which_key.add({ { "<Leader>C", group = "Code Companion" } })
 
         return {
           lsp_capabilities = require("blink.cmp").get_lsp_capabilities(),

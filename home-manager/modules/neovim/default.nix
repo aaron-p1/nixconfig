@@ -176,8 +176,7 @@ let
     + domainConfigs;
 
   neovim = (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
-    plugins = map (plugin: { inherit plugin; }) plugins;
-    inherit wrapperArgs luaRcContent;
+    inherit plugins wrapperArgs luaRcContent;
 
     # CopilotChat-nvim
     withPython3 = true;
@@ -226,7 +225,7 @@ in {
     configDomains = let
       inherit (lib) mkOption mergeOneOption isFunction;
       inherit (lib.types)
-        mkOptionType attrs attrsOf submodule str nullOr oneOf path listOf
+        mkOptionType attrs attrsOf submodule str nullOr oneOf path listOf either
         package;
 
       function = mkOptionType {
@@ -250,7 +249,7 @@ in {
             description = "Package overlay";
           };
           plugins = mkOption {
-            type = listOf package;
+            type = listOf (either package attrs);
             default = [ ];
             description = "Neovim plugins";
           };
