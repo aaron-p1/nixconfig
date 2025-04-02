@@ -284,14 +284,25 @@ in {
   };
 
   config = mkIf cfg.enable {
-    _module.args.nvimUtil.pluginOverlay = fn:
-      (final: prev: {
-        vimPlugins = prev.vimPlugins.extend (_: _:
-          fn {
-            inherit prev final;
-            pvP = prev.vimPlugins;
-          });
-      });
+    _module.args.nvimUtil = {
+      pluginOverlay = fn:
+        (final: prev: {
+          vimPlugins = prev.vimPlugins.extend (_: _:
+            fn {
+              inherit prev final;
+              pvP = prev.vimPlugins;
+            });
+        });
+
+      symlinkTo = dst:
+        pkgs.stdenv.mkDerivation {
+          name = "symlink-to";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            ln -s ${lib.escapeShellArg dst} $out
+          '';
+        };
+    };
 
     home.packages = [ neovim ];
 
