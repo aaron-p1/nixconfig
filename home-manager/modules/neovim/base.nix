@@ -74,6 +74,11 @@
 
         vim.g.maplocalleader = "|"
 
+        vim.diagnostic.config({
+          virtual_lines = true,
+          update_in_insert = true,
+        })
+
         vim.keymap.set("n", "<PageUp>", "<nop>")
         vim.keymap.set("n", "<PageDown>", "<nop>")
 
