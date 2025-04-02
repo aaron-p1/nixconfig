@@ -26,13 +26,24 @@
             default = { "lsp", "path", "snippets", "buffer", "dadbod" },
 
             providers = {
-              lsp = { name = "LSP" },
-              path = { name = "PTH" },
+              lsp = {
+                name = "LSP",
+                fallbacks = { },
+              },
+              path = {
+                name = "PTH",
+                fallbacks = { },
+              },
               snippets = {
                 name = "SNP",
                 score_offset = 0
               },
-              buffer = { name = "BUF" },
+              buffer = {
+                name = "BUF",
+                opts = {
+                  get_bufnrs = vim.api.nvim_list_bufs
+                },
+              },
 
               dadbod = { name = "DBD", module = "vim_dadbod_completion.blink" },
             },
