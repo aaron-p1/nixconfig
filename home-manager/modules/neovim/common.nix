@@ -7,12 +7,12 @@
       in {
         handle-errors-nvim = buildVimPlugin {
           pname = "handle_errors.nvim";
-          version = "2024-08-22";
+          version = "2025-03-31";
           src = fetchFromGitHub {
             owner = "aaron-p1";
             repo = "handle_errors.nvim";
-            rev = "4c2f67b0beabf03c85cbcde05744878c6a24d7d9";
-            hash = "sha256-/ejvAvEb2JHfRTgAq8TdK+SZhEuExXNdVsbd059kkjM=";
+            rev = "6acac18ef99ee2e4bfde908c11c84a5fa2b35af8";
+            sha256 = "sha256-cqAJkIljJWgq5bZIWGsjEKG6MK/paNhACndDk036h0U=";
           };
           buildInputs = [ prev.luajit ];
           buildPhase = "make";
@@ -213,7 +213,9 @@
             lines[#lines + 1] = "---------------------------------------"
             lines[#lines + 1] = ""
 
-            vim.api.nvim_buf_set_lines(err_bufnr, 1, 1, false, lines)
+            vim.schedule_wrap(function()
+              pcall(vim.api.nvim_buf_set_lines, err_bufnr, 1, 1, false, lines)
+            end)
           end)
         end
 
