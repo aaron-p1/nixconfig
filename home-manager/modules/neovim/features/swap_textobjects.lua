@@ -9,11 +9,15 @@ local range = {}
 ---@param motion_type string
 local function save_range(bufnr, motion_type)
   local startrow, startcol, endrow, endcol = unpack(Configs.utils.get_operator_range(motion_type))
-  local regtype = motion_type:sub(1, 1)
 
   range[bufnr] = { startrow, startcol, endrow, endcol }
 
-  vim.highlight.range(bufnr, namespace, highlight, { startrow, startcol }, { endrow, endcol }, { regtype = regtype })
+  local regtype = "v"
+  if motion_type == "line" then
+    regtype = "V"
+  end
+
+  vim.hl.range(bufnr, namespace, highlight, { startrow, startcol }, { endrow, endcol }, { regtype = regtype })
 end
 
 ---clear range
