@@ -75,7 +75,7 @@
         vim.g.maplocalleader = "|"
 
         vim.diagnostic.config({
-          virtual_lines = true,
+          virtual_text = true,
           update_in_insert = true,
         })
 
