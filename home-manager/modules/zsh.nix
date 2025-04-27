@@ -50,7 +50,7 @@ in {
           VI_MODE_SET_CURSOR = true;
           WD_CONFIG = "${config.xdg.configHome}/warprc";
         };
-        initExtra = ''
+        initContent = ''
           setopt HIST_IGNORE_ALL_DUPS
         '';
         history = {
