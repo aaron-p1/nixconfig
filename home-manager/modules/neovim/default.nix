@@ -182,9 +182,10 @@ let
     withPython3 = true;
   }).overrideAttrs (old: {
     doCheck = true;
+    # export VIMINIT={VIMINIT-'lua dofile('\''/nix/store/lglmnwndfwfahndnsxpjwc8bnj3c7kyp-init.lua'\'')'}
     checkPhase = ''
-      # is in /bin/nvim last line after -u
-      luaRcFile=$(tail -n 1 $out/bin/nvim | grep -oP '.*-u \K\S*')
+      # is in /bin/nvim VIMINIT line
+      luaRcFile=$(grep -oP "VIMINIT.*?'''\K.*?(?=')" $out/bin/nvim)
 
       # 131: Unused implicitly defined global variable.
       # 611: A line consists of nothing but whitespace.
