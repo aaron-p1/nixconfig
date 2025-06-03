@@ -28,7 +28,7 @@
             DiffDelete = { bg = "#9a2a2a", fg = "NONE", reverse = false },
             DiffAdd = { bg = "#284028", fg = "NONE", reverse = false },
             DiffChange = { bg = "#284848", fg = "NONE", reverse = false },
-            DiffText = { bg = "#474728", fg = "NONE", reverse = false },
+            DiffText = { bg = "#575728", fg = "NONE", reverse = false },
 
             NormalFloat = { bg = gb.palette.dark1 },
 
