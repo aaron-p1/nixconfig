@@ -126,7 +126,7 @@
         if not vim.env.NVIM_PRIVATE_CODE then
           vim.cmd("packadd copilot.vim")
 
-          vim.g.copilot_no_maps = true
+          vim.g.copilot_no_tab_map = true
           vim.g.copilot_filetypes = { TelescopePrompt = false, DressingInput = false }
 
           vim.keymap.set("i", "<C-o>", 'copilot#Accept("")', { expr = true, replace_keycodes = false })
