@@ -56,9 +56,6 @@
     # ../modules/libreoffice.nix
     libreoffice.enable = false;
 
-    # ../modules/plasma.nix
-    plasma.enableKWallet = false;
-
     # ../modules/shell-scripts.nix
     shellScripts.enable = true;
 

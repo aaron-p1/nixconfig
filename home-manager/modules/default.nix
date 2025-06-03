@@ -17,7 +17,6 @@ in {
     ./neovim
     ./nsxiv
     ./obs-studio.nix
-    ./plasma.nix
     ./shell-scripts.nix
     ./ssh.nix
     ./tmux.nix
