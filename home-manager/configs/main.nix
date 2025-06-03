@@ -100,6 +100,6 @@
   nix.gc = {
     automatic = osConfig.nix.gc.automatic;
     options = osConfig.nix.gc.options;
-    frequency = osConfig.nix.gc.dates;
+    frequency = builtins.head osConfig.nix.gc.dates;
   };
 }
