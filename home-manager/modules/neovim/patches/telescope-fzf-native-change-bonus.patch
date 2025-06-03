@@ -1,0 +1,13 @@
+diff --git a/src/fzf.c b/src/fzf.c
+index c4620bf..e414412 100644
+--- a/src/fzf.c
++++ b/src/fzf.c
+@@ -49,7 +49,7 @@ typedef enum {
+   ScoreGapExtention = -1,
+   BonusBoundary = ScoreMatch / 2,
+   BonusNonWord = ScoreMatch / 2,
+-  BonusCamel123 = BonusBoundary + ScoreGapExtention,
++  BonusCamel123 = BonusBoundary,
+   BonusConsecutive = -(ScoreGapStart + ScoreGapExtention),
+   BonusFirstCharMultiplier = 2,
+ } score_t;

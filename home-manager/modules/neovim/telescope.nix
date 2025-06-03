@@ -1,5 +1,12 @@
-{ pkgs, ... }: {
+{ pkgs, nvimUtil, ... }: {
   within.neovim.configDomains.telescope = {
+    overlay = nvimUtil.pluginOverlay ({ pvP, ... }: {
+      telescope-fzf-native-nvim = pvP.telescope-fzf-native-nvim.overrideAttrs
+        (old: {
+          patches = old.patches or [ ]
+            ++ [ ./patches/telescope-fzf-native-change-bonus.patch ];
+        });
+    });
     plugins = with pkgs.vimPlugins; [
       telescope-nvim
       telescope-fzf-native-nvim
