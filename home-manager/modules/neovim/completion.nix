@@ -41,7 +41,13 @@
               buffer = {
                 name = "BUF",
                 opts = {
-                  get_bufnrs = vim.api.nvim_list_bufs
+                  get_bufnrs = function ()
+                    return vim.iter(vim.api.nvim_list_wins())
+                      :map(function(win)
+                        return vim.api.nvim_win_get_buf(win)
+                      end)
+                      :totable()
+                  end
                 },
               },
 
