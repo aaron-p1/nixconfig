@@ -21,6 +21,8 @@
           terminal_colors = false,
           invert_selection = true,
           overrides = {
+            ["@tag.blade"] = { link = "Keyword" },
+
             SpellBad = { link = "GruvboxYellowUnderline" },
 
             DiffDelete = { bg = "#9a2a2a", fg = "NONE", reverse = false },

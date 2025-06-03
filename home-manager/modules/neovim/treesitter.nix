@@ -1,28 +1,7 @@
-{ pkgs, nvimUtil, ... }: {
+{ pkgs, ... }: {
   within.neovim.configDomains.treesitter = {
-    overlay = nvimUtil.pluginOverlay ({ prev, pvP, ... }:
-      let
-        bladeParserVersion = "0.11.0";
-        blade-parser-repo = prev.fetchFromGitHub {
-          owner = "EmranMR";
-          repo = "tree-sitter-blade";
-          rev = "v${bladeParserVersion}";
-          sha256 = "sha256-PTGdsXlLoE+xlU0uWOU6LQalX4fhJ/qhpyEKmTAazLU=";
-        };
-
-        bladeParser = prev.tree-sitter.buildGrammar {
-          language = "blade";
-          version = bladeParserVersion;
-          src = blade-parser-repo;
-          meta.homepage = "https://github.com/EmranMR/tree-sitter-blade";
-        };
-
-        ts = prev.vimPlugins.nvim-treesitter;
-        nvim-treesitter-all =
-          ts.withPlugins (_: ts.allGrammars ++ [ bladeParser ]);
-      in { inherit nvim-treesitter-all blade-parser-repo; });
     plugins = with pkgs.vimPlugins; [
-      nvim-treesitter-all
+      nvim-treesitter.withAllGrammars
       nvim-treesitter-textobjects
       vim-matchup
     ];
@@ -33,11 +12,6 @@
         "injections.scm" = ./queries/php/injections.scm;
         "textobjects.scm" = ./queries/php/textobjects.scm;
         "matchup.scm" = ./queries/php/matchup.scm;
-      };
-      blade = {
-        "highlights.scm" = ./queries/blade/highlights.scm;
-        "injections.scm" = pkgs.vimPlugins.blade-parser-repo
-          + "/queries/injections.scm";
       };
     };
     config = # lua
