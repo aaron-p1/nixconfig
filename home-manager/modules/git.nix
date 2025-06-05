@@ -26,6 +26,7 @@ in {
   config = mkIf cfg.enable {
     programs.git = {
       enable = true;
+      lfs.enable = true;
       aliases = {
         co = "checkout";
         f = "fetch";
