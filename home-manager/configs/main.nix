@@ -78,11 +78,9 @@
       hunspellDicts.de_DE
 
       tdesktop
-      discord
       thunderbird
       qalculate-gtk
       gImageReader
-      bitwarden
 
       code-cursor
 
