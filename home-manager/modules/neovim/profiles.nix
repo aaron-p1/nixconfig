@@ -173,6 +173,7 @@
             Configs.utils.add_term_keymaps("<Leader>cpB", "cargo build --release")
             Configs.utils.add_term_keymaps("<Leader>cpd", "cargo doc --open")
             Configs.utils.add_term_keymaps("<Leader>cpr", "cargo run")
+            Configs.utils.add_term_keymaps("<Leader>cpR", "cargo run --release")
             Configs.utils.add_term_keymaps("<Leader>cpt", "cargo test")
             Configs.utils.add_term_keymaps("<Leader>cpc", "cargo check")
             Configs.utils.add_term_keymaps("<Leader>cpC", "cargo clean")
@@ -182,6 +183,7 @@
               { "B", group = "Build release" },
               { "d", group = "Open docs" },
               { "r", group = "Run" },
+              { "R", group = "Run release" },
               { "t", group = "Test" },
               { "c", group = "Check" },
               { "C", group = "Clean" },
