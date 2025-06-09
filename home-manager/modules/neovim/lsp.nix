@@ -25,6 +25,7 @@
           nodePackages."@tailwindcss/language-server"
           nodePackages.typescript-language-server
           vue-language-server
+          glsl_analyzer
           clang-tools
           pyright
         ] ++ nills ++ bashls ++ rustAnalyzerLs ++ elixir;
@@ -293,6 +294,8 @@
       setup("graphql")
 
       setup("rust_analyzer")
+
+      setup("glsl_analyzer")
 
       setup("clangd")
 
