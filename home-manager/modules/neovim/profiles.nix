@@ -41,7 +41,7 @@
 
         nixserver.startup = # lua
           ''
-            local host = vim.env.NVIM_PROFILE_NIXSERVER_HOST
+            local host = profile_conf.nixserver_host or "invalid"
 
             Configs.utils.add_term_keymaps("<Leader>cpd", "deploy .\\\\#" .. host)
             Configs.utils.add_term_keymaps("<Leader>cpb", "deploy --boot .\\\\#" .. host)
@@ -66,8 +66,8 @@
             local has_podman_compose = has_profile("podman_compose")
 
             local function get_compose_cmd(cmd)
-              local container_options = vim.env.NVIM_PROFILE_PHP_CONTAINER_OPTIONS or ""
-              local container = vim.env.NVIM_PROFILE_PHP_CONTAINER or ""
+              local container_options = profile_conf.php_container_options or ""
+              local container = profile_conf.php_container or ""
 
               return "podman-compose exec " .. container_options .. " " .. container .. " " .. (cmd or "")
             end
@@ -292,14 +292,103 @@
         (mapAttrs (_: attrNames))
       ];
 
+      # profile files:
+      # profiles = [ profile1, profile2 ]
+      # [conf]
+      # key = value
+
     in assert unknownProfileFunctions != { }
       -> throw "Unknown profile function: ${toJSON unknownProfileFunctions}";
     # lua
     ''
       local M = { profiles = {} }
 
-      local profiles_string = vim.env.NVIM_PROFILES or ""
-      local set_profiles = vim.split(profiles_string, ",", { plain = true, trimempty = true })
+      local set_profiles = {}
+      local profile_conf = {}
+
+      local profile_files = {}
+      local profile_files_path = vim.fn.stdpath("data") .. "/custom_profiles"
+      local profile_files_slash_esc = "⧸"
+      local profile_files_ext = ".ini"
+
+      vim.fn.mkdir(profile_files_path, "p")
+
+      if vim.env.NVIM_PROFILES ~= nil then
+        local profiles_string = vim.env.NVIM_PROFILES or ""
+        set_profiles = vim.split(profiles_string, ",", { plain = true, trimempty = true })
+      else
+        local cwd = vim.fn.getcwd()
+        local cwd_esc = cwd:gsub("/", profile_files_slash_esc)
+        local files = vim.iter(vim.fs.dir(profile_files_path))
+            :filter(function(name, type)
+              local path_prefix = name
+                  :gsub("%" .. profile_files_ext .. "$", "")
+              return type == "file" and vim.startswith(cwd_esc, path_prefix)
+            end)
+            :map(function(name) return name end)
+            :totable()
+
+        table.sort(files, function(a, b) return #a < #b end)
+        profile_files = files
+
+        local conf_parser = require("profiles.conf_parser")
+
+        local profile_config = vim.iter(files)
+            :map(function(name)
+              local full_name = profile_files_path .. "/" .. name
+              return conf_parser.read_file(full_name)
+            end)
+            :fold({}, function(acc, conf)
+              local profiles = vim.list_extend(acc.profiles or {}, conf.profiles or {})
+              return vim.tbl_deep_extend("force", acc, conf, { profiles = profiles })
+            end)
+
+        set_profiles = profile_config.profiles or {}
+        profile_conf = profile_config.conf or {}
+      end
+
+      vim.keymap.set("n", "<Leader>cpP", function()
+        local fname = profile_files_path
+            .. "/"
+            .. vim.fn.getcwd():gsub("/", profile_files_slash_esc)
+            .. profile_files_ext
+        vim.cmd.tabedit(fname)
+      end, { desc = "Edit current profile" })
+
+      vim.keymap.set("n", "<Leader>cpp", function()
+        if #profile_files == 0 then
+          vim.notify("No profile files found", vim.log.levels.WARN)
+          return
+        end
+
+        vim.ui.select(profile_files, {
+          prompt = "Select profile file to edit",
+          format_item = function(name)
+            return name
+                :gsub("%" .. profile_files_ext .. "$", "")
+                :gsub(profile_files_slash_esc, "/")
+          end,
+        }, function(file)
+          if file then
+            vim.cmd.tabedit(profile_files_path .. "/" .. file)
+          end
+        end)
+      end, { desc = "Edit profiles" })
+
+      Configs.which_key.add({ { "<Leader>cp", group = "Profile" } })
+
+      setmetatable(profile_conf, {
+        __index = function(t, k)
+          local existing = rawget(t, k)
+
+          if existing then
+            return existing
+          end
+
+          local env_key = "NVIM_PROFILE_" .. k:upper()
+          return vim.env[env_key]
+        end,
+      })
 
       local function has_profile(profile)
         return vim.tbl_contains(set_profiles, profile)
@@ -316,5 +405,59 @@
 
       return M
     '';
+    extraFiles.lua.profiles."conf_parser.lua" = # lua
+      ''
+        local M = {}
+
+        function M.read_file(file)
+          local result = {}
+          local cur_section = result
+
+          for line in io.lines(file) do
+            line = vim.trim(line)
+
+            if line:match("^%s*#") or line == "" then
+              -- if comment or empty line, skip it
+              goto continue
+            elseif line:match("^%[.+%]$") then
+              -- if section header
+              cur_section = result
+
+              line = line:sub(2, -2)
+              for _, name in ipairs(vim.split(line, "%.")) do
+                if not cur_section[name] then
+                  cur_section[name] = {}
+                end
+                cur_section = cur_section[name]
+              end
+            elseif line:match("^%w") then
+              -- if key-value pair
+              local key, value = line:match("^(%w+)%s*=%s*(.+)$")
+              if key and value then
+                if value:match("^%[.+%]$") then
+                  value = vim.iter(vim.split(value:sub(2, -2), ","))
+                      :map(function(v) return vim.trim(v) end)
+                      :filter(function(v) return v ~= "" end)
+                      :map(function(v) return tonumber(v) or v end)
+                      :totable()
+                elseif tonumber(value) then
+                  value = tonumber(value)
+                end
+              end
+
+              cur_section[key] = value
+            else
+              -- if unrecognized line, skip it
+              vim.notify("Conf parser: Unrecognized line: " .. line, vim.log.levels.WARN)
+            end
+
+            ::continue::
+          end
+
+          return result
+        end
+
+        return M
+      '';
   };
 }
