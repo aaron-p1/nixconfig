@@ -293,7 +293,17 @@
 
       setup("graphql")
 
-      setup("rust_analyzer")
+      setup("rust_analyzer", {
+        settings = {
+          ['rust-analyzer'] = {
+            cargo = {
+              buildScripts = {
+                enable = vim.uv.fs_stat("build.rs") ~= nil and vim.secure.read("build.rs") ~= nil
+              }
+            }
+          }
+        }
+      })
 
       setup("glsl_analyzer")
 
