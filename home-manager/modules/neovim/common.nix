@@ -209,11 +209,11 @@
           he.set_on_error(function(msg)
             local lines = vim.split(msg, "\n")
             lines[#lines + 1] = ""
-            lines[#lines + 1] = "From: " .. os.date("%Y-%m-%d %H:%M:%S")
+            lines[#lines + 1] = "At: " .. os.date("%Y-%m-%d %H:%M:%S")
             lines[#lines + 1] = "---------------------------------------"
             lines[#lines + 1] = ""
 
-            vim.schedule_wrap(function()
+            vim.schedule(function()
               pcall(vim.api.nvim_buf_set_lines, err_bufnr, 1, 1, false, lines)
             end)
           end)
