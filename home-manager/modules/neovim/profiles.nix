@@ -192,10 +192,12 @@
 
         flask.startup = # lua
           ''
-            Configs.utils.add_term_keymaps("<Leader>cpr", "python run.py")
+            Configs.utils.add_term_keymaps("<Leader>cpr", "python-fixed run.py")
+            Configs.utils.add_term_keymaps("<Leader>cpt", "python-fixed -m pytest")
 
             Configs.which_key.add({
               { "r", group = "Run" },
+              { "t", group = "Test" },
             }, { "<Leader>cp" })
           '';
 
