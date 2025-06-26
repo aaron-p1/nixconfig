@@ -40,6 +40,8 @@
 
       # lua
     in ''
+      vim.lsp.inlay_hint.enable()
+
       local lc = require("lspconfig")
 
       local formatting_preferences = {
