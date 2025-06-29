@@ -9,7 +9,6 @@
     config = # lua
       ''
         local t = require("nvim-tree")
-        local tv = require("nvim-tree.view")
         local ta = require("nvim-tree.api")
         local tl = require("nvim-tree.lib")
         local tc = require("nvim-tree.core")
@@ -132,8 +131,8 @@
 
         vim.keymap.set("n", "<Leader>bb", ta.tree.toggle, { desc = "Toggle" })
         vim.keymap.set("n", "<Leader>bf", function() ta.tree.open({ find_file = true }) end, { desc = "Find file" })
-        vim.keymap.set("n", "<Leader>b<", function() tv.resize("-20") end, { desc = "Resize -20" })
-        vim.keymap.set("n", "<Leader>b>", function() tv.resize("+20") end, { desc = "Resize +20" })
+        vim.keymap.set("n", "<Leader>b<", function() ta.tree.resize({ relative = -20 }) end, { desc = "Resize -20" })
+        vim.keymap.set("n", "<Leader>b>", function() ta.tree.resize({ relative = 20 }) end, { desc = "Resize +20" })
 
         local f_group = vim.api.nvim_create_augroup("FugitiveNvimTree", {})
         vim.api.nvim_create_autocmd("FileType", {
