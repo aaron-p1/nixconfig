@@ -335,15 +335,22 @@
 
         local conf_parser = require("profiles.conf_parser")
 
-        local profile_config = vim.iter(files)
-            :map(function(name)
-              local full_name = profile_files_path .. "/" .. name
-              return conf_parser.read_file(full_name)
-            end)
-            :fold({}, function(acc, conf)
-              local profiles = vim.list_extend(acc.profiles or {}, conf.profiles or {})
-              return vim.tbl_deep_extend("force", acc, conf, { profiles = profiles })
-            end)
+        local ok, profile_config = pcall(function()
+          return vim.iter(files)
+              :map(function(name)
+                local full_name = profile_files_path .. "/" .. name
+                return conf_parser.read_file(full_name)
+              end)
+              :fold({}, function(acc, conf)
+                local profiles = vim.list_extend(acc.profiles or {}, conf.profiles or {})
+                return vim.tbl_deep_extend("force", acc, conf, { profiles = profiles })
+              end)
+        end)
+
+        if not ok then
+          vim.notify("Error reading profile files: " .. profile_config, vim.log.levels.ERROR)
+          profile_config = {}
+        end
 
         set_profiles = profile_config.profiles or {}
         profile_conf = profile_config.conf or {}
