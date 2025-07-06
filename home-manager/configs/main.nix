@@ -84,7 +84,6 @@
 
       code-cursor
 
-      local.create-project
       local.nix-autobahn
     ];
 
