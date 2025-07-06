@@ -86,7 +86,6 @@
 
       local.create-project
       local.nix-autobahn
-      local.ask
     ];
 
     stateVersion = "21.05";
