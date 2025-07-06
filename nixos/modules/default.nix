@@ -24,6 +24,7 @@ in {
     ./vmclient.nix
 
     ./users.nix
+    ./responsiveness.nix
   ];
 
   options.within.enableEncryptedFileOptions = mkOption {

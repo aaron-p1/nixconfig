@@ -51,6 +51,32 @@
     };
 
     steam.enable = true;
+
+    responsiveness = {
+      enable = true;
+
+      system.nix-daemon.resources = {
+        cpu.weight = 20;
+        io.weight = 20;
+      };
+      user = {
+        resources = {
+          cpu.weight = 1000;
+          io.weight = 1000;
+        };
+
+        session.resources = {
+          cpu.weight = 1000;
+          memory.low = "256M";
+          io.weight = 1000;
+        };
+        app.firefox.resources = {
+          cpu.weight = 1000;
+          memory.low = "256M";
+          io.weight = 1000;
+        };
+      };
+    };
   };
 
   services.restic.backups.aaron-documents = {
