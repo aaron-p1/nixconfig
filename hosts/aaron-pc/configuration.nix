@@ -34,7 +34,7 @@
     };
 
     # ../../nixos/modules/swap.nix
-    swap.file = 20;
+    swap.file = 32;
 
     users.aaron = {
       u2fKeys = [
