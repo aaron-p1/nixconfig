@@ -83,8 +83,6 @@
       gImageReader
 
       code-cursor
-
-      local.nix-autobahn
     ];
 
     stateVersion = "21.05";

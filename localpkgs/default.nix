@@ -1,8 +1,6 @@
 { inputs, ... }:
 final: prev: {
   local = rec {
-    nix-autobahn = prev.callPackage ./pkgs/nix-autobahn/default.nix { };
-
     gotmux = prev.callPackage ./pkgs/gotmux { };
 
     initdev = prev.callPackage ./pkgs/initdev { };
