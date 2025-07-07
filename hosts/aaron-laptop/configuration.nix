@@ -46,6 +46,8 @@
       thl.devices = [ "aaron-pc" ];
       work.devices = [ "aaron-pc" ];
     };
+
+    containers.enableNvidia = true;
   };
 
   # This value determines the NixOS release from which the default
