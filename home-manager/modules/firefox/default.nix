@@ -126,6 +126,14 @@ let
             win.document.addEventListener("keydown", toggleChatSidebar, true);
           }
 
+          // injection commented out, but still runs
+          // ${readFile ./toggle-site-shortcuts.js}
+
+          // ctrl+k is often used by websites for search
+          getElem("key_search")?.remove();
+          // ctrl+j will be used for website shortcuts mode
+          getElem("key_search2")?.remove();
+
           // ctrl+o will be used for Sidebery prev active tab
           getElem("openFileKb")?.remove();
           // ctrl+i will be used for Sidebery next active tab
@@ -300,6 +308,8 @@ let
             // Load the frame script into all existing and future content processes
             Services.mm.loadFrameScript("data:,(" + win.encodeURIComponent(injection) + ")", true);
           }
+
+          win.console.log("---------------- Loading userChrome.js finished ----------------");
         }
 
         ${readFile ./user-chome-js-loader.js}
@@ -465,6 +475,18 @@ in {
 
         userChrome = # CSS
           ''
+            /* toggle keyboard shortcuts permission indicator */
+            #site-shortcuts-icon {
+              list-style-image: url("chrome://browser/skin/quickactions.svg");
+              /* forward the property/ies into the external SVG */
+              -moz-context-properties: fill, fill-opacity;
+              fill: currentColor;
+              /* size & box model identical to native icons */
+              width: 16px;
+              height: 16px;
+              margin: 3px;
+            }
+
             /* hide empty tab notifications (e.g. translation) */
             #tab-notification-deck notification:empty {
               display: none !important;
