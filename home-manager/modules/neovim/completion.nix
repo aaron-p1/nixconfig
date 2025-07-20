@@ -42,12 +42,10 @@
                 name = "BUF",
                 opts = {
                   get_bufnrs = function ()
-                    return vim.iter(vim.api.nvim_list_wins())
-                      :map(function(win)
-                        return vim.api.nvim_win_get_buf(win)
-                      end)
-                      :totable()
-                  end
+                    return vim.api.nvim_list_bufs()
+                  end,
+                  max_async_buffer_size = 2000000, -- 2MB
+                  max_total_buffer_size = 5000000, -- 5MB
                 },
               },
 
