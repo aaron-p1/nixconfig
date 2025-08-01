@@ -177,6 +177,7 @@
       neovim
       file
       mediainfo
+      jq
 
       restic
 
