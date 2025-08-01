@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, lib, ... }: {
   imports = [ ./hardware-configuration.nix ../../nixos/modules ];
 
   powerManagement.cpuFreqGovernor = "ondemand";
@@ -17,6 +17,14 @@
     device = "/dev/disk/by-label/Data";
     fsType = "ext4";
   };
+
+  boot.kernelParams = lib.mkIf (config.specialisation != {}) [
+    "retbleed=stuff"
+  ];
+
+  specialisation.no-mitigations.configuration.boot.kernelParams = [
+    "mitigations=off"
+  ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
