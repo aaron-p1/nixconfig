@@ -107,6 +107,8 @@
     ];
   };
 
+  services.mullvad-vpn.enable = true;
+
   programs = {
     gamemode.enable = true;
     gamescope = {
