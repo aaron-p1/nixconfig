@@ -48,6 +48,32 @@
     };
 
     containers.enableNvidia = true;
+
+    responsiveness = {
+      enable = true;
+
+      system.nix-daemon.resources = {
+        cpu.weight = 20;
+        io.weight = 20;
+      };
+      user = {
+        resources = {
+          cpu.weight = 1000;
+          io.weight = 1000;
+        };
+
+        session.resources = {
+          cpu.weight = 1000;
+          memory.low = "1G";
+          io.weight = 1000;
+        };
+        app.firefox.resources = {
+          cpu.weight = 1000;
+          memory.low = "1G";
+          io.weight = 1000;
+        };
+      };
+    };
   };
 
   # This value determines the NixOS release from which the default
