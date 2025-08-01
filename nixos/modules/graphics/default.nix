@@ -1,1 +1,8 @@
-_: { imports = [ ./gdm.nix ./plasma.nix ./sddm.nix ./xserver.nix ]; }
+_: {
+  imports = [
+    ./gdm.nix
+    ./plasma.nix
+    ./sddm.nix
+    ./xserver.nix
+  ];
+}

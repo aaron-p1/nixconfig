@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   within.neovim.configDomains.completion = {
     plugins = with pkgs.vimPlugins; [
       blink-cmp

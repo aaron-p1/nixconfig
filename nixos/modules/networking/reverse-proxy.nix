@@ -2,20 +2,35 @@
 let
   inherit (builtins) attrNames isString;
   inherit (lib)
-    listToAttrs flatten mapAttrsToList nameValuePair mkEnableOption mkOption
-    mkIf mkDefault;
-  inherit (lib.types) attrsOf either str submodule nullOr;
+    listToAttrs
+    flatten
+    mapAttrsToList
+    nameValuePair
+    mkEnableOption
+    mkOption
+    mkIf
+    mkDefault
+    ;
+  inherit (lib.types)
+    attrsOf
+    either
+    str
+    submodule
+    nullOr
+    ;
 
   cfg = config.within.networking.reverseProxy;
 
-  defaultHostConfig = { redirectRoot = null; };
+  defaultHostConfig = {
+    redirectRoot = null;
+  };
 
-  hostMapping = name: host:
+  hostMapping =
+    name: host:
     let
       serverName = "${name}.${cfg.devDomain}";
 
-      hostConfig = defaultHostConfig
-        // (if isString host then { dst = host; } else host);
+      hostConfig = defaultHostConfig // (if isString host then { dst = host; } else host);
 
       proxyConfig = {
         proxyPass = hostConfig.dst;
@@ -25,19 +40,23 @@ let
           proxy_pass_header Authorization;
         '';
       };
-    in if hostConfig.redirectRoot != null then [
-      (nameValuePair serverName {
-        locations."/".return = "302 ${hostConfig.redirectRoot}";
-      })
-      (nameValuePair "*.${serverName}" { locations."/" = proxyConfig; })
-    ] else
+    in
+    if hostConfig.redirectRoot != null then
+      [
+        (nameValuePair serverName {
+          locations."/".return = "302 ${hostConfig.redirectRoot}";
+        })
+        (nameValuePair "*.${serverName}" { locations."/" = proxyConfig; })
+      ]
+    else
       nameValuePair serverName {
         serverAliases = [ "*.${serverName}" ];
         locations."/" = proxyConfig;
       };
 
   addedHosts = listToAttrs (flatten (mapAttrsToList hostMapping cfg.devHosts));
-in {
+in
+{
   options.within.networking.reverseProxy = {
     enable = mkEnableOption "Reverse Proxy";
 
@@ -48,19 +67,26 @@ in {
     };
 
     devHosts = mkOption {
-      type = attrsOf (either str (submodule ({ ... }: {
-        options = {
-          dst = mkOption {
-            type = str;
-            description = "URL to proxy to";
-          };
-          redirectRoot = mkOption {
-            type = nullOr str;
-            default = defaultHostConfig.redirectRoot;
-            description = "Redirect / on domain to this URL";
-          };
-        };
-      })));
+      type = attrsOf (
+        either str (
+          submodule (
+            { ... }:
+            {
+              options = {
+                dst = mkOption {
+                  type = str;
+                  description = "URL to proxy to";
+                };
+                redirectRoot = mkOption {
+                  type = nullOr str;
+                  default = defaultHostConfig.redirectRoot;
+                  description = "Redirect / on domain to this URL";
+                };
+              };
+            }
+          )
+        )
+      );
       default = { };
       description = ''
         Virtual host accessible at <name>.${cfg.devDomain}
@@ -85,7 +111,8 @@ in {
           serverName = "_";
           locations."/".return = 404;
         };
-      } // addedHosts;
+      }
+      // addedHosts;
     };
 
     systemd.services.nginx.after = [ "dnscrypt-proxy2.service" ];

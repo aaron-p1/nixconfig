@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   within.neovim.configDomains.base = {
     packages = with pkgs; [ wl-clipboard ];
     config = # lua
@@ -282,14 +283,16 @@
 
         return { spelldir = spelldir, test = remove_pid_from_term_title }
       '';
-    extraFiles = let
-      inherit (builtins) readDir;
-      inherit (lib) mapAttrs optionalAttrs;
+    extraFiles =
+      let
+        inherit (builtins) readDir;
+        inherit (lib) mapAttrs optionalAttrs;
 
-      ftdetects =
-        mapAttrs (file: _: ./ftdetect + "/${file}") (readDir ./ftdetect);
-    in {
-      ftplugin."checkhealth.lua" = "vim.opt_local.spell = false";
-    } // optionalAttrs (ftdetects != { }) { ftdetect = ftdetects; };
+        ftdetects = mapAttrs (file: _: ./ftdetect + "/${file}") (readDir ./ftdetect);
+      in
+      {
+        ftplugin."checkhealth.lua" = "vim.opt_local.spell = false";
+      }
+      // optionalAttrs (ftdetects != { }) { ftdetect = ftdetects; };
   };
 }

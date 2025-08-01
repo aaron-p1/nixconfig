@@ -3,8 +3,11 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.locale;
-in {
-  options.within.locale = { enable = mkEnableOption "my locale config"; };
+in
+{
+  options.within.locale = {
+    enable = mkEnableOption "my locale config";
+  };
 
   config = mkIf cfg.enable {
     time.timeZone = "Europe/Berlin";

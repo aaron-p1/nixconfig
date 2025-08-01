@@ -1,4 +1,9 @@
-{ stdenv, python3, installShellFiles, lib }:
+{
+  stdenv,
+  python3,
+  installShellFiles,
+  lib,
+}:
 stdenv.mkDerivation {
   pname = "initdev";
   version = "1.0.0";

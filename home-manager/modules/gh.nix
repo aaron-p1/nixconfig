@@ -1,9 +1,15 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.gh;
-in {
+in
+{
   options.within.gh.enable = mkEnableOption "Gh";
 
   config = mkIf cfg.enable {

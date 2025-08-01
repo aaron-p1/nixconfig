@@ -1,10 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.steam;
-in {
-  options.within.steam = { enable = mkEnableOption "Steam"; };
+in
+{
+  options.within.steam = {
+    enable = mkEnableOption "Steam";
+  };
 
   config = mkIf cfg.enable {
     programs.steam = {

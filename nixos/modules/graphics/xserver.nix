@@ -3,8 +3,11 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.graphics.xserver;
-in {
-  options.within.graphics.xserver = { enable = mkEnableOption "XServer"; };
+in
+{
+  options.within.graphics.xserver = {
+    enable = mkEnableOption "XServer";
+  };
 
   config = mkIf cfg.enable {
     services = {
@@ -24,7 +27,9 @@ in {
 
       libinput = {
         enable = true;
-        mouse = { accelProfile = "flat"; };
+        mouse = {
+          accelProfile = "flat";
+        };
       };
     };
   };

@@ -16,8 +16,19 @@
     };
   };
 
-  outputs = { self, stable, unstable, nixpkgs, nixpkgs2305, flake-utils
-    , nixos-hardware, nur, home-manager, ... }@inputs:
+  outputs =
+    {
+      self,
+      stable,
+      unstable,
+      nixpkgs,
+      nixpkgs2305,
+      flake-utils,
+      nixos-hardware,
+      nur,
+      home-manager,
+      ...
+    }@inputs:
     let
       inherit (unstable) lib; # unstable for home manager
       overlays = [
@@ -26,15 +37,18 @@
         (import ./localpkgs { inherit inputs; })
         (import ./dotfiles { })
         (final: prev: {
-          inherit (import nixpkgs2305 {
-            inherit (final) system;
-            config.permittedInsecurePackages = [ "nodejs-16.20.2" ];
-          })
-          # for nvim dotfiles vscode-php-debug
-            nodejs_16;
+          inherit
+            (import nixpkgs2305 {
+              inherit (final) system;
+              config.permittedInsecurePackages = [ "nodejs-16.20.2" ];
+            })
+            # for nvim dotfiles vscode-php-debug
+            nodejs_16
+            ;
         })
       ];
-    in {
+    in
+    {
       nixosConfigurations = {
         aaron-pc = lib.nixosSystem {
           system = "x86_64-linux";
@@ -57,14 +71,16 @@
                   imports = [
                     ./home-manager/configs/main.nix
                     ./hosts/aaron-pc/home.nix
-                    ({ osConfig, lib, ... }: {
-                      nixpkgs = {
-                        config = lib.mapAttrs (n: v: lib.mkDefault v)
-                          osConfig.nixpkgs.config;
-                        # mkOrder 900 is after mkBefore but before default order
-                        overlays = lib.mkOrder 900 osConfig.nixpkgs.overlays;
-                      };
-                    })
+                    (
+                      { osConfig, lib, ... }:
+                      {
+                        nixpkgs = {
+                          config = lib.mapAttrs (n: v: lib.mkDefault v) osConfig.nixpkgs.config;
+                          # mkOrder 900 is after mkBefore but before default order
+                          overlays = lib.mkOrder 900 osConfig.nixpkgs.overlays;
+                        };
+                      }
+                    )
                   ];
                 };
               };
@@ -94,14 +110,16 @@
                   imports = [
                     ./home-manager/configs/main.nix
                     ./hosts/aaron-laptop/home.nix
-                    ({ osConfig, lib, ... }: {
-                      nixpkgs = {
-                        config = lib.mapAttrs (n: v: lib.mkDefault v)
-                          osConfig.nixpkgs.config;
-                        # mkOrder 900 is after mkBefore but before default order
-                        overlays = lib.mkOrder 900 osConfig.nixpkgs.overlays;
-                      };
-                    })
+                    (
+                      { osConfig, lib, ... }:
+                      {
+                        nixpkgs = {
+                          config = lib.mapAttrs (n: v: lib.mkDefault v) osConfig.nixpkgs.config;
+                          # mkOrder 900 is after mkBefore but before default order
+                          overlays = lib.mkOrder 900 osConfig.nixpkgs.overlays;
+                        };
+                      }
+                    )
                   ];
                 };
               };
@@ -109,11 +127,25 @@
           ];
         };
       };
-    } // flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = import nixpkgs { inherit system overlays; };
-      in {
+    }
+    // flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs { inherit system overlays; };
+      in
+      {
         devShell = pkgs.mkShell {
-          packages = with pkgs; [ gnumake rsync git-crypt jq ];
+          packages = with pkgs; [
+            gnumake
+            rsync
+            git-crypt
+            jq
+          ];
         };
-      });
+
+        formatter = pkgs.nixfmt-tree.override {
+          settings.formatter.nixfmt.excludes = [ "home-manager/modules/neovim/snippets/init/nix/*" ];
+        };
+      }
+    );
 }

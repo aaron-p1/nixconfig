@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   within.neovim.configDomains.git = {
     plugins = with pkgs.vimPlugins; [
       vim-fugitive

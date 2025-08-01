@@ -1,10 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.zsh;
-in {
-  options.within.zsh = { enable = mkEnableOption "ZSH"; };
+in
+{
+  options.within.zsh = {
+    enable = mkEnableOption "ZSH";
+  };
 
   config = mkIf cfg.enable {
     programs = {
@@ -64,7 +72,13 @@ in {
         oh-my-zsh = {
           enable = true;
           theme = "robbyrussell";
-          plugins = [ "git" "colored-man-pages" "vi-mode" "safe-paste" "wd" ];
+          plugins = [
+            "git"
+            "colored-man-pages"
+            "vi-mode"
+            "safe-paste"
+            "wd"
+          ];
         };
       };
 

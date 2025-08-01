@@ -1,5 +1,9 @@
-{ config, pkgs, ... }: {
-  imports = [ ./hardware-configuration.nix ../../nixos/modules ];
+{ config, pkgs, ... }:
+{
+  imports = [
+    ./hardware-configuration.nix
+    ../../nixos/modules
+  ];
 
   networking = {
     useDHCP = false;

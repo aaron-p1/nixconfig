@@ -1,18 +1,23 @@
-{ pkgs, nvimUtil, ... }: {
+{ pkgs, nvimUtil, ... }:
+{
   within.neovim.configDomains.telescope = {
-    overlay = nvimUtil.pluginOverlay ({ pvP, ... }: {
-      telescope-fzf-native-nvim = pvP.telescope-fzf-native-nvim.overrideAttrs
-        (old: {
-          patches = old.patches or [ ]
-            ++ [ ./patches/telescope-fzf-native-change-bonus.patch ];
+    overlay = nvimUtil.pluginOverlay (
+      { pvP, ... }:
+      {
+        telescope-fzf-native-nvim = pvP.telescope-fzf-native-nvim.overrideAttrs (old: {
+          patches = old.patches or [ ] ++ [ ./patches/telescope-fzf-native-change-bonus.patch ];
         });
-    });
+      }
+    );
     plugins = with pkgs.vimPlugins; [
       telescope-nvim
       telescope-fzf-native-nvim
       telescope-symbols-nvim
     ];
-    packages = with pkgs; [ fd ripgrep ];
+    packages = with pkgs; [
+      fd
+      ripgrep
+    ];
     config = # lua
       ''
         local tl = require("telescope")

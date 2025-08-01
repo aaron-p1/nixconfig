@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
@@ -14,7 +19,8 @@ let
 
     eval exec $EDITOR "$@"
   '';
-in {
+in
+{
   options.within.shellScripts = {
     enable = mkEnableOption "Enable common shell scripts";
   };

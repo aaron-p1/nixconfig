@@ -1,9 +1,20 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkOption types mkIf;
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    ;
 
   cfg = config.within.pam;
-in {
+in
+{
   options.within.pam = {
     u2f = {
       enable = mkEnableOption "pamu2f mappings";
@@ -33,31 +44,34 @@ in {
       text = "";
     };
 
-    services.udev.extraRules = mkIf cfg.u2f.autolock.enable (let
-      loginctl = "${pkgs.systemd}/bin/loginctl";
-      pamtester = "${pkgs.pamtester}/bin/pamtester";
+    services.udev.extraRules = mkIf cfg.u2f.autolock.enable (
+      let
+        loginctl = "${pkgs.systemd}/bin/loginctl";
+        pamtester = "${pkgs.pamtester}/bin/pamtester";
 
-      inherit (cfg.u2f.autolock) user;
+        inherit (cfg.u2f.autolock) user;
 
-      unlockScript = pkgs.writeShellScript "try-unlock" ''
-        if ! ${loginctl} list-sessions | grep -q "${user}"; then
-          exit 0
-        fi
+        unlockScript = pkgs.writeShellScript "try-unlock" ''
+          if ! ${loginctl} list-sessions | grep -q "${user}"; then
+            exit 0
+          fi
 
-        case "$1" in
-          lock)
-            ${loginctl} lock-sessions
-            ;;
-          unlock)
-            ${pamtester} login "${user}" authenticate < /dev/null \
-              && ${loginctl} unlock-sessions
-            ;;
-        esac
-      '';
-    in ''
-      # Auto lock when yubikey inserted or removed
-      ACTION=="remove", ENV{DEVTYPE}=="usb_device", ENV{PRODUCT}=="1050/406*" RUN+="${unlockScript} lock"
-      ACTION=="add", ENV{DEVTYPE}=="usb_device", ENV{ID_BUS}=="usb", ENV{PRODUCT}=="1050/406*", RUN+="${unlockScript} unlock"
-    '');
+          case "$1" in
+            lock)
+              ${loginctl} lock-sessions
+              ;;
+            unlock)
+              ${pamtester} login "${user}" authenticate < /dev/null \
+                && ${loginctl} unlock-sessions
+              ;;
+          esac
+        '';
+      in
+      ''
+        # Auto lock when yubikey inserted or removed
+        ACTION=="remove", ENV{DEVTYPE}=="usb_device", ENV{PRODUCT}=="1050/406*" RUN+="${unlockScript} lock"
+        ACTION=="add", ENV{DEVTYPE}=="usb_device", ENV{ID_BUS}=="usb", ENV{PRODUCT}=="1050/406*", RUN+="${unlockScript} unlock"
+      ''
+    );
   };
 }

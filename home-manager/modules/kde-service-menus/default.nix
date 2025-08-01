@@ -1,6 +1,16 @@
-{ osConfig, lib, pkgs, ... }:
+{
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}:
 let
-  inherit (lib) concatStringsSep mapAttrsToList attrNames optional;
+  inherit (lib)
+    concatStringsSep
+    mapAttrsToList
+    attrNames
+    optional
+    ;
 
   renderLine = name: value: "${name}=${value}";
   renderSection = name: attrs: ''
@@ -9,22 +19,26 @@ let
   '';
   renderAction = name: attrs: renderSection "Desktop Action ${name}" attrs;
 
-  makeDesktopFile = name:
-    { entry, actions ? { } }:
+  makeDesktopFile =
+    name:
+    {
+      entry,
+      actions ? { },
+    }:
     pkgs.writeTextFile {
       name = "${name}.desktop";
       destination = "/share/kio/servicemenus/${name}.desktop";
-      text = let
-        actionLine = if actions != { } then
-          renderLine "Actions" (concatStringsSep ";" (attrNames actions))
-        else
-          "";
-      in ''
-        ${renderSection "Desktop Entry" entry}
-        ${actionLine}
+      text =
+        let
+          actionLine =
+            if actions != { } then renderLine "Actions" (concatStringsSep ";" (attrNames actions)) else "";
+        in
+        ''
+          ${renderSection "Desktop Entry" entry}
+          ${actionLine}
 
-        ${concatStringsSep "\n\n" (mapAttrsToList renderAction actions)}
-      '';
+          ${concatStringsSep "\n\n" (mapAttrsToList renderAction actions)}
+        '';
     };
 
   tailscaleBin = "${pkgs.tailscale}/bin/tailscale";
@@ -65,21 +79,24 @@ let
     ${kdialogBin} --title "Taildrop" \
       --passivepopup "''${files[@]##*/} shared with $chosen"
   '';
-in {
+in
+{
   config = {
-    home.packages = let
-      taildrop = makeDesktopFile "Taildrop" {
-        entry = {
-          Type = "Service";
-          X-KDE-ServiceTypes = "KonqPopupMenu/Plugin";
-          MimeType = "application/octet-stream";
+    home.packages =
+      let
+        taildrop = makeDesktopFile "Taildrop" {
+          entry = {
+            Type = "Service";
+            X-KDE-ServiceTypes = "KonqPopupMenu/Plugin";
+            MimeType = "application/octet-stream";
+          };
+          actions.shareWithTaildrop = {
+            Name = "Share with Taildrop";
+            Icon = ./icons/tailscale-icon.svg;
+            Exec = "${taildropScript} %F";
+          };
         };
-        actions.shareWithTaildrop = {
-          Name = "Share with Taildrop";
-          Icon = ./icons/tailscale-icon.svg;
-          Exec = "${taildropScript} %F";
-        };
-      };
-    in optional osConfig.within.tailscale.enable taildrop;
+      in
+      optional osConfig.within.tailscale.enable taildrop;
   };
 }

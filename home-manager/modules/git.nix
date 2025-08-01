@@ -1,18 +1,28 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib)
-    concatStringsSep mapAttrsToList mkEnableOption mkOption types mkIf;
+    concatStringsSep
+    mapAttrsToList
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    ;
 
   cfg = config.within.git;
 
-  toAttributeProperties = attrs:
-    concatStringsSep " "
-    (mapAttrsToList (name: value: "${name}=${value}") attrs);
+  toAttributeProperties =
+    attrs: concatStringsSep " " (mapAttrsToList (name: value: "${name}=${value}") attrs);
 
-  toAttributeLines = attributes:
-    mapAttrsToList (pattern: attrs: "${pattern} ${toAttributeProperties attrs}")
-    attributes;
-in {
+  toAttributeLines =
+    attributes: mapAttrsToList (pattern: attrs: "${pattern} ${toAttributeProperties attrs}") attributes;
+in
+{
   options.within.git = {
     enable = mkEnableOption "Git";
 
@@ -37,11 +47,19 @@ in {
         signByDefault = true;
         key = cfg.signingKey;
       };
-      extraConfig = { init.defaultBranch = "main"; };
+      extraConfig = {
+        init.defaultBranch = "main";
+      };
       attributes = toAttributeLines {
-        "*.php" = { diff = "php"; };
-        "*.css" = { diff = "css"; };
-        "*.html" = { diff = "html"; };
+        "*.php" = {
+          diff = "php";
+        };
+        "*.css" = {
+          diff = "css";
+        };
+        "*.html" = {
+          diff = "html";
+        };
       };
     };
 

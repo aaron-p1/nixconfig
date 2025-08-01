@@ -1,4 +1,10 @@
-{ buildNpmPackage, fetchFromGitHub, nodejs_16, pkg-config, libsecret }:
+{
+  buildNpmPackage,
+  fetchFromGitHub,
+  nodejs_16,
+  pkg-config,
+  libsecret,
+}:
 # https://nixos.org/manual/nixpkgs/stable/#javascript-tool-specific
 buildNpmPackage {
   name = "vscode-php-debug";

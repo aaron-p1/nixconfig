@@ -1,4 +1,12 @@
-{ stdenv, fetchFromGitHub, cmake, zydis, pkg-config, lief, ... }:
+{
+  stdenv,
+  fetchFromGitHub,
+  cmake,
+  zydis,
+  pkg-config,
+  lief,
+  ...
+}:
 let
   zycore = stdenv.mkDerivation rec {
     pname = "zycore";
@@ -24,7 +32,8 @@ let
 
     doCheck = false;
   });
-in stdenv.mkDerivation rec {
+in
+stdenv.mkDerivation rec {
   pname = "nvlax";
   version = "unstable-2021-11-01";
 
@@ -45,9 +54,16 @@ in stdenv.mkDerivation rec {
     })
   ];
 
-  nativeBuildInputs = [ cmake pkg-config ];
+  nativeBuildInputs = [
+    cmake
+    pkg-config
+  ];
 
-  buildInputs = [ fixedZydis zycore lief ];
+  buildInputs = [
+    fixedZydis
+    zycore
+    lief
+  ];
 
   sourceRoot = pname;
 
@@ -57,5 +73,8 @@ in stdenv.mkDerivation rec {
   '';
 
   # Remove CPM from cmakelists
-  patches = [ ./fixup-cmakelists.patch ./fixup-pointer-access.patch ];
+  patches = [
+    ./fixup-cmakelists.patch
+    ./fixup-pointer-access.patch
+  ];
 }

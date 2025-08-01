@@ -1,5 +1,14 @@
-{ config, pkgs, lib, ... }: {
-  imports = [ ./hardware-configuration.nix ../../nixos/modules ];
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
+  imports = [
+    ./hardware-configuration.nix
+    ../../nixos/modules
+  ];
 
   powerManagement.cpuFreqGovernor = "ondemand";
 
@@ -18,7 +27,7 @@
     fsType = "ext4";
   };
 
-  boot.kernelParams = lib.mkIf (config.specialisation != {}) [
+  boot.kernelParams = lib.mkIf (config.specialisation != { }) [
     "retbleed=stuff"
   ];
 
@@ -121,7 +130,9 @@
 
   virtualisation.libvirtd = {
     enable = false;
-    qemu = { package = pkgs.qemu_kvm; };
+    qemu = {
+      package = pkgs.qemu_kvm;
+    };
   };
 
   # This value determines the NixOS release from which the default

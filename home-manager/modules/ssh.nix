@@ -1,16 +1,25 @@
 { config, lib, ... }:
 let
-  inherit (lib) mkEnableOption mkOption types mkIf hasPrefix recursiveUpdate;
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    hasPrefix
+    recursiveUpdate
+    ;
 
   cfg = config.within.ssh;
 
-  additionalHostsContent = if config.within.enableEncryptedFileOptions then
-    builtins.readFile ../../secrets/inline-secrets/additional-ssh-hosts.json
-  else
-    "{}";
+  additionalHostsContent =
+    if config.within.enableEncryptedFileOptions then
+      builtins.readFile ../../secrets/inline-secrets/additional-ssh-hosts.json
+    else
+      "{}";
   additionalHosts = builtins.fromJSON additionalHostsContent;
 
-in {
+in
+{
   options.within.ssh = {
     enable = mkEnableOption "SSH";
 
@@ -24,13 +33,15 @@ in {
   };
 
   config = mkIf cfg.enable {
-    assertions = [{
-      assertion = hasPrefix "{" additionalHostsContent;
-      message = ''
-        Host file does not start with {. If it's encrypted you could
-        set within.enableEncryptedFileOptions to false in home-manager config.
-      ''; # }}
-    }];
+    assertions = [
+      {
+        assertion = hasPrefix "{" additionalHostsContent;
+        message = ''
+          Host file does not start with {. If it's encrypted you could
+          set within.enableEncryptedFileOptions to false in home-manager config.
+        ''; # }}
+      }
+    ];
 
     programs.ssh = {
       enable = true;

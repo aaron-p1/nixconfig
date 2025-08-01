@@ -1,9 +1,15 @@
 { config, lib, ... }:
 let
-  inherit (lib) mkOption types mkMerge mkIf;
+  inherit (lib)
+    mkOption
+    types
+    mkMerge
+    mkIf
+    ;
 
   cfg = config.within.swap;
-in {
+in
+{
   options.within.swap = {
     zram = mkOption {
       type = types.int;
@@ -26,11 +32,13 @@ in {
     })
 
     (mkIf (cfg.file > 0) {
-      swapDevices = [{
-        device = "/swapfile";
-        size = 1024 * cfg.file;
-        priority = 1;
-      }];
+      swapDevices = [
+        {
+          device = "/swapfile";
+          size = 1024 * cfg.file;
+          priority = 1;
+        }
+      ];
     })
   ];
 }

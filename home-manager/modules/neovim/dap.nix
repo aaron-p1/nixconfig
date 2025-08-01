@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   within.neovim.configDomains.dap = {
     plugins = with pkgs.vimPlugins; [
       nvim-dap

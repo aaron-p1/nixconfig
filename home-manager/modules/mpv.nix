@@ -1,8 +1,21 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (builtins) concatStringsSep;
   inherit (lib)
-    mapAttrs' nameValuePair foldr mapAttrsToList flip pipe mkEnableOption mkIf;
+    mapAttrs'
+    nameValuePair
+    foldr
+    mapAttrsToList
+    flip
+    pipe
+    mkEnableOption
+    mkIf
+    ;
 
   cfg = config.within.mpv;
 
@@ -25,8 +38,11 @@ let
     concatAttrs
     toListOptions
   ];
-in {
-  options.within.mpv = { enable = mkEnableOption "mpv"; };
+in
+{
+  options.within.mpv = {
+    enable = mkEnableOption "mpv";
+  };
 
   config = mkIf cfg.enable {
     programs.mpv = {
@@ -46,10 +62,11 @@ in {
         demuxer-max-bytes = "2048MiB";
         demuxer-max-back-bytes = "2048MiB";
         script-opts = toListOptionsPrefix {
-          ytdl_hook = { ytdl_path = "${pkgs.yt-dlp}/bin/yt-dlp"; };
+          ytdl_hook = {
+            ytdl_path = "${pkgs.yt-dlp}/bin/yt-dlp";
+          };
           sponsorblock = rec {
-            categories =
-              ''"sponsor,intro,outro,interaction,selfpromo,preview"'';
+            categories = ''"sponsor,intro,outro,interaction,selfpromo,preview"'';
             skip_categories = categories;
             local_database = "no";
           };
@@ -62,7 +79,11 @@ in {
         };
       };
 
-      profiles = { p = { af = "scaletempo=stride=28:overlap=.9:search=25"; }; };
+      profiles = {
+        p = {
+          af = "scaletempo=stride=28:overlap=.9:search=25";
+        };
+      };
 
       scripts = with pkgs.mpvScripts; [ mpris ];
     };

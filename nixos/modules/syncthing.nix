@@ -1,23 +1,28 @@
 { config, lib, ... }:
 let
   inherit (builtins) readFile fromJSON;
-  inherit (lib) mkEnableOption mkOption types mkIf hasPrefix mapAttrs;
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    hasPrefix
+    mapAttrs
+    ;
 
   cfg = config.within.syncthing;
 
   userHome = config.users.users."${cfg.user}".home;
 
-  deviceIDFileContent = if config.within.enableEncryptedFileOptions then
-    readFile cfg.deviceIDFile
-  else
-    "{}";
+  deviceIDFileContent =
+    if config.within.enableEncryptedFileOptions then readFile cfg.deviceIDFile else "{}";
   deviceIDs = fromJSON deviceIDFileContent;
 
-  folderDevices =
-    lib.flatten (lib.mapAttrsToList (_: val: val.devices) cfg.folders);
+  folderDevices = lib.flatten (lib.mapAttrsToList (_: val: val.devices) cfg.folders);
   chosenDeviceIDs = lib.getAttrs folderDevices deviceIDs;
 
-in {
+in
+{
   options.within.syncthing = {
     enable = mkEnableOption "syncthing";
 
@@ -48,42 +53,52 @@ in {
     folders = mkOption {
       default = { };
       description = "folders to sync with";
-      type = types.attrsOf (types.submodule ({ name, ... }: {
-        options = {
-          path = mkOption {
-            type = types.str;
-            description = "path to folder";
-          };
-          ignorePerms = mkOption {
-            type = types.bool;
-            default = false;
-            description = "ignore permissions";
-          };
-          versioning = mkOption {
-            default = null;
-            description = "versioning";
-            type = types.nullOr (types.submodule {
-              options = {
-                type = mkOption {
-                  type =
-                    types.enum [ "external" "simple" "staggered" "trashcan" ];
-                  description = "type of versioning";
-                };
-                params = mkOption {
-                  type = types.attrsOf types.str;
-                  description = "versioning params";
-                };
+      type = types.attrsOf (
+        types.submodule (
+          { name, ... }:
+          {
+            options = {
+              path = mkOption {
+                type = types.str;
+                description = "path to folder";
               };
-            });
-          };
-          devices = mkOption {
-            type = types.listOf types.str;
-            default = [ ];
-            description =
-              "devices to sync folder with. Devices must be defined in deviceIDFile";
-          };
-        };
-      }));
+              ignorePerms = mkOption {
+                type = types.bool;
+                default = false;
+                description = "ignore permissions";
+              };
+              versioning = mkOption {
+                default = null;
+                description = "versioning";
+                type = types.nullOr (
+                  types.submodule {
+                    options = {
+                      type = mkOption {
+                        type = types.enum [
+                          "external"
+                          "simple"
+                          "staggered"
+                          "trashcan"
+                        ];
+                        description = "type of versioning";
+                      };
+                      params = mkOption {
+                        type = types.attrsOf types.str;
+                        description = "versioning params";
+                      };
+                    };
+                  }
+                );
+              };
+              devices = mkOption {
+                type = types.listOf types.str;
+                default = [ ];
+                description = "devices to sync folder with. Devices must be defined in deviceIDFile";
+              };
+            };
+          }
+        )
+      );
     };
   };
 
@@ -115,9 +130,14 @@ in {
       openDefaultPorts = true;
       settings = {
         devices = mapAttrs (_: val: { id = val; }) chosenDeviceIDs;
-        folders = mapAttrs
-          (key: val: { inherit (val) path ignorePerms versioning devices; })
-          cfg.folders;
+        folders = mapAttrs (key: val: {
+          inherit (val)
+            path
+            ignorePerms
+            versioning
+            devices
+            ;
+        }) cfg.folders;
 
         gui.insecureSkipHostcheck = true;
       };

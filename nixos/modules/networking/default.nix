@@ -4,16 +4,20 @@ let
   inherit (lib.types) attrsOf strMatching;
 
   cfg = config.within.networking;
-in {
-  imports = [ ./dnscrypt.nix ./reverse-proxy.nix ./dev-service.nix ];
+in
+{
+  imports = [
+    ./dnscrypt.nix
+    ./reverse-proxy.nix
+    ./dev-service.nix
+  ];
 
   options.within.networking = {
     enable = mkEnableOption "Custom networking options";
 
-    enableBindAddrChecking =
-      mkEnableOption "Enable bind addrs checking for services" // {
-        default = true;
-      };
+    enableBindAddrChecking = mkEnableOption "Enable bind addrs checking for services" // {
+      default = true;
+    };
 
     bindAddrsV4 = mkOption {
       type = attrsOf (strMatching "^(127\\.[0-9.]*|0\\.0\\.0\\.0)(:[0-9]+)?$");
@@ -28,56 +32,64 @@ in {
   };
 
   config = mkIf cfg.enable {
-    assertions = let
-      inherit (builtins) partition length elemAt;
-      inherit (lib)
-        mapAttrsToList optionalAttrs attrValues findFirst any optionals
-        allUnique splitString;
+    assertions =
+      let
+        inherit (builtins) partition length elemAt;
+        inherit (lib)
+          mapAttrsToList
+          optionalAttrs
+          attrValues
+          findFirst
+          any
+          optionals
+          allUnique
+          splitString
+          ;
 
-      bindV4List = mapAttrsToList (name: addr:
-        let split = splitString ":" addr;
-        in {
-          inherit name;
-          ip = elemAt split 0;
-        } // optionalAttrs (length split == 2) { port = elemAt split 1; })
-        cfg.bindAddrsV4;
+        bindV4List = mapAttrsToList (
+          name: addr:
+          let
+            split = splitString ":" addr;
+          in
+          {
+            inherit name;
+            ip = elemAt split 0;
+          }
+          // optionalAttrs (length split == 2) { port = elemAt split 1; }
+        ) cfg.bindAddrsV4;
 
-      portBinds = partition (bind: bind ? port) bindV4List;
+        portBinds = partition (bind: bind ? port) bindV4List;
 
-      zeroOnly = findFirst (bind: bind.ip == "0.0.0.0") null portBinds.wrong;
+        zeroOnly = findFirst (bind: bind.ip == "0.0.0.0") null portBinds.wrong;
 
-      wholeIpAndPort =
-        findFirst (bind: (any (pb: bind.ip == pb.ip) portBinds.right)) null
-        portBinds.wrong;
+        wholeIpAndPort = findFirst (
+          bind: (any (pb: bind.ip == pb.ip) portBinds.right)
+        ) null portBinds.wrong;
 
-      zeroAndIp = findFirst (bind:
-        bind.ip != "0.0.0.0"
-        && (any (b: b.ip == "0.0.0.0" && b.port == bind.port) portBinds.right))
-        null portBinds.right;
-    in optionals cfg.enableBindAddrChecking [
-      {
-        assertion = allUnique (attrValues cfg.bindAddrsV4);
-        message =
-          "within.networking.bindAddrsV4: all bind addresses must be unique";
-      }
-      {
-        assertion = zeroOnly == null;
-        message =
-          "within.networking.bindAddrsV4: ${zeroOnly.name} is bound to 0.0.0.0";
-      }
+        zeroAndIp = findFirst (
+          bind: bind.ip != "0.0.0.0" && (any (b: b.ip == "0.0.0.0" && b.port == bind.port) portBinds.right)
+        ) null portBinds.right;
+      in
+      optionals cfg.enableBindAddrChecking [
+        {
+          assertion = allUnique (attrValues cfg.bindAddrsV4);
+          message = "within.networking.bindAddrsV4: all bind addresses must be unique";
+        }
+        {
+          assertion = zeroOnly == null;
+          message = "within.networking.bindAddrsV4: ${zeroOnly.name} is bound to 0.0.0.0";
+        }
 
-      {
-        assertion = wholeIpAndPort == null;
-        message =
-          "within.networking.bindAddrsV4: ${wholeIpAndPort.name} binds whole ip, but port bind exists";
-      }
+        {
+          assertion = wholeIpAndPort == null;
+          message = "within.networking.bindAddrsV4: ${wholeIpAndPort.name} binds whole ip, but port bind exists";
+        }
 
-      {
-        assertion = zeroAndIp == null;
-        message =
-          "within.networking.bindAddrsV4: port ${zeroAndIp.port} is bound to 0.0.0.0 and ${zeroAndIp.ip}";
-      }
-    ];
+        {
+          assertion = zeroAndIp == null;
+          message = "within.networking.bindAddrsV4: port ${zeroAndIp.port} is bound to 0.0.0.0 and ${zeroAndIp.ip}";
+        }
+      ];
 
     networking = {
       useDHCP = false;

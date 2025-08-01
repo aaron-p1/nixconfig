@@ -1,10 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.mysql;
-in {
-  options.within.mysql = { enable = mkEnableOption "MySQL"; };
+in
+{
+  options.within.mysql = {
+    enable = mkEnableOption "MySQL";
+  };
 
   config = mkIf cfg.enable {
     services.mysql = {

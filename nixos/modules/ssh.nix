@@ -3,8 +3,11 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.ssh;
-in {
-  options.within.ssh = { enable = mkEnableOption "SSH"; };
+in
+{
+  options.within.ssh = {
+    enable = mkEnableOption "SSH";
+  };
 
   config = mkIf cfg.enable {
     services.openssh = {

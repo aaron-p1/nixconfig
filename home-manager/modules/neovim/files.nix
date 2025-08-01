@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   within.neovim.configDomains.files = {
     plugins = with pkgs.vimPlugins; [
       nvim-web-devicons

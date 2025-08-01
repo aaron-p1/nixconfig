@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   imports = [ ../modules ];
 
   within = {
@@ -27,7 +28,9 @@
 
       dnscrypt = {
         enable = true;
-        cloak = { exo-wp = "127.32.0.3"; };
+        cloak = {
+          exo-wp = "127.32.0.3";
+        };
       };
 
       devService = {

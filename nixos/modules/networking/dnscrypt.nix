@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkOption mkIf;
   inherit (lib.types) attrsOf str;
@@ -13,7 +18,8 @@ let
 
   finalBlockListFileName = "final-blocklist.txt";
   finalBlockList = "/var/lib/${dnsFilteringStateDir}/${finalBlockListFileName}";
-in {
+in
+{
   options.within.networking.dnscrypt = {
     enable = mkEnableOption "Dnscrypt";
 
@@ -55,13 +61,15 @@ in {
           home-server 100.100.100.100
         '';
 
-        cloaking_rules = let
-          inherit (lib) mapAttrsToList concatStringsSep;
+        cloaking_rules =
+          let
+            inherit (lib) mapAttrsToList concatStringsSep;
 
-          hostLines = mapAttrsToList (src: dst: "${src} ${dst}") cfg.cloak;
-        in pkgs.writeText "cloaking-rules.txt" ''
-          ${concatStringsSep "\n" hostLines}
-        '';
+            hostLines = mapAttrsToList (src: dst: "${src} ${dst}") cfg.cloak;
+          in
+          pkgs.writeText "cloaking-rules.txt" ''
+            ${concatStringsSep "\n" hostLines}
+          '';
       };
     };
 
@@ -78,61 +86,65 @@ in {
           description = "Generate block list for dnscrypt-proxy2";
           startAt = "weekly";
           wants = [ "network-online.target" ];
-          after = [ "network-online.target" "dnscrypt-proxy2.service" ];
+          after = [
+            "network-online.target"
+            "dnscrypt-proxy2.service"
+          ];
           serviceConfig = {
             RemainAfterExit = true;
             Type = "oneshot";
             StateDirectory = dnsFilteringStateDir;
-            ExecStartPost =
-              "systemctl --no-block restart dns-auto-unblock.service";
+            ExecStartPost = "systemctl --no-block restart dns-auto-unblock.service";
           };
-          script = let
-            inherit (builtins) readFile;
+          script =
+            let
+              inherit (builtins) readFile;
 
-            originalScriptPath = pkgs.dnscrypt-proxy2.src
-              + "/utils/generate-domains-blocklist/generate-domains-blocklist.py";
-            genBlockList =
-              pkgs.writers.writePython3 "gen-block-list" { doCheck = false; }
-              (readFile originalScriptPath);
+              originalScriptPath =
+                pkgs.dnscrypt-proxy2.src + "/utils/generate-domains-blocklist/generate-domains-blocklist.py";
+              genBlockList = pkgs.writers.writePython3 "gen-block-list" { doCheck = false; } (
+                readFile originalScriptPath
+              );
 
-            # https://github.com/DNSCrypt/dnscrypt-proxy/blob/master/utils/generate-domains-blocklist/domains-blocklist.conf
-            blocklists = pkgs.writeText "blocklist.conf" ''
-              # Peter Lowe's Ad and tracking server list
-              https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml
+              # https://github.com/DNSCrypt/dnscrypt-proxy/blob/master/utils/generate-domains-blocklist/domains-blocklist.conf
+              blocklists = pkgs.writeText "blocklist.conf" ''
+                # Peter Lowe's Ad and tracking server list
+                https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml
 
-              # BarbBlock list (spurious and invalid DMCA takedowns)
-              https://paulgb.github.io/BarbBlock/blacklists/domain-list.txt
+                # BarbBlock list (spurious and invalid DMCA takedowns)
+                https://paulgb.github.io/BarbBlock/blacklists/domain-list.txt
 
-              # NoTracking's list - blocking ads, trackers and other online garbage
-              https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnscrypt-proxy/dnscrypt-proxy.blacklist.txt
+                # NoTracking's list - blocking ads, trackers and other online garbage
+                https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnscrypt-proxy/dnscrypt-proxy.blacklist.txt
 
-              # NextDNS CNAME cloaking list
-              https://raw.githubusercontent.com/nextdns/cname-cloaking-blocklist/master/domains
+                # NextDNS CNAME cloaking list
+                https://raw.githubusercontent.com/nextdns/cname-cloaking-blocklist/master/domains
 
-              # Geoffrey Frogeye's block list of first-party trackers - https://hostfiles.frogeye.fr/
-              https://hostfiles.frogeye.fr/firstparty-trackers.txt
+                # Geoffrey Frogeye's block list of first-party trackers - https://hostfiles.frogeye.fr/
+                https://hostfiles.frogeye.fr/firstparty-trackers.txt
 
-              # A list of adserving and tracking sites maintained by @lightswitch05
-              https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
+                # A list of adserving and tracking sites maintained by @lightswitch05
+                https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
 
-              # A list of adserving and tracking sites maintained by @anudeepND
-              https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
+                # A list of adserving and tracking sites maintained by @anudeepND
+                https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
 
-              # OISD.NL (smaller subset) - Blocks ads, phishing, malware, tracking and more. Tries to minimize false positives.
-              https://dblw.oisd.nl/basic/
+                # OISD.NL (smaller subset) - Blocks ads, phishing, malware, tracking and more. Tries to minimize false positives.
+                https://dblw.oisd.nl/basic/
+              '';
+
+              allowList = pkgs.writeText "allowlist.conf" ''
+                sentry.io
+                sentry-cdn.com
+              '';
+            in
+            ''
+              ${genBlockList} \
+                --config ${blocklists} \
+                --time-restricted "" \
+                --allowlist ${allowList} \
+                --output-file $STATE_DIRECTORY/${publicBlockListFileName}
             '';
-
-            allowList = pkgs.writeText "allowlist.conf" ''
-              sentry.io
-              sentry-cdn.com
-            '';
-          in ''
-            ${genBlockList} \
-              --config ${blocklists} \
-              --time-restricted "" \
-              --allowlist ${allowList} \
-              --output-file $STATE_DIRECTORY/${publicBlockListFileName}
-          '';
         };
 
         dns-auto-unblock = {
@@ -145,8 +157,7 @@ in {
             # for restarting when changed
             RemainAfterExit = true;
             StateDirectory = dnsFilteringStateDir;
-            ExecStartPost =
-              "systemctl try-reload-or-restart dnscrypt-proxy2.service";
+            ExecStartPost = "systemctl try-reload-or-restart dnscrypt-proxy2.service";
           };
           script = ''
             touch $STATE_DIRECTORY/${finalBlockListFileName}

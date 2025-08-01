@@ -1,10 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.idea-ultimate;
-in {
-  options.within.idea-ultimate = { enable = mkEnableOption "idea-ultimate"; };
+in
+{
+  options.within.idea-ultimate = {
+    enable = mkEnableOption "idea-ultimate";
+  };
 
   config = mkIf cfg.enable {
     home = {
@@ -15,7 +23,8 @@ in {
 
         (buildFHSUserEnv {
           name = "codeWithMe";
-          targetPkgs = pkgs:
+          targetPkgs =
+            pkgs:
             (with pkgs; [
               bash
               coreutils
@@ -53,25 +62,27 @@ in {
               xorg.libXrandr
               xorg.libxshmfence
             ]);
-          runScript = let
-            script = ''
-              if [ -z "$1" ]
-              then
-                echo "Usage: $0 {link}" 1>&2
-                exit 1
-              fi
+          runScript =
+            let
+              script = ''
+                if [ -z "$1" ]
+                then
+                  echo "Usage: $0 {link}" 1>&2
+                  exit 1
+                fi
 
-              id=$(<<< "$1" awk -F "[#/]" "{print \$4}")
+                id=$(<<< "$1" awk -F "[#/]" "{print \$4}")
 
-              if [ "$(<<< "$id" wc -c)" != 23 ]
-              then
-                echo "Link broken: $1 | $id" 1>&2
-                exit 1
-              fi
+                if [ "$(<<< "$id" wc -c)" != 23 ]
+                then
+                  echo "Link broken: $1 | $id" 1>&2
+                  exit 1
+                fi
 
-              bash -c "$(wget -nv -O- "https://code-with-me.jetbrains.com/$id/cwm-client-launcher-linux.sh")"
-            '';
-          in "bash -c '${script}' '' \"$1\"";
+                bash -c "$(wget -nv -O- "https://code-with-me.jetbrains.com/$id/cwm-client-launcher-linux.sh")"
+              '';
+            in
+            "bash -c '${script}' '' \"$1\"";
         })
       ];
 

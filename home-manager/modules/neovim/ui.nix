@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   within.neovim.configDomains.ui = {
     plugins = with pkgs.vimPlugins; [
       gruvbox-nvim

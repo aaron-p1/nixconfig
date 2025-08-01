@@ -1,12 +1,25 @@
-{ stdenv, bash, tmuxp, installShellFiles, makeWrapper, lib }:
+{
+  stdenv,
+  bash,
+  tmuxp,
+  installShellFiles,
+  makeWrapper,
+  lib,
+}:
 stdenv.mkDerivation {
   pname = "gotmux";
   version = "1.1.0";
 
   src = ./.;
 
-  buildInputs = [ bash tmuxp ];
-  nativeBuildInputs = [ makeWrapper installShellFiles ];
+  buildInputs = [
+    bash
+    tmuxp
+  ];
+  nativeBuildInputs = [
+    makeWrapper
+    installShellFiles
+  ];
 
   patchPhase = ''
     substituteInPlace completions/gotmux.bash \

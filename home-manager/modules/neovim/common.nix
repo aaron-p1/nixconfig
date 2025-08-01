@@ -1,10 +1,13 @@
-{ pkgs, nvimUtil, ... }: {
+{ pkgs, nvimUtil, ... }:
+{
   within.neovim.configDomains.common = {
-    overlay = nvimUtil.pluginOverlay ({ prev, pvP, ... }:
+    overlay = nvimUtil.pluginOverlay (
+      { prev, pvP, ... }:
       let
         inherit (prev) fetchFromGitHub;
         inherit (prev.vimUtils) buildVimPlugin;
-      in {
+      in
+      {
         handle-errors-nvim = buildVimPlugin {
           pname = "handle_errors.nvim";
           version = "2025-03-31";
@@ -64,7 +67,8 @@
           meta.homepage = "https://github.com/CKolkey/ts-node-action";
           dependencies = [ pvP.nvim-treesitter ];
         };
-      });
+      }
+    );
     plugins = with pkgs.vimPlugins; [
       vim-repeat
       vim-abolish

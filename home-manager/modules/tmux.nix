@@ -1,10 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.tmux;
-in {
-  options.within.tmux = { enable = mkEnableOption "tmux"; };
+in
+{
+  options.within.tmux = {
+    enable = mkEnableOption "tmux";
+  };
 
   config = mkIf cfg.enable {
     programs.tmux = {
@@ -37,20 +45,21 @@ in {
         bind-key -N "Kills session" K confirm-before -p "Kill session?" kill-session
       '';
 
-      plugins = [{
-        plugin = pkgs.tmuxPlugins.onedark-theme;
-        extraConfig = ''
-          set -g @onedark_date_format "%y-%m-%d"
-        '';
-      }];
+      plugins = [
+        {
+          plugin = pkgs.tmuxPlugins.onedark-theme;
+          extraConfig = ''
+            set -g @onedark_date_format "%y-%m-%d"
+          '';
+        }
+      ];
     };
 
     # https://tmuxp.git-pull.com/configuration/index.html
     xdg.configFile."tmuxp/nixconfig.yml" = {
       text = builtins.toJSON {
         session_name = "nixconfig";
-        start_directory =
-          "${config.home.homeDirectory}/Documents/nixos/nixconfig";
+        start_directory = "${config.home.homeDirectory}/Documents/nixos/nixconfig";
         windows = [
           {
             window_name = "nvim";

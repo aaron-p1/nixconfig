@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   within.neovim.configDomains.which_key = {
     plugins = with pkgs.vimPlugins; [ which-key-nvim ];
     config = # lua

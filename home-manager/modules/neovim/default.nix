@@ -1,10 +1,35 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
-  inherit (builtins) readFile isAttrs listToAttrs concatLists;
+  inherit (builtins)
+    readFile
+    isAttrs
+    listToAttrs
+    concatLists
+    ;
   inherit (lib)
-    attrValues concatMap concatMapAttrs concatStringsSep filter isPath hasPrefix
-    isString makeBinPath mapAttrs mapAttrsToList mkEnableOption mkIf optionals
-    optionalString pipe unique;
+    attrValues
+    concatMap
+    concatMapAttrs
+    concatStringsSep
+    filter
+    isPath
+    hasPrefix
+    isString
+    makeBinPath
+    mapAttrs
+    mapAttrsToList
+    mkEnableOption
+    mkIf
+    optionals
+    optionalString
+    pipe
+    unique
+    ;
 
   cfg = config.within.neovim;
 
@@ -16,31 +41,36 @@ let
 
   lua = pkgs.neovim-unwrapped.lua;
 
-  luaEnv = lua.withPackages (ps:
+  luaEnv = lua.withPackages (
+    ps:
     pipe domainList [
       (filter (domain: domain.luaPackages != null))
       (map (domain: domain.luaPackages ps))
       concatLists
       unique
-    ]);
+    ]
+  );
 
-  wrapperArgs = optionals (packages != [ ]) [
-    "--suffix"
-    "PATH"
-    ":"
-    "${makeBinPath packages}"
-  ] ++ optionals (luaEnv != null) [
-    "--prefix"
-    "LUA_PATH"
-    ";"
-    (lua.pkgs.luaLib.genLuaPathAbsStr luaEnv)
-    "--prefix"
-    "LUA_CPATH"
-    ";"
-    (lua.pkgs.luaLib.genLuaCPathAbsStr luaEnv)
-  ];
+  wrapperArgs =
+    optionals (packages != [ ]) [
+      "--suffix"
+      "PATH"
+      ":"
+      "${makeBinPath packages}"
+    ]
+    ++ optionals (luaEnv != null) [
+      "--prefix"
+      "LUA_PATH"
+      ";"
+      (lua.pkgs.luaLib.genLuaPathAbsStr luaEnv)
+      "--prefix"
+      "LUA_CPATH"
+      ";"
+      (lua.pkgs.luaLib.genLuaCPathAbsStr luaEnv)
+    ];
 
-  toConfig = configAttrs:
+  toConfig =
+    configAttrs:
     # lua
     ''
       local is_running = {}
@@ -81,7 +111,8 @@ let
       ${configAttrs.inits}
     '';
 
-  singleDomainConfig = { name, config }:
+  singleDomainConfig =
+    { name, config }:
     # lua
     ''
       function Configs._${name}()
@@ -94,36 +125,40 @@ let
 
     (map (domain: {
       name = domain.name;
-      config =
-        if isPath domain.config then readFile domain.config else domain.config;
+      config = if isPath domain.config then readFile domain.config else domain.config;
     }))
 
     (configs: {
       functions = concatStringsSep "\n" (map singleDomainConfig configs);
-      inits = concatStringsSep "\n"
-        (map (config: ''Configs:init("${config.name}")'') configs);
+      inits = concatStringsSep "\n" (map (config: ''Configs:init("${config.name}")'') configs);
     })
 
     toConfig
   ];
 
-  flattenAttrs' = prefix: attrs:
-    concatMapAttrs (name: value:
+  flattenAttrs' =
+    prefix: attrs:
+    concatMapAttrs (
+      name: value:
       if isAttrs value then
         flattenAttrs' (prefix + "/" + name) value
-      else {
-        ${prefix + "/" + name} = value;
-      }) attrs;
+      else
+        {
+          ${prefix + "/" + name} = value;
+        }
+    ) attrs;
 
   flattenAttrs = flattenAttrs' "";
 
-  readExtraFiles = mapAttrs (_: value:
+  readExtraFiles = mapAttrs (
+    _: value:
     if isPath value || isString value && hasPrefix "/" value then
       readFile value
     else if isString value then
       value
     else
-      throw "Extra file must be path or string");
+      throw "Extra file must be path or string"
+  );
 
   extraFileLists = pipe domainList [
     (filter (domain: domain.extraFiles != { }))
@@ -134,7 +169,8 @@ let
     listToAttrs
   ];
 
-  toExtraFileDirCommands = fileAttrs:
+  toExtraFileDirCommands =
+    fileAttrs:
     pipe fileAttrs [
       (mapAttrsToList (name: value: dirOf name))
       unique
@@ -142,18 +178,22 @@ let
       (concatStringsSep "\n")
     ];
 
-  toExtraFileCommands = fileAttrs:
+  toExtraFileCommands =
+    fileAttrs:
     pipe fileAttrs [
-      (mapAttrsToList (name: value: # bash
+      (mapAttrsToList (
+        name: value: # bash
         ''
           cat > $out${name} <<'EOF'
           ${value}
           EOF
-        ''))
+        ''
+      ))
       (concatStringsSep "\n")
     ];
 
-  extraFilePackages = mapAttrsToList (name: files:
+  extraFilePackages = mapAttrsToList (
+    name: files:
     pkgs.runCommand "neovim-extra-files-${name}" { } ''
       mkdir -p $out
 
@@ -163,38 +203,43 @@ let
       ${pkgs.buildPackages.luaPackages.luacheck}/bin/luacheck \
         --std luajit --globals vim Configs --no-max-line-length \
         --no-unused -- $out
-    '') extraFileLists;
+    ''
+  ) extraFileLists;
 
   rtpCommands = pipe extraFilePackages [
-    (map (extraFilePackage: # lua
-      ''vim.opt.runtimepath:prepend("${extraFilePackage}")''))
+    (map (
+      extraFilePackage: # lua
+      ''vim.opt.runtimepath:prepend("${extraFilePackage}")''
+    ))
     (concatStringsSep "\n")
     (cmd: cmd + "\n\n")
   ];
 
-  luaRcContent = (optionalString (extraFileLists != { }) rtpCommands)
-    + domainConfigs;
+  luaRcContent = (optionalString (extraFileLists != { }) rtpCommands) + domainConfigs;
 
-  neovim = (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
-    inherit plugins wrapperArgs luaRcContent;
+  neovim =
+    (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
+      inherit plugins wrapperArgs luaRcContent;
 
-    # CopilotChat-nvim
-    withPython3 = true;
-  }).overrideAttrs (old: {
-    doCheck = true;
-    # export VIMINIT={VIMINIT-'lua dofile('\''/nix/store/lglmnwndfwfahndnsxpjwc8bnj3c7kyp-init.lua'\'')'}
-    checkPhase = ''
-      # is in /bin/nvim VIMINIT line
-      luaRcFile=$(grep -oP "VIMINIT.*?'''\K.*?(?=')" $out/bin/nvim)
+      # CopilotChat-nvim
+      withPython3 = true;
+    }).overrideAttrs
+      (old: {
+        doCheck = true;
+        # export VIMINIT={VIMINIT-'lua dofile('\''/nix/store/lglmnwndfwfahndnsxpjwc8bnj3c7kyp-init.lua'\'')'}
+        checkPhase = ''
+          # is in /bin/nvim VIMINIT line
+          luaRcFile=$(grep -oP "VIMINIT.*?'''\K.*?(?=')" $out/bin/nvim)
 
-      # 131: Unused implicitly defined global variable.
-      # 611: A line consists of nothing but whitespace.
-      ${pkgs.buildPackages.luaPackages.luacheck}/bin/luacheck \
-        --std luajit --globals vim --allow-defined --no-max-line-length \
-        --no-unused --ignore 131 611 -- $luaRcFile
-    '';
-  });
-in {
+          # 131: Unused implicitly defined global variable.
+          # 611: A line consists of nothing but whitespace.
+          ${pkgs.buildPackages.luaPackages.luacheck}/bin/luacheck \
+            --std luajit --globals vim --allow-defined --no-max-line-length \
+            --no-unused --ignore 131 611 -- $luaRcFile
+        '';
+      });
+in
+{
   imports = [
     ./utils.nix
     ./which-key.nix
@@ -223,79 +268,100 @@ in {
       readOnly = true;
     };
 
-    configDomains = let
-      inherit (lib) mkOption mergeOneOption isFunction;
-      inherit (lib.types)
-        mkOptionType attrs attrsOf submodule str nullOr oneOf path listOf either
-        package;
+    configDomains =
+      let
+        inherit (lib) mkOption mergeOneOption isFunction;
+        inherit (lib.types)
+          mkOptionType
+          attrs
+          attrsOf
+          submodule
+          str
+          nullOr
+          oneOf
+          path
+          listOf
+          either
+          package
+          ;
 
-      function = mkOptionType {
-        name = "function";
-        description = "function";
-        check = isFunction;
-        merge = mergeOneOption;
-      };
-
-      domainModule = { name, config, ... }: {
-        options = {
-          name = mkOption {
-            type = str;
-            default = name;
-            description = "Name";
-          };
-
-          overlay = mkOption {
-            type = nullOr function;
-            default = null;
-            description = "Package overlay";
-          };
-          plugins = mkOption {
-            type = listOf (either package attrs);
-            default = [ ];
-            description = "Neovim plugins";
-          };
-          luaPackages = mkOption {
-            type = nullOr function;
-            default = null;
-            description = "Lua packages to add to neovim";
-          };
-          packages = mkOption {
-            type = listOf package;
-            default = [ ];
-            description = "Packages";
-          };
-
-          config = mkOption {
-            type = oneOf [ (nullOr str) path ];
-            default = null;
-            description = "Lua config";
-          };
-          extraFiles = mkOption {
-            type = attrs;
-            default = { };
-            description = "Extra files in rtp. `{ path = { to = content; }; }";
-          };
+        function = mkOptionType {
+          name = "function";
+          description = "function";
+          check = isFunction;
+          merge = mergeOneOption;
         };
+
+        domainModule =
+          { name, config, ... }:
+          {
+            options = {
+              name = mkOption {
+                type = str;
+                default = name;
+                description = "Name";
+              };
+
+              overlay = mkOption {
+                type = nullOr function;
+                default = null;
+                description = "Package overlay";
+              };
+              plugins = mkOption {
+                type = listOf (either package attrs);
+                default = [ ];
+                description = "Neovim plugins";
+              };
+              luaPackages = mkOption {
+                type = nullOr function;
+                default = null;
+                description = "Lua packages to add to neovim";
+              };
+              packages = mkOption {
+                type = listOf package;
+                default = [ ];
+                description = "Packages";
+              };
+
+              config = mkOption {
+                type = oneOf [
+                  (nullOr str)
+                  path
+                ];
+                default = null;
+                description = "Lua config";
+              };
+              extraFiles = mkOption {
+                type = attrs;
+                default = { };
+                description = "Extra files in rtp. `{ path = { to = content; }; }";
+              };
+            };
+          };
+      in
+      mkOption {
+        type = attrsOf (submodule domainModule);
+        default = { };
+        description = "Neovim config split in domains";
       };
-    in mkOption {
-      type = attrsOf (submodule domainModule);
-      default = { };
-      description = "Neovim config split in domains";
-    };
   };
 
   config = mkIf cfg.enable {
     _module.args.nvimUtil = {
-      pluginOverlay = fn:
+      pluginOverlay =
+        fn:
         (final: prev: {
-          vimPlugins = prev.vimPlugins.extend (_: _:
+          vimPlugins = prev.vimPlugins.extend (
+            _: _:
             fn {
               inherit prev final;
               pvP = prev.vimPlugins;
-            });
+            }
+          );
         });
 
-      symlinkTo = dst:
+      symlinkTo =
+        dst:
         pkgs.stdenv.mkDerivation {
           name = "symlink-to";
           phases = [ "installPhase" ];

@@ -1,4 +1,9 @@
-{ stdenv, fetchFromGitHub, python3, ... }:
+{
+  stdenv,
+  fetchFromGitHub,
+  python3,
+  ...
+}:
 stdenv.mkDerivation rec {
   pname = "ff2mpv-native-client";
   version = "3.8.0";

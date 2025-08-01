@@ -1,10 +1,18 @@
-{ pkgs, nvimUtil, ... }: {
+{ pkgs, nvimUtil, ... }:
+{
   within.neovim.configDomains.db = {
-    overlay = nvimUtil.pluginOverlay ({ pvP, ... }: {
-      vim-dadbod = pvP.vim-dadbod.overrideAttrs
-        (old: { patches = [ ./patches/dadbod-fix-output-newlines.patch ]; });
-    });
-    plugins = with pkgs.vimPlugins; [ vim-dadbod vim-dadbod-ui ];
+    overlay = nvimUtil.pluginOverlay (
+      { pvP, ... }:
+      {
+        vim-dadbod = pvP.vim-dadbod.overrideAttrs (old: {
+          patches = [ ./patches/dadbod-fix-output-newlines.patch ];
+        });
+      }
+    );
+    plugins = with pkgs.vimPlugins; [
+      vim-dadbod
+      vim-dadbod-ui
+    ];
     packages = with pkgs; [ mariadb ];
     config = # lua
       ''

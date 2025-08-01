@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   within.neovim.configDomains.treesitter = {
     plugins = with pkgs.vimPlugins; [
       nvim-treesitter.withAllGrammars

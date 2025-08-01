@@ -1,9 +1,20 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkOption mkIf types;
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    mkIf
+    types
+    ;
 
   cfg = config.within.boot;
-in {
+in
+{
   options.within.boot = {
     grub = mkEnableOption "Grub bootloader";
     efiMountPoint = mkOption {

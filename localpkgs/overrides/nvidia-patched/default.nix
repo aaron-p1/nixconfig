@@ -1,4 +1,9 @@
-{ symlinkJoin, nvidia_x11, nvlax, ... }:
+{
+  symlinkJoin,
+  nvidia_x11,
+  nvlax,
+  ...
+}:
 symlinkJoin {
   name = "nvidia-patched-${nvidia_x11.version}";
   paths = [ nvidia_x11 ];
@@ -28,6 +33,12 @@ symlinkJoin {
     chmod +x "$encodePath" "$fbcPath"
   '';
   passthru = {
-    inherit (nvidia_x11) useProfiles persistenced settings bin lib32;
+    inherit (nvidia_x11)
+      useProfiles
+      persistenced
+      settings
+      bin
+      lib32
+      ;
   };
 }

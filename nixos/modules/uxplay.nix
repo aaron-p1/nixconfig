@@ -1,10 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.uxplay;
-in {
-  options.within.uxplay = { enable = mkEnableOption "Enable uxplay"; };
+in
+{
+  options.within.uxplay = {
+    enable = mkEnableOption "Enable uxplay";
+  };
 
   config = mkIf cfg.enable {
     services.avahi = {
@@ -18,20 +26,26 @@ in {
     };
 
     networking.firewall = {
-      allowedTCPPortRanges = [{
-        from = 38500;
-        to = 38502;
-      }];
-      allowedUDPPortRanges = [{
-        from = 38500;
-        to = 38502;
-      }];
+      allowedTCPPortRanges = [
+        {
+          from = 38500;
+          to = 38502;
+        }
+      ];
+      allowedUDPPortRanges = [
+        {
+          from = 38500;
+          to = 38502;
+        }
+      ];
     };
 
-    environment.systemPackages = let
-      uxplay = pkgs.writeShellScriptBin "uxplay" ''
-        ${pkgs.uxplay}/bin/uxplay -p 38500 "$@"
-      '';
-    in [ uxplay ];
+    environment.systemPackages =
+      let
+        uxplay = pkgs.writeShellScriptBin "uxplay" ''
+          ${pkgs.uxplay}/bin/uxplay -p 38500 "$@"
+        '';
+      in
+      [ uxplay ];
   };
 }

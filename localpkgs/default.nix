@@ -13,7 +13,7 @@ final: prev: {
     # Nvidia
     nvlax = prev.callPackage ./pkgs/nvlax { };
     # patched with https://github.com/keylase/nvidia-patch
-    nvidia-patched = nvidia_x11:
-      prev.callPackage ./overrides/nvidia-patched { inherit nvidia_x11 nvlax; };
+    nvidia-patched =
+      nvidia_x11: prev.callPackage ./overrides/nvidia-patched { inherit nvidia_x11 nvlax; };
   };
 }

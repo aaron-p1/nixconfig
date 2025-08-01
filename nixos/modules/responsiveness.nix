@@ -1,16 +1,26 @@
 { config, lib, ... }:
 let
-  inherit (lib) mkEnableOption mkOption mkIf isAttrs filterAttrs optionalAttrs;
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    mkIf
+    isAttrs
+    filterAttrs
+    optionalAttrs
+    ;
   inherit (lib.types) nullOr str int;
 
   cfg = config.within.responsiveness;
 
-  hasValue = attrs:
-    ((filterAttrs
-      (name: value: if isAttrs value then hasValue value else value != null))
-      attrs) != { };
+  hasValue =
+    attrs:
+    ((filterAttrs (name: value: if isAttrs value then hasValue value else value != null)) attrs) != { };
 
-  toSystemdConfig = { configName ? "serviceConfig", override ? false }:
+  toSystemdConfig =
+    {
+      configName ? "serviceConfig",
+      override ? false,
+    }:
     attrs:
     let
       res = attrs.resources or { };
@@ -21,8 +31,10 @@ let
           MemoryLow = res.memory.low;
           IOWeight = res.io.weight;
         };
-      } // optionalAttrs override { overrideStrategy = "asDropin"; };
-    in mkIf (hasValue res) conf;
+      }
+      // optionalAttrs override { overrideStrategy = "asDropin"; };
+    in
+    mkIf (hasValue res) conf;
 
   toSliceConfigOverride = toSystemdConfig {
     configName = "sliceConfig";
@@ -56,7 +68,8 @@ let
       description = "IO weight";
     };
   };
-in {
+in
+{
   options.within.responsiveness = {
     enable = mkEnableOption "Enable responsiveness module";
 

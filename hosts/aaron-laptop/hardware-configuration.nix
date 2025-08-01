@@ -1,4 +1,11 @@
-{ pkgs, config, lib, modulesPath, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  modulesPath,
+  ...
+}:
+{
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot = {
@@ -9,8 +16,14 @@
     loader.grub.configurationLimit = 8;
 
     initrd = {
-      availableKernelModules =
-        [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" "i915" ];
+      availableKernelModules = [
+        "xhci_pci"
+        "ahci"
+        "usb_storage"
+        "sd_mod"
+        "sr_mod"
+        "i915"
+      ];
       kernelModules = [ ];
 
       # for luks fido2 device unlocking
@@ -30,8 +43,11 @@
       };
       luks.devices."cryptroot" = {
         device = "/dev/disk/by-uuid/83d040d2-0747-4ebc-864a-e39b017890cc";
-        crypttabExtraOpts =
-          [ "fido2-device=auto" "token-timeout=5s" "password-echo=no" ];
+        crypttabExtraOpts = [
+          "fido2-device=auto"
+          "token-timeout=5s"
+          "password-echo=no"
+        ];
         allowDiscards = true;
       };
     };
@@ -65,6 +81,5 @@
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
-  hardware.cpu.intel.updateMicrocode =
-    lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

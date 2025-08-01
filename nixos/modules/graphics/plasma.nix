@@ -1,13 +1,21 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.graphics.plasma;
-in {
+in
+{
   options.within.graphics.plasma = {
     enable = mkEnableOption "Plasma Desktop";
     kdeConnect = mkEnableOption "Kde Connect";
-    inputMethod = { japanese = mkEnableOption "Japanese Input Method"; };
+    inputMethod = {
+      japanese = mkEnableOption "Japanese Input Method";
+    };
   };
 
   config = mkIf cfg.enable {

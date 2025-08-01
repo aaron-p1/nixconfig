@@ -1,6 +1,8 @@
 { lib, ... }:
-let inherit (lib) mkOption types;
-in {
+let
+  inherit (lib) mkOption types;
+in
+{
   imports = [
     ./graphics
     ./networking
@@ -30,7 +32,6 @@ in {
   options.within.enableEncryptedFileOptions = mkOption {
     type = types.bool;
     default = true;
-    description =
-      "disable all options that require decryption of inline-secrets";
+    description = "disable all options that require decryption of inline-secrets";
   };
 }
