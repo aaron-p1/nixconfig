@@ -60,6 +60,8 @@
 
     steam.enable = true;
 
+    containers.enableNvidia = true;
+
     responsiveness = {
       enable = true;
 
