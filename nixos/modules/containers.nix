@@ -29,7 +29,13 @@ in {
       containers = {
         enable = true;
         containersConf = {
-          settings = { engine.network_cmd_options = cfg.networkOptions; };
+          settings = {
+            engine = {
+              network_cmd_options = cfg.networkOptions;
+              compose_providers =
+                [ "${pkgs.docker-compose}/bin/docker-compose" ];
+            };
+          };
         };
       };
 
