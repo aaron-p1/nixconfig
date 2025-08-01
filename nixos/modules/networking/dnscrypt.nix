@@ -67,6 +67,13 @@ in {
 
     systemd = {
       services = {
+        dnscrypt-proxy2.serviceConfig = {
+          # wait for sd_notify ready from service before being considered started
+          Type = "notify";
+          # needed for sd_notify
+          RestrictAddressFamilies = [ "AF_UNIX" ];
+        };
+
         dns-gen-block-list = {
           description = "Generate block list for dnscrypt-proxy2";
           startAt = "weekly";
