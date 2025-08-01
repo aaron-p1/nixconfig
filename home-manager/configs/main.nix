@@ -36,7 +36,10 @@
     gpg.enable = true;
 
     # ../modules/git.nix
-    git.enable = true;
+    git = {
+      enable = true;
+      signingKey = "B19562BBEF50FD55!";
+    };
 
     # ../modules/neovim/default.nix
     neovim.enable = true;
