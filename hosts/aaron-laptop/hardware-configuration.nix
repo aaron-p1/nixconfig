@@ -1,17 +1,37 @@
-{ config, lib, modulesPath, ... }: {
+{ pkgs, config, lib, modulesPath, ... }: {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot = {
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
 
+    # boot partition space is limited
+    loader.grub.configurationLimit = 8;
+
     initrd = {
       availableKernelModules =
         [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" "i915" ];
       kernelModules = [ ];
 
+      # for luks fido2 device unlocking
+      systemd = {
+        enable = true;
+        initrdBin = [ pkgs.kbd ];
+        services.numlock = {
+          description = "Enable NumLock in initrd TTYs";
+          wantedBy = [ "cryptsetup.target" ];
+          script = ''
+            for tty in /dev/tty1; do
+                /bin/setleds -D +num < "$tty";
+            done
+          '';
+          serviceConfig.Type = "oneshot";
+        };
+      };
       luks.devices."cryptroot" = {
         device = "/dev/disk/by-uuid/83d040d2-0747-4ebc-864a-e39b017890cc";
+        crypttabExtraOpts =
+          [ "fido2-device=auto" "token-timeout=5s" "password-echo=no" ];
         allowDiscards = true;
       };
     };
