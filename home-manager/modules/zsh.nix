@@ -20,7 +20,7 @@ in {
             redirection = "fg=magenta";
           };
         };
-        dotDir = ".config/zsh";
+        dotDir = "${config.xdg.configHome}/zsh";
         shellAliases = {
           ":q" = "exit";
 

@@ -145,11 +145,11 @@
   };
 
   systemd = {
-    extraConfig = ''
-      DefaultTimeoutStartSec=30s
-      DefaultTimeoutStopSec=30s
-      DefaultLimitNOFILE=4096:524288
-    '';
+    settings.Manager = {
+      DefaultTimeoutStartSec = "30s";
+      DefaultTimeoutStopSec = "30s";
+      DefaultLimitNOFILE = "4096:524288";
+    };
     user.extraConfig = ''
       DefaultTimeoutStartSec=30s
       DefaultTimeoutStopSec=30s
