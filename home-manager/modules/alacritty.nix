@@ -76,7 +76,7 @@ in {
             K = 75;
             L = 76;
             M = 77;
-            N = 78;
+            # N = 78; # new instance
             O = 79;
             # P = 80; # copy path
             Q = 81;
@@ -97,10 +97,17 @@ in {
             chars = "\\u001B[${toString code};6u";
           }) keys;
         in concatLists [
-          [{
-            key = "F11";
-            action = "ToggleFullscreen";
-          }]
+          [
+            {
+              key = "F11";
+              action = "ToggleFullscreen";
+            }
+            {
+              mods = "Control|Shift";
+              key = "n";
+              action = "SpawnNewInstance";
+            }
+          ]
           ctrlShiftMappings
         ];
       };
