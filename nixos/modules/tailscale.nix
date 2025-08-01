@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (lib) mkEnableOption mkOption mkIf types;
+  inherit (lib) mkEnableOption mkOption mkIf types mkForce;
 
   cfg = config.within.tailscale;
 in {
@@ -25,31 +25,38 @@ in {
   config = mkIf cfg.enable {
     services.tailscale.enable = true;
 
-    systemd.services.tailscaleDownload = mkIf cfg.download.enable {
-      description = "Tailscale File Get Service";
-      after = [ "tailscaled.service" ];
-      partOf = [ "tailscaled.service" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        Restart = "on-failure";
-        RestartSec = "5s";
+    systemd.services = {
+      tailscaled = {
+        wantedBy = mkForce [ "network-online.target" ];
+        after = mkForce [ "network-online.target" ];
+        wants = mkForce [ "network-online.target" ];
       };
-      unitConfig = {
-        StartLimitBurst = 5;
-        StartLimitInterval = "30s";
+
+      tailscaleDownload = mkIf cfg.download.enable {
+        description = "Tailscale File Get Service";
+        after = [ "tailscaled.service" ];
+        partOf = [ "tailscaled.service" ];
+        serviceConfig = {
+          Restart = "on-failure";
+          RestartSec = "5s";
+        };
+        unitConfig = {
+          StartLimitBurst = 5;
+          StartLimitInterval = "30s";
+        };
+        script = ''
+          set -euo pipefail
+
+          while true; do
+            mkdir -p ${cfg.download.dir}
+
+            ${pkgs.tailscale}/bin/tailscale file get \
+              --verbose --wait --conflict=rename ${cfg.download.dir}
+
+            chown -R ${cfg.download.owner} ${cfg.download.dir}
+          done
+        '';
       };
-      script = ''
-        set -euo pipefail
-
-        while true; do
-          mkdir -p ${cfg.download.dir}
-
-          ${pkgs.tailscale}/bin/tailscale file get \
-            --verbose --wait --conflict=rename ${cfg.download.dir}
-
-          chown -R ${cfg.download.owner} ${cfg.download.dir}
-        done
-      '';
     };
   };
 }
