@@ -25,7 +25,7 @@ let
           proxy_pass_header Authorization;
         '';
       };
-    in if host.redirectRoot != null then [
+    in if hostConfig.redirectRoot != null then [
       (nameValuePair serverName {
         locations."/".return = "302 ${hostConfig.redirectRoot}";
       })

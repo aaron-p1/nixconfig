@@ -76,6 +76,10 @@
     };
   };
 
+  services.nginx.virtualHosts."exo-wp-to-exo.dev.home.arpa".locations."/" = {
+    proxyPass = "http://app.exo.dev.home.arpa";
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
