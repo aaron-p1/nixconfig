@@ -1,5 +1,10 @@
 # See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   within.neovim.configDomains.lsp = {
     plugins = with pkgs.vimPlugins; [
@@ -11,6 +16,59 @@
     packages =
       with pkgs;
       let
+        bwrap =
+          pkg:
+          {
+            bin ? pkg.meta.mainProgram,
+            net ? false,
+            extraHomeMounts ? [ ],
+          }:
+          let
+            isoHome = "${config.xdg.dataHome}/nvim/bwrap/home";
+
+            args = [
+              "--unshare-user"
+              # enabling pid would crash lsp servers after seconds
+              # "--unshare-pid"
+              "--unshare-net"
+              "--unshare-ipc"
+              "--unshare-cgroup"
+              "--unshare-uts"
+              "--die-with-parent"
+              "--proc /proc"
+              "--dev /dev"
+              "--tmpfs /tmp"
+              "--ro-bind /nix/store /nix/store"
+              "--ro-bind /run/current-system/sw /run/current-system/sw"
+              "--ro-bind /etc/profiles/per-user/aaron/bin /etc/profiles/per-user/aaron/bin"
+              "--ro-bind /bin /bin"
+              "--bind ${isoHome} /home/$USER"
+              ''--bind "$PWD" "$PWD"''
+            ]
+            ++ lib.optional net "--share-net"
+            ++ homeMounts;
+
+            homeMounts = map (m: ''--bind "/home/$USER/${m}" "/home/$USER/${m}"'') extraHomeMounts;
+          in
+          pkgs.writeShellScriptBin bin ''
+            [ -d "${isoHome}" ] || mkdir -p "${isoHome}"
+
+            additionalBWrapArgs=()
+
+            if [[ -n "$DIRENV_FILE" ]]; then
+              direnvDir="$(dirname "$DIRENV_FILE")/.direnv"
+
+              if [[ -d "$direnvDir" ]]; then
+                additionalBWrapArgs+=("--bind" "$direnvDir" "$direnvDir")
+              fi
+            fi
+
+            exec ${pkgs.bubblewrap}/bin/bwrap \
+              ${lib.concatStringsSep " " args} \
+              "''${additionalBWrapArgs[@]}" \
+              "${pkg}/bin/${bin}" "$@"
+          '';
+
         nills = [
           nil
           nixfmt-rfc-style
@@ -34,7 +92,10 @@
 
         lsp = [
           sumneko-lua-language-server
-          nodePackages.intelephense
+          (bwrap nodePackages.intelephense {
+            net = true;
+            extraHomeMounts = [ "intelephense" ];
+          })
           nodePackages.vscode-langservers-extracted # html css json
           nodePackages.yaml-language-server
           nodePackages."@tailwindcss/language-server"
@@ -42,7 +103,7 @@
           vue-language-server
           glsl_analyzer
           clang-tools
-          pyright
+          (bwrap pyright { bin = "pyright-langserver"; })
         ]
         ++ nills
         ++ bashls
