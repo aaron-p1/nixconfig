@@ -35,7 +35,7 @@ let
         --ro-bind /run/current-system/sw /run/current-system/sw \
         --bind /run/dbus /run/dbus \
         --bind /run/user/$UID /run/user/$UID \
-        --symlink "$(readlink /nix/store/mzqrpwsf8q2pv4k6xpgmc84vhnlzvkf8-graphics-drivers)" /run/opengl-driver \
+        --symlink "$(readlink /run/opengl-driver)" /run/opengl-driver \
         --ro-bind /etc/profiles/per-user/aaron /etc/profiles/per-user/aaron \
         --ro-bind /bin /bin \
         --ro-bind /usr /usr \
