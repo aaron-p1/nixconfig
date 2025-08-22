@@ -1,4 +1,4 @@
-# See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+# See https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 {
   pkgs,
   lib,
@@ -24,8 +24,6 @@
             extraHomeMounts ? [ ],
           }:
           let
-            isoHome = "${config.xdg.dataHome}/nvim/bwrap/home";
-
             args = [
               "--unshare-user"
               # enabling pid would crash lsp servers after seconds
@@ -43,15 +41,17 @@
               "--ro-bind /etc/profiles/per-user/aaron/bin /etc/profiles/per-user/aaron/bin"
               "--ro-bind /bin /bin"
               "--bind ${isoHome} /home/$USER"
+              "--dir /home/$USER/.cache"
               ''--bind "$PWD" "$PWD"''
             ]
             ++ lib.optional net "--share-net"
             ++ homeMounts;
 
+            isoHome = "${config.xdg.dataHome}/nvim/bwrap/home";
             homeMounts = map (m: ''--bind "/home/$USER/${m}" "/home/$USER/${m}"'') extraHomeMounts;
           in
           pkgs.writeShellScriptBin bin ''
-            [ -d "${isoHome}" ] || mkdir -p "${isoHome}"
+            [[ -d "${isoHome}" ]] || mkdir -p "${isoHome}"
 
             additionalBWrapArgs=()
 
@@ -70,39 +70,48 @@
           '';
 
         nills = [
-          nil
-          nixfmt-rfc-style
+          (bwrap nil { })
+          (bwrap nixfmt-rfc-style { })
         ];
 
         bashls = [
-          bash-language-server
-          shellcheck
-          shfmt
+          (bwrap bash-language-server { })
+          (bwrap shellcheck { })
+          (bwrap shfmt { })
         ];
 
         rustAnalyzerLs = [
-          rust-analyzer
-          rustfmt
+          (bwrap rust-analyzer { net = true; })
+          (bwrap rustfmt { })
         ];
 
         elixir = [
-          elixir-ls
+          (bwrap elixir-ls {
+            net = true;
+            extraHomeMounts = [
+              ".mix"
+              ".hex"
+            ];
+          })
+          # for mix phx.server code reloading
           inotify-tools
         ];
 
         lsp = [
-          sumneko-lua-language-server
+          (bwrap sumneko-lua-language-server { })
           (bwrap nodePackages.intelephense {
             net = true;
             extraHomeMounts = [ "intelephense" ];
           })
-          nodePackages.vscode-langservers-extracted # html css json
-          nodePackages.yaml-language-server
-          nodePackages."@tailwindcss/language-server"
-          nodePackages.typescript-language-server
-          vue-language-server
-          glsl_analyzer
-          clang-tools
+          (bwrap nodePackages.vscode-langservers-extracted { bin = "vscode-html-language-server"; })
+          (bwrap nodePackages.vscode-langservers-extracted { bin = "vscode-css-language-server"; })
+          (bwrap nodePackages.vscode-langservers-extracted { bin = "vscode-json-language-server"; })
+          (bwrap nodePackages.yaml-language-server { })
+          (bwrap nodePackages."@tailwindcss/language-server" { })
+          (bwrap nodePackages.typescript-language-server { })
+          (bwrap vue-language-server { })
+          (bwrap glsl_analyzer { })
+          (bwrap clang-tools { bin = "clangd"; })
           (bwrap pyright { bin = "pyright-langserver"; })
         ]
         ++ nills
@@ -111,10 +120,10 @@
         ++ elixir;
 
         none-ls = [
-          editorconfig-checker
-          prettierd
-          isort
-          black
+          (bwrap editorconfig-checker { })
+          (bwrap prettierd { })
+          (bwrap isort { })
+          (bwrap black { })
         ];
       in
       lsp ++ none-ls;
@@ -130,8 +139,6 @@
       in
       ''
         vim.lsp.inlay_hint.enable()
-
-        local lc = require("lspconfig")
 
         local formatting_preferences = {
           html = "null-ls",
@@ -166,137 +173,96 @@
           end)
         end
 
-        lc.util.on_setup = lc.util.add_hook_before(lc.util.on_setup, function(config)
-          config.autostart = false
-
-          local event_conf = config.filetypes
-              and { event = "FileType", pattern = config.filetypes }
-              or { event = "BufReadPost" }
-
-          vim.api.nvim_create_autocmd(event_conf.event, {
-            pattern = event_conf.pattern or "*",
-            group = vim.api.nvim_create_augroup('lspconfig', { clear = false }),
-            callback = function(ev)
-              if is_blocked(config.name, ev.buf) then
-                return
-              end
-
-              local client = vim.lsp.get_clients({ name = config.name })[1]
-
-              if client then
-                vim.lsp.buf_attach_client(ev.buf, client.id)
-              else
-                require('lspconfig.configs')[config.name].launch()
-              end
-            end
-          })
-        end)
-
-        local function on_attach(client, bufnr)
-          local tb = Configs.telescope.builtin
-
-          local function mapkey(mode, key, cmd, opts)
-            opts = vim.tbl_extend("force", { buffer = bufnr }, opts or {})
-
-            vim.keymap.set(mode, key, cmd, opts)
+        local old_lsp_start = vim.lsp.start
+        vim.lsp.start = function(config, opts)
+          if is_blocked(config.name, opts and opts.bufnr or 0) then
+            return
           end
 
-          mapkey("n", "gd", function() tb.lsp_definitions({ jump_type = "never" }) end, { desc = "Definition" })
-          mapkey("n", "gi", tb.lsp_implementations, { desc = "Implementations" })
-          mapkey("n", "gr", tb.lsp_references, { desc = "References" })
-
-          mapkey("n", "gD", vim.lsp.buf.declaration, { desc = "Declaration" })
-          mapkey("n", "<Leader>lD", vim.lsp.buf.type_definition, { desc = "Type Definition" })
-
-          mapkey("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
-          mapkey("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
-          mapkey("n", "<Leader>ld", vim.diagnostic.open_float, { desc = "Show diagnostic" })
-          mapkey("n", "<Leader>ltd", function()
-            vim.diagnostic.enable(not vim.diagnostic.is_enabled())
-          end, { desc = "Toggle Diagnostics" })
-
-          mapkey("n", "<Leader>lf", function()
-            local ft = vim.bo[bufnr].filetype
-            vim.lsp.buf.format({ bufnr = bufnr, name = formatting_preferences[ft] })
-          end, { desc = "Format" })
-          mapkey("n", "<Leader>lc", vim.lsp.buf.code_action, { desc = "Code Action" })
-          mapkey("n", "<Leader>lr", vim.lsp.buf.rename, { desc = "Rename" })
-          mapkey("n", "<Leader>ll", vim.lsp.codelens.run, { desc = "Codelens" })
-
-          if client.server_capabilities.documentHighlightProvider then
-            local group = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = false })
-            vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
-
-            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-              group = group,
-              buffer = bufnr,
-              callback = function()
-                vim.lsp.buf.document_highlight()
-              end
-            })
-
-            vim.api.nvim_create_autocmd("CursorMoved", {
-              group = group,
-              buffer = bufnr,
-              callback = function()
-                vim.lsp.buf.clear_references()
-              end
-            })
-          end
-
-          Configs.which_key.add({
-            { "l",  group = "LSP" },
-            { "lt", group = "Toggle" }
-          }, { "<Leader>", buffer = bufnr })
+          return old_lsp_start(config, opts)
         end
 
-        local default_config = {
-          capabilities = vim.tbl_deep_extend(
-            "force",
-            Configs.completion.lsp_capabilities,
-            { offsetEncoding = { "utf-16" } }
-          ),
-          on_attach = on_attach
-        }
+        vim.api.nvim_create_autocmd("LspAttach", {
+          group = vim.api.nvim_create_augroup("LspConfig", {}),
+          callback = function(ev)
+            local tb = Configs.telescope.builtin
+
+            local function mapkey(mode, key, cmd, opts)
+              opts = vim.tbl_extend("force", { buffer = ev.buf }, opts or {})
+
+              vim.keymap.set(mode, key, cmd, opts)
+            end
+
+            mapkey("n", "gd", function() tb.lsp_definitions({ jump_type = "never" }) end, { desc = "Definition" })
+            mapkey("n", "gri", tb.lsp_implementations, { desc = "Implementations" })
+            mapkey("n", "grr", tb.lsp_references, { desc = "References" })
+
+            mapkey("n", "gD", vim.lsp.buf.declaration, { desc = "Declaration" })
+            mapkey("n", "grt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
+
+            mapkey("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Previous Diagnostic" })
+            mapkey("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
+            mapkey("n", "grd", vim.diagnostic.open_float, { desc = "Show diagnostic" })
+            mapkey("n", "grD", function()
+              vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+            end, { desc = "Toggle Diagnostics" })
+
+            mapkey("n", "grf", function()
+              local ft = vim.bo[ev.buf].filetype
+              vim.lsp.buf.format({ bufnr = ev.buf, name = formatting_preferences[ft] })
+            end, { desc = "Format" })
+            mapkey("n", "gra", vim.lsp.buf.code_action, { desc = "Code Action" })
+            mapkey("n", "grn", vim.lsp.buf.rename, { desc = "Rename" })
+            mapkey("n", "grl", vim.lsp.codelens.run, { desc = "Codelens" })
+
+            local client = vim.lsp.get_client_by_id(ev.data.client_id)
+            if client and client.server_capabilities.documentHighlightProvider then
+              local group = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = false })
+              vim.api.nvim_clear_autocmds({ buffer = ev.buf, group = group })
+
+              vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                group = group,
+                buffer = ev.buf,
+                callback = function()
+                  vim.lsp.buf.document_highlight()
+                end
+              })
+
+              vim.api.nvim_create_autocmd("CursorMoved", {
+                group = group,
+                buffer = ev.buf,
+                callback = function()
+                  vim.lsp.buf.clear_references()
+                end
+              })
+            end
+          end
+        })
+
+        local default_config = {}
 
         local function setup(server, config)
           config = vim.tbl_deep_extend("force", default_config, config or {})
 
-          lc[server].setup(config)
+          vim.lsp.config(server, config)
+          vim.lsp.enable(server)
         end
 
         do
           local function get_plugin_paths()
-            local packpaths = vim.split(vim.o.packpath, ',')
-
-            local plugins_path = nil
-
-            for _, path in ipairs(packpaths) do
-              local p = path .. '/pack/myNeovimPackages/start'
-
-              if vim.fn.isdirectory(p) == 1 then
-                plugins_path = p
-                break
-              end
-            end
+            local plugins_path = vim.iter(vim.split(vim.o.packpath, ','))
+                :map(function(path) return path .. '/pack/myNeovimPackages/start' end)
+                :find(function(path) return vim.fn.isdirectory(path) == 1 end)
 
             if not plugins_path then
               return {}
             end
 
-            local plugins = {}
-
-            for name, type in vim.fs.dir(plugins_path) do
-              if type == 'link' then
-                local target = vim.uv.fs_readlink(plugins_path .. '/' .. name) .. "/lua"
-
-                if vim.fn.isdirectory(target) == 1 then
-                  table.insert(plugins, target)
-                end
-              end
-            end
-
-            return plugins
+            return vim.iter(vim.fs.dir(plugins_path))
+                :filter(function(_, type) return type == 'link' end)
+                :map(function(name, _) return vim.uv.fs_readlink(plugins_path .. '/' .. name) .. "/lua" end)
+                :filter(function(path) return vim.fn.isdirectory(path) == 1 end)
+                :totable()
           end
 
           local library_paths = {
@@ -359,7 +325,7 @@
           },
           filetypes = { "javascript", "typescript", "vue" }
         })
-        setup("volar", {
+        setup("vue_ls", {
           init_options = {
             typescript = { tsdk = "${tsLib}" },
             vue = { hybridMode = true }
@@ -410,11 +376,11 @@
             enable = true,
             cmd = { "elixir-ls" },
             settings = elixirls.settings({
+              fetchDeps = true,
+              mixEnv = "dev",
               enableTestLenses = true,
               suggestSpecs = true,
             }),
-            on_attach = default_config.on_attach,
-            capabilities = default_config.capabilities,
           }
         })
 
@@ -441,13 +407,12 @@
           should_attach = function(bufnr)
             return not vim.tbl_contains(disabled_filetypes, vim.bo[bufnr].filetype)
           end,
-          on_attach = default_config.on_attach,
-          capabilities = default_config.capabilities
         })
 
         return {
           file_blocklist = {
-            add = file_blocklist_add
+            add = file_blocklist_add,
+            get = file_blocklist
           }
         }
       '';

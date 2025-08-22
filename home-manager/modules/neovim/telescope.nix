@@ -73,7 +73,7 @@
         vim.keymap.set("n", "<Leader>fh", tb.help_tags, { desc = "Help tags" })
 
         -- lsp
-        vim.keymap.set("n", "<Leader>fls", tb.lsp_document_symbols, { desc = "Document symbols" })
+        vim.keymap.set("n", "gO", tb.lsp_document_symbols, { desc = "Document symbols" })
 
         -- git
         vim.keymap.set("n", "<Leader>fgc", tb.git_commits, { desc = "Commits" })
@@ -90,7 +90,6 @@
         Configs.which_key.add({
           { "f",  group = "Telescope" },
           { "fc", group = "Current buffer" },
-          { "fl", group = "LSP" },
           { "fg", group = "Git" },
         }, { "<Leader>" })
 
