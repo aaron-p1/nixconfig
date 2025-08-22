@@ -113,6 +113,7 @@
           (bwrap glsl_analyzer { })
           (bwrap clang-tools { bin = "clangd"; })
           (bwrap pyright { bin = "pyright-langserver"; })
+          (bwrap haskell-language-server { bin = "haskell-language-server-wrapper"; })
         ]
         ++ nills
         ++ bashls
@@ -383,6 +384,8 @@
             }),
           }
         })
+
+        setup("hls")
 
         local nls = require("null-ls")
 
