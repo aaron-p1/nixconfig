@@ -70,7 +70,7 @@
           '';
 
         nills = [
-          (bwrap nil { })
+          (bwrap nil { net = true; })
           (bwrap nixfmt-rfc-style { })
         ];
 
