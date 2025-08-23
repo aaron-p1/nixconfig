@@ -93,8 +93,6 @@
   };
 
   nix.gc = {
-    automatic = osConfig.nix.gc.automatic;
-    options = osConfig.nix.gc.options;
-    frequency = builtins.head osConfig.nix.gc.dates;
+    inherit (osConfig.nix.gc) automatic options dates;
   };
 }
