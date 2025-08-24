@@ -39,6 +39,8 @@ in
           o = "xdg-open";
 
           nvimgit = "nvim +Git +'bdelete 1'";
+          # run editor with git (e already exists)
+          eg = "nvim +Git +'bdelete 1'";
           update-nvim-packer = "nvim +PackerSync";
 
           ns = "NIXPKGS_ALLOW_UNFREE=1 nix shell --impure";
