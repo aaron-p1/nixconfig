@@ -40,7 +40,10 @@
           inherit
             (import nixpkgs2305 {
               inherit (final) system;
-              config.permittedInsecurePackages = [ "nodejs-16.20.2" ];
+              config.permittedInsecurePackages = [
+                "nodejs-16.20.2"
+                "nodejs-16.20.2-source"
+              ];
             })
             # for nvim dotfiles vscode-php-debug
             nodejs_16

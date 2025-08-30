@@ -45,11 +45,14 @@ in
 
     programs.ssh = {
       enable = true;
-      controlMaster = "auto";
-      controlPath = "~/.ssh/sockets/%r@%n:%p";
-      controlPersist = "8h";
+      enableDefaultConfig = false;
       matchBlocks = recursiveUpdate {
-        "*".identityFile = mkIf (cfg.keyFiles != [ ]) cfg.keyFiles;
+        "*" = {
+          identityFile = mkIf (cfg.keyFiles != [ ]) cfg.keyFiles;
+          controlMaster = "auto";
+          controlPath = "~/.ssh/sockets/%r@%n:%p";
+          controlPersist = "8h";
+        };
         pc = {
           hostname = "aaron-pc";
           user = "aaron";
