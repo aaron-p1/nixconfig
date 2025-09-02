@@ -182,7 +182,13 @@
 
         local old_lsp_start = vim.lsp.start
         vim.lsp.start = function(config, opts)
-          if is_blocked(config.name, opts and opts.bufnr or 0) then
+          local bufnr = opts and opts.bufnr or 0
+          if is_blocked(config.name, bufnr) then
+            return
+          end
+
+          local fname = vim.api.nvim_buf_get_name(bufnr)
+          if vim.startswith(fname, "fugitive://") or vim.startswith(fname, "scp://") then
             return
           end
 
