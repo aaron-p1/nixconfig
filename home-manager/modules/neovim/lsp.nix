@@ -21,6 +21,7 @@
           {
             bin ? pkg.meta.mainProgram,
             net ? false,
+            withRootNix ? false,
             extraHomeMounts ? [ ],
           }:
           let
@@ -36,7 +37,9 @@
               "--proc /proc"
               "--dev /dev"
               "--tmpfs /tmp"
-              "--ro-bind /nix/store /nix/store"
+            ]
+            ++ (if withRootNix then [ "--ro-bind /nix /nix" ] else [ "--ro-bind /nix/store /nix/store" ])
+            ++ [
               "--ro-bind /run/current-system/sw /run/current-system/sw"
               "--ro-bind /etc/profiles/per-user/aaron/bin /etc/profiles/per-user/aaron/bin"
               "--ro-bind /bin /bin"
@@ -70,7 +73,10 @@
           '';
 
         nills = [
-          (bwrap nil { net = true; })
+          (bwrap nil {
+            net = true;
+            withRootNix = true;
+          })
           (bwrap nixfmt-rfc-style { })
         ];
 
