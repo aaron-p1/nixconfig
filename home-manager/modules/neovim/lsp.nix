@@ -182,6 +182,10 @@
 
         local old_lsp_start = vim.lsp.start
         vim.lsp.start = function(config, opts)
+          if config.name == "GitHub Copilot" then
+            return old_lsp_start(config, opts)
+          end
+
           local bufnr = opts and opts.bufnr or 0
           if is_blocked(config.name, bufnr) then
             return
