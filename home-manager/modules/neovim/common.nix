@@ -76,6 +76,7 @@
       nvim-surround
       dial-nvim
       comment-nvim
+      grug-far-nvim
 
       ts-node-action
       compare-remotes-nvim
