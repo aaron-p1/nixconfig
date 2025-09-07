@@ -24,12 +24,12 @@
         };
         match-visual-nvim = buildVimPlugin {
           pname = "match-visual.nvim";
-          version = "2024-04-29";
+          version = "2025-08-30";
           src = fetchFromGitHub {
             owner = "aaron-p1";
             repo = "match-visual.nvim";
-            rev = "98540e79c151126187907278ff5bc61823edcebc";
-            sha256 = "sha256-wYBueqOcIfqJOFjdSAUHe8725i9dKmwqTxaNWW3gmg4=";
+            rev = "c1e14a9a28772f7c2e9332243c1557ab51a3c9d7";
+            sha256 = "sha256-Uyae9UTG/NqBzPJFJFIn/7eMTeCVtYkXKiOAZEscwBc=";
           };
           meta.homepage = "https://github.com/aaron-p1/match-visual.nvim";
         };
