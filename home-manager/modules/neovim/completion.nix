@@ -9,10 +9,6 @@
         plugin = copilot-vim;
         optional = true;
       }
-      {
-        plugin = codecompanion-nvim;
-        optional = true;
-      }
 
       nvim-autopairs
       nvim-ts-autotag
@@ -133,50 +129,6 @@
           vim.keymap.set("i", "<M-o>", "copilot#AcceptWord()", { expr = true, replace_keycodes = false })
           vim.keymap.set("i", "<M-[>", "<Cmd>call copilot#Previous()<CR>", { silent = true })
           vim.keymap.set("i", "<M-]>", "<Cmd>call copilot#Next()<CR>", { silent = true })
-
-          vim.cmd("packadd codecompanion.nvim")
-
-          require("codecompanion").setup({
-            strategies = {
-              chat = {
-                adapter = "copilot",
-              },
-              inline = {
-                adapter = "copilot",
-              },
-            },
-            adapters = {
-              copilot = function()
-                return require("codecompanion.adapters").extend("copilot", {
-                  schema = {
-                    model = {
-                      default = "claude-3.5-sonnet",
-                    },
-                    max_tokens = {
-                      default = 65536,
-                    },
-                  },
-                })
-              end,
-            },
-            display = {
-              chat = {
-                intro_message = "Press ? for options",
-                -- show_settings = true,
-              }
-            }
-          })
-
-          require("plugins.codecompanion.fidget-spinner"):init()
-
-          vim.keymap.set({ "n", "v" }, "<Leader>Ca", "<Cmd>CodeCompanionActions<CR>", { desc = "Actions", silent = true })
-          vim.keymap.set({ "n", "v" }, "<Leader>Cc", "<Cmd>CodeCompanionChat Toggle<CR>", { desc = "Chat", silent = true })
-          vim.keymap.set("v", "<Leader>Cv", "<Cmd>CodeCompanionChat Add<CR>", { desc = "Add text to chat", silent = true })
-
-          -- Expand 'cc' into 'CodeCompanion' in the command line
-          vim.cmd([[cabbrev cc CodeCompanion]])
-
-          Configs.which_key.add({ { "<Leader>C", group = "Code Companion" } })
         end
 
         require("nvim-autopairs").setup({
@@ -192,80 +144,6 @@
         return {
           lsp_capabilities = require("blink.cmp").get_lsp_capabilities(),
         }
-      '';
-    extraFiles.lua.plugins.codecompanion."fidget-spinner.lua" = # lua
-      ''
-        local progress = require("fidget.progress")
-
-        local M = {}
-
-        function M:init()
-          local group = vim.api.nvim_create_augroup("CodeCompanionFidgetHooks", {})
-
-          vim.api.nvim_create_autocmd({ "User" }, {
-            pattern = "CodeCompanionRequestStarted",
-            group = group,
-            callback = function(request)
-              local handle = M:create_progress_handle(request)
-              M:store_progress_handle(request.data.id, handle)
-            end,
-          })
-
-          vim.api.nvim_create_autocmd({ "User" }, {
-            pattern = "CodeCompanionRequestFinished",
-            group = group,
-            callback = function(request)
-              local handle = M:pop_progress_handle(request.data.id)
-              if handle then
-                M:report_exit_status(handle, request)
-                handle:finish()
-              end
-            end,
-          })
-        end
-
-        M.handles = {}
-
-        function M:store_progress_handle(id, handle)
-          M.handles[id] = handle
-        end
-
-        function M:pop_progress_handle(id)
-          local handle = M.handles[id]
-          M.handles[id] = nil
-          return handle
-        end
-
-        function M:create_progress_handle(request)
-          return progress.handle.create({
-            title = " Requesting assistance (" .. request.data.strategy .. ")",
-            message = "In progress...",
-            lsp_client = {
-              name = M:llm_role_title(request.data.adapter),
-            },
-          })
-        end
-
-        function M:llm_role_title(adapter)
-          local parts = {}
-          table.insert(parts, adapter.formatted_name)
-          if adapter.model and adapter.model ~= "" then
-            table.insert(parts, "(" .. adapter.model .. ")")
-          end
-          return table.concat(parts, " ")
-        end
-
-        function M:report_exit_status(handle, request)
-          if request.data.status == "success" then
-            handle.message = "Completed"
-          elseif request.data.status == "error" then
-            handle.message = " Error"
-          else
-            handle.message = "󰜺 Cancelled"
-          end
-        end
-
-        return M
       '';
   };
 }
