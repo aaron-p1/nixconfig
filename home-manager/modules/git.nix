@@ -49,6 +49,7 @@ in
       };
       extraConfig = {
         init.defaultBranch = "main";
+        push.autoSetupRemote = true;
       };
       attributes = toAttributeLines {
         "*.php" = {
