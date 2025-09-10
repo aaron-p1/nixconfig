@@ -168,13 +168,17 @@
               Configs.utils.add_term_keymaps("<Leader>cpi", "iex -S mix")
               Configs.utils.add_term_keymaps("<Leader>cpI", "iex -S mix phx.server")
               Configs.utils.add_term_keymaps("<Leader>cpt", "mix test")
+              Configs.utils.add_term_keymaps("<Leader>cpf", "mix format")
+              Configs.utils.add_term_keymaps("<Leader>cpc", "mix credo")
 
               Configs.which_key.add({
                 { "d", group = "Get deps" },
                 { "s", group = "Start server" },
                 { "i", group = "Iex" },
                 { "I", group = "Iex with server" },
-                { "t", group = "Test" }
+                { "t", group = "Test" },
+                { "f", group = "Format" },
+                { "c", group = "Credo" },
               }, { "<Leader>cp" })
             '';
 
