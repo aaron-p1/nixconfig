@@ -39,7 +39,7 @@ in
       resolvconf.useLocalResolver = true;
     };
 
-    services.dnscrypt-proxy2 = {
+    services.dnscrypt-proxy = {
       enable = true;
       settings = {
         listen_addresses = [ ncfg.bindAddrsV4.dnscrypt ];
@@ -75,7 +75,7 @@ in
 
     systemd = {
       services = {
-        dnscrypt-proxy2.serviceConfig = {
+        dnscrypt-proxy.serviceConfig = {
           # wait for sd_notify ready from service before being considered started
           Type = "notify";
           # needed for sd_notify
@@ -83,12 +83,12 @@ in
         };
 
         dns-gen-block-list = {
-          description = "Generate block list for dnscrypt-proxy2";
+          description = "Generate block list for dnscrypt-proxy";
           startAt = "weekly";
           wants = [ "network-online.target" ];
           after = [
             "network-online.target"
-            "dnscrypt-proxy2.service"
+            "dnscrypt-proxy.service"
           ];
           serviceConfig = {
             RemainAfterExit = true;
@@ -101,7 +101,7 @@ in
               inherit (builtins) readFile;
 
               originalScriptPath =
-                pkgs.dnscrypt-proxy2.src + "/utils/generate-domains-blocklist/generate-domains-blocklist.py";
+                pkgs.dnscrypt-proxy.src + "/utils/generate-domains-blocklist/generate-domains-blocklist.py";
               genBlockList = pkgs.writers.writePython3 "gen-block-list" { doCheck = false; } (
                 readFile originalScriptPath
               );
@@ -150,14 +150,14 @@ in
         dns-auto-unblock = {
           description = "Auto unblock domains on a certain day";
           startAt = "daily";
-          wantedBy = [ "dnscrypt-proxy2.service" ];
+          wantedBy = [ "dnscrypt-proxy.service" ];
           after = [ "dns-gen-block-list.service" ];
           serviceConfig = {
             Type = "oneshot";
             # for restarting when changed
             RemainAfterExit = true;
             StateDirectory = dnsFilteringStateDir;
-            ExecStartPost = "systemctl try-reload-or-restart dnscrypt-proxy2.service";
+            ExecStartPost = "systemctl try-reload-or-restart dnscrypt-proxy.service";
           };
           script = ''
             touch $STATE_DIRECTORY/${finalBlockListFileName}
