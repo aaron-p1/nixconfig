@@ -158,6 +158,43 @@ _: {
           end
         end
 
+        ---get window split to right of `win`
+        ---@param win number? window id, default to current window
+        ---@return number|nil
+        function M.get_right_split(win)
+          win = win or vim.api.nvim_get_current_win()
+
+          local function walk(node)
+            local t, children = node[1], node[2]
+            if t == "leaf" then
+              return nil
+            end
+            if t == "col" then
+              for i = 1, #children do
+                win = walk(children[i])
+                if win then
+                  return win
+                end
+              end
+            end
+            if t == "row" then
+              for i = 1, #children do
+                local child = children[i]
+                local right = children[i + 1]
+                if child[2] == win and right and right[1] == "leaf" then
+                  return right[2]
+                end
+                win = walk(child)
+                if win then
+                  return win
+                end
+              end
+            end
+          end
+
+          return walk(vim.fn.winlayout())
+        end
+
         return M
       '';
   };

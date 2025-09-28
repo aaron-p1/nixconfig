@@ -93,6 +93,19 @@
         vim.keymap.set("n", "<Leader>du", ":diffupdate<CR>", { silent = true })
         vim.keymap.set("n", "<Leader>dt", ":diffthis<CR>", { silent = true })
 
+        vim.keymap.set(
+          { "n", "v" },
+          "<C-w>V",
+          function()
+            local right_win = Configs.utils.get_right_split()
+            if right_win then
+              vim.api.nvim_win_close(right_win, false)
+            end
+            vim.cmd("vertical wincmd F")
+          end,
+          { silent = true, desc = "Open file in vertical split" }
+        )
+
         vim.keymap.set("n", "<Leader>n", "<Cmd>nohlsearch<CR>", { silent = true })
 
         vim.keymap.set("n", "<Leader>S", function()
