@@ -77,6 +77,7 @@
       dial-nvim
       comment-nvim
       grug-far-nvim
+      leap-nvim
 
       ts-node-action
       compare-remotes-nvim
@@ -148,6 +149,11 @@
         vim.keymap.set("v", "g<C-x>", dm.dec_gvisual(), { desc = "Decrement more per line" })
 
         require("Comment").setup()
+
+        local leap = require("leap")
+        leap.opts.safe_labels = {}
+        leap.opts.labels = "tirenadushg,col.fpüwämqvyjxTIRENADUSH"
+        vim.keymap.set({"n", "x", "o"}, "<C-S-l>", "<Plug>(leap-anywhere)")
 
         vim.keymap.set("n", "<C-S-a>", require("ts-node-action").node_action, { desc = "Node action" })
 
