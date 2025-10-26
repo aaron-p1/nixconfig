@@ -37,17 +37,17 @@ in
     programs.git = {
       enable = true;
       lfs.enable = true;
-      aliases = {
-        co = "checkout";
-        f = "fetch";
-      };
-      userName = "Aaron Pietscher";
       signing = mkIf (cfg.signingKey != null) {
         signer = "${config.programs.gpg.package}/bin/gpg2";
         signByDefault = true;
         key = cfg.signingKey;
       };
-      extraConfig = {
+      settings = {
+        aliases = {
+          co = "checkout";
+          f = "fetch";
+        };
+        user.name = "Aaron Pietscher";
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
       };
