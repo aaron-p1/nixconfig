@@ -19,7 +19,7 @@ in
       enable = true;
       package = pkgs.gnupg.override {
         guiSupport = true;
-        pinentry = pkgs.pinentry.qt;
+        pinentry = pkgs.pinentry-qt;
       };
       homedir = "${config.xdg.dataHome}/gnupg";
     };

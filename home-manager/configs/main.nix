@@ -81,7 +81,7 @@
       hunspellDicts.en_US
       hunspellDicts.de_DE
 
-      tdesktop
+      telegram-desktop
       thunderbird
       qalculate-gtk
       gImageReader
