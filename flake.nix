@@ -32,14 +32,14 @@
     let
       inherit (unstable) lib; # unstable for home manager
       overlays = [
-        (final: prev: { stable = import stable { inherit (final) system; }; })
+        (final: prev: { stable = import stable { inherit (final.stdenv.hostPlatform) system; }; })
         nur.overlays.default
         (import ./localpkgs { inherit inputs; })
         (import ./dotfiles { })
         (final: prev: {
           inherit
             (import nixpkgs2305 {
-              inherit (final) system;
+              inherit (final.stdenv.hostPlatform) system;
               config.permittedInsecurePackages = [
                 "nodejs-16.20.2"
                 "nodejs-16.20.2-source"
