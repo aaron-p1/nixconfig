@@ -9,11 +9,11 @@ rebuildCmd := nixos-rebuild
 rebuildCmds := boot test build switch
 
 nixpkgsRepoFilesBefore := https://raw.githubusercontent.com/NixOS/nixpkgs/
-nixpkgsRLNotesFile := /nixos/doc/manual/release-notes/rl-2511.section.md
+nixpkgsRLNotesFile := /nixos/doc/manual/release-notes/rl-2605.section.md
 nixpkgsBranch := nixos-unstable
 
 homeManagerRepoFilesBefore := https://raw.githubusercontent.com/nix-community/home-manager/
-homeManagerRLNotesFile := /docs/release-notes/rl-2511.md
+homeManagerRLNotesFile := /docs/release-notes/rl-2605.md
 homeManagerBranch := master
 
 default: existing
