@@ -53,12 +53,10 @@
           local default_count = 0
 
           for _, db_string in ipairs(vim.split(db_strings, ",", { trimempty = true })) do
+            local name, db = string.match(db_string, "^([^=]+)=?(.*)$")
             local parts = vim.split(db_string, "=", { trimempty = true })
 
-            ---@type string?
-            local name, db = unpack(parts)
-
-            if name and not db then
+            if db == "" then
               name = nil
               db = parts[1]
             end
