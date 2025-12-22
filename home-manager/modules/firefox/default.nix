@@ -9,7 +9,6 @@ let
     head
     match
     readFile
-    toJSON
     ;
   inherit (lib) replaceStrings mkEnableOption mkIf;
 
@@ -185,44 +184,45 @@ let
               // inject javascript into websites
               {
                 const injection = '${
-                  # javascript
-                  toJsString ''
-                    (function() {
-                      const injections = {
-                        /**
-                         * Remove keybindings outside of editor on app.asana.com
-                         * @param {Window} window
-                         */
-                        removeAsanaBindings(window) {
-                          if (window.location.hostname !== "app.asana.com") {
-                            return;
-                          }
-
-                          window.document.addEventListener("keydown", e => {
-                            if (e.target && !e.target.className.toLowerCase().includes("editor")) {
-                              e.stopImmediatePropagation();
+                  toJsString
+                    # javascript
+                    ''
+                      (function() {
+                        const injections = {
+                          /**
+                           * Remove keybindings outside of editor on app.asana.com
+                           * @param {Window} window
+                           */
+                          removeAsanaBindings(window) {
+                            if (window.location.hostname !== "app.asana.com") {
+                              return;
                             }
-                          }, true);
-                        },
 
-                        /**
-                         * Add media controls to app.idagio.com
-                         * @param {Window} window
-                         */
-                        addIdagioMediaControls(window) {
-                          if (window.location.hostname !== "app.idagio.com") {
-                            return;
-                          }
+                            window.document.addEventListener("keydown", e => {
+                              if (e.target && !e.target.className.toLowerCase().includes("editor")) {
+                                e.stopImmediatePropagation();
+                              }
+                            }, true);
+                          },
 
-                          window.document.addEventListener("DOMContentLoaded", () => {
-                            /* I need the normal js context, so inject script element */
-                            let scriptElem = window.document.createElement("script");
-                            scriptElem.type = "text/javascript";
+                          /**
+                           * Add media controls to app.idagio.com
+                           * @param {Window} window
+                           */
+                          addIdagioMediaControls(window) {
+                            if (window.location.hostname !== "app.idagio.com") {
+                              return;
+                            }
 
-                            scriptElem.text = "${
-                              replaceStrings [ ''"'' ] [ ''\\\\"'' ] (
+                            window.document.addEventListener("DOMContentLoaded", () => {
+                              /* I need the normal js context, so inject script element */
+                              let scriptElem = window.document.createElement("script");
+                              scriptElem.type = "text/javascript";
+
+                              scriptElem.text = "${
+                                replaceStrings [ ''"'' ] [ ''\\\\"'' ] (toJsString
                                 # javascript
-                                toJsString ''
+                                ''
                                   const buttonIndices = {
                                     prev: 1,
                                     play: 2,
@@ -286,38 +286,37 @@ let
                                   window.navigator.mediaSession.setActionHandler("nexttrack", () => {
                                     getButton("next")?.click();
                                   });
-                                ''
-                              )
-                            }";
+                                '')
+                              }";
 
-                            window.document.head.appendChild(scriptElem);
-                          });
-                        },
-                      };
+                              window.document.head.appendChild(scriptElem);
+                            });
+                          },
+                        };
 
-                      var observer = {
-                        observe(subject, topic, data) {
-                          if (topic === "content-document-global-created") {
-                            let window = subject;
+                        var observer = {
+                          observe(subject, topic, data) {
+                            if (topic === "content-document-global-created") {
+                              let window = subject;
 
-                            try {
-                              for (const [name, injection] of Object.entries(injections)) {
-                                injection(window);
+                              try {
+                                for (const [name, injection] of Object.entries(injections)) {
+                                  injection(window);
+                                }
+                              } catch (e) {
+                                window.console.error(e);
                               }
-                            } catch (e) {
-                              window.console.error(e);
                             }
                           }
-                        }
-                      };
+                        };
 
-                      Services.obs.addObserver(observer, "content-document-global-created");
+                        Services.obs.addObserver(observer, "content-document-global-created");
 
-                      addEventListener("unload", () => {
-                        Services.obs.removeObserver(observer, "content-document-global-created");
-                      });
-                    })()
-                  ''
+                        addEventListener("unload", () => {
+                          Services.obs.removeObserver(observer, "content-document-global-created");
+                        });
+                      })()
+                    ''
                 }';
 
                 // Load the frame script into all existing and future content processes
@@ -344,71 +343,32 @@ in
       profiles.main = {
         id = 0;
         isDefault = true;
-        settings =
-          let
-            mlSelectionPromptPrefix = ''
-              I'm on a website with the title “%tabTitle%” and I have the following content selected: <<EOSEL
-              %selection|12000%
-              EOSEL
-            '';
-          in
-          {
-            "browser.aboutConfig.showWarning" = false;
-            "browser.download.always_ask_before_handling_new_types" = true;
-            "browser.download.improvements_to_download_panel" = false;
-            "browser.download.start_downloads_in_tmp_dir" = true;
-
-            "browser.ml.chat.enabled" = true;
-            "browser.ml.chat.prompt.prefix" = mlSelectionPromptPrefix;
-            "browser.ml.chat.prompts.0" = toJSON {
-              priority = 100;
-              label = "Summarize";
-              value = ''
-                Please summarize the selection using precise and concise language.
-                Use headers and bulleted lists in the summary, to make it scannable.
-                Maintain the meaning and factual accuracy.
-              '';
-            };
-            "browser.ml.chat.prompts.1" = toJSON {
-              priority = 90;
-              label = "Explain";
-              value = ''
-                Please explain the key concepts in this selection, using simple words.
-                Also, use examples.
-              '';
-            };
-            "browser.ml.chat.prompts.2" = toJSON {
-              priority = 80;
-              label = "Simplify language";
-              value = ''
-                Please simplify the selection using easy-to-understand language.
-                Use short sentences and common words.
-                Maintain the meaning and factual accuracy.
-              '';
-            };
-            "browser.ml.chat.prompts.3" = toJSON { targeting = "false"; };
-            "browser.ml.chat.provider" = "https://chatgpt.com/?temporary-chat=true";
-            "browser.ml.chat.shortcuts" = false;
-            "browser.ml.chat.shortcuts.custom" = true;
-
-            "browser.newtabpage.enabled" = false;
-            "browser.search.isUS" = false;
-            "browser.search.region" = "DE";
-            "browser.startup.homepage" = "about:blank";
-            "browser.uidensity" = 1;
-            "browser.urlbar.trimURLs" = false;
-            "devtools.theme" = "dark";
-            "devtools.toolbox.host" = "window";
-            "extensions.autoDisableScopes" = 15;
-            "extensions.pocket.enabled" = false;
-            "extensions.update.autoUpdateDefault" = false;
-            "general.useragent.locale" = "de-DE";
-            "intl.regional_prefs.use_os_locales" = true;
-            "media.ffmpeg.vaapi.enabled" = true;
-            "middlemouse.paste" = false;
-            "permissions.default.shortcuts" = 2;
-            "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-          };
+        settings = {
+          "browser.aboutConfig.showWarning" = false;
+          "browser.download.always_ask_before_handling_new_types" = true;
+          "browser.download.improvements_to_download_panel" = false;
+          "browser.download.start_downloads_in_tmp_dir" = true;
+          "browser.ml.chat.enabled" = false;
+          "browser.ml.enable" = false;
+          "browser.ml.menu" = false;
+          "browser.newtabpage.enabled" = false;
+          "browser.search.isUS" = false;
+          "browser.search.region" = "DE";
+          "browser.startup.homepage" = "about:blank";
+          "browser.uidensity" = 1;
+          "browser.urlbar.trimURLs" = false;
+          "devtools.theme" = "dark";
+          "devtools.toolbox.host" = "window";
+          "extensions.autoDisableScopes" = 15;
+          "extensions.pocket.enabled" = false;
+          "extensions.update.autoUpdateDefault" = false;
+          "general.useragent.locale" = "de-DE";
+          "intl.regional_prefs.use_os_locales" = true;
+          "media.ffmpeg.vaapi.enabled" = true;
+          "middlemouse.paste" = false;
+          "permissions.default.shortcuts" = 2;
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        };
         extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           bitwarden
           consent-o-matic
@@ -499,6 +459,7 @@ in
             google.metaData.alias = "@g";
             bing.metaData.hidden = true;
             ecosia.metaData.hidden = true;
+            perplexity.metaData.hidden = true;
           };
 
         userChrome = # CSS
