@@ -12,6 +12,9 @@ in
   config = mkIf cfg.enable {
     programs.zathura = {
       enable = true;
+      options = {
+        selection-clipboard = "clipboard";
+      };
     };
   };
 }
