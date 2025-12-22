@@ -30,6 +30,16 @@
     };
   };
 
+  boot.kernel.sysfs = {
+    block.sda.queue.iosched = {
+      fifo_batch = 4;
+      read_expire = 50;
+      writes_starved = 64;
+      write_expire = 60000;
+      front_merges = 0;
+    };
+  };
+
   within = {
     boot = {
       grub = true;
