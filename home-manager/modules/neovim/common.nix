@@ -14,8 +14,8 @@
           src = fetchFromGitHub {
             owner = "aaron-p1";
             repo = "handle_errors.nvim";
-            rev = "6acac18ef99ee2e4bfde908c11c84a5fa2b35af8";
-            sha256 = "sha256-cqAJkIljJWgq5bZIWGsjEKG6MK/paNhACndDk036h0U=";
+            rev = "2a327287377a062ddc35b1fa0335e3f8c012592c";
+            sha256 = "sha256-U2D+79NME0/LNRupTYQxiNPFgW6tzrGv8qjgkTO6Qto=";
           };
           buildInputs = [ prev.luajit ];
           buildPhase = "make";

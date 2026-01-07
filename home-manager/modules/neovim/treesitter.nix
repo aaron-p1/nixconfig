@@ -17,8 +17,6 @@
     };
     config = # lua
       ''
-        local t_start = vim.treesitter.start
-
         local big_file_size = 1024 * 1024
         local is_big_file_buffer = {}
 
@@ -38,78 +36,104 @@
           return big_file
         end
 
-        local function new_t_start(bufnr, lang)
-          bufnr = bufnr or vim.api.nvim_get_current_buf()
-          if vim.api.nvim_buf_is_loaded(bufnr) and not is_big_file(bufnr) then
-            t_start(bufnr, lang)
+        vim.api.nvim_create_autocmd('FileType', {
+          pattern = '*',
+          callback = function(ev)
+            if is_big_file(ev.buf) then
+              return
+            end
+
+            local ok = pcall(vim.treesitter.start, ev.buf)
+
+            if ok then
+              vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            end
           end
-        end
+        })
 
-        vim.treesitter.start_force = t_start
-        vim.treesitter.start = new_t_start
-
-        require("nvim-treesitter.configs").setup({
-          highlight = {
-            enable = true,
-          },
-          indent = {
-            enable = true,
-          },
-          textobjects = {
-            select = {
-              enable = true,
-              lookahead = false,
-              include_surrounding_whitespace = true,
-              keymaps = {
-                -- custom
-                aF = "@fnwithdoc.outer",
-                ae = "@element.outer",
-                ie = "@element.inner",
-                ["i="] = "@assignexpression.inner",
-                ["a="] = "@assignexpression.outer",
-                ix = "@expression.inner",
-                ax = "@expression.outer",
-                -- builtin
-                af = "@function.outer",
-                ["if"] = "@function.inner",
-                aa = "@parameter.outer",
-                ia = "@parameter.inner",
-                al = "@loop.outer",
-                il = "@loop.inner",
-                ao = "@conditional.outer",
-                io = "@conditional.inner",
-                ac = "@comment.outer",
-              },
-            },
-
-            move = {
-              enable = true,
-              set_jumps = true,
-              goto_next_start = {
-                ["]m"] = "@function.outer",
-              },
-              goto_next_end = {
-                ["]M"] = "@function.outer",
-              },
-              goto_previous_start = {
-                ["[m"] = "@function.outer",
-              },
-              goto_previous_end = {
-                ["[M"] = "@function.outer",
-              },
+        require("nvim-treesitter-textobjects").setup({
+          select = {
+            lookahead = false,
+            include_surrounding_whitespace = true,
+            selection_modes = {
+              ["@parameter.outer"] = "v",
+              ["@function.inner"] = "v",
+              ["@function.outer"] = "v",
             }
           },
 
-          matchup = {
-            enable = true,
-            include_match_words = true
+          move = {
+            set_jumps = true,
           },
         })
+
+        local textobject_mappings = {
+          -- custom
+          aF = "@fnwithdoc.outer",
+          ae = "@element.outer",
+          ie = "@element.inner",
+          ["i="] = "@assignexpression.inner",
+          ["a="] = "@assignexpression.outer",
+          ix = "@expression.inner",
+          ax = "@expression.outer",
+          -- builtin
+          af = "@function.outer",
+          ["if"] = "@function.inner",
+          aa = "@parameter.outer",
+          ia = "@parameter.inner",
+          al = "@loop.outer",
+          il = "@loop.inner",
+          ao = "@conditional.outer",
+          io = "@conditional.inner",
+          ac = "@comment.outer",
+        }
+
+        local to_select = require("nvim-treesitter-textobjects.select")
+        for key, query in pairs(textobject_mappings) do
+          vim.keymap.set(
+            {"o", "x"},
+            key,
+            function() to_select.select_textobject(query, "textobjects") end,
+            { noremap = true, silent = true }
+          )
+        end
+
+        local to_move = require("nvim-treesitter-textobjects.move")
+        local next_start = to_move.goto_next_start
+        local next_end = to_move.goto_next_end
+        local prev_start = to_move.goto_previous_start
+        local prev_end = to_move.goto_previous_end
+
+        local textobject_move_mappings = {
+          ["]m"] = {next_start, "@function.outer"},
+          ["]M"] = {next_end, "@function.outer"},
+          ["[m"] = {prev_start, "@function.outer"},
+          ["[M"] = {prev_end, "@function.outer"},
+        }
+
+        for key, mapping in pairs(textobject_move_mappings) do
+          local func = mapping[1]
+          local query = mapping[2]
+          vim.keymap.set(
+            {"n", "o", "x"},
+            key,
+            function() func(query, "textobjects") end,
+            { noremap = true, silent = true }
+          )
+        end
 
         require("match-up").setup({
           sync = true,
           matchparen = { offscreen = {} },
           transmute = { enabled = 1 },
+          treesitter = {
+            enabled = true,
+            disabled = {},
+            include_match_words = true,
+            disable_virtual_text = false,
+            enable_quotes = true,
+            stopline = 500,
+          }
         })
       '';
   };
