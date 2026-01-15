@@ -60,6 +60,10 @@
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIL3Gk0WVEKfUpcjzmqcjN7qFfLfct9WcxmX92PiQiN9wAAAABHNzaDo= laptop key1"
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIB55Q4HD6/QkaIBqFo64DG+2cJKke5aVUdNedDb+xoj4AAAABHNzaDo= laptop key2"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAQdpPyCPWclyYxXV2lJLop/gxGiviiKhT68o9UGHePf laptop passwd"
+
+        # import keys on new host: gpg --card-status
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDuv8kzAqsJFdoJLM6QAlhwfhB0YLHvii4kBq4LOl/zV yubikey 1"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMSQdmVMLKCz/qjZnaGBpCscQLPwkOQ7x0GGehcWNzwh thinkpad passwd"
       ];
     };
 

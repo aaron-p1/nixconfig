@@ -129,6 +129,45 @@
             }
           ];
         };
+
+        aaron-thinkpad = lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            { nixpkgs.overlays = overlays; }
+
+            nixos-hardware.nixosModules.lenovo-thinkpad
+            nixos-hardware.nixosModules.lenovo-thinkpad-p1
+            # nixos-hardware.nixosModules.common-gpu-nvidia might need this
+
+            ./nixos/configs/main.nix
+            ./hosts/aaron-thinkpad/configuration.nix
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = false;
+                useUserPackages = true;
+                users.aaron = {
+                  imports = [
+                    ./home-manager/configs/main.nix
+                    ./hosts/aaron-thinkpad/home.nix
+                    (
+                      { osConfig, lib, ... }:
+                      {
+                        nixpkgs = {
+                          config = lib.mapAttrs (n: v: lib.mkDefault v) osConfig.nixpkgs.config;
+                          # mkOrder 900 is after mkBefore but before default order
+                          overlays = lib.mkOrder 900 osConfig.nixpkgs.overlays;
+                        };
+                      }
+                    )
+                  ];
+                };
+              };
+            }
+          ];
+        };
       };
     }
     // flake-utils.lib.eachDefaultSystem (
