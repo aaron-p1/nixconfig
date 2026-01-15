@@ -425,6 +425,7 @@
           },
           should_attach = function(bufnr)
             return not vim.tbl_contains(disabled_filetypes, vim.bo[bufnr].filetype)
+              and not vim.api.nvim_buf_get_name(bufnr):match("^[a-zA-Z]+://")
           end,
         })
 
