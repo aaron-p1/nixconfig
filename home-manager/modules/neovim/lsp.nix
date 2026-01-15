@@ -104,7 +104,7 @@
         ];
 
         lsp = [
-          (bwrap sumneko-lua-language-server { })
+          (bwrap lua-language-server { })
           (bwrap nodePackages.intelephense {
             net = true;
             extraHomeMounts = [ "intelephense" ];
