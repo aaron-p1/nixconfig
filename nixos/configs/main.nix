@@ -227,6 +227,9 @@
   services = {
     journald.extraConfig = "SystemMaxUse=1G";
     smartd.enable = true;
+    # for yubikey-manager (ykman)
+    # needs to be disabled because it interferes with git signing
+    # pcscd.enable = true;
     printing = {
       enable = true;
       drivers = [ pkgs.hplip ];
