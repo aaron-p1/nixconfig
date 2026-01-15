@@ -65,6 +65,13 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDuv8kzAqsJFdoJLM6QAlhwfhB0YLHvii4kBq4LOl/zV yubikey 1"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMSQdmVMLKCz/qjZnaGBpCscQLPwkOQ7x0GGehcWNzwh thinkpad passwd"
       ];
+
+      u2fKeys = [
+        # 1
+        "xzEKu3DqZ5nV4BCLBLJFWuvbyhdEqeZggTz7nn3GJepg4Eo2B3KVnGf/Ka9mqsGENOGsnCxqg/YJxzjQUWzUEw==,c9xqtRaw4EGdRg+SE1n4jeQ2vBz7yPu3ABbOb1UZh7f+Gm3x6zpjXqIuBOAW5fKUTxMIxKP39GOo3oeJaZTfAw==,es256,+presence"
+        # 2
+        "563Zjwdc5JL90ka2DxMYMo9Ob5EwfocNF3iD2fwIDxJUOXqCz19G9XkZNewxmSFoM2S1z3MbPDaBIpXXUcH8Rw==,YDCPaZRAmsp4oo7ODK5ulOsou7GNqrPCQ4RGlAxEt5v0aquu0M7M57iJBAnhUBMnza7YlNVZEhnfyeQs1oonIg==,es256,+presence"
+      ];
     };
 
     # ../modules/less.nix

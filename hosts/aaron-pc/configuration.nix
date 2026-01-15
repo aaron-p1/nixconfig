@@ -53,15 +53,6 @@
     # ../../nixos/modules/swap.nix
     swap.file = 32;
 
-    users.aaron = {
-      u2fKeys = [
-        # 1
-        "hMb1Haep8BdpUGM/wGAnHuhKbZE+jQ9T6LjQZiChafEHAERJCDgDZhfCpA9/zw7fJSai0HRtvqFxcNZpHkroiA==,rzWcdmxnQy2bPhxifpLLK2K4cL+F3crEc2BuvlCPM51Dsq5N9VawvFxo9HPv1bHRqvYtq+/HlNM47ZtwlijArw==,es256,+presence"
-        # 2
-        "nuf7Ig6OU1qW3Q7srl4JfD5j3yED6ai0TeMV7N9L3maVMVcx8gbmw/nJgefpTiDWOp27I9IkvMB7S8cWL2zr3Q==,wAoubro0eh+hziuSt2Me8IwyWgpCgZq4dv95So+gRDGSIhDJB5VGYT5XljNUJRRD7jXxVMNMh65kAXeIuO7Mqw==,es256,+presence"
-      ];
-    };
-
     syncthing.folders = {
       thl.devices = [ "aaron-laptop" ];
       work.devices = [ "aaron-laptop" ];

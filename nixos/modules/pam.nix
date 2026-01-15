@@ -36,6 +36,9 @@ in
       settings = {
         cue = true;
         authfile = "/etc/u2f-mappings";
+        # pamu2fcfg -o "pam://private" -i "pam://auth" -u [user]
+        origin = "pam://private";
+        appid = "pam://auth";
       };
     };
 
