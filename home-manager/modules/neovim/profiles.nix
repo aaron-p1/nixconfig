@@ -80,7 +80,7 @@
                 local container_options = profile_conf.php_container_options or ""
                 local container = profile_conf.php_container or ""
 
-                return "podman-compose exec " .. container_options .. " " .. container .. " " .. (cmd or "")
+                return "podman compose exec " .. container_options .. " " .. container .. " " .. (cmd or "")
               end
 
               local function get_host_cmd(cmd, cmd_prefix)

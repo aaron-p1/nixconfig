@@ -46,6 +46,7 @@ in
             engine = {
               network_cmd_options = cfg.networkOptions;
               compose_providers = [ "${pkgs.docker-compose}/bin/docker-compose" ];
+              compose_warning_logs = false;
             };
           };
         };
