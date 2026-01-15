@@ -77,7 +77,7 @@
             net = true;
             withRootNix = true;
           })
-          (bwrap nixfmt-rfc-style { })
+          (bwrap nixfmt { })
         ];
 
         bashls = [
