@@ -69,7 +69,7 @@ in
           share = false;
           ignoreSpace = true;
           path = "${config.xdg.dataHome}/zsh/zsh_history";
-          save = 100000;
+          save = 10000000;
         };
         oh-my-zsh = {
           enable = true;
