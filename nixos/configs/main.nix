@@ -261,5 +261,11 @@
     };
   };
 
+  # for nvim telescope man_pages
+  documentation.man = {
+    generateCaches = true;
+    man-db.enable = true;
+  };
+
   security.pki.certificateFiles = [ ./files/home-server.crt ];
 }
