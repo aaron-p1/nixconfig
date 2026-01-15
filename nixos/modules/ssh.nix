@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
@@ -10,22 +15,30 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.openssh = {
-      enable = true;
-      ports = [ 25566 ];
-      openFirewall = true;
-      settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = false;
-        Macs = [
-          # Default
-          "hmac-sha2-512-etm@openssh.com"
-          "hmac-sha2-256-etm@openssh.com"
-          "umac-128-etm@openssh.com"
-          # iOS Shortcuts
-          "hmac-sha2-512"
-        ];
+    services = {
+      openssh = {
+        enable = true;
+        ports = [ 25566 ];
+        openFirewall = true;
+        settings = {
+          PermitRootLogin = "no";
+          PasswordAuthentication = false;
+          Macs = [
+            # Default
+            "hmac-sha2-512-etm@openssh.com"
+            "hmac-sha2-256-etm@openssh.com"
+            "umac-128-etm@openssh.com"
+            # iOS Shortcuts
+            "hmac-sha2-512"
+          ];
+        };
       };
+      udev.packages = [ pkgs.yubikey-personalization ];
+    };
+
+    programs.gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
     };
   };
 }
