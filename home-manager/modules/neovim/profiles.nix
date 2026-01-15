@@ -71,6 +71,18 @@
               }, { "<Leader>c" })
             '';
 
+          podman_compose.startup = # lua
+            ''
+              Configs.utils.add_term_keymaps("<Leader>cpa", "podman compose start")
+              Configs.utils.add_term_keymaps("<Leader>cpo", "podman compose stop")
+
+              Configs.which_key.add({
+                { "p",  group = "Profile" },
+                { "pa", group = "Podman compose up" },
+                { "po", group = "Podman compose down" },
+              }, { "<Leader>c" })
+            '';
+
           laravel.startup = # lua
             ''
               local has_sail = has_profile("sail")
