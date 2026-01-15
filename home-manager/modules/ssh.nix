@@ -63,6 +63,11 @@ in
           user = "aaron";
           port = 25566;
         };
+        thinkpad = {
+          hostname = "aaron-thinkpad";
+          user = "aaron";
+          port = 25566;
+        };
       } additionalHosts;
     };
   };
