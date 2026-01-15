@@ -67,10 +67,11 @@
 
         -- vim
         vim.keymap.set("n", "<Leader>fb", tb.buffers, { desc = "Buffers" })
-        vim.keymap.set("n", "<Leader>fm", tb.marks, { desc = "Marks" })
+        vim.keymap.set("n", "<Leader>fM", tb.marks, { desc = "Marks" })
         vim.keymap.set("n", "<Leader>fcr", tb.current_buffer_fuzzy_find, { desc = "Fuzzy find" })
         vim.keymap.set("n", "<Leader>fy", tb.filetypes, { desc = "Set filetype" })
         vim.keymap.set("n", "<Leader>fh", tb.help_tags, { desc = "Help tags" })
+        vim.keymap.set("n", "<Leader>fm", tb.man_pages, { desc = "Man pages" })
 
         -- lsp
         vim.keymap.set("n", "gO", tb.lsp_document_symbols, { desc = "Document symbols" })
