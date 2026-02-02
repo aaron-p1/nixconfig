@@ -80,10 +80,14 @@ _: {
         end
 
         ---open new terminal buffer with split command
-        ---@param cmd string command to run in terminal
+        ---@param cmd string|fun(): string command to run in terminal
         ---@param opts table options for split command
         ---@param no_normal boolean? start insert mode and close on exit
         function M.new_term(cmd, opts, no_normal)
+          if type(cmd) == "function" then
+            cmd = cmd()
+          end
+
           local name = "term://" .. cmd
           local split_opts = vim.tbl_deep_extend("keep", { name }, opts)
 
@@ -102,21 +106,21 @@ _: {
         end
 
         ---open terminal buffer with horizontal split
-        ---@param cmd string
+        ---@param cmd string|fun(): string
         ---@param no_normal boolean?
         function M.open_term_hor(cmd, no_normal)
           M.new_term(cmd, {}, no_normal)
         end
 
         ---open terminal buffer with vertical split
-        ---@param cmd string
+        ---@param cmd string|fun(): string
         ---@param no_normal boolean?
         function M.open_term_ver(cmd, no_normal)
           M.new_term(cmd, { mods = { vertical = true } }, no_normal)
         end
 
         ---open terminal buffer with tab split
-        ---@param cmd string
+        ---@param cmd string|fun(): string
         ---@param no_normal boolean?
         function M.open_term_tab(cmd, no_normal)
           local tabnr = vim.api.nvim_tabpage_get_number(0)
@@ -125,7 +129,7 @@ _: {
 
         ---add 3 keymaps for opening terminal with different split kinds
         ---@param key string keymap prefix
-        ---@param cmd string command to run in terminal
+        ---@param cmd string|fun(): string command to run in terminal
         ---@param opts table keymap options
         ---@param no_normal boolean? start insert mode and close on exit
         function M.add_term_keymaps(key, cmd, opts, no_normal)

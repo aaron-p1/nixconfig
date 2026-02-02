@@ -104,10 +104,18 @@
                     or cmd_prefix .. cmd
               end
 
+              Configs.utils.add_term_keymaps("<Leader>cpt", get_host_cmd("test", "php artisan"))
+              Configs.utils.add_term_keymaps("<Leader>cpT", function()
+                local cur_file = vim.api.nvim_buf_get_name(0)
+                local rel_path = vim.fs.relpath(vim.fn.getcwd(), cur_file)
+                local test_cmd = rel_path and "test \"" .. rel_path .. "\"" or "test"
+                return get_host_cmd(test_cmd, "php artisan")
+              end)
+
               Configs.utils.add_term_keymaps("<Leader>cpl", "tail -f storage/logs/laravel.log")
               Configs.utils.add_term_keymaps("<Leader>cpL", "less storage/logs/laravel.log", {}, true)
 
-              Configs.utils.add_term_keymaps("<Leader>cpt", get_host_cmd("tinker", "php artisan"))
+              Configs.utils.add_term_keymaps("<Leader>cpi", get_host_cmd("tinker", "php artisan"))
               Configs.utils.add_term_keymaps("<Leader>cpq", get_host_cmd("artisan queue:listen", "php"))
 
               Configs.utils.add_term_keymaps("<Leader>cpmm", get_host_cmd("artisan migrate", "php"))
@@ -115,7 +123,9 @@
 
               Configs.which_key.add({
                 { "p",  group = "Profile" },
-                { "pt", name = "Tinker" },
+                { "pt", name = "Test" },
+                { "pT", name = "Test cur file" },
+                { "pi", name = "Tinker" },
                 { "pq", name = "Queue listen" },
                 { "pl", name = "Tail laravel log" },
                 { "pL", name = "Less laravel log" },
@@ -133,13 +143,13 @@
               end
 
               if has_profile("tenancy_for_laravel") then
-                Configs.utils.add_term_keymaps("<Leader>cpT", get_host_cmd("artisan tenants:run tinker", "php"))
+                Configs.utils.add_term_keymaps("<Leader>cpI", get_host_cmd("artisan tenants:run tinker", "php"))
 
                 Configs.utils.add_term_keymaps("<Leader>cpmt", get_host_cmd("artisan tenants:migrate", "php"))
                 Configs.utils.add_term_keymaps("<Leader>cpmT", get_host_cmd("artisan tenants:rollback", "php"))
 
                 Configs.which_key.add({
-                  { "T", group = "Tenant tinker" },
+                  { "I", group = "Tenant tinker" },
                   { "mt", name = "Tenant migrate" },
                   { "mT", name = "Tenant rollback" },
                 }, { "<Leader>cp" })
