@@ -18,7 +18,6 @@
     hostName = "aaron-pc";
     interfaces = {
       enp4s0.useDHCP = true;
-      wlp7s0.useDHCP = true;
     };
   };
 
