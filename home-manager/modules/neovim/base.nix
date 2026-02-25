@@ -83,6 +83,9 @@
         vim.keymap.set("n", "<PageUp>", "<nop>")
         vim.keymap.set("n", "<PageDown>", "<nop>")
 
+        vim.keymap.set("n", "<C-.>", "gT", { desc = "Previous tab" })
+        vim.keymap.set("n", "<C-,>", "gt", { desc = "Next tab" })
+
         vim.keymap.set("n", "<C-s>", "<Cmd>:w<CR>", { silent = true, desc = "Save" })
         vim.keymap.set("n", "<C-S-s>", "<Cmd>:wq<CR>", { silent = true, desc = "Save and quit" })
         vim.keymap.set("n", "<C-q>", "<Cmd>:q<CR>", { silent = true, desc = "Quit" })
