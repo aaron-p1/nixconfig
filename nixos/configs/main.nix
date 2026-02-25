@@ -80,6 +80,9 @@
     # ../modules/ssh.nix
     ssh.enable = true;
 
+    # ../modules/man.nix
+    man.enable = true;
+
     # ../modules/graphics/default.nix
     graphics = {
       xserver.enable = true;
@@ -259,12 +262,6 @@
           sleep 10
         '';
     };
-  };
-
-  # for nvim telescope man_pages
-  documentation.man = {
-    generateCaches = true;
-    man-db.enable = true;
   };
 
   security.pki.certificateFiles = [ ./files/home-server.crt ];
