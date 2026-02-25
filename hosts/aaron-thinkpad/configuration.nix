@@ -31,7 +31,6 @@
     boot = {
       grub = true;
       efiMountPoint = "/boot";
-      kernelPackages = pkgs.linuxPackages_latest;
     };
 
     swap.file = 32;
