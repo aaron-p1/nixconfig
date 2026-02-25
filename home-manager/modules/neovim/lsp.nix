@@ -111,7 +111,10 @@
           })
           (bwrap nodePackages.vscode-langservers-extracted { bin = "vscode-html-language-server"; })
           (bwrap nodePackages.vscode-langservers-extracted { bin = "vscode-css-language-server"; })
-          (bwrap nodePackages.vscode-langservers-extracted { bin = "vscode-json-language-server"; })
+          (bwrap nodePackages.vscode-langservers-extracted {
+            bin = "vscode-json-language-server";
+            net = true;
+          })
           (bwrap nodePackages.yaml-language-server { })
           (bwrap nodePackages."@tailwindcss/language-server" { })
           (bwrap nodePackages.typescript-language-server { })
