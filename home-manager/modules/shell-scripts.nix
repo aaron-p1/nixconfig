@@ -39,7 +39,6 @@ let
         --ro-bind /etc/profiles/per-user/aaron /etc/profiles/per-user/aaron \
         --ro-bind /bin /bin \
         --ro-bind /usr /usr \
-        --ro-bind /lib /lib \
         --ro-bind /lib64 /lib64 \
         --ro-bind /etc /etc \
         --dir "/home/$USER" \

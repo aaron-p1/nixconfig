@@ -124,21 +124,6 @@ let
                 win.document.addEventListener("keydown", toggleSidebarResizable, true);
               }
 
-              // alt+c to toggle sidebar "viewGenaiChatSidebar"
-              {
-                function toggleChatSidebar(event) {
-                  if (!event.altKey || event.key !== 'c') {
-                    return;
-                  }
-
-                  event.preventDefault();
-
-                  toggleSidebar("viewGenaiChatSidebar");
-                }
-
-                win.document.addEventListener("keydown", toggleChatSidebar, true);
-              }
-
               // injection commented out, but still runs
               // ${readFile ./toggle-site-shortcuts.js}
 
@@ -348,6 +333,14 @@ in
           "browser.download.always_ask_before_handling_new_types" = true;
           "browser.download.improvements_to_download_panel" = false;
           "browser.download.start_downloads_in_tmp_dir" = true;
+
+          "browser.ai.control.default" = "blocked";
+          "browser.ai.control.linkPreviewKeyPoints" = "blocked";
+          "browser.ai.control.pdfjsAltText" = "blocked";
+          "browser.ai.control.sidebarChatbot" = "blocked";
+          "browser.ai.control.smartTabGroups" = "blocked";
+          "browser.ai.control.translations" = "blocked";
+
           "browser.ml.chat.enabled" = false;
           "browser.ml.enable" = false;
           "browser.ml.menu" = false;

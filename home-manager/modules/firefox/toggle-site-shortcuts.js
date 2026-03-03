@@ -81,8 +81,8 @@
   });
 
   const progressListener = {
-    onLocationChange() {
-      if (flags & Ci.nsIWebProgressListener.LOCATION_CHANGE_SAME_DOCUMENT)
+    onLocationChange(event) {
+      if (event.loadType & Ci.nsIWebProgressListener.LOCATION_CHANGE_SAME_DOCUMENT)
         return; // ignore history.pushState, #fragment, etc.
       // new real document → reset
       block();
