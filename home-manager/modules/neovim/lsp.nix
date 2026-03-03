@@ -417,7 +417,10 @@
           sources = {
             d.editorconfig_checker.with({
               method = nls.methods.DIAGNOSTICS_ON_SAVE,
-              disabled_filetypes = { "gitcommit" }
+              disabled_filetypes = { "gitcommit" },
+              diagnostics_postprocess = function(diagnostic)
+                diagnostic.severity = vim.diagnostic.severity.WARN
+              end,
             }),
             f.prettierd,
             d.credo,
