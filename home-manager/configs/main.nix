@@ -82,8 +82,6 @@
       thunderbird
       qalculate-gtk
       gImageReader
-
-      code-cursor
     ];
 
     stateVersion = "21.05";
