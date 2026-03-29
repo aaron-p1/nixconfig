@@ -82,6 +82,7 @@
       thunderbird
       qalculate-gtk
       gImageReader
+      lunatask
     ];
 
     stateVersion = "21.05";
