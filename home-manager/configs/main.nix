@@ -91,4 +91,7 @@
   nix.gc = {
     inherit (osConfig.nix.gc) automatic options dates;
   };
+
+  # silence warnings because of old stateVersion
+  programs.swaylock.enable = false;
 }

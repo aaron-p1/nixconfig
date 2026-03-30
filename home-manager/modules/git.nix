@@ -38,6 +38,7 @@ in
       enable = true;
       lfs.enable = true;
       signing = mkIf (cfg.signingKey != null) {
+        format = "openpgp";
         signer = "${config.programs.gpg.package}/bin/gpg2";
         signByDefault = true;
         key = cfg.signingKey;
