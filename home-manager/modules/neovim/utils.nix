@@ -81,17 +81,21 @@ _: {
 
         ---open new terminal buffer with split command
         ---@param cmd string|fun(): string command to run in terminal
-        ---@param opts table options for split command
+        ---@param split_opts false|table options for split command. If false do not split
         ---@param no_normal boolean? start insert mode and close on exit
-        function M.new_term(cmd, opts, no_normal)
+        function M.new_term(cmd, split_opts, no_normal)
           if type(cmd) == "function" then
             cmd = cmd()
           end
 
           local name = "term://" .. cmd
-          local split_opts = vim.tbl_deep_extend("keep", { name }, opts)
 
-          vim.cmd.split(split_opts)
+          if split_opts then
+            local opts = vim.tbl_deep_extend("keep", { name }, split_opts)
+            vim.cmd.split(opts)
+          else
+            vim.cmd.edit(name)
+          end
 
           if no_normal then
             vim.api.nvim_create_autocmd("TermClose", {
@@ -103,6 +107,13 @@ _: {
 
             vim.cmd("startinsert")
           end
+        end
+
+        ---open terminal buffer in current window
+        ---@param cmd string|fun(): string
+        ---@param no_normal boolean?
+        function M.open_term_rpl(cmd, no_normal)
+          M.new_term(cmd, false, no_normal)
         end
 
         ---open terminal buffer with horizontal split
@@ -135,6 +146,8 @@ _: {
         function M.add_term_keymaps(key, cmd, opts, no_normal)
           opts = opts or {}
 
+          vim.keymap.set("n", key .. "e", function() M.open_term_rpl(cmd, no_normal) end,
+            vim.tbl_extend("force", opts, { desc = "Replace buffer" }))
           vim.keymap.set("n", key .. "x", function() M.open_term_hor(cmd, no_normal) end,
             vim.tbl_extend("force", opts, { desc = "Horizontal" }))
           vim.keymap.set("n", key .. "v", function() M.open_term_ver(cmd, no_normal) end,
