@@ -20,6 +20,7 @@
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       modesetting.enable = true;
       nvidiaSettings = false;
+      powerManagement.enable = true;
       prime = {
         nvidiaBusId = "PCI:1:0:0";
         intelBusId = "PCI:0:2:0";
