@@ -22,7 +22,14 @@
       ''
         local tl = require("telescope")
 
-        tl.setup({ defaults = { preview = { filesize_limit = 1 } } })
+        tl.setup({
+          defaults = {
+            preview = {
+              filesize_limit = 25,
+              highlight_limit = 0.5
+            }
+          }
+        })
 
         tl.load_extension("fzf")
 
