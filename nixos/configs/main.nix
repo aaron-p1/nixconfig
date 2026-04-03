@@ -85,12 +85,9 @@
 
     # ../modules/graphics/default.nix
     graphics = {
-      xserver.enable = true;
-      sddm.enable = true;
-      plasma = {
+      cosmic = {
         enable = true;
-        kdeConnect = true;
-        inputMethod.japanese = true;
+        greeter = true;
       };
     };
 

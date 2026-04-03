@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  osConfig,
   ...
 }:
 let
@@ -26,9 +27,12 @@ in
       enable = true;
 
       settings = {
-        window.dimensions = {
-          lines = 28;
-          columns = 100;
+        window = {
+          dimensions = {
+            lines = 28;
+            columns = 100;
+          };
+          decorations = lib.mkIf osConfig.services.desktopManager.cosmic.enable "None";
         };
         font = {
           size = 9;
