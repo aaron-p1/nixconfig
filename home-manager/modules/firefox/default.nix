@@ -148,6 +148,29 @@ let
               // ctrl+s will be used for Sidebery search
               getElem("key_savePage")?.remove();
 
+              // ctrl+shift+Numpad1 should toggle 1Password addon
+              {
+                const { AddonManager } = ChromeUtils.importESModule(
+                  "resource://gre/modules/AddonManager.sys.mjs"
+                );
+
+                async function toggleOnePassword(event) {
+                  if (!event.ctrlKey || !event.shiftKey || event.code !== 'Numpad1') {
+                    return;
+                  }
+
+                  const addon = await AddonManager.getAddonByID("{d634138d-c276-4fc8-924b-40a0ea21d284}")
+
+                  if (addon.isActive) {
+                    addon.disable();
+                  } else if (addon.userDisabled) {
+                    addon.enable();
+                  }
+                }
+
+                win.document.addEventListener("keydown", toggleOnePassword, true);
+              }
+
               // ctrl+s should always focus Sidebery search in sidebar
               {
                 function focusSideberySearch(event) {
