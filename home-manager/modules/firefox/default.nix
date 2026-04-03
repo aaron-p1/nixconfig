@@ -136,6 +136,8 @@ let
               getElem("openFileKb")?.remove();
               // ctrl+i will be used for Sidebery next active tab
               getElem("key_viewInfo")?.remove();
+              // ctrl+shift+o will be used for Sidebery new tab under current
+              getElem("manBookmarkKb")?.remove();
 
               // ctrl+p will be used for Sidebery prev tab
               getElem("printKb")?.remove();
