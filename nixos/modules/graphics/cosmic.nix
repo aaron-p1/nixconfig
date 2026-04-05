@@ -19,7 +19,10 @@ in
     services = {
       displayManager.cosmic-greeter.enable = cfg.greeter;
       desktopManager.cosmic.enable = true;
-      system76-scheduler.enable = true;
+      # disable because of bugs:
+      # - sometimes 100% cpu usage
+      # - sometimes not being able to boot
+      system76-scheduler.enable = false;
       # This enables gcr-ssh-agent but I use gpg-agent
       # and I don't need keyring on encrypted system
       gnome.gnome-keyring.enable = false;
