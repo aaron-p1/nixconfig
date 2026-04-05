@@ -1,0 +1,71 @@
+diff --git a/lua/telescope/builtin/__internal.lua b/lua/telescope/builtin/__internal.lua
+index 2b801df..92111d3 100644
+--- a/lua/telescope/builtin/__internal.lua
++++ b/lua/telescope/builtin/__internal.lua
+@@ -707,6 +707,32 @@ internal.vim_options = function(opts)
+     :find()
+ end
+ 
++---@param cmd string help or man
++---@param type "default" | "horizontal" | "vertical" | "tab"
++---@param bufopt string buffer option to set for tmp buffer
++---@param value any value to set for bufopt
++local function open_fix(cmd, type, bufopt, value)
++  local buf = vim.api.nvim_create_buf(true, true)
++  vim.bo[buf][bufopt] = value
++  vim.bo[buf].bufhidden = "wipe"
++
++  local split_opts = {}
++
++  if type == "vertical" then
++    split_opts = { mods = { vertical = true } }
++  elseif type == "tab" then
++    local tabnr = vim.api.nvim_tabpage_get_number(0)
++    split_opts = { mods = { tab = tabnr } }
++  end
++
++  if type ~= "default" then
++    vim.cmd.split(split_opts)
++  end
++
++  vim.api.nvim_win_set_buf(0, buf)
++  vim.cmd(cmd)
++end
++
+ internal.help_tags = function(opts)
+   opts.lang = vim.F.if_nil(opts.lang, vim.o.helplang)
+   opts.fallback = vim.F.if_nil(opts.fallback, true)
+@@ -808,13 +834,9 @@ internal.help_tags = function(opts)
+           end
+ 
+           actions.close(prompt_bufnr)
+-          if cmd == "default" or cmd == "horizontal" then
+-            vim.cmd("help " .. selection.value)
+-          elseif cmd == "vertical" then
+-            vim.cmd("vert help " .. selection.value)
+-          elseif cmd == "tab" then
+-            vim.cmd("tab help " .. selection.value)
+-          end
++
++          local vim_cmd = "help " .. selection.value
++          open_fix(vim_cmd, cmd, "buftype", "help")
+         end)
+ 
+         return true
+@@ -857,13 +879,9 @@ internal.man_pages = function(opts)
+ 
+           local args = selection.section .. " " .. selection.value
+           actions.close(prompt_bufnr)
+-          if cmd == "default" or cmd == "horizontal" then
+-            vim.cmd("Man " .. args)
+-          elseif cmd == "vertical" then
+-            vim.cmd("vert Man " .. args)
+-          elseif cmd == "tab" then
+-            vim.cmd("tab Man " .. args)
+-          end
++
++          local vim_cmd = "Man " .. args
++          open_fix(vim_cmd, cmd, "filetype", "man")
+         end)
+ 
+         return true
