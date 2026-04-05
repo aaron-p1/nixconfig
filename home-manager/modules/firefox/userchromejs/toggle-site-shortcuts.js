@@ -1,4 +1,3 @@
-// comment first line to fix inserting into main js
 (() => {
   /* —--- Settings —------------------------------------------ */
   const TOGGLE_KEY = "j"; // key that flips the permission
@@ -9,13 +8,13 @@
 
   /* —--- Helper: create / remove the indicator icon —---------- */
   function showIcon() {
-    let icon = win.document.getElementById(ICON_ID);
+    let icon = bWindow.document.getElementById(ICON_ID);
     if (icon) {
       icon.hidden = false;
       return;
     }
 
-    icon = win.document.createXULElement("image");
+    icon = bWindow.document.createXULElement("image");
     icon.id = ICON_ID;
     icon.setAttribute(
       "tooltiptext",
@@ -23,12 +22,12 @@
     );
 
     /* Insert immediately to the right of the URL field but before built-in buttons */
-    const iconsBox = win.document.getElementById("identity-box");
+    const iconsBox = bWindow.document.getElementById("identity-box");
     iconsBox.appendChild(icon);
   }
 
   function hideIcon() {
-    const icon = win.document.getElementById(ICON_ID);
+    const icon = bWindow.document.getElementById(ICON_ID);
     if (icon) icon.remove();
   }
 
@@ -56,7 +55,7 @@
   }
 
   /* —--- Global key listener (capture phase) —--------------- */
-  win.document.addEventListener(
+  bWindow.document.addEventListener(
     "keydown",
     (evt) => {
       if (
@@ -75,7 +74,7 @@
   );
 
   /* —--- Keep indicator correct on navigation / tab switch —-- */
-  win.gBrowser.tabContainer.addEventListener("TabSelect", () => {
+  bWindow.gBrowser.tabContainer.addEventListener("TabSelect", () => {
     block();
     updateUI();
   });
@@ -90,7 +89,7 @@
     },
     QueryInterface: ChromeUtils.generateQI(["nsIWebProgressListener"]),
   };
-  win.gBrowser.addProgressListener(progressListener);
+  bWindow.gBrowser.addProgressListener(progressListener);
 
   updateUI();
 })();

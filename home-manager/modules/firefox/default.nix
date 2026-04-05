@@ -5,22 +5,18 @@
   ...
 }:
 let
-  inherit (builtins)
-    head
-    match
-    readFile
-    ;
-  inherit (lib) replaceStrings mkEnableOption mkIf;
+  inherit (builtins) head match;
+  inherit (lib) mkEnableOption mkIf;
 
   cfg = config.within.firefox;
 
   toPlainAddonId = addonId: head (match "^\\{(.*)}$" addonId);
 
   sidebery = pkgs.nur.repos.rycee.firefox-addons.sidebery;
-  sideberyId = toPlainAddonId sidebery.addonId;
+  sideberyPlainId = toPlainAddonId sidebery.addonId;
 
-  # needed because in the js file, template strings are removed for some reason
-  toJsString = replaceStrings [ "\n" ] [ "" ];
+  onePassword = pkgs.nur.repos.rycee.firefox-addons.onepassword-password-manager;
+  onePasswordId = onePassword.addonId;
 
   # https://www.userchrome.org/what-is-userchrome-js.html#combinedloader
   firefox =
@@ -33,311 +29,129 @@ let
         '';
     })).override
       {
-        extraPrefs = # javascript
-          ''
-            function runInWindow(win){
-              win.console.log("---------------- Loading userChrome.js in " + win.location + " ----------------");
+        extraPrefs = pkgs.callPackage ./userchromejs {
+          nativeShortcutsRemoved = [
+            # ctrl+k is often used by websites for search
+            "key_search"
+            # ctrl+j will be used for toggling shortcuts permission
+            "key_search2"
 
-              function getElem(elem){
-                return win.document.getElementById(elem);
-              }
+            # ctrl+o will be used for Sidebery prev active tab
+            "openFileKb"
+            # ctrl+i will be used for Sidebery next active tab
+            "key_viewInfo"
+            # ctrl+shift+o will be used for Sidebery new tab under current
+            "manBookmarkKb"
+            # ctrl+p will be used for Sidebery prev tab
+            "printKb"
+            # ctrl+s will be used for Sidebery search
+            "key_savePage"
+          ];
 
-              function toggleSidebar(cmd) {
-                const controller = win.SidebarController;
+          nativeShortcutChanges = {
+            # ctrl+n will be used for Sidebery next tab
+            # so add modifiers to existing ctrl+n and ctrl+shift+n
+            key_undoCloseWindow.modifiers = "accel,shift,alt";
+            key_newNavigator.modifiers = "accel,shift";
+          };
 
-                if (!controller) {
+          shortcuts = {
+            # focus website window or send keydown Escape to website
+            "Escape" = # javascript
+              ''
+                // for some reason, Sidebery search input needs over 100 ms delay
+                // ctrl+f search, etc. only needs 10 ms
+                const delay = bWindow.document.activeElement.id === "sidebar" ? 150 : 10;
+
+                bWindow.setTimeout(() => {
+                  const browser = bWindow.gBrowser.selectedBrowser
+                  if (bWindow.document.activeElement === browser) {
+                    return;
+                  }
+
+                  browser.focus()
+                }, delay);
+
+                // give key to website, because shortcut permissions prevent keydown esc for some reason
+                const browser = bWindow.gBrowser.selectedBrowser
+                if (bWindow.document.activeElement === browser) {
+                  resendKey(browser, event, { down: true });
+                }
+              '';
+
+            # reload current page with http
+            "CTRL+ALT+SHIFT+L" = # javascript
+              ''
+                const browser = bWindow.gBrowser.selectedBrowser
+                const url = browser.currentURI.spec
+                if (url.startsWith("https://")) {
+                  const principal = Services.scriptSecurityManager.getSystemPrincipal()
+                  const uri = Services.io.newURI(url.replace("https://", "http://"))
+                  browser.loadURI(uri, {triggeringPrincipal: principal})
+                }
+              '';
+
+            # toggle "userresizable" attribute on #sidebar-box
+            "ALT+s" = # javascript
+              ''
+                event.preventDefault();
+
+                const sidebarBox = bWindow.document.getElementById("sidebar-box");
+                if (!sidebarBox) {
                   return;
                 }
 
-                if (controller.currentID === cmd && controller.isOpen) {
-                  controller.hide();
-                } else {
-                  controller.show(cmd);
-                }
-              }
+                const isResizable = sidebarBox.getAttribute("userresizable") === "true";
+                sidebarBox.setAttribute("userresizable", isResizable ? "false" : "true");
+              '';
 
-              // make Esc focus website
-              {
-                function focusWebsite(event) {
-                  if (event.key !== "Escape") {
-                    return;
-                  }
-
-                  // for some reason, Sidebery search input needs over 100 ms delay
-                  // ctrl+f search, etc. only needs 10 ms
-                  const time = win.document.activeElement.id === "sidebar" ? 150 : 10;
-
-                  win.setTimeout(() => {
-                    const browser = win.gBrowser.selectedBrowser
-
-                    if (win.document.activeElement === browser) {
-                      return;
-                    }
-
-                    browser.focus()
-                  }, time)
-                }
-
-                win.document.addEventListener("keydown", focusWebsite, true);
-              }
-
-              // ctrl+alt+shift+l will load current page with http
-              {
-                function loadHttp(event) {
-                  if (!event.ctrlKey || !event.altKey || !event.shiftKey || event.key !== 'L') {
-                    return;
-                  }
-
-                  const browser = win.gBrowser.selectedBrowser
-                  const url = browser.currentURI.spec
-
-                  if (url.startsWith("https://")) {
-                    const principal = Services.scriptSecurityManager.getSystemPrincipal()
-                    const uri = Services.io.newURI(url.replace("https://", "http://"))
-
-                    browser.loadURI(uri, {triggeringPrincipal: principal})
-                  }
-                }
-
-                win.document.addEventListener("keydown", loadHttp, true);
-              }
-
-              // alt+s to toggle "userresizable" attribute on #sidebar-box
-              {
-                function toggleSidebarResizable(event) {
-                  if (!event.altKey || event.key !== 's') {
-                    return;
-                  }
-
-                  event.preventDefault();
-
-                  const sidebarBox = win.document.getElementById("sidebar-box");
-
-                  if (!sidebarBox) {
-                    return;
-                  }
-
-                  const isResizable = sidebarBox.getAttribute("userresizable") === "true";
-                  sidebarBox.setAttribute("userresizable", isResizable ? "false" : "true");
-                }
-
-                win.document.addEventListener("keydown", toggleSidebarResizable, true);
-              }
-
-              // injection commented out, but still runs
-              // ${readFile ./toggle-site-shortcuts.js}
-
-              // ctrl+k is often used by websites for search
-              getElem("key_search")?.remove();
-              // ctrl+j will be used for website shortcuts mode
-              getElem("key_search2")?.remove();
-
-              // ctrl+o will be used for Sidebery prev active tab
-              getElem("openFileKb")?.remove();
-              // ctrl+i will be used for Sidebery next active tab
-              getElem("key_viewInfo")?.remove();
-              // ctrl+shift+o will be used for Sidebery new tab under current
-              getElem("manBookmarkKb")?.remove();
-
-              // ctrl+p will be used for Sidebery prev tab
-              getElem("printKb")?.remove();
-              // ctrl+n will be used for Sidebery next tab
-              getElem("key_undoCloseWindow")?.setAttribute("modifiers", "accel,shift,alt");
-              getElem("key_newNavigator")?.setAttribute("modifiers", "accel,shift");
-
-              // ctrl+s will be used for Sidebery search
-              getElem("key_savePage")?.remove();
-
-              // ctrl+shift+Numpad1 should toggle 1Password addon
-              {
-                const { AddonManager } = ChromeUtils.importESModule(
-                  "resource://gre/modules/AddonManager.sys.mjs"
-                );
-
-                async function toggleOnePassword(event) {
-                  if (!event.ctrlKey || !event.shiftKey || event.code !== 'Numpad1') {
-                    return;
-                  }
-
-                  const addon = await AddonManager.getAddonByID("{d634138d-c276-4fc8-924b-40a0ea21d284}")
+            # CTRL+SHIFT+Numpad1: toggle 1Password addon enabled/disabled state
+            "CTRL+SHIFT+End" = # javascript
+              ''
+                (async function() {
+                  const addon = await AddonManager.getAddonByID("${onePasswordId}");
 
                   if (addon.isActive) {
                     addon.disable();
                   } else if (addon.userDisabled) {
+                    // Only enable if I disabled it
                     addon.enable();
                   }
+                })();
+              '';
+
+            # focus Sidebery search in sidebar
+            "CTRL+s" = # javascript
+              ''
+                // sidebar command is _3c078156-979c-498b-8990-85f7987dd929_-sidebar-action
+                const isSideberySidebarOpen = bWindow.document
+                  .querySelector(
+                    '#sidebar-box[sidebarcommand*="${sideberyPlainId}"]:not([hidden="true"])'
+                  );
+
+                if (!isSideberySidebarOpen) {
+                  return;
                 }
 
-                win.document.addEventListener("keydown", toggleOnePassword, true);
-              }
-
-              // ctrl+s should always focus Sidebery search in sidebar
-              {
-                function focusSideberySearch(event) {
-                  if (!event.ctrlKey || event.key !== 's') {
-                    return;
-                  }
-
-                  if (!win.document.querySelector('#sidebar-box[sidebarcommand*="${sideberyId}"]:not([hidden="true"])')) {
-                    return;
-                  }
-
-                  if (win.sidebar) {
-                    Services.focus.moveFocus(win.sidebar, null, null, Services.focus.FLAG_BYKEY)
-                    win.sidebar.document.getElementById("webext-panels-browser").focus()
-                  }
+                if (bWindow.sidebar) {
+                  Services.focus.moveFocus(bWindow.sidebar, null, null, Services.focus.FLAG_BYKEY)
+                  bWindow.sidebar.document.getElementById("webext-panels-browser").focus()
                 }
+              '';
+          };
 
-                win.document.addEventListener("keydown", focusSideberySearch, true);
-              }
-
-              // inject javascript into websites
-              {
-                const injection = '${
-                  toJsString
-                    # javascript
-                    ''
-                      (function() {
-                        const injections = {
-                          /**
-                           * Remove keybindings outside of editor on app.asana.com
-                           * @param {Window} window
-                           */
-                          removeAsanaBindings(window) {
-                            if (window.location.hostname !== "app.asana.com") {
-                              return;
-                            }
-
-                            window.document.addEventListener("keydown", e => {
-                              if (e.target && !e.target.className.toLowerCase().includes("editor")) {
-                                e.stopImmediatePropagation();
-                              }
-                            }, true);
-                          },
-
-                          /**
-                           * Add media controls to app.idagio.com
-                           * @param {Window} window
-                           */
-                          addIdagioMediaControls(window) {
-                            if (window.location.hostname !== "app.idagio.com") {
-                              return;
-                            }
-
-                            window.document.addEventListener("DOMContentLoaded", () => {
-                              /* I need the normal js context, so inject script element */
-                              let scriptElem = window.document.createElement("script");
-                              scriptElem.type = "text/javascript";
-
-                              scriptElem.text = "${
-                                replaceStrings [ ''"'' ] [ ''\\\\"'' ] (toJsString
-                                # javascript
-                                ''
-                                  const buttonIndices = {
-                                    prev: 1,
-                                    play: 2,
-                                    next: 3
-                                  };
-
-                                  function getButton(type) {
-                                    const mediaButtons = window.document.querySelector(
-                                      "div[class^=player-PlayerControls__controls--]"
-                                    );
-
-                                    if (!mediaButtons) {
-                                      window.console.error("mediabuttons not found");
-                                      return;
-                                    }
-
-                                    const result = mediaButtons.children[buttonIndices[type]];
-
-                                    if (!result) {
-                                      window.console.error(type + " button not found");
-                                      return;
-                                    }
-
-                                    return result;
-                                  }
-
-                                  window.setInterval(() => {
-                                    const playerInfoElement = window.document.querySelector(
-                                      "div[class^=player-PlayerInfo__infoEl--]"
-                                    );
-
-                                    if (!playerInfoElement) {
-                                      return;
-                                    }
-
-                                    const [artistElem, _, recordingElem, trackElem] = playerInfoElement.children;
-
-                                    if (!artistElem || !recordingElem || !trackElem) {
-                                      return;
-                                    }
-
-                                    const artist = artistElem.textContent;
-                                    const recording = recordingElem.textContent;
-                                    const track = trackElem.children[1].textContent;
-
-                                    window.navigator.mediaSession.metadata = new window.MediaMetadata({
-                                      title: recording + " - " + track,
-                                      artist: artist
-                                    });
-                                  }, 1000);
-
-                                  window.navigator.mediaSession.setActionHandler("play", () => {
-                                    getButton("play")?.click();
-                                  });
-                                  window.navigator.mediaSession.setActionHandler("pause", () => {
-                                    getButton("play")?.click();
-                                  });
-                                  window.navigator.mediaSession.setActionHandler("previoustrack", () => {
-                                    getButton("prev")?.click();
-                                  });
-                                  window.navigator.mediaSession.setActionHandler("nexttrack", () => {
-                                    getButton("next")?.click();
-                                  });
-                                '')
-                              }";
-
-                              window.document.head.appendChild(scriptElem);
-                            });
-                          },
-                        };
-
-                        var observer = {
-                          observe(subject, topic, data) {
-                            if (topic === "content-document-global-created") {
-                              let window = subject;
-
-                              try {
-                                for (const [name, injection] of Object.entries(injections)) {
-                                  injection(window);
-                                }
-                              } catch (e) {
-                                window.console.error(e);
-                              }
-                            }
-                          }
-                        };
-
-                        Services.obs.addObserver(observer, "content-document-global-created");
-
-                        addEventListener("unload", () => {
-                          Services.obs.removeObserver(observer, "content-document-global-created");
-                        });
-                      })()
-                    ''
-                }';
-
-                // Load the frame script into all existing and future content processes
-                Services.mm.loadFrameScript("data:,(" + win.encodeURIComponent(injection) + ")", true);
-              }
-
-              win.console.log("---------------- Loading userChrome.js finished ----------------");
-            }
-
-            ${readFile ./user-chome-js-loader.js}
-          '';
+          websiteInjections = {
+            # remove all keybindings outside of editor
+            "app.asana.com" = # javascript
+              ''
+                window.document.addEventListener("keydown", e => {
+                  if (e.target && !e.target.className.toLowerCase().includes("editor")) {
+                    e.stopImmediatePropagation();
+                  }
+                }, true);
+              '';
+          };
+        };
       };
 in
 {
@@ -392,7 +206,7 @@ in
           consent-o-matic
           ff2mpv
           multi-account-containers
-          onepassword-password-manager
+          onePassword
           plasma-integration
           privacy-badger
           return-youtube-dislikes
@@ -499,69 +313,27 @@ in
               display: none !important;
             }
 
-            /* chat sidebar */
-            #main-window:has(
-              #sidebar-box[sidebarcommand="viewGenaiChatSidebar"]:not([hidden="true"])
-            ) {
-              #sidebar-header {
-                display: none !important;;
-              }
-
-              #sidebar-box:not([userresizable="true"]) {
-                width: 750px !important;
-              }
-            }
-
             /* Sidebery hide tab bar and side bar title
                 if Sidebery is open in sidebar */
             #main-window:has(
-              #sidebar-box[sidebarcommand*="${sideberyId}"]:not([hidden="true"])
+              #sidebar-box[sidebarcommand*="${sideberyPlainId}"]:not([hidden="true"])
             ) {
               #TabsToolbar {
                 display: none !important;
               }
 
               #sidebar-header {
-                display: none !important;;
+                display: none !important;
               }
 
               #sidebar-box:not([userresizable="true"]) {
                 width: 220px !important;
-              }
-
-              /** change style of sidebar splitter:
-               * - same dark border as top navigator toolbox
-               * - dragging hit box should stay the same
-               */
-              #sidebar-splitter {
-                width: 6px !important;
-                margin-right: -5px !important;
-                z-index: 4 !important;
-                background: transparent !important;
-                border: none !important;
-                border-left: 1px solid var(--chrome-content-separator-color) !important;
-              }
-
-              /** Don't show top right search input.
-               * Used with focusSideberySearch function.
-               */
-              #customizationui-widget-panel[viewId*="${sideberyId}"] {
-                display: none !important;
               }
             }
           '';
 
         userContent = # CSS
           ''
-            @-moz-document domain(chatgpt.com) {
-              @media (min-width: 1280px) {
-                /* make chat wider */
-                .text-token-text-primary > div > div {
-                  max-width: 80rem !important;
-                }
-              }
-            }
-
             @-moz-document domain(github.com) {
               /* fix double click in files not working reliably */
               .code-navigation-cursor {
