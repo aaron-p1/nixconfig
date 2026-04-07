@@ -8,20 +8,6 @@
         inherit (prev.vimUtils) buildVimPlugin;
       in
       {
-        handle-errors-nvim = buildVimPlugin {
-          pname = "handle_errors.nvim";
-          version = "2025-03-31";
-          src = fetchFromGitHub {
-            owner = "aaron-p1";
-            repo = "handle_errors.nvim";
-            rev = "2a327287377a062ddc35b1fa0335e3f8c012592c";
-            sha256 = "sha256-U2D+79NME0/LNRupTYQxiNPFgW6tzrGv8qjgkTO6Qto=";
-          };
-          buildInputs = [ prev.luajit ];
-          buildPhase = "make";
-          meta.homepage = "https://github.com/aaron-p1/handle_errors.nvim";
-          meta.platforms = [ "x86_64-linux" ];
-        };
         match-visual-nvim = buildVimPlugin {
           pname = "match-visual.nvim";
           version = "2025-08-30";
@@ -83,7 +69,6 @@
       compare-remotes-nvim
       match-visual-nvim
       virt-notes-nvim
-      handle-errors-nvim
     ];
     config = # lua
       ''
@@ -200,40 +185,9 @@
 
         require("virt-notes").setup()
 
-        local err_bufnr = vim.api.nvim_create_buf(false, true)
-        vim.api.nvim_buf_set_name(err_bufnr, "ErrorLog")
-        if err_bufnr ~= 0 then
-          vim.keymap.set("n", "<Leader>Ex", function()
-            vim.api.nvim_open_win(err_bufnr, true, {
-              split = 'below',
-              win = 0
-            })
-          end, { desc = "Horizontal" })
-          vim.keymap.set("n", "<Leader>Ev", function()
-            vim.api.nvim_open_win(err_bufnr, true, {
-              split = 'right',
-              win = 0
-            })
-          end, { desc = "Vertical" })
-
-          local he = require("handle_errors")
-          he.set_on_error(function(msg)
-            local lines = vim.split(msg, "\n")
-            lines[#lines + 1] = ""
-            lines[#lines + 1] = "At: " .. os.date("%Y-%m-%d %H:%M:%S")
-            lines[#lines + 1] = "---------------------------------------"
-            lines[#lines + 1] = ""
-
-            vim.schedule(function()
-              pcall(vim.api.nvim_buf_set_lines, err_bufnr, 1, 1, false, lines)
-            end)
-          end)
-        end
-
         Configs.which_key.add({
           { "v",  group = "Virt notes" },
           { "vd", group = "Delete" },
-          { "E",  group = "Open error buffer" },
         }, { "<Leader>" })
       '';
   };

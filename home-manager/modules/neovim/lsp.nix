@@ -105,19 +105,19 @@
 
         lsp = [
           (bwrap lua-language-server { })
-          (bwrap nodePackages.intelephense {
+          (bwrap intelephense {
             net = true;
             extraHomeMounts = [ "intelephense" ];
           })
-          (bwrap nodePackages.vscode-langservers-extracted { bin = "vscode-html-language-server"; })
-          (bwrap nodePackages.vscode-langservers-extracted { bin = "vscode-css-language-server"; })
-          (bwrap nodePackages.vscode-langservers-extracted {
+          (bwrap vscode-langservers-extracted { bin = "vscode-html-language-server"; })
+          (bwrap vscode-langservers-extracted { bin = "vscode-css-language-server"; })
+          (bwrap vscode-langservers-extracted {
             bin = "vscode-json-language-server";
             net = true;
           })
-          (bwrap nodePackages.yaml-language-server { })
-          (bwrap nodePackages."@tailwindcss/language-server" { })
-          (bwrap nodePackages.typescript-language-server { })
+          (bwrap yaml-language-server { })
+          (bwrap tailwindcss-language-server { })
+          (bwrap typescript-language-server { })
           (bwrap vue-language-server { })
           (bwrap glsl_analyzer { })
           (bwrap clang-tools { bin = "clangd"; })
@@ -139,7 +139,7 @@
       lsp ++ none-ls;
     config =
       let
-        tsLib = "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib";
+        tsLib = "${pkgs.typescript}/lib/node_modules/typescript/lib";
 
         vueTSPlugin =
           pkgs.vue-language-server

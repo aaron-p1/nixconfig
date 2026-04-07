@@ -58,7 +58,7 @@
             end
           },
 
-          snippets = { preset = "luasnip" },
+          -- snippets = { preset = "luasnip" },
 
           completion = {
             list = {

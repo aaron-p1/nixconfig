@@ -249,7 +249,7 @@ in
     ./profiles.nix
     ./ui.nix
     ./treesitter.nix
-    ./snippets.nix
+    # ./snippets.nix
     ./completion.nix
     ./git.nix
     ./telescope.nix
