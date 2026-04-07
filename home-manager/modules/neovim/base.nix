@@ -75,6 +75,11 @@
 
         vim.g.maplocalleader = "|"
 
+        -- console output fix
+        require('vim._core.ui2').enable({
+          enable = true,
+        })
+
         vim.diagnostic.config({
           virtual_text = true,
           update_in_insert = true,
