@@ -41,18 +41,6 @@
           };
           meta.homepage = "https://github.com/aaron-p1/compare-remotes.nvim";
         };
-        ts-node-action = buildVimPlugin {
-          pname = "ts-node-action";
-          version = "2024-05-30";
-          src = fetchFromGitHub {
-            owner = "CKolkey";
-            repo = "ts-node-action";
-            rev = "6d3b60754fd87963d70eadaa2f77873b447eac26";
-            sha256 = "sha256-kOXH3r+V+DAxoATSnZepEAekrkO1TezKSkONuQ3Kzu4=";
-          };
-          meta.homepage = "https://github.com/CKolkey/ts-node-action";
-          dependencies = [ pvP.nvim-treesitter ];
-        };
       }
     );
     plugins = with pkgs.vimPlugins; [
@@ -64,8 +52,8 @@
       comment-nvim
       grug-far-nvim
       leap-nvim
+      treesj
 
-      ts-node-action
       compare-remotes-nvim
       match-visual-nvim
       virt-notes-nvim
@@ -138,9 +126,11 @@
         local leap = require("leap")
         leap.opts.safe_labels = {}
         leap.opts.labels = "tirenadushg,col.fpüwämqvyjxTIRENADUSH"
-        vim.keymap.set({"n", "x", "o"}, "<C-S-l>", "<Plug>(leap-anywhere)")
+        vim.keymap.set({ "n", "x", "o" }, "<C-S-l>", "<Plug>(leap-anywhere)")
 
-        vim.keymap.set("n", "<C-S-a>", require("ts-node-action").node_action, { desc = "Node action" })
+        local treesj = require("treesj")
+        treesj.setup({ use_default_keymaps = false })
+        vim.keymap.set("n", "<C-S-a>", treesj.toggle, { desc = "Node action" })
 
         do
           local remotes_file_content = table.concat(
@@ -159,17 +149,17 @@
           local env_string = vim.env.NVIM_COMPARABLE_REMOTES
 
           local env_remotes = vim.iter(vim.gsplit(env_string or "", ","))
-            :filter(function(remote)
-              return remote:match("^[^:]+:.+$")
-            end)
-            :map(function(remote)
-              local parts = vim.split(remote, ":")
-              return { name = parts[1], path = parts[2] }
-            end)
-            :fold({}, function(acc, remote)
-              acc[remote.name] = remote.path
-              return acc
-            end)
+              :filter(function(remote)
+                return remote:match("^[^:]+:.+$")
+              end)
+              :map(function(remote)
+                local parts = vim.split(remote, ":")
+                return { name = parts[1], path = parts[2] }
+              end)
+              :fold({}, function(acc, remote)
+                acc[remote.name] = remote.path
+                return acc
+              end)
 
           local remotes = vim.tbl_extend("force", profile_remotes, env_remotes)
 
