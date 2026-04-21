@@ -43,7 +43,7 @@
           conceallevel = 2,
           concealcursor = "",
           undofile = true,
-          diffopt = { "internal", "filler", "closeoff", "vertical", "linematch:102" },
+          diffopt = { "internal", "filler", "closeoff", "vertical", "inline:char" },
           completeopt = { "menuone", "noselect" },
           omnifunc = "syntaxcomplete#Complete",
           expandtab = true,
