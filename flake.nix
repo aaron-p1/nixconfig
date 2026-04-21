@@ -4,8 +4,6 @@
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.follows = "unstable";
 
-    nixpkgs2305.url = "github:nixos/nixpkgs/nixos-23.05";
-
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nur.url = "github:nix-community/NUR";
@@ -22,7 +20,6 @@
       stable,
       unstable,
       nixpkgs,
-      nixpkgs2305,
       flake-utils,
       nixos-hardware,
       nur,
@@ -36,19 +33,6 @@
         nur.overlays.default
         (import ./localpkgs { inherit inputs; })
         (import ./dotfiles { })
-        (final: prev: {
-          inherit
-            (import nixpkgs2305 {
-              inherit (final.stdenv.hostPlatform) system;
-              config.permittedInsecurePackages = [
-                "nodejs-16.20.2"
-                "nodejs-16.20.2-source"
-              ];
-            })
-            # for nvim dotfiles vscode-php-debug
-            nodejs_16
-            ;
-        })
       ];
     in
     {

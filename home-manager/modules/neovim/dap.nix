@@ -110,8 +110,8 @@
         dap.adapters.php = {
           type = "executable",
           port = 9003,
-          command = "${pkgs.nodejs_16}/bin/node",
-          args = { "${pkgs.local.vscode-php-debug}/out/phpDebug.js" },
+          command = "${pkgs.nodejs_20}/bin/node",
+          args = { "${pkgs.vscode-extensions.xdebug.php-debug}/share/vscode/extensions/xdebug.php-debug/out/phpDebug.js" },
         }
 
         dap.configurations.php = {
