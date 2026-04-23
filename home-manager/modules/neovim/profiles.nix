@@ -214,6 +214,7 @@
               Configs.utils.add_term_keymaps("<Leader>cpt", "cargo test")
               Configs.utils.add_term_keymaps("<Leader>cpc", "cargo check")
               Configs.utils.add_term_keymaps("<Leader>cpC", "cargo clean")
+              Configs.utils.add_term_keymaps("<Leader>cpi", "cargo clippy")
 
               Configs.which_key.add({
                 { "b", group = "Build" },
@@ -224,6 +225,7 @@
                 { "t", group = "Test" },
                 { "c", group = "Check" },
                 { "C", group = "Clean" },
+                { "i", group = "Clippy" },
               }, { "<Leader>cp" })
             '';
 

@@ -380,6 +380,9 @@
                 buildScripts = {
                   enable = vim.uv.fs_stat("build.rs") ~= nil and vim.secure.read("build.rs") ~= nil
                 }
+              },
+              check = {
+                command = vim.env.NVIM_RUST_CHECK or "check"
               }
             }
           }
