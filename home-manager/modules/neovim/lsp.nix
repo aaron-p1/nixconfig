@@ -87,7 +87,10 @@
         ];
 
         rustAnalyzerLs = [
-          (bwrap rust-analyzer { net = true; })
+          (bwrap rust-analyzer {
+            net = true;
+            extraHomeMounts = [ ".cargo" ];
+          })
           (bwrap rustfmt { })
         ];
 
