@@ -209,7 +209,7 @@ let
   rtpCommands = pipe extraFilePackages [
     (map (
       extraFilePackage: # lua
-      ''vim.opt.runtimepath:prepend("${extraFilePackage}")''
+      ''vim.opt.runtimepath:append("${extraFilePackage}")''
     ))
     (concatStringsSep "\n")
     (cmd: cmd + "\n\n")
