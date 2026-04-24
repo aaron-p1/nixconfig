@@ -370,6 +370,7 @@
 
         setup("graphql")
 
+        local orig_rust_before_init = vim.lsp.config.rust_analyzer.before_init
         setup("rust_analyzer", {
           settings = {
             ['rust-analyzer'] = {
@@ -382,7 +383,27 @@
                 command = vim.env.NVIM_RUST_CHECK or "check"
               }
             }
-          }
+          },
+          before_init = function(params, config)
+            if orig_rust_before_init then
+              orig_rust_before_init(params, config)
+            end
+
+            -- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/rust_analyzer.lua#L170
+            ---@param command table{ title: string, command: string, arguments: any[] }
+            vim.lsp.commands['rust-analyzer.runSingle'] = function(command)
+              local r = command.arguments[1]
+              local cmd = { 'cargo', unpack(r.args.cargoArgs) }
+              if r.args.executableArgs and #r.args.executableArgs > 0 then
+                vim.list_extend(cmd, { '--', unpack(r.args.executableArgs) })
+              end
+
+              Configs.utils.open_term_hor(cmd, false, {
+                cwd = r.args.cwd,
+                env = r.args.environment
+              })
+            end
+          end
         })
 
         setup("glsl_analyzer")
