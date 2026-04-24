@@ -222,7 +222,6 @@
             mapkey("n", "grr", tb.lsp_references, { desc = "References" })
 
             mapkey("n", "gD", vim.lsp.buf.declaration, { desc = "Declaration" })
-            mapkey("n", "grt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
 
             mapkey("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Previous Diagnostic" })
             mapkey("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
@@ -235,9 +234,6 @@
               local ft = vim.bo[ev.buf].filetype
               vim.lsp.buf.format({ bufnr = ev.buf, name = formatting_preferences[ft] })
             end, { desc = "Format" })
-            mapkey("n", "gra", vim.lsp.buf.code_action, { desc = "Code Action" })
-            mapkey("n", "grn", vim.lsp.buf.rename, { desc = "Rename" })
-            mapkey("n", "grl", vim.lsp.codelens.run, { desc = "Codelens" })
 
             local client = vim.lsp.get_client_by_id(ev.data.client_id)
             if client and client.server_capabilities.documentHighlightProvider then
