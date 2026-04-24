@@ -152,6 +152,7 @@
       in
       ''
         vim.lsp.inlay_hint.enable()
+        vim.lsp.codelens.enable()
 
         local formatting_preferences = {
           html = "null-ls",
