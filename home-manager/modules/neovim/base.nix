@@ -161,7 +161,7 @@
 
         -- terminal
         Configs.utils.add_term_keymaps("<Leader>ctt", vim.o.shell)
-        Configs.utils.add_term_keymaps("<Leader>cts", "~//" .. vim.o.shell)
+        Configs.utils.add_term_keymaps("<Leader>cts", vim.o.shell, {}, false, { cwd = vim.fn.expand("~") })
 
         -- replace text object
         function Replace_selection(motion_type)
@@ -256,7 +256,14 @@
             local new_cmd = remove_pid_from_term_title(ev.file)
 
             vim.keymap.set("n", "r", function()
-              vim.cmd.edit(new_cmd)
+              local job_data = vim.b.term_job_data
+              if job_data then
+                vim.cmd.enew()
+                vim.b.term_job_data = job_data
+                vim.fn.jobstart(job_data.cmd, job_data.jobstart_opts)
+              else
+                vim.cmd.edit(new_cmd)
+              end
 
               local new_buf = vim.api.nvim_get_current_buf()
               replace_buffer_in_wins(buf, new_buf)

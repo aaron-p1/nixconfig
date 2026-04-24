@@ -83,19 +83,23 @@ _: {
         ---@param cmd string|fun(): string command to run in terminal
         ---@param split_opts false|table options for split command. If false do not split
         ---@param no_normal boolean? start insert mode and close on exit
-        function M.new_term(cmd, split_opts, no_normal)
+        ---@param jobstart_opts table? options for vim.fn.jobstart
+        function M.new_term(cmd, split_opts, no_normal, jobstart_opts)
           if type(cmd) == "function" then
             cmd = cmd()
           end
 
-          local name = "term://" .. cmd
+          jobstart_opts = jobstart_opts or {}
+          jobstart_opts.term = true
 
           if split_opts then
-            local opts = vim.tbl_deep_extend("keep", { name }, split_opts)
-            vim.cmd.split(opts)
+            vim.cmd.new(split_opts)
           else
-            vim.cmd.edit(name)
+            vim.cmd.enew()
           end
+
+          vim.b.term_job_data = { cmd = cmd, jobstart_opts = jobstart_opts }
+          vim.fn.jobstart(cmd, jobstart_opts)
 
           if no_normal then
             vim.api.nvim_create_autocmd("TermClose", {
@@ -112,30 +116,34 @@ _: {
         ---open terminal buffer in current window
         ---@param cmd string|fun(): string
         ---@param no_normal boolean?
-        function M.open_term_rpl(cmd, no_normal)
-          M.new_term(cmd, false, no_normal)
+        ---@param jobstart_opts table? options for vim.fn.jobstart
+        function M.open_term_rpl(cmd, no_normal, jobstart_opts)
+          M.new_term(cmd, false, no_normal, jobstart_opts)
         end
 
         ---open terminal buffer with horizontal split
         ---@param cmd string|fun(): string
         ---@param no_normal boolean?
-        function M.open_term_hor(cmd, no_normal)
-          M.new_term(cmd, {}, no_normal)
+        ---@param jobstart_opts table? options for vim.fn.jobstart
+        function M.open_term_hor(cmd, no_normal, jobstart_opts)
+          M.new_term(cmd, {}, no_normal, jobstart_opts)
         end
 
         ---open terminal buffer with vertical split
         ---@param cmd string|fun(): string
         ---@param no_normal boolean?
-        function M.open_term_ver(cmd, no_normal)
-          M.new_term(cmd, { mods = { vertical = true } }, no_normal)
+        ---@param jobstart_opts table? options for vim.fn.jobstart
+        function M.open_term_ver(cmd, no_normal, jobstart_opts)
+          M.new_term(cmd, { mods = { vertical = true } }, no_normal, jobstart_opts)
         end
 
         ---open terminal buffer with tab split
         ---@param cmd string|fun(): string
         ---@param no_normal boolean?
-        function M.open_term_tab(cmd, no_normal)
+        ---@param jobstart_opts table? options for vim.fn.jobstart
+        function M.open_term_tab(cmd, no_normal, jobstart_opts)
           local tabnr = vim.api.nvim_tabpage_get_number(0)
-          M.new_term(cmd, { mods = { tab = tabnr } }, no_normal)
+          M.new_term(cmd, { mods = { tab = tabnr } }, no_normal, jobstart_opts)
         end
 
         ---add 3 keymaps for opening terminal with different split kinds
@@ -143,16 +151,17 @@ _: {
         ---@param cmd string|fun(): string command to run in terminal
         ---@param opts table keymap options
         ---@param no_normal boolean? start insert mode and close on exit
-        function M.add_term_keymaps(key, cmd, opts, no_normal)
+        ---@param jobstart_opts table? options for vim.fn.jobstart
+        function M.add_term_keymaps(key, cmd, opts, no_normal, jobstart_opts)
           opts = opts or {}
 
-          vim.keymap.set("n", key .. "e", function() M.open_term_rpl(cmd, no_normal) end,
+          vim.keymap.set("n", key .. "e", function() M.open_term_rpl(cmd, no_normal, jobstart_opts) end,
             vim.tbl_extend("force", opts, { desc = "Replace buffer" }))
-          vim.keymap.set("n", key .. "x", function() M.open_term_hor(cmd, no_normal) end,
+          vim.keymap.set("n", key .. "x", function() M.open_term_hor(cmd, no_normal, jobstart_opts) end,
             vim.tbl_extend("force", opts, { desc = "Horizontal" }))
-          vim.keymap.set("n", key .. "v", function() M.open_term_ver(cmd, no_normal) end,
+          vim.keymap.set("n", key .. "v", function() M.open_term_ver(cmd, no_normal, jobstart_opts) end,
             vim.tbl_extend("force", opts, { desc = "Vertical" }))
-          vim.keymap.set("n", key .. "t", function() M.open_term_tab(cmd, no_normal) end,
+          vim.keymap.set("n", key .. "t", function() M.open_term_tab(cmd, no_normal, jobstart_opts) end,
             vim.tbl_extend("force", opts, { desc = "Tab" }))
         end
 
