@@ -30,9 +30,13 @@ ls.add_snippets("php", {
   s("st", t("static ")),
 
   -- functions
-  s("ufn", t("public function ")),
-  s("ofn", t("protected function ")),
-  s("ifn", t("private function ")),
+  s("puf", t("public function ")),
+  s("pof", t("protected function ")),
+  s("pif", t("private function ")),
+  s("pusf", t("public static function ")),
+  s("posf", t("protected static function ")),
+  s("pisf", t("private static function ")),
+
   s("fn", fmta("<> function <>(<>)<><>\n{\n\t<>\n}", {
     c(1, { t("public"), t("protected"), t("private") }),
     i(2, "functionName"),
