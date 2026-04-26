@@ -106,7 +106,15 @@
     ];
   };
 
-  services.mullvad-vpn.enable = false;
+  services = {
+    mullvad-vpn.enable = false;
+
+    scx = {
+      enable = true;
+      scheduler = "scx_lavd";
+      # scheduler = "scx_bpfland";
+    };
+  };
 
   programs = {
     gamemode.enable = true;
