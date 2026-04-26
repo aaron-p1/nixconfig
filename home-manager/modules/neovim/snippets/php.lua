@@ -1,7 +1,6 @@
 local ls = require("luasnip")
 local extras = require("luasnip.extras")
 local conds = require("luasnip.extras.conditions.expand")
-local ts_postfix = require("luasnip.extras.treesitter_postfix").treesitter_postfix
 
 local s = ls.snippet
 local sn = ls.snippet_node
@@ -18,8 +17,6 @@ local l = extras.lambda
 
 ls.add_snippets("php", {
   -- common
-  s("t", t("true")),
-  s("f", t("false")),
   s("if", fmta("if (<>) {\n\t<>\n}", { i(1, "true"), i(0) })),
   s("ei", fmta("elseif (<>) {\n\t<>\n}", { i(1, "true"), i(0) })),
   s("el", fmta("else {\n\t<>\n}", i(0))),
@@ -79,64 +76,6 @@ ls.add_snippets("php", {
     c(2, { i(nil), sn(nil, fmt("{} => {}", { i(1), i(2) })) }),
     i(0),
   })),
-
-  -- conversions
-  ts_postfix(
-    {
-      matchTSNode = {
-        query = --[[ query ]] [[
-          (anonymous_function
-            parameters: (_) @params
-            body: [
-              (compound_statement
-                . (return_statement (_) @body) .)
-              (compound_statement
-                . (expression_statement (_) @body) .)
-            ]) @prefix
-        ]],
-        query_lang = "php"
-      },
-      trig = "c" -- for convert
-    },
-    fmt("fn {} => {}", {
-      l(l.LS_TSCAPTURE_PARAMS),
-      isn(1, l(l.LS_TSCAPTURE_BODY), ""),
-    })
-  ),
-  ts_postfix(
-    {
-      matchTSNode = {
-        query = --[[ query ]] [[
-          (arrow_function
-            parameters: (_) @params
-            body: (_) @body) @prefix
-        ]],
-        query_lang = "php"
-      },
-      trig = "c" -- for convert
-    },
-    fmta("function <> {\n\t<>;\n}", {
-      l(l.LS_TSCAPTURE_PARAMS),
-      isn(1, l(l.LS_TSCAPTURE_BODY), "\t"),
-    })
-  ),
-  ts_postfix(
-    {
-      matchTSNode = {
-        query = --[[ query ]] [[
-          (arrow_function
-            parameters: (_) @params
-            body: (_) @body) @prefix
-        ]],
-        query_lang = "php"
-      },
-      trig = "cr" -- for convert return
-    },
-    fmta("function <> {\n\treturn <>;\n}", {
-      l(l.LS_TSCAPTURE_PARAMS),
-      isn(1, l(l.LS_TSCAPTURE_BODY), "\t"),
-    })
-  ),
 
   -- auto snippets
   s({
