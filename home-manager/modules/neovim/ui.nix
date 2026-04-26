@@ -1,6 +1,23 @@
 { pkgs, ... }:
 {
   within.neovim.configDomains.ui = {
+    overlay = final: prev: {
+      luajit = prev.luajit.override {
+        packageOverrides = luafinal: luaprev: {
+          fidget-nvim = luaprev.fidget-nvim.overrideAttrs (oa: {
+            version = "1.6.1-unstable-2026-04-01";
+            src = pkgs.fetchFromGitHub {
+              owner = "j-hui";
+              repo = "fidget.nvim";
+              rev = "889e2e96edef4e144965571d46f7a77bcc4d0ddf";
+              sha256 = "sha256-LQIqkEf6mH7LViyHKTFXm6y28/tLjxMGDP1oIHq8LkI=";
+            };
+          });
+        };
+      };
+
+      luajitPackages = final.luajit.pkgs;
+    };
     plugins = with pkgs.vimPlugins; [
       gruvbox-nvim
       nvim-colorizer-lua
@@ -204,10 +221,11 @@
             window = {
               align = "top",
               winblend = 0,
-              max_width = 200
+              max_width = 150
             },
             view = {
-              stack_upwards = false
+              stack_upwards = false,
+              reflow = true,
             }
           }
         })
