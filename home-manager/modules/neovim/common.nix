@@ -129,7 +129,12 @@
         vim.keymap.set({ "n", "x", "o" }, "<C-S-l>", "<Plug>(leap-anywhere)")
 
         local treesj = require("treesj")
-        treesj.setup({ use_default_keymaps = false })
+        treesj.setup({
+          use_default_keymaps = false,
+          langs = {
+            php = require("my-treesj.php")
+          }
+        })
         vim.keymap.set("n", "<C-S-a>", treesj.toggle, { desc = "Node action" })
 
         do
@@ -180,5 +185,6 @@
           { "vd", group = "Delete" },
         }, { "<Leader>" })
       '';
+    extraFiles.lua.my-treesj."php.lua" = ./common/treesj/php.lua;
   };
 }
