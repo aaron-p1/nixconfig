@@ -16,9 +16,7 @@
           filterAttrs
           ;
 
-        neovim-package-path =
-          ".\\\\#nixosConfigurations.aaron-pc.config"
-          + ".home-manager.users.aaron.within.neovim.finalPackage";
+        neovim-package-path = ".\\\\#nixosConfigurations.aaron-pc.config.home-manager.users.aaron.within.neovim.finalPackage";
 
         nix-inspect-bin = "${pkgs.nix-inspect}/bin/nix-inspect";
 
@@ -54,8 +52,8 @@
             ''
               local host = profile_conf.nixserver_host or "invalid"
 
-              Configs.utils.add_term_keymaps("<Leader>cpd", "deploy .\\\\#" .. host)
-              Configs.utils.add_term_keymaps("<Leader>cpb", "deploy --boot .\\\\#" .. host)
+              Configs.utils.add_term_keymaps("<Leader>cpd", "deploy .\\#" .. host)
+              Configs.utils.add_term_keymaps("<Leader>cpb", "deploy --boot .\\#" .. host)
               Configs.utils.add_term_keymaps("<Leader>cps", "ssh " .. host)
               Configs.utils.add_term_keymaps("<Leader>cpS", "ssh " .. host .. " -- exit")
 
