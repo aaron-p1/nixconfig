@@ -87,7 +87,17 @@
       thunderbird
       qalculate-gtk
       gImageReader
-      lunatask
+      (pkgs.symlinkJoin {
+        pname = "lunatask-fixed";
+        version = lunatask.version;
+        paths = [ lunatask ];
+        postBuild = ''
+          rm $out/share/applications/lunatask.desktop
+          cp ${lunatask}/share/applications/lunatask.desktop $out/share/applications/lunatask.desktop
+          substituteInPlace $out/share/applications/lunatask.desktop \
+            --replace-fail "--ozone-platform-hint=auto" "--ozone-platform-hint=x11"
+        '';
+      })
     ];
 
     stateVersion = "21.05";
