@@ -101,16 +101,24 @@ ls.add_snippets("php", {
       resolveExpandParams = function(_, line, _, captures)
         local prefix = captures[1]
 
+        -- if the prefix doesn't end with a valid character for method/field access, don't expand
         if not prefix:match("[a-zA-Z0-9_)%]]$") then
           return nil
         end
 
+        -- not in string
         local count_single = select(2, line:gsub("'", ""))
         local count_double = select(2, line:gsub('"', ""))
         if (count_single % 2 == 1) or (count_double % 2 == 1) then
           return nil
         end
 
+        -- if prefix is only numbers, it's likely a float, so don't expand
+        if prefix:match("^[0-9]+$") then
+          return nil
+        end
+
+        -- if it is not a variable, treat it as a class
         if prefix:match("^[a-zA-Z0-9_\\]+$") then
           return {trigger = ".", captures = {"::"}}
         end
