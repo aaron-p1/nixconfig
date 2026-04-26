@@ -40,7 +40,7 @@
         in
         if base == null then file else head base;
 
-      luaContent = pipe extraSnippetFiles [
+      snippetRequires = pipe extraSnippetFiles [
         (mapAttrsToList (
           file: _: # lua
           "require('${snippetScopeName}.${withoutExtension file}')"
@@ -122,7 +122,7 @@
         ''
       );
 
-      initSnippetLuaCode = pipe ./snippets/init [
+      initSnippets = pipe ./snippets/init [
         readDir
         (filterAttrs (_: v: v == "directory"))
         (mapAttrs (file: _: ./snippets/init + "/${file}"))
@@ -241,9 +241,9 @@
             shell_snippet("datetimei", { "date", "--iso-8601=seconds" }),
           })
 
-          ${luaContent}
+          ${snippetRequires}
 
-          ${initSnippetLuaCode}
+          ${initSnippets}
 
           return {
             lsp_expand = ls.lsp_expand
