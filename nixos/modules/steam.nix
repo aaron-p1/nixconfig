@@ -20,6 +20,8 @@ in
 
       remotePlay.openFirewall = false;
       dedicatedServer.openFirewall = false;
+
+      extraCompatPackages = [ pkgs.proton-ge-bin ];
     };
 
     environment.systemPackages = [
