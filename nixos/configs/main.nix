@@ -219,7 +219,6 @@
     corefonts
     noto-fonts
     source-han-sans
-    kanji-stroke-order-font
   ];
 
   boot.tmp = {
