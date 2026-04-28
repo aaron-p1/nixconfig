@@ -57,7 +57,7 @@ in
           FZF_BASE = "${pkgs.fzf}/share/fzf";
 
           # vi mode plugin
-          VI_MODE_SET_CURSOR = true;
+          VI_MODE_SET_CURSOR = 1;
           WD_CONFIG = "${config.xdg.configHome}/warprc";
         };
         initContent = ''

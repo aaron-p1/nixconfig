@@ -164,6 +164,8 @@ in
       enable = true;
       package = firefox;
 
+      configPath = ".mozilla/firefox";
+
       profiles.main = {
         id = 0;
         isDefault = true;
