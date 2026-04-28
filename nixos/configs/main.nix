@@ -85,10 +85,7 @@
 
     # ../modules/graphics/default.nix
     graphics = {
-      cosmic = {
-        enable = true;
-        greeter = true;
-      };
+      dms-niri.enable = true;
     };
 
     # ../modules/bluetooth.nix
@@ -220,6 +217,7 @@
 
   fonts.packages = with pkgs; [
     corefonts
+    noto-fonts
     source-han-sans
     kanji-stroke-order-font
   ];

@@ -7,6 +7,7 @@ in
     ./alacritty.nix
     ./chromium.nix
     ./direnv.nix
+    ./dms-niri
     ./easyeffects.nix
     ./firefox
     ./git.nix

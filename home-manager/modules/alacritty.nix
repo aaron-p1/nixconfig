@@ -11,6 +11,7 @@ let
     mkIf
     mapAttrsToList
     concatLists
+    optionals
     ;
 
   cfg = config.within.alacritty;
@@ -28,11 +29,17 @@ in
 
       settings = {
         window = {
+          opacity = if osConfig.within.graphics.dms-niri.enable then 0.95 else 1.0;
           dimensions = {
             lines = 28;
             columns = 100;
           };
-          decorations = lib.mkIf osConfig.services.desktopManager.cosmic.enable "None";
+          decorations = lib.mkIf (
+            osConfig.services.desktopManager.cosmic.enable || osConfig.within.graphics.dms-niri.enable
+          ) "None";
+        };
+        colors = {
+          transparent_background_colors = osConfig.within.graphics.dms-niri.enable;
         };
         font = {
           size = 9;
@@ -128,7 +135,8 @@ in
                 action = "SpawnNewInstance";
               }
             ]
-            ctrlShiftMappings
+            # for some reason it works natively on niri
+            (optionals (!osConfig.within.graphics.dms-niri.enable) ctrlShiftMappings)
           ];
       };
     };
