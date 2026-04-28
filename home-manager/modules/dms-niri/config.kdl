@@ -100,6 +100,11 @@ window-rule {
   open-floating true
 }
 
+window-rule {
+  match app-id="qalculate-gtk"
+  open-floating true
+}
+
 layer-rule {
     match namespace="dms:bar"
     background-effect {
