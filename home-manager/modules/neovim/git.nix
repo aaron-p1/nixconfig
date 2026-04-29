@@ -170,6 +170,11 @@
           vim.opt_local.includeexpr = "v:lua.Configs.git.patch_include()"
         '';
 
+      "gitcommit.lua" = # lua
+        ''
+          vim.g.editorconfig = false
+        '';
+
       "fugitive.lua" = # lua
         ''
           local log_count = 50
