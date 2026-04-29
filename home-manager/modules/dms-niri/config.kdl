@@ -34,13 +34,6 @@ layout {
   }
 
   default-column-width { proportion 0.5; }
-
-  struts {
-    left 8
-    right 8
-    top 8
-    bottom 8
-  }
 }
 
 hotkey-overlay {
