@@ -15,12 +15,6 @@ in
       file.".config/niri/config.kdl" = {
         source = ./config.kdl;
         force = true;
-        onChange = # bash
-          ''
-            touch /home/aaron/.config/niri/dynamic.kdl
-            mkdir -p /home/aaron/.config/niri/dms
-            touch /home/aaron/.config/niri/dms/{colors,layout,alttab,binds,cursor,outputs,windowrules,wpblur}.kdl
-          '';
       };
       packages = with pkgs; [
         playerctl
