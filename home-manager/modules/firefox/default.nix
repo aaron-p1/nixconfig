@@ -332,6 +332,17 @@ in
                 width: 220px !important;
               }
             }
+
+            menupopup, panel {
+              --panel-shadow-margin: 0 !important;
+              --panel-shadow: none !important;
+              -moz-window-shadow: none !important;
+            }
+
+            menupopup::part(content),
+            panel::part(content) {
+              box-shadow: none !important;
+            }
           '';
 
         userContent = # CSS
