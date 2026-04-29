@@ -309,6 +309,11 @@ cursor {
   xcursor-size 24
 }
 
+debug {
+  // fix firefox not getting focus when clicking links
+  honor-xdg-activation-with-invalid-serial
+}
+
 include "dms/colors.kdl"
 include "dms/layout.kdl"
 include "dms/alttab.kdl"
