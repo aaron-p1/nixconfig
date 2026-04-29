@@ -17,6 +17,7 @@ in
         compositor.name = "niri";
       };
       logind.settings.Login.HandlePowerKey = "ignore";
+      upower.enable = true;
     };
 
     programs = {
