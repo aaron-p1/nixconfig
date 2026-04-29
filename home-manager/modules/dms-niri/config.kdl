@@ -45,6 +45,30 @@ prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 window-rule {
+  match is-window-cast-target=true
+
+  focus-ring {
+    active-color "#ff0000"
+    inactive-color "#7d0d2d"
+  }
+
+  border {
+    on
+    inactive-color "#bb0d2d"
+  }
+
+  shadow {
+    on
+    color "#ff0000"
+  }
+
+  tab-indicator {
+    active-color "#f38ba8"
+    inactive-color "#7d0d2d"
+  }
+}
+
+window-rule {
   // This app-id regular expression will work for both:
   // - host Firefox (app-id is "firefox")
   // - Flatpak Firefox (app-id is "org.mozilla.firefox")
