@@ -93,6 +93,11 @@ window-rule {
 }
 
 window-rule {
+  match app-id=r#"firefox$"# title="About Mozilla Firefox"
+  open-floating true
+}
+
+window-rule {
   match app-id=r#"^org\.gnome\."#
   draw-border-with-background false
   geometry-corner-radius 12
