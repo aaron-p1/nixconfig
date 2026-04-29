@@ -279,7 +279,7 @@ binds {
   Mod+Ctrl+C { center-visible-columns; }
 
   Mod+Minus { set-column-width "-10%"; }
-  Mod+Equal { set-column-width "+10%"; }
+  Mod+Shift+0 { set-column-width "+10%"; }
 
   Mod+V       { toggle-window-floating; }
   Mod+Shift+V { switch-focus-between-floating-and-tiling; }
