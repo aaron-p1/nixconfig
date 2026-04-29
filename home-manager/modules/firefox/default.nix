@@ -202,6 +202,8 @@ in
           "middlemouse.paste" = false;
           "permissions.default.shortcuts" = 2;
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          # prevent emoji picker from overriding ctrl+.
+          "widget.gtk.native-emoji-dialog" = false;
         };
         extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           bitwarden
