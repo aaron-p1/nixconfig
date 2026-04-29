@@ -192,7 +192,7 @@ in
           "browser.uidensity" = 1;
           "browser.urlbar.trimURLs" = false;
           "devtools.theme" = "dark";
-          "devtools.toolbox.host" = "window";
+          "devtools.toolbox.host" = "bottom";
           "extensions.autoDisableScopes" = 15;
           "extensions.pocket.enabled" = false;
           "extensions.update.autoUpdateDefault" = false;
