@@ -10,10 +10,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.displayManager.dms-greeter = {
-      enable = true;
-      configHome = "/home/aaron";
-      compositor.name = "niri";
+    services = {
+      displayManager.dms-greeter = {
+        enable = true;
+        configHome = "/home/aaron";
+        compositor.name = "niri";
+      };
+      logind.settings.Login.HandlePowerKey = "ignore";
     };
 
     programs = {
