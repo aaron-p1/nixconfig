@@ -49,6 +49,10 @@ in
         server_names = [ "quad9-doh-ip4-port443-filter-pri" ];
 
         blocked_names.blocked_names_file = finalBlockList;
+        allowed_names.allowed_names_file = pkgs.writeText "allowed-names.txt" ''
+          # needed for google login
+          accounts.youtube.com
+        '';
 
         forwarding_rules = pkgs.writeText "forwarding-rules.txt" ''
           local     $DHCP
