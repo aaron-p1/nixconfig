@@ -39,5 +39,7 @@ in
 
       niri.enable = true;
     };
+
+    systemd.services.greetd.serviceConfig.Type = lib.mkForce "simple";
   };
 }

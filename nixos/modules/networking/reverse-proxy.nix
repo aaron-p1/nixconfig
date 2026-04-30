@@ -115,6 +115,9 @@ in
       // addedHosts;
     };
 
-    systemd.services.nginx.after = [ "dnscrypt-proxy.service" ];
+    systemd.services.nginx.after = [
+      "multi-user.target"
+      "dnscrypt-proxy.service"
+    ];
   };
 }

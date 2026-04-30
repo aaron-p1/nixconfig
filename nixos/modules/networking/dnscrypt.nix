@@ -79,11 +79,14 @@ in
 
     systemd = {
       services = {
-        dnscrypt-proxy.serviceConfig = {
-          # wait for sd_notify ready from service before being considered started
-          Type = "notify";
-          # needed for sd_notify
-          RestrictAddressFamilies = [ "AF_UNIX" ];
+        dnscrypt-proxy = {
+          after = [ "multi-user.target" ];
+          serviceConfig = {
+            # wait for sd_notify ready from service before being considered started
+            Type = "notify";
+            # needed for sd_notify
+            RestrictAddressFamilies = [ "AF_UNIX" ];
+          };
         };
 
         dns-gen-block-list = {
@@ -148,6 +151,8 @@ in
                 --time-restricted "" \
                 --allowlist ${allowList} \
                 --output-file $STATE_DIRECTORY/${publicBlockListFileName}
+
+              systemctl --no-block restart dns-auto-unblock.service
             '';
         };
 
@@ -155,7 +160,6 @@ in
           description = "Auto unblock domains on a certain day";
           startAt = "daily";
           wantedBy = [ "dnscrypt-proxy.service" ];
-          after = [ "dns-gen-block-list.service" ];
           serviceConfig = {
             Type = "oneshot";
             # for restarting when changed
@@ -169,7 +173,7 @@ in
             PUBLIC_BLOCK_LIST_FILE=$STATE_DIRECTORY/${publicBlockListFileName}
             TMP_COMBINED=$STATE_DIRECTORY/tmp-combined.txt
 
-            if [[ ! -f $PUBLIC_BLOCK_LIST_FILE ]]; then
+            if [[ ! -f $PUBLIC_BLOCK_LIST_FILE ]] && systemctl is-active -q network-online.target; then
               systemctl restart dns-gen-block-list.service
             fi
 
