@@ -8,7 +8,10 @@
     ];
     extraFiles.queries = {
       lua."injections.scm" = ./queries/lua/injections.scm;
-      nix."textobjects.scm" = ./queries/nix/textobjects.scm;
+      nix = {
+        "textobjects.scm" = ./queries/nix/textobjects.scm;
+        "injections.scm" = ./queries/nix/injections.scm;
+      };
       php = {
         "injections.scm" = ./queries/php/injections.scm;
         "textobjects.scm" = ./queries/php/textobjects.scm;
