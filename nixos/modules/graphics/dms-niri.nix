@@ -7,6 +7,9 @@ in
 {
   options.within.graphics.dms-niri = {
     enable = mkEnableOption "DMS + Niri";
+    greeter = {
+      afterGpu = mkEnableOption "Start the greeter after the GPU is available";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -40,6 +43,15 @@ in
       niri.enable = true;
     };
 
-    systemd.services.greetd.serviceConfig.Type = lib.mkForce "simple";
+    services.udev.extraRules = mkIf cfg.greeter.afterGpu ''
+      ACTION=="add", SUBSYSTEM=="drm", KERNEL=="card1", TAG+="systemd"
+    '';
+
+    systemd.services.greetd = {
+      serviceConfig.Type = lib.mkForce "simple";
+      # make sure the gpu is available
+      wants = mkIf cfg.greeter.afterGpu [ "dev-dri-card1.device" ];
+      after = mkIf cfg.greeter.afterGpu [ "dev-dri-card1.device" ];
+    };
   };
 }

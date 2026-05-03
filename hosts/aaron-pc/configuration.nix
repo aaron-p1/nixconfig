@@ -86,6 +86,10 @@
         };
       };
     };
+
+    graphics.dms-niri.greeter = {
+      afterGpu = true;
+    };
   };
 
   services.restic.backups.aaron-documents = {
