@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -17,7 +17,6 @@
     graphics.extraPackages = [ pkgs.intel-media-driver ];
     nvidia = {
       open = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
       modesetting.enable = true;
       nvidiaSettings = false;
       powerManagement.enable = true;
