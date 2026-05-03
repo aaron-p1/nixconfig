@@ -61,6 +61,8 @@
           snippets = { preset = "luasnip" },
 
           completion = {
+            keyword = { range = "full" },
+
             list = {
               selection = {
                 preselect = false,
