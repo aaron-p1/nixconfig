@@ -89,6 +89,10 @@
 
     graphics.dms-niri.greeter = {
       afterGpu = true;
+      output = {
+        name = "DVI-I-1";
+        mode = "1920x1080@144.001";
+      };
     };
   };
 
