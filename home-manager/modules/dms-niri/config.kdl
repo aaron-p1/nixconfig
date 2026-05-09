@@ -159,7 +159,7 @@ layer-rule {
 binds {
   // `wev` for finding key names
 
-  Mod+T { spawn "alacritty"; }
+  Mod+T { spawn-sh "alacritty msg create-window || alacritty"; }
   Mod+B { spawn "firefox"; }
 
   Mod+S { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
