@@ -164,6 +164,7 @@ binds {
 
   Mod+S { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
   Mod+N { spawn "dms" "ipc" "call" "notifications" "toggle"; }
+  Mod+P { spawn "dms" "ipc" "call" "clipboard" "toggle"; }
 
   Mod+Alt+L { spawn "dms" "ipc" "call" "lock" "lock"; }
 
