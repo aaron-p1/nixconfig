@@ -172,7 +172,7 @@
 
       "gitcommit.lua" = # lua
         ''
-          vim.g.editorconfig = false
+          vim.b.editorconfig = false
         '';
 
       "fugitive.lua" = # lua
