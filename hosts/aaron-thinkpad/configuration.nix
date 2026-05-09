@@ -19,8 +19,12 @@
       open = true;
       modesetting.enable = true;
       nvidiaSettings = false;
-      powerManagement.enable = true;
+      powerManagement = {
+        enable = true;
+        finegrained = true;
+      };
       prime = {
+        offload.enable = true;
         nvidiaBusId = "PCI:1:0:0";
         intelBusId = "PCI:0:2:0";
       };
