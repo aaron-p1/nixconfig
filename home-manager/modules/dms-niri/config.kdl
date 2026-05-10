@@ -149,9 +149,8 @@ window-rule {
 }
 
 layer-rule {
-    match namespace="dms:bar"
+    match namespace=r#"^dms:"#
     background-effect {
-        blur true
         xray false
     }
 }
