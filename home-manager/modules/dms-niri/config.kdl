@@ -139,7 +139,7 @@ window-rule {
 }
 
 window-rule {
-  match app-id="Lunatask"
+  match app-id=r#"lunatask"#
   default-column-width { proportion 1.0; }
 }
 
