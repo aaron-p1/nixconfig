@@ -10,6 +10,8 @@ let
   cfg = config.within.swap;
 in
 {
+  _class = "nixos";
+
   options.within.swap = {
     zram = mkOption {
       type = types.int;

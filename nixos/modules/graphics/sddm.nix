@@ -5,6 +5,8 @@ let
   cfg = config.within.graphics.sddm;
 in
 {
+  _class = "nixos";
+
   options.within.graphics.sddm = {
     enable = mkEnableOption "sddm";
   };

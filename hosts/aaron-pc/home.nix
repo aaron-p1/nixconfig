@@ -1,5 +1,7 @@
 { ... }:
 {
+  _class = "homeManager";
+
   within = {
     ssh.keyFiles = [
       "~/.ssh/id_ed25519_sk"

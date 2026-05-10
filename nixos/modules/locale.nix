@@ -5,6 +5,8 @@ let
   cfg = config.within.locale;
 in
 {
+  _class = "nixos";
+
   options.within.locale = {
     enable = mkEnableOption "my locale config";
   };

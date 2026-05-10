@@ -23,6 +23,8 @@ let
 
 in
 {
+  _class = "nixos";
+
   options.within.syncthing = {
     enable = mkEnableOption "syncthing";
 

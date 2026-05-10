@@ -1,5 +1,7 @@
 { modulesPath, lib, ... }:
 {
+  _class = "nixos";
+
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot = {

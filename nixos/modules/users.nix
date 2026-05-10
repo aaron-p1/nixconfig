@@ -21,6 +21,8 @@ let
   cfg = config.within.users;
 in
 {
+  _class = "nixos";
+
   options.within.users = mkOption {
     type = types.attrsOf (
       types.submodule (

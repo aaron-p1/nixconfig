@@ -23,6 +23,8 @@ let
     attributes: mapAttrsToList (pattern: attrs: "${pattern} ${toAttributeProperties attrs}") attributes;
 in
 {
+  _class = "homeManager";
+
   options.within.git = {
     enable = mkEnableOption "Git";
 

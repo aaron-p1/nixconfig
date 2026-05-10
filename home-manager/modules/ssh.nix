@@ -20,6 +20,8 @@ let
 
 in
 {
+  _class = "homeManager";
+
   options.within.ssh = {
     enable = mkEnableOption "SSH";
 

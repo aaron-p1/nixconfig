@@ -16,6 +16,8 @@ let
   cfg = config.within.tailscale;
 in
 {
+  _class = "nixos";
+
   options.within.tailscale = {
     enable = mkEnableOption "Tailscale";
 

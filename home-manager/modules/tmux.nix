@@ -10,6 +10,8 @@ let
   cfg = config.within.tmux;
 in
 {
+  _class = "homeManager";
+
   options.within.tmux = {
     enable = mkEnableOption "tmux";
   };

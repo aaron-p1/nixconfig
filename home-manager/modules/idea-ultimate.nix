@@ -10,6 +10,8 @@ let
   cfg = config.within.idea-ultimate;
 in
 {
+  _class = "homeManager";
+
   options.within.idea-ultimate = {
     enable = mkEnableOption "idea-ultimate";
   };

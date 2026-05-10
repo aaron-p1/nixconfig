@@ -10,6 +10,8 @@
 }:
 
 {
+  _class = "nixos";
+
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];

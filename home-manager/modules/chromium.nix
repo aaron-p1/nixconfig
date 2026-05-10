@@ -5,6 +5,8 @@ let
   cfg = config.within.chromium;
 in
 {
+  _class = "homeManager";
+
   options.within.chromium = {
     enable = mkEnableOption "Chromium";
   };

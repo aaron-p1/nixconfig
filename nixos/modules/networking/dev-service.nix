@@ -27,6 +27,8 @@ let
   );
 in
 {
+  _class = "nixos";
+
   options.within.networking.devService =
     let
       inherit (lib) mkEnableOption mkOption;

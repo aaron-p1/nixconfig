@@ -10,6 +10,8 @@ let
   cfg = config.within.graphics.cosmic;
 in
 {
+  _class = "nixos";
+
   options.within.graphics.cosmic = {
     enable = mkEnableOption "Cosmic Desktop";
     greeter = mkEnableOption "Cosmic Greeter";

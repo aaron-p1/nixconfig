@@ -240,6 +240,8 @@ let
       });
 in
 {
+  _class = "homeManager";
+
   imports = [
     ./utils.nix
     ./which-key.nix

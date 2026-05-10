@@ -5,6 +5,8 @@ let
   cfg = config.within.less;
 in
 {
+  _class = "nixos";
+
   options.within.less = {
     enable = mkEnableOption "Less";
   };

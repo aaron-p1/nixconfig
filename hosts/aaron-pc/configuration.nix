@@ -5,6 +5,8 @@
   ...
 }:
 {
+  _class = "nixos";
+
   imports = [
     ./hardware-configuration.nix
     ../../nixos/modules

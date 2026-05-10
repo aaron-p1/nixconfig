@@ -42,6 +42,8 @@ let
 
 in
 {
+  _class = "homeManager";
+
   options.within.easyeffects = {
     enable = mkEnableOption "Easyeffects";
   };

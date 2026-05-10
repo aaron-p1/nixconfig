@@ -16,6 +16,8 @@ let
   cfg = config.within.xdg;
 in
 {
+  _class = "homeManager";
+
   options.within.xdg = {
     enable = mkEnableOption "xdg config";
 

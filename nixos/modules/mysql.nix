@@ -10,6 +10,8 @@ let
   cfg = config.within.mysql;
 in
 {
+  _class = "nixos";
+
   options.within.mysql = {
     enable = mkEnableOption "MySQL";
   };

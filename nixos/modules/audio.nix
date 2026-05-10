@@ -5,6 +5,8 @@ let
   cfg = config.within.audio;
 in
 {
+  _class = "nixos";
+
   options.within.audio = {
     pipewire.enable = mkEnableOption "pipewire";
   };

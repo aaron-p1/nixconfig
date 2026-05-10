@@ -17,6 +17,8 @@ let
   cfg = config.within.alacritty;
 in
 {
+  _class = "homeManager";
+
   options.within.alacritty = {
     enable = mkEnableOption "Alacritty";
   };

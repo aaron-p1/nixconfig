@@ -10,6 +10,8 @@ let
   cfg = config.within.steam;
 in
 {
+  _class = "nixos";
+
   options.within.steam = {
     enable = mkEnableOption "Steam";
   };

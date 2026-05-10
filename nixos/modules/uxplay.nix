@@ -10,6 +10,8 @@ let
   cfg = config.within.uxplay;
 in
 {
+  _class = "nixos";
+
   options.within.uxplay = {
     enable = mkEnableOption "Enable uxplay";
   };

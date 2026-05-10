@@ -51,6 +51,8 @@ let
   '';
 in
 {
+  _class = "homeManager";
+
   options.within.shellScripts = {
     enable = mkEnableOption "Enable common shell scripts";
   };

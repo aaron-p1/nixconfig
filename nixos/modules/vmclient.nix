@@ -5,6 +5,8 @@ let
   cfg = config.within.vmclient;
 in
 {
+  _class = "nixos";
+
   options.within.vmclient = {
     enable = mkEnableOption "VmClient config";
   };

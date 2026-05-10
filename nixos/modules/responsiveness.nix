@@ -70,6 +70,8 @@ let
   };
 in
 {
+  _class = "nixos";
+
   options.within.responsiveness = {
     enable = mkEnableOption "Enable responsiveness module";
 

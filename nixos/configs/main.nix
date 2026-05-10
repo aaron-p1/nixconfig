@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 {
+  _class = "nixos";
+
   imports = [ ../modules ];
 
   within = {

@@ -3,6 +3,8 @@ let
   inherit (lib) mkOption types;
 in
 {
+  _class = "nixos";
+
   imports = [
     ./graphics
     ./networking

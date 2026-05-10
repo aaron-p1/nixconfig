@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  _class = "nixos";
+
   imports = [
     ./hardware-configuration.nix
     ../../nixos/modules

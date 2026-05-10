@@ -20,6 +20,8 @@ let
   finalBlockList = "/var/lib/${dnsFilteringStateDir}/${finalBlockListFileName}";
 in
 {
+  _class = "nixos";
+
   options.within.networking.dnscrypt = {
     enable = mkEnableOption "Dnscrypt";
 

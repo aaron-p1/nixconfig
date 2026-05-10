@@ -6,6 +6,8 @@ let
   cfg = config.within.networking;
 in
 {
+  _class = "nixos";
+
   imports = [
     ./dnscrypt.nix
     ./reverse-proxy.nix

@@ -10,6 +10,8 @@ let
   cfg = config.within.man;
 in
 {
+  _class = "nixos";
+
   options.within.man = {
     enable = mkEnableOption "Man pages";
   };

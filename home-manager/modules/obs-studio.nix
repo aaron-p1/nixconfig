@@ -5,6 +5,8 @@ let
   cfg = config.within.obs-studio;
 in
 {
+  _class = "homeManager";
+
   options.within.obs-studio = {
     enable = mkEnableOption "OBS Studio";
   };

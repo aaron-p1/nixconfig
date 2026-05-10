@@ -15,6 +15,8 @@ let
   cfg = config.within.pam;
 in
 {
+  _class = "nixos";
+
   options.within.pam = {
     u2f = {
       enable = mkEnableOption "pamu2f mappings";

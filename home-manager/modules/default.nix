@@ -3,6 +3,8 @@ let
   inherit (lib) mkOption types;
 in
 {
+  _class = "homeManager";
+
   imports = [
     ./alacritty.nix
     ./chromium.nix

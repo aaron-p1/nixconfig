@@ -1,1 +1,4 @@
-{ pkgs, ... }: { }
+{ ... }:
+{
+  _class = "homeManager";
+}

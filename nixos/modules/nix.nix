@@ -18,6 +18,8 @@ let
   cfg = config.within.nix;
 in
 {
+  _class = "nixos";
+
   options.within.nix = {
     enable = mkEnableOption "nix config";
     emulatedSystems = mkOption {

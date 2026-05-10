@@ -5,6 +5,8 @@ let
   cfg = config.within.graphics.xserver;
 in
 {
+  _class = "nixos";
+
   options.within.graphics.xserver = {
     enable = mkEnableOption "XServer";
   };

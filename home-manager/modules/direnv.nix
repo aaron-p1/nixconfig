@@ -5,6 +5,8 @@ let
   cfg = config.within.direnv;
 in
 {
+  _class = "homeManager";
+
   options.within.direnv = {
     enable = mkEnableOption "Direnv";
   };

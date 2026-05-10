@@ -1,4 +1,6 @@
 _: {
+  _class = "nixos";
+
   imports = [
     ./cosmic.nix
     ./dms-niri.nix

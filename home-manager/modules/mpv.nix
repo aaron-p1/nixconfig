@@ -40,6 +40,8 @@ let
   ];
 in
 {
+  _class = "homeManager";
+
   options.within.mpv = {
     enable = mkEnableOption "mpv";
   };

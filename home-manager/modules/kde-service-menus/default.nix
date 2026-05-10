@@ -81,6 +81,8 @@ let
   '';
 in
 {
+  _class = "homeManager";
+
   config = {
     home.packages =
       let

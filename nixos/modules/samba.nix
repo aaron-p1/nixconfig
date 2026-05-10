@@ -5,6 +5,8 @@ let
   cfg = config.within.samba;
 in
 {
+  _class = "nixos";
+
   options.within.samba = {
     enable = mkEnableOption "Samba";
   };

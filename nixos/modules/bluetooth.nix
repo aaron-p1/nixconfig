@@ -5,6 +5,8 @@ let
   cfg = config.within.bluetooth;
 in
 {
+  _class = "nixos";
+
   options.within.bluetooth = {
     enable = mkEnableOption "Bluetooth";
   };

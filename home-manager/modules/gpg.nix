@@ -10,6 +10,8 @@ let
   cfg = config.within.gpg;
 in
 {
+  _class = "homeManager";
+
   options.within.gpg = {
     enable = mkEnableOption "Gpg";
   };

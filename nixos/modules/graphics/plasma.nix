@@ -10,6 +10,8 @@ let
   cfg = config.within.graphics.plasma;
 in
 {
+  _class = "nixos";
+
   options.within.graphics.plasma = {
     enable = mkEnableOption "Plasma Desktop";
     kdeConnect = mkEnableOption "Kde Connect";

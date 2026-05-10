@@ -155,6 +155,8 @@ let
       };
 in
 {
+  _class = "homeManager";
+
   options.within.firefox = {
     enable = mkEnableOption "Firefox";
   };

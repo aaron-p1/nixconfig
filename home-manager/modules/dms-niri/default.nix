@@ -10,6 +10,8 @@ let
   osCfg = osConfig.within.graphics.dms-niri;
 in
 {
+  _class = "homeManager";
+
   config = mkIf osCfg.enable {
     home = {
       file.".config/niri/config.kdl" = {

@@ -11,6 +11,8 @@ let
   cfg = config.within.nsxiv;
 in
 {
+  _class = "homeManager";
+
   options.within.nsxiv = {
     enable = mkEnableOption "nsxiv";
   };

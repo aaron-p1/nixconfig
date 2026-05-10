@@ -10,6 +10,8 @@ let
   cfg = config.within.libreoffice;
 in
 {
+  _class = "homeManager";
+
   options.within.libreoffice = {
     enable = mkEnableOption "Libre Office";
   };

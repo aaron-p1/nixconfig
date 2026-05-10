@@ -20,6 +20,8 @@ let
   cfg = config.within.containers;
 in
 {
+  _class = "nixos";
+
   options.within.containers = {
     enable = mkEnableOption "container support";
     enableNvidia = mkEnableOption "NVIDIA container support";

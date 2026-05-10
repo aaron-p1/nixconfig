@@ -10,6 +10,8 @@ let
   cfg = config.within.ssh;
 in
 {
+  _class = "nixos";
+
   options.within.ssh = {
     enable = mkEnableOption "SSH";
   };

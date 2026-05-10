@@ -16,6 +16,8 @@ let
   cfg = config.within.graphics.dms-niri;
 in
 {
+  _class = "nixos";
+
   options.within.graphics.dms-niri = {
     enable = mkEnableOption "DMS + Niri";
     greeter = {

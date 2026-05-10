@@ -57,6 +57,8 @@ let
   addedHosts = listToAttrs (flatten (mapAttrsToList hostMapping cfg.devHosts));
 in
 {
+  _class = "nixos";
+
   options.within.networking.reverseProxy = {
     enable = mkEnableOption "Reverse Proxy";
 

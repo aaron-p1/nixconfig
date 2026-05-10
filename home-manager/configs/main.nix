@@ -5,6 +5,8 @@
   ...
 }:
 {
+  _class = "homeManager";
+
   imports = [ ../modules ];
 
   within = {

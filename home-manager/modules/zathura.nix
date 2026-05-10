@@ -5,6 +5,8 @@ let
   cfg = config.within.zathura;
 in
 {
+  _class = "homeManager";
+
   options.within.zathura = {
     enable = mkEnableOption "Zathura";
   };

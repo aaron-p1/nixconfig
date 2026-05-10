@@ -10,6 +10,8 @@ let
   cfg = config.within.zsh;
 in
 {
+  _class = "homeManager";
+
   options.within.zsh = {
     enable = mkEnableOption "ZSH";
   };

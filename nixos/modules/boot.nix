@@ -15,6 +15,8 @@ let
   cfg = config.within.boot;
 in
 {
+  _class = "nixos";
+
   options.within.boot = {
     grub = mkEnableOption "Grub bootloader";
     efiMountPoint = mkOption {

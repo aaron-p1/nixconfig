@@ -5,6 +5,8 @@ let
   cfg = config.within.graphics.gdm;
 in
 {
+  _class = "nixos";
+
   options.within.graphics.gdm = {
     enable = mkEnableOption "GDM";
   };
