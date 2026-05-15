@@ -6,6 +6,8 @@ in
   _class = "homeManager";
 
   imports = [
+    ./utils
+
     ./alacritty.nix
     ./chromium.nix
     ./direnv.nix

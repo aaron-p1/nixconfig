@@ -18,11 +18,32 @@ in
         source = ./config.kdl;
         force = true;
       };
+      jsonPatch.".config/DankMaterialShell/settings.json".patch = ops: {
+        # workspaceSwitcher
+        showWorkspaceApps = true;
+        groupWorkspaceApps = false;
+        maxWorkspaceIcons = 8; # number window icons per workspace
+
+        notificationOverlayEnabled = true; # enable notifications over full screen apps
+
+        barConfigs = ops.byField {
+          id.default = {
+            noBackground = true; # no widget background
+
+            rightWidgets = ops.byField {
+              id.memUsage = {
+                showSwap = true;
+                minimumWidth = true; # the "Force Padding" setting
+              };
+            };
+          };
+        };
+      };
       packages = with pkgs; [
         playerctl
         brightnessctl
         xwayland-satellite
-        nautilus
+        kdePackages.dolphin
       ];
     };
   };
