@@ -15,7 +15,7 @@
       enable = true;
       desktopEntries = {
         enable = true;
-        terminal.nixconfig = true;
+        terminal.nixconfig = false;
       };
     };
 
@@ -26,7 +26,7 @@
     zsh.enable = true;
 
     # ../modules/tmux.nix
-    tmux.enable = true;
+    tmux.enable = false;
 
     # ../modules/alacritty.nix
     alacritty.enable = true;
@@ -59,7 +59,7 @@
     zathura.enable = true;
 
     # ../modules/obs-studio.nix
-    obs-studio.enable = true;
+    obs-studio.enable = false;
 
     # ../modules/idea-ultimate.nix
     idea-ultimate.enable = false;
@@ -84,6 +84,8 @@
       hunspell
       hunspellDicts.en_US
       hunspellDicts.de_DE
+
+      anki
 
       telegram-desktop
       thunderbird

@@ -147,14 +147,14 @@
     tailscale = {
       enable = true;
       download = {
-        enable = true;
+        enable = false;
         owner = "aaron:users";
         dir = "/home/aaron/Downloads/Tailscale";
       };
     };
 
     # ../modules/uxplay.nix
-    uxplay.enable = true;
+    uxplay.enable = false;
   };
 
   systemd = {
@@ -199,8 +199,6 @@
 
       restic
 
-      anki
-
       local.initdev
     ];
     sessionVariables = {
@@ -235,7 +233,7 @@
     # needs to be disabled because it interferes with git signing
     # pcscd.enable = true;
     printing = {
-      enable = true;
+      enable = false;
       drivers = [ pkgs.hplip ];
     };
     # for printer discovery
