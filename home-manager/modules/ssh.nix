@@ -48,27 +48,27 @@ in
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = recursiveUpdate {
+      settings = recursiveUpdate {
         "*" = {
-          identityFile = mkIf (cfg.keyFiles != [ ]) cfg.keyFiles;
-          controlMaster = "auto";
-          controlPath = "~/.ssh/sockets/%r@%n:%p";
-          controlPersist = "8h";
+          IdentityFile = mkIf (cfg.keyFiles != [ ]) cfg.keyFiles;
+          ControlMaster = "auto";
+          ControlPath = "~/.ssh/sockets/%r@%n:%p";
+          ControlPersist = "8h";
         };
         pc = {
-          hostname = "aaron-pc";
-          user = "aaron";
-          port = 25566;
+          Hostname = "aaron-pc";
+          User = "aaron";
+          Port = 25566;
         };
         laptop = {
-          hostname = "aaron-laptop";
-          user = "aaron";
-          port = 25566;
+          Hostname = "aaron-laptop";
+          User = "aaron";
+          Port = 25566;
         };
         thinkpad = {
-          hostname = "aaron-thinkpad";
-          user = "aaron";
-          port = 25566;
+          Hostname = "aaron-thinkpad";
+          User = "aaron";
+          Port = 25566;
         };
       } additionalHosts;
     };

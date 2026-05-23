@@ -4,6 +4,8 @@
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.follows = "unstable";
 
+    nixpkgs-2511.url = "github:nixos/nixpkgs/nixos-25.11";
+
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nur.url = "github:nix-community/NUR";
@@ -20,6 +22,7 @@
       stable,
       unstable,
       nixpkgs,
+      nixpkgs-2511,
       flake-utils,
       nixos-hardware,
       nur,
@@ -33,6 +36,11 @@
         nur.overlays.default
         (import ./localpkgs { inherit inputs; })
         (import ./dotfiles { })
+        (final: prev: {
+          # for node 20
+          # home-manager/modules/neovim/dap/php.nix
+          nixpkgs-2511 = import nixpkgs-2511 { inherit (final.stdenv.hostPlatform) system; };
+        })
       ];
     in
     {
