@@ -21,7 +21,6 @@ in
     ./mpv.nix
     ./neovim
     ./nsxiv
-    ./obs-studio.nix
     ./shell-scripts.nix
     ./ssh.nix
     ./tmux.nix

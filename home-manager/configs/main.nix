@@ -49,9 +49,6 @@
     # ../modules/zathura.nix
     zathura.enable = true;
 
-    # ../modules/obs-studio.nix
-    obs-studio.enable = false;
-
     # ../modules/idea-ultimate.nix
     idea-ultimate.enable = false;
 
