@@ -3,7 +3,6 @@ _: {
 
   imports = [
     ./dms-niri.nix
-    ./gdm.nix
     ./plasma.nix
     ./sddm.nix
     ./xserver.nix
