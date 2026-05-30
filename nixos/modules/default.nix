@@ -15,7 +15,6 @@ in
     ./less.nix
     ./locale.nix
     ./man.nix
-    ./mysql.nix
     ./nix.nix
     ./ssh.nix
     ./pam.nix
