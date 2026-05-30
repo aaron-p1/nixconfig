@@ -11,13 +11,7 @@
 
   within = {
     # ../modules/xdg.nix
-    xdg = {
-      enable = true;
-      desktopEntries = {
-        enable = true;
-        terminal.nixconfig = false;
-      };
-    };
+    xdg.enable = true;
 
     # ../modules/ssh.nix
     ssh.enable = true;
