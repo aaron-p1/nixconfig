@@ -23,11 +23,6 @@
     };
   };
 
-  fileSystems."/mnt/data" = {
-    device = "/dev/disk/by-label/Data";
-    fsType = "ext4";
-  };
-
   boot.kernelParams = lib.mkIf (config.specialisation != { }) [
     "retbleed=stuff"
   ];
@@ -96,24 +91,6 @@
         mode = "1920x1080@144.001";
       };
     };
-  };
-
-  services.restic.backups.aaron-documents = {
-    paths = [ "/home/aaron/Documents" ];
-    repository = "/mnt/data/backup/restic";
-    initialize = true;
-    user = "aaron";
-    passwordFile = "/etc/secrets/restic_local";
-    timerConfig = {
-      OnCalendar = "12,21:00";
-      Persistent = true;
-    };
-    pruneOpts = [
-      "--keep-within 7d"
-      "--keep-weekly 5"
-      "--keep-monthly 12"
-      "--keep-yearly 75"
-    ];
   };
 
   services = {
