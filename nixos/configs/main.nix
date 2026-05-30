@@ -81,9 +81,7 @@
     man.enable = true;
 
     # ../modules/graphics/default.nix
-    graphics = {
-      dms-niri.enable = true;
-    };
+    graphics.dms-niri.enable = true;
 
     # ../modules/bluetooth.nix
     bluetooth.enable = true;
@@ -108,14 +106,7 @@
     samba.enable = false;
 
     # ../modules/tailscale.nix
-    tailscale = {
-      enable = true;
-      download = {
-        enable = false;
-        owner = "aaron:users";
-        dir = "/home/aaron/Downloads/Tailscale";
-      };
-    };
+    tailscale.enable = true;
 
     # ../modules/uxplay.nix
     uxplay.enable = false;
