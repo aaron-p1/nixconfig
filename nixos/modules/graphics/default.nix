@@ -4,6 +4,5 @@ _: {
   imports = [
     ./dms-niri.nix
     ./plasma.nix
-    ./xserver.nix
   ];
 }
