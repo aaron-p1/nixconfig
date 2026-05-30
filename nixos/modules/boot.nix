@@ -24,11 +24,6 @@ in
       default = "/boot";
       description = "Dir to mount efi on";
     };
-    supportedFilesystems = mkOption {
-      type = types.attrsOf types.bool;
-      default = { };
-      description = "Supported filesystems";
-    };
     kernelPackages = mkOption {
       type = types.unspecified;
       default = pkgs.linuxPackages;
@@ -38,7 +33,7 @@ in
 
   config = mkIf cfg.grub {
     boot = {
-      inherit (cfg) kernelPackages supportedFilesystems;
+      inherit (cfg) kernelPackages;
       loader = {
         timeout = 2;
         efi = {
