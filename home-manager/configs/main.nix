@@ -49,9 +49,6 @@
     # ../modules/zathura.nix
     zathura.enable = true;
 
-    # ../modules/libreoffice.nix
-    libreoffice.enable = false;
-
     # ../modules/shell-scripts.nix
     shellScripts.enable = true;
 

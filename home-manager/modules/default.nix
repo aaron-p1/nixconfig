@@ -16,7 +16,6 @@ in
     ./git.nix
     ./gpg.nix
     ./kde-service-menus
-    ./libreoffice.nix
     ./mpv.nix
     ./neovim
     ./nsxiv
