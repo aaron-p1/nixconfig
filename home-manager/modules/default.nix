@@ -15,7 +15,6 @@ in
     ./firefox
     ./git.nix
     ./gpg.nix
-    ./kde-service-menus
     ./mpv.nix
     ./neovim
     ./nsxiv
