@@ -30,7 +30,6 @@
         "sd_mod"
         "rtsx_pci_sdmmc"
       ];
-      kernelModules = [ ];
 
       luks.devices."cryptroot" = {
         device = "/dev/disk/by-uuid/d21e14e9-2d33-441f-88bd-e303981248e3";
@@ -60,7 +59,6 @@
     };
 
     kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [ ];
   };
 
   fileSystems = {
@@ -78,8 +76,6 @@
       ];
     };
   };
-
-  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
