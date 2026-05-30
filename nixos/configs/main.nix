@@ -148,8 +148,6 @@
       file
       mediainfo
       neovim
-      file
-      mediainfo
       jq
 
       restic
