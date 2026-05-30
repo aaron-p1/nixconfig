@@ -110,8 +110,6 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [ mangohud ];
-
   virtualisation.libvirtd = {
     enable = false;
     qemu = {
