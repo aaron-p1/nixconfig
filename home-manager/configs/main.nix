@@ -34,9 +34,6 @@
     # ../modules/direnv.nix
     direnv.enable = true;
 
-    # ../modules/easyeffects.nix
-    easyeffects.enable = false;
-
     # ../modules/firefox.nix
     firefox.enable = true;
 
