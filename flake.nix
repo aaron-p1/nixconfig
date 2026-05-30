@@ -34,7 +34,6 @@
       overlays = [
         (final: prev: { stable = import stable { inherit (final.stdenv.hostPlatform) system; }; })
         nur.overlays.default
-        (import ./localpkgs { inherit inputs; })
         (final: prev: {
           # for node 20
           # home-manager/modules/neovim/dap/php.nix

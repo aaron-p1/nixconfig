@@ -198,8 +198,6 @@
       jq
 
       restic
-
-      local.initdev
     ];
     sessionVariables = {
       XDG_CACHE_HOME = "\${HOME}/.cache";
