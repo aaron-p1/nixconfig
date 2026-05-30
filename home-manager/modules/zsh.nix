@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 let
   inherit (lib) mkEnableOption mkIf;
 
@@ -43,31 +38,21 @@ in
           nvimgit = "nvim +Git +'bdelete 1'";
           # run editor with git (e already exists)
           eg = "nvim +Git +'bdelete 1'";
-          update-nvim-packer = "nvim +PackerSync";
-
-          ns = "NIXPKGS_ALLOW_UNFREE=1 nix shell --impure";
-          nr = "NIXPKGS_ALLOW_UNFREE=1 nix run --impure";
 
           ssh = "TERM=xterm-256color ssh";
-
-          "??" = "copilot-cli shell";
-          "?git" = "copilot-cli git";
         };
         sessionVariables = {
           LANG = "en_US.UTF-8";
           LANGUAGE = "en_US.UTF-8";
-          FZF_BASE = "${pkgs.fzf}/share/fzf";
 
           # vi mode plugin
           VI_MODE_SET_CURSOR = 1;
           WD_CONFIG = "${config.xdg.configHome}/warprc";
         };
-        initContent = ''
-          setopt HIST_IGNORE_ALL_DUPS
-        '';
         history = {
           append = true;
           ignoreDups = true;
+          ignoreAllDups = true;
           share = false;
           ignoreSpace = true;
           path = "${config.xdg.dataHome}/zsh/zsh_history";
