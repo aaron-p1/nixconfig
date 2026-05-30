@@ -41,7 +41,7 @@ in
         message = ''
           Host file does not start with {. If it's encrypted you could
           set within.enableEncryptedFileOptions to false in home-manager config.
-        ''; # }}
+        '';
       }
     ];
 
