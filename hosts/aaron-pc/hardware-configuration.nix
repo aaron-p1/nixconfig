@@ -1,4 +1,4 @@
-{ modulesPath, lib, ... }:
+{ modulesPath, ... }:
 {
   _class = "nixos";
 
@@ -6,7 +6,6 @@
 
   boot = {
     kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [ ];
 
     initrd = {
       availableKernelModules = [
@@ -17,7 +16,6 @@
         "usb_storage"
         "sd_mod"
       ];
-      kernelModules = [ ];
     };
   };
 
@@ -45,8 +43,4 @@
       fsType = "vfat";
     };
   };
-
-  swapDevices = [ ];
-
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }
