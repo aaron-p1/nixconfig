@@ -9,7 +9,6 @@ in
     ./utils
 
     ./alacritty.nix
-    ./chromium.nix
     ./direnv.nix
     ./dms-niri
     ./firefox
