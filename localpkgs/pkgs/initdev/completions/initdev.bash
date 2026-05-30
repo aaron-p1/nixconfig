@@ -10,4 +10,4 @@ _initdev() {
   mapfile -t COMPREPLY < <(compgen -W "$files" -- "${COMP_WORDS[COMP_CWORD]}")
 }
 
-complete -F _gotmux gotmux
+complete -F _initdev initdev
