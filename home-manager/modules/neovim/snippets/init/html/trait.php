@@ -1,3 +1,4 @@
+# file=.php$
 <?php
 
 namespace $1;

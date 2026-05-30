@@ -1,8 +1,9 @@
+# file=.php$
 <?php
 
 namespace $1;
 
-enum $2
+class $2
 {
 	$0
 }
