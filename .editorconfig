@@ -18,4 +18,5 @@ indent_size = 2
 indent_size = unset
 
 [*.md]
+indent_size = unset
 trim_trailing_whitespace = false

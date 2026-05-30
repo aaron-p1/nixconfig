@@ -9,33 +9,34 @@ Useful parts should be copied and adapted to your own config.
 
 2. Generate config
 
-  Mount drives to /mnt
+   Mount drives to /mnt
 
-  ```bash
-  nixos-generate-config --root /mnt
-  ```
+   ```bash
+   nixos-generate-config --root /mnt
+   ```
 
 3. Add new host to config
 
-  ```bash
-  git clone https://github.com/aaron-p1/nixconfig.git
-  ```
+   ```bash
+   git clone https://github.com/aaron-p1/nixconfig.git
+   ```
 
-  Copy generated config (/mnt/etc/nixos) to new host directory and change it like the other hosts.
+   Copy generated config (/mnt/etc/nixos) to new host directory and change it like the other hosts.
 
-  Add entry to flake.nix
+   Add entry to flake.nix
 
 4. Install system
-  Copy repo to /mnt/etc/nixos with:
 
-  ```bash
-  sudo nix-shell -p pkgs.gnumake --command 'make new'
-  ```
+   Copy repo to /mnt/etc/nixos with:
 
-  Build system
+   ```bash
+   sudo nix-shell -p pkgs.gnumake --command 'make new'
+   ```
 
-  ```bash
-  sudo nix-shell -p pkgs.nixUnstable --command 'cd /mnt/etc/nixos && nixos-install --impure --flake .#HOSTNAME'
-  ```
+   Build system
 
-  Reboot
+   ```bash
+   sudo nix-shell -p pkgs.nixUnstable --command 'cd /mnt/etc/nixos && nixos-install --impure --flake .#HOSTNAME'
+   ```
+
+   Reboot
