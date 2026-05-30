@@ -6,7 +6,6 @@ local s = ls.snippet
 local sn = ls.snippet_node
 local t = ls.text_node
 local i = ls.insert_node
-local isn = ls.indent_snippet_node
 local c = ls.choice_node
 local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
@@ -37,12 +36,13 @@ ls.add_snippets("php", {
   s("posf", t("protected static function ")),
   s("pisf", t("private static function ")),
 
-  s("fn", fmta("<> function <>(<>)<><>\n{\n\t<>\n}", {
+  s("fn", fmta("<> <>function <>(<>)<><>\n{\n\t<>\n}", {
     c(1, { t("public"), t("protected"), t("private") }),
-    i(2, "functionName"),
-    i(3),
-    n(4, ": "),
+    c(2, { t(""), t("static ") }),
+    i(3, "functionName"),
     i(4),
+    n(5, ": "),
+    i(5),
     i(0),
   }), { condition = conds.line_begin }),
   s("fn", fmta("function (<>) <><><>{\n\t<>\n}", {
@@ -52,7 +52,7 @@ ls.add_snippets("php", {
     n(2, ") "),
     i(0),
   }), { condition = -conds.line_begin }),
-  s("fnn", fmta("fn (<>) =>> <>", { i(1), i(0) })),
+  s("fnn", fmt("fn ({}) => {}", { i(1), i(0) })),
   s("phpdoc", fmta("/**\n * <>\n */", i(0))),
 
   -- for
