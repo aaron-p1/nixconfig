@@ -49,9 +49,6 @@
     # ../modules/zathura.nix
     zathura.enable = true;
 
-    # ../modules/idea-ultimate.nix
-    idea-ultimate.enable = false;
-
     # ../modules/libreoffice.nix
     libreoffice.enable = false;
 
