@@ -21,7 +21,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.desktopManager.plasma6.enable = true;
+    services = {
+      desktopManager.plasma6.enable = true;
+      displayManager.sddm = {
+        enable = true;
+        autoNumlock = true;
+      };
+    };
 
     environment.plasma6.excludePackages = with pkgs.kdePackages; [
       kate
