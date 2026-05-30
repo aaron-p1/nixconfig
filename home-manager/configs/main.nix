@@ -1,9 +1,4 @@
-{
-  pkgs,
-  osConfig,
-  lib,
-  ...
-}:
+{ pkgs, osConfig, ... }:
 {
   _class = "homeManager";
 
@@ -85,13 +80,4 @@
 
   # silence warnings because of old stateVersion
   programs.swaylock.enable = false;
-
-  # not working yet because cosmic overrides QT_QPA_PLATFORMTHEME
-  qt = lib.mkIf (osConfig.services.desktopManager.cosmic.enable == true) {
-    enable = true;
-    platformTheme.name = "qtct";
-    style = {
-      name = "Breeze";
-    };
-  };
 }
