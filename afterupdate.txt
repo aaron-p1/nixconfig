@@ -1,8 +1,0 @@
---------------------------------------------------------------------------------
-Broken Stuff:
-  nixos:
-    podman user service not finding newuidmap:
-      https://github.com/NixOS/nixpkgs/issues/138423
-      workaround:
-        https://github.com/NixOS/nixpkgs/issues/138423#issuecomment-947888673
---------------------------------------------------------------------------------

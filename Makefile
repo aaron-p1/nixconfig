@@ -29,11 +29,6 @@ existing new:
 ${rebuildCmds}: existing
 	nixos-rebuild ${nixargs} $@
 
-update:
-	cat ./afterupdate.txt
-	@read -p "Update? " -n 1 -r ; echo ; [[ "$$REPLY" =~ ^[YyJj]$$ ]]
-	nix flake update
-
 listChanges:
 	ls -d1 /nix/var/nix/profiles/system-*-link | sort -V | tail -n 2 | xargs nix store diff-closures | less
 
@@ -62,4 +57,4 @@ check-release-notes-home-manager: flakeInputName := home-manager
 check-release-notes-home-manager: showLine := ^===
 check-release-notes-home-manager: check-release-notes
 
-.PHONY: default existing new ${rebuildCmds} update listChanges check-release-notes check-release-notes-home-manager
+.PHONY: default existing new ${rebuildCmds} listChanges check-release-notes check-release-notes-home-manager
