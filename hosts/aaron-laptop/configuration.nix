@@ -49,11 +49,6 @@
 
     swap.file = 20;
 
-    syncthing.folders = {
-      thl.devices = [ "aaron-pc" ];
-      work.devices = [ "aaron-pc" ];
-    };
-
     containers.enableNvidia = true;
 
     responsiveness = {

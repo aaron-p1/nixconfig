@@ -107,34 +107,6 @@
     # ../modules/samba.nix
     samba.enable = false;
 
-    # ../modules/syncthing.nix
-    syncthing = {
-      enable = false;
-      user = "aaron";
-      group = "users";
-      guiAddress = "${config.within.networking.localDomains.syncthing}:8000";
-      deviceIDFile = ../../secrets/inline-secrets/syncthing-device-ids.json;
-
-      folders = {
-        thl = {
-          path = "/home/aaron/Documents/thl";
-          ignorePerms = false;
-          versioning = {
-            type = "simple";
-            params.keep = "3";
-          };
-        };
-        work = {
-          path = "/home/aaron/Documents/work/";
-          ignorePerms = false;
-          versioning = {
-            type = "simple";
-            params.keep = "3";
-          };
-        };
-      };
-    };
-
     # ../modules/tailscale.nix
     tailscale = {
       enable = true;

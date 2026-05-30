@@ -23,7 +23,6 @@ in
     ./samba.nix
     ./steam.nix
     ./swap.nix
-    ./syncthing.nix
     ./tailscale.nix
     ./uxplay.nix
     ./vmclient.nix

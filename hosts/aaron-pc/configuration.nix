@@ -49,11 +49,6 @@
     # ../../nixos/modules/swap.nix
     swap.file = 32;
 
-    syncthing.folders = {
-      thl.devices = [ "aaron-laptop" ];
-      work.devices = [ "aaron-laptop" ];
-    };
-
     steam.enable = true;
 
     containers.enableNvidia = false;
