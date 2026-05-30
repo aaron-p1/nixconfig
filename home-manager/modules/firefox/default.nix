@@ -114,7 +114,7 @@ let
                   if (addon.isActive) {
                     addon.disable();
                   } else if (addon.userDisabled) {
-                    // Only enable if I disabled it
+                    // Only enable if user disabled it
                     addon.enable();
                   }
                 })();
@@ -210,10 +210,8 @@ in
         extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           bitwarden
           consent-o-matic
-          ff2mpv
           multi-account-containers
           onePassword
-          plasma-integration
           privacy-badger
           return-youtube-dislikes
           sidebery
@@ -337,12 +335,12 @@ in
               }
             }
 
+            /* remove shadows to make niri blur work better */
             menupopup, panel {
               --panel-shadow-margin: 0 !important;
               --panel-shadow: none !important;
               -moz-window-shadow: none !important;
             }
-
             menupopup::part(content),
             panel::part(content) {
               box-shadow: none !important;
@@ -359,11 +357,6 @@ in
             }
           '';
       };
-
-      nativeMessagingHosts = [
-        pkgs.local.ff2mpv-native-client
-        pkgs.kdePackages.plasma-browser-integration
-      ];
     };
   };
 }
