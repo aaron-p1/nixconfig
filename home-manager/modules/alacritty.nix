@@ -9,9 +9,7 @@ let
   inherit (lib)
     mkEnableOption
     mkIf
-    mapAttrsToList
     concatLists
-    optionals
     ;
 
   cfg = config.within.alacritty;
@@ -36,9 +34,6 @@ in
             lines = 28;
             columns = 100;
           };
-          decorations = lib.mkIf (
-            osConfig.services.desktopManager.cosmic.enable || osConfig.within.graphics.dms-niri.enable
-          ) "None";
         };
         colors = {
           transparent_background_colors = osConfig.within.graphics.dms-niri.enable;
@@ -87,59 +82,19 @@ in
             }
           ];
         };
-        keyboard.bindings =
-          let
-            mod = "Control|Shift";
-            keys = {
-              A = 65;
-              B = 66;
-              # C = 67; # copy
-              D = 68;
-              E = 69;
-              # F = 70; # search
-              G = 71;
-              # H = 72; # copy sha256
-              I = 73;
-              J = 74;
-              K = 75;
-              L = 76;
-              M = 77;
-              # N = 78; # new instance
-              O = 79;
-              # P = 80; # copy path
-              Q = 81;
-              R = 82;
-              S = 83;
-              T = 84;
-              # U = 85; # open url
-              # V = 86; # paste
-              W = 87;
-              X = 88;
-              Y = 89;
-              Z = 90;
-            };
-
-            ctrlShiftMappings = mapAttrsToList (key: code: {
-              inherit key;
-              mods = mod;
-              chars = "\\u001B[${toString code};6u";
-            }) keys;
-          in
-          concatLists [
-            [
-              {
-                key = "F11";
-                action = "ToggleFullscreen";
-              }
-              {
-                mods = "Control|Shift";
-                key = "n";
-                action = "SpawnNewInstance";
-              }
-            ]
-            # for some reason it works natively on niri
-            (optionals (!osConfig.within.graphics.dms-niri.enable) ctrlShiftMappings)
-          ];
+        keyboard.bindings = concatLists [
+          [
+            {
+              key = "F11";
+              action = "ToggleFullscreen";
+            }
+            {
+              mods = "Control|Shift";
+              key = "n";
+              action = "SpawnNewInstance";
+            }
+          ]
+        ];
       };
     };
   };
