@@ -16,3 +16,6 @@ indent_size = 2
 
 [{*.jq}]
 indent_size = unset
+
+[*.md]
+trim_trailing_whitespace = false
