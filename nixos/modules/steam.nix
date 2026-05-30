@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 let
   inherit (lib) mkEnableOption mkIf;
 
@@ -22,8 +17,6 @@ in
 
       remotePlay.openFirewall = false;
       dedicatedServer.openFirewall = false;
-
-      extraCompatPackages = [ pkgs.proton-ge-bin ];
     };
   };
 }
