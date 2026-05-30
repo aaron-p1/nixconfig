@@ -12,9 +12,7 @@ let
     mkIf
     mkDefault
     versionAtLeast
-    optionalAttrs
     optional
-    optionals
     ;
 
   cfg = config.within.containers;
@@ -31,8 +29,6 @@ in
       default = [ "allow_host_loopback=true" ];
       description = "containersConf.settings.engine.network_cmd_options";
     };
-
-    podman = mkEnableOption "podman";
   };
 
   config = mkIf cfg.enable {
@@ -54,7 +50,7 @@ in
         };
       };
 
-      podman = optionalAttrs cfg.podman {
+      podman = {
         enable = true;
         dockerCompat = true;
       };
@@ -67,17 +63,6 @@ in
       source = "/var/run/cdi/nvidia-container-toolkit.json";
     };
 
-    # fix service not finding newuidmap and newgidmap
-    # https://github.com/NixOS/nixpkgs/issues/138423#issuecomment-947888673
-    systemd.user.services.podman.path = optional cfg.podman "/run/wrappers";
-
-    environment.systemPackages =
-      optionals cfg.podman [
-        pkgs.podman-compose
-        (pkgs.writeShellScriptBin "podman-remote" ''
-          exec ${pkgs.podman}/bin/podman --remote "$@"
-        '')
-      ]
-      ++ optional cfg.enableNvidia config.hardware.nvidia-container-toolkit.package;
+    environment.systemPackages = optional cfg.enableNvidia config.hardware.nvidia-container-toolkit.package;
   };
 }

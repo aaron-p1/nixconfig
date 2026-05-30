@@ -92,10 +92,7 @@
     audio.pipewire.enable = true;
 
     # ../modules/containers.nix
-    containers = {
-      enable = true;
-      podman = true;
-    };
+    containers.enable = true;
 
     # ../modules/pam.nix
     pam.u2f = {
