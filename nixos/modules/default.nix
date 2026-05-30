@@ -24,7 +24,6 @@ in
     ./swap.nix
     ./tailscale.nix
     ./uxplay.nix
-    ./vmclient.nix
 
     ./users.nix
     ./responsiveness.nix
