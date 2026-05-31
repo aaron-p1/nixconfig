@@ -86,7 +86,7 @@
 
         -- Search (needs ripgrep)
         vim.keymap.set("n", "<Leader>fr", tb.live_grep, { desc = "Live grep" })
-        vim.keymap.set("n", "<Leader>ft", function()
+        vim.keymap.set({ "n", "v" }, "<Leader>ft", function()
           tb.grep_string({ additional_args = function() return { "--hidden" } end })
         end, { desc = "Grep string" })
 
