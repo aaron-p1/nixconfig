@@ -219,9 +219,15 @@
               vim.keymap.set(mode, key, cmd, opts)
             end
 
-            mapkey("n", "gd", function() tb.lsp_definitions({ jump_type = "never" }) end, { desc = "Definition" })
-            mapkey("n", "gri", tb.lsp_implementations, { desc = "Implementations" })
-            mapkey("n", "grr", tb.lsp_references, { desc = "References" })
+            local function tb_with_config(fn)
+              return function()
+                tb[fn]({ jump_type = "never" })
+              end
+            end
+
+            mapkey("n", "gd", tb_with_config("lsp_definitions"), { desc = "Definition" })
+            mapkey("n", "gri", tb_with_config("lsp_implementations"), { desc = "Implementations" })
+            mapkey("n", "grr", tb_with_config("lsp_references"), { desc = "References" })
 
             mapkey("n", "gD", vim.lsp.buf.declaration, { desc = "Declaration" })
 
