@@ -319,7 +319,7 @@
               formatting = { command = { "nixfmt" } },
               nix = {
                 maxMemoryMB = 8192,
-                flake = { autoEvalInputs = true }
+                flake = { autoEvalInputs = false }
               }
             }
           }
