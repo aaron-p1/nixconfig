@@ -42,6 +42,8 @@
             ++ [
               "--ro-bind /run/current-system/sw /run/current-system/sw"
               "--ro-bind /etc/profiles/per-user/aaron/bin /etc/profiles/per-user/aaron/bin"
+              "--ro-bind /etc/ssl /etc/ssl"
+              "--ro-bind /etc/static/ssl /etc/static/ssl"
               "--ro-bind /bin /bin"
               "--bind ${isoHome} /home/$USER"
               "--dir /home/$USER/.cache"
