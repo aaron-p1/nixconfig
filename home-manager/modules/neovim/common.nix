@@ -138,9 +138,14 @@
         vim.keymap.set("n", "<C-S-a>", treesj.toggle, { desc = "Node action" })
 
         do
+          -- { profile: { name: path, ... }, ..., "all": { name: path, ... } }
           local remotes_file_content = table.concat(
             vim.fn.readfile("${./secrets/static/comparable-remotes.json}")
           )
+          if not vim.startswith(remotes_file_content, "{") then
+            remotes_file_content = "{}"
+          end
+
           local remotes_json = vim.json.decode(remotes_file_content)
           local remote_keys = { "all", unpack(Configs.profiles.list_applied) }
 
