@@ -238,7 +238,7 @@ in
                   params = [
                     {
                       name = "channel";
-                      value = "unstable";
+                      value = "26.05";
                     }
                     {
                       name = "query";
@@ -260,7 +260,7 @@ in
                   params = [
                     {
                       name = "channel";
-                      value = "unstable";
+                      value = "26.05";
                     }
                     {
                       name = "query";

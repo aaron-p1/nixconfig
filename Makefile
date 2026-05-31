@@ -9,12 +9,12 @@ rebuildCmd := nixos-rebuild
 rebuildCmds := boot test build switch
 
 nixpkgsRepoFilesBefore := https://raw.githubusercontent.com/NixOS/nixpkgs/
-nixpkgsRLNotesFile := /nixos/doc/manual/release-notes/rl-2605.section.md
-nixpkgsBranch := nixos-unstable
+nixpkgsRLNotesFile := /nixos/doc/manual/release-notes/rl-2611.section.md
+nixpkgsBranch := nixos-26.05
 
 homeManagerRepoFilesBefore := https://raw.githubusercontent.com/nix-community/home-manager/
-homeManagerRLNotesFile := /docs/release-notes/rl-2605.md
-homeManagerBranch := master
+homeManagerRLNotesFile := /docs/release-notes/rl-2611.md
+homeManagerBranch := release-26.05
 
 default: existing
 
@@ -35,7 +35,7 @@ listChanges:
 urlBefore := ${nixpkgsRepoFilesBefore}
 filePath := ${nixpkgsRLNotesFile}
 branch := ${nixpkgsBranch}
-flakeInputName := unstable
+flakeInputName := nixpkgs
 showLine := ^\#\#
 
 check-release-notes:

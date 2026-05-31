@@ -1,27 +1,30 @@
 {
   inputs = {
-    stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.follows = "unstable";
 
     nixpkgs-2511.url = "github:nixos/nixpkgs/nixos-25.11";
 
     flake-utils.url = "github:numtide/flake-utils";
-    nixos-hardware.url = "github:nixos/nixos-hardware";
-    nur.url = "github:nix-community/NUR";
-
+    nixos-hardware = {
+      url = "github:nixos/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
-      url = "github:rycee/home-manager";
-      inputs.nixpkgs.follows = "unstable";
+      url = "github:rycee/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs =
     {
       self,
-      stable,
-      unstable,
       nixpkgs,
+      unstable,
       nixpkgs-2511,
       flake-utils,
       nixos-hardware,
@@ -30,9 +33,9 @@
       ...
     }@inputs:
     let
-      inherit (unstable) lib; # unstable for home manager
+      inherit (nixpkgs) lib;
       overlays = [
-        (final: prev: { stable = import stable { inherit (final.stdenv.hostPlatform) system; }; })
+        (final: prev: { unstable = import unstable { inherit (final.stdenv.hostPlatform) system; }; })
         nur.overlays.default
         (final: prev: {
           # for node 20
