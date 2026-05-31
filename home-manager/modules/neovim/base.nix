@@ -100,6 +100,7 @@
         -- diff maps
         vim.keymap.set("n", "<Leader>du", ":diffupdate<CR>", { silent = true })
         vim.keymap.set("n", "<Leader>dt", ":diffthis<CR>", { silent = true })
+        vim.keymap.set("n", "<Leader>do", ":diffoff<CR>", { silent = true })
 
         vim.keymap.set(
           { "n", "v" },
@@ -189,7 +190,6 @@
           group = tab_closing_group,
           callback = function(ev)
             local num = tonumber(ev.match)
-
             local tabs = vim.api.nvim_list_tabpages()
 
             if num <= #tabs then
