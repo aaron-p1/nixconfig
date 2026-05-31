@@ -220,9 +220,6 @@ let
   neovim =
     (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
       inherit plugins wrapperArgs luaRcContent;
-
-      # CopilotChat-nvim
-      withPython3 = true;
     }).overrideAttrs
       (old: {
         doCheck = true;
