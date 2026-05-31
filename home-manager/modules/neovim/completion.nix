@@ -135,6 +135,7 @@
 
         require("nvim-autopairs").setup({
           disable_filetype = { "TelescopePrompt", "dap-repl", "dapui_watches" },
+          break_undo = false,
         })
 
         require("nvim-ts-autotag").setup({
