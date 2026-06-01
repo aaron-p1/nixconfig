@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
@@ -45,5 +50,12 @@ in
       };
       configFile."mimeapps.list".force = true;
     };
+
+    home.packages = [
+      (pkgs.writeShellScriptBin "xdg-open" ''
+        export DE=gnome
+        exec ${pkgs.xdg-utils}/bin/xdg-open "$@"
+      '')
+    ];
   };
 }
