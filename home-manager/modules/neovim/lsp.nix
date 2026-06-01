@@ -112,7 +112,7 @@
           (bwrap lua-language-server { })
           (bwrap intelephense {
             net = true;
-            extraHomeMounts = [ "intelephense" ];
+            extraHomeMounts = [ ".config/intelephense/global" ];
           })
           (bwrap vscode-langservers-extracted { bin = "vscode-html-language-server"; })
           (bwrap vscode-langservers-extracted { bin = "vscode-css-language-server"; })
