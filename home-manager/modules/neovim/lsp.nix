@@ -228,6 +228,7 @@
             mapkey("n", "gd", tb_with_config("lsp_definitions"), { desc = "Definition" })
             mapkey("n", "gri", tb_with_config("lsp_implementations"), { desc = "Implementations" })
             mapkey("n", "grr", tb_with_config("lsp_references"), { desc = "References" })
+            mapkey("n", "grt", tb_with_config("lsp_type_definitions"), { desc = "Type Definition" })
 
             mapkey("n", "gD", vim.lsp.buf.declaration, { desc = "Declaration" })
 
