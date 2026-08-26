@@ -435,7 +435,9 @@
               end,
             }),
             f.prettierd,
-            d.credo,
+            d.credo.with({
+              method = nls.methods.DIAGNOSTICS_ON_SAVE
+            }),
 
             -- python
             f.isort,
