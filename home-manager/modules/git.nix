@@ -53,6 +53,7 @@ in
         user.name = "Aaron Pietscher";
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
+        log.date = "iso";
       };
       attributes = toAttributeLines {
         "*.php" = {
