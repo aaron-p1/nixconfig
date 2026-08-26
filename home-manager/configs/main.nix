@@ -32,7 +32,7 @@
     # ../modules/git.nix
     git = {
       enable = true;
-      signingKey = "B19562BBEF50FD55!";
+      signingKey = "E4D6E854DD2D5799!";
     };
 
     # ../modules/neovim/default.nix
