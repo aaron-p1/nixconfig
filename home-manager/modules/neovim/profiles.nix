@@ -183,24 +183,49 @@
               }
             '';
 
-          elixir_phoenix.startup = # lua
+          elixir.startup = # lua
             ''
               Configs.utils.add_term_keymaps("<Leader>cpd", "mix deps.get")
-              Configs.utils.add_term_keymaps("<Leader>cps", "mix phx.server")
+              Configs.utils.add_term_keymaps("<Leader>cpr", "mix run --no-halt")
+              Configs.utils.add_term_keymaps("<Leader>cpR", "mix run")
               Configs.utils.add_term_keymaps("<Leader>cpi", "iex -S mix")
-              Configs.utils.add_term_keymaps("<Leader>cpI", "iex -S mix phx.server")
               Configs.utils.add_term_keymaps("<Leader>cpt", "mix test")
+              Configs.utils.add_term_keymaps("<Leader>cpT", function ()
+                local cur_file = vim.api.nvim_buf_get_name(0)
+                local rel_path = vim.fs.relpath(vim.fn.getcwd(), cur_file)
+                return "mix test \"" .. rel_path .. "\""
+              end)
+              Configs.utils.add_term_keymaps("<Leader>cp<C-t>", function ()
+                local cur_file = vim.api.nvim_buf_get_name(0)
+                local rel_path = vim.fs.relpath(vim.fn.getcwd(), cur_file)
+                local line = vim.api.nvim_win_get_cursor(0)[1]
+                return "mix test \"" .. rel_path .. "\":" .. line
+              end)
+
               Configs.utils.add_term_keymaps("<Leader>cpf", "mix format")
               Configs.utils.add_term_keymaps("<Leader>cpc", "mix credo")
 
               Configs.which_key.add({
                 { "d", group = "Get deps" },
-                { "s", group = "Start server" },
+                { "r", group = "Run --no-halt" },
+                { "R", group = "Run" },
                 { "i", group = "Iex" },
-                { "I", group = "Iex with server" },
                 { "t", group = "Test" },
+                { "T", group = "Test cur file" },
+                { "<C-t>", group = "Test cur line" },
                 { "f", group = "Format" },
                 { "c", group = "Credo" },
+              }, { "<Leader>cp" })
+            '';
+
+          elixir_phoenix.startup = # lua
+            ''
+              Configs.utils.add_term_keymaps("<Leader>cps", "mix phx.server")
+              Configs.utils.add_term_keymaps("<Leader>cpI", "iex -S mix phx.server")
+
+              Configs.which_key.add({
+                { "s", group = "Start server" },
+                { "I", group = "Iex with server" },
               }, { "<Leader>cp" })
             '';
 
