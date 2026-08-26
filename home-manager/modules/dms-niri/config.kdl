@@ -69,6 +69,14 @@ window-rule {
 }
 
 window-rule {
+  match is-floating=true
+
+  shadow {
+    on
+  }
+}
+
+window-rule {
   // This app-id regular expression will work for both:
   // - host Firefox (app-id is "firefox")
   // - Flatpak Firefox (app-id is "org.mozilla.firefox")
@@ -170,7 +178,7 @@ binds {
   Mod+T { spawn "ghostty"; }
   Mod+B { spawn "firefox"; }
 
-  Mod+S { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
+  Mod+S { spawn "dms" "ipc" "call" "spotlight-bar" "toggle"; }
   Mod+N { spawn "dms" "ipc" "call" "notifications" "toggle"; }
   Mod+P { spawn "dms" "ipc" "call" "clipboard" "toggle"; }
 

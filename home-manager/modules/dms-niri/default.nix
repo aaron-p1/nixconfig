@@ -24,7 +24,12 @@ in
         groupWorkspaceApps = false;
         maxWorkspaceIcons = 8; # number window icons per workspace
 
+        clockDateFormat = "ddd d. MMM";
+
         notificationOverlayEnabled = true; # enable notifications over full screen apps
+
+        lockPamPath = "/etc/pam.d/dms-lock";
+        lockPamExternallyManaged = true;
 
         barConfigs = ops.byField {
           id.default = {

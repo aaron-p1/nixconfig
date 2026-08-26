@@ -102,6 +102,7 @@ in
     programs = {
       dms-shell = {
         enable = true;
+        package = pkgs.unstable.dms-shell;
 
         systemd = {
           enable = true;
@@ -118,6 +119,8 @@ in
 
       niri.enable = true;
     };
+
+    security.pam.services.dms-lock = { };
 
     environment.systemPackages =
       let
