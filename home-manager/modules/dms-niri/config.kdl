@@ -123,6 +123,15 @@ window-rule {
 }
 
 window-rule {
+  match app-id="com.mitchellh.ghostty"
+
+  background-effect {
+    blur true
+    xray false
+  }
+}
+
+window-rule {
   geometry-corner-radius 12
   clip-to-geometry true
 }
@@ -158,7 +167,7 @@ layer-rule {
 binds {
   // `wev` for finding key names
 
-  Mod+T { spawn-sh "alacritty msg create-window || alacritty"; }
+  Mod+T { spawn "ghostty"; }
   Mod+B { spawn "firefox"; }
 
   Mod+S { spawn "dms" "ipc" "call" "spotlight" "toggle"; }

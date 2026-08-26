@@ -12,6 +12,7 @@ in
     ./direnv.nix
     ./dms-niri
     ./firefox
+    ./ghostty
     ./git.nix
     ./gpg.nix
     ./mpv.nix

@@ -20,6 +20,9 @@
     # ../modules/alacritty.nix
     alacritty.enable = true;
 
+    # ../modules/ghostty/default.nix
+    ghostty.enable = true;
+
     # ../modules/direnv.nix
     direnv.enable = true;
 

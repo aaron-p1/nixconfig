@@ -197,12 +197,12 @@
             ext_opts = {
               [lt.choiceNode] = {
                 active = { virt_text = { { "●", "LuasnipChoiceActive" } } },
-                visited = { virt_text = { { "✔️", "LuasnipChoiceVisited" } } },
+                visited = { virt_text = { { "✔", "LuasnipChoiceVisited" } } },
                 unvisited = { virt_text = { { "⨉", "LuasnipChoiceUnvisited" } } },
               },
               [lt.insertNode] = {
                 active = { virt_text = { { "●", "LuasnipInsertActive" } } },
-                visited = { virt_text = { { "✔️", "LuasnipInsertVisited" } } },
+                visited = { virt_text = { { "✔", "LuasnipInsertVisited" } } },
                 unvisited = { virt_text = { { "⨉", "LuasnipInsertUnvisited" } } },
               },
             },
