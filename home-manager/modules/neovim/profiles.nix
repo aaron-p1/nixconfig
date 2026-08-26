@@ -83,6 +83,8 @@
 
           laravel.startup = # lua
             ''
+              local debug_env = "env XDEBUG_MODE=debug XDEBUG_TRIGGER=1 "
+
               local has_sail = has_profile("sail")
               local has_podman_compose = has_profile("podman_compose")
 
@@ -102,12 +104,12 @@
                     or cmd_prefix .. cmd
               end
 
-              Configs.utils.add_term_keymaps("<Leader>cpt", get_host_cmd("test", "php artisan"))
+              Configs.utils.add_term_keymaps("<Leader>cpt", get_host_cmd("test", debug_env .. "php artisan"))
               Configs.utils.add_term_keymaps("<Leader>cpT", function()
                 local cur_file = vim.api.nvim_buf_get_name(0)
                 local rel_path = vim.fs.relpath(vim.fn.getcwd(), cur_file)
                 local test_cmd = rel_path and "test \"" .. rel_path .. "\"" or "test"
-                return get_host_cmd(test_cmd, "php artisan")
+                return get_host_cmd(test_cmd, debug_env .. "php artisan")
               end)
 
               Configs.utils.add_term_keymaps("<Leader>cpl", "tail -f storage/logs/laravel.log")
