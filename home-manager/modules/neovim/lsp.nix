@@ -11,7 +11,6 @@
       nvim-lspconfig
       SchemaStore-nvim
       none-ls-nvim
-      elixir-tools-nvim
     ];
     packages =
       with pkgs;
@@ -97,13 +96,7 @@
         ];
 
         elixir = [
-          (bwrap elixir-ls {
-            net = true;
-            extraHomeMounts = [
-              ".mix"
-              ".hex"
-            ];
-          })
+          unstable.beamPackages.expert
           # for mix phx.server code reloading
           inotify-tools
         ];
@@ -421,21 +414,7 @@
 
         setup("pyright")
 
-        local elixirls = require("elixir.elixirls")
-        require("elixir").setup({
-          projectionist = { enabled = false },
-          nextls = { enable = false },
-          elixirls = {
-            enable = true,
-            cmd = { "elixir-ls" },
-            settings = elixirls.settings({
-              fetchDeps = true,
-              mixEnv = "dev",
-              enableTestLenses = true,
-              suggestSpecs = true,
-            }),
-          }
-        })
+        setup("expert")
 
         setup("hls")
 
