@@ -443,7 +443,15 @@
             }),
             f.prettierd,
             d.credo.with({
-              method = nls.methods.DIAGNOSTICS_ON_SAVE
+              method = nls.methods.DIAGNOSTICS_ON_SAVE,
+              cwd = function(params)
+                local fname = vim.api.nvim_buf_get_name(params.bufnr)
+                --- Elixir workspaces may have multiple `mix.exs` files, for an "umbrella" layout or monorepo.
+                --- So specify `limit=2` and treat the highest one (if any) as the root of an umbrella app.
+                local matches = vim.fs.find({ 'mix.exs' }, { upward = true, limit = 2, path = fname })
+                local child_or_root_path, maybe_umbrella_path = unpack(matches)
+                return vim.fs.dirname(maybe_umbrella_path or child_or_root_path)
+              end,
             }),
 
             -- python
@@ -452,7 +460,7 @@
           },
           should_attach = function(bufnr)
             return not vim.tbl_contains(disabled_filetypes, vim.bo[bufnr].filetype)
-              and not vim.api.nvim_buf_get_name(bufnr):match("^[a-zA-Z]+://")
+                and not vim.api.nvim_buf_get_name(bufnr):match("^[a-zA-Z]+://")
           end,
         })
 
