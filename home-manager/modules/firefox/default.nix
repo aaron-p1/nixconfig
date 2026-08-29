@@ -5,8 +5,18 @@
   ...
 }:
 let
-  inherit (builtins) head match;
-  inherit (lib) mkEnableOption mkIf;
+  inherit (builtins)
+    head
+    match
+    mapAttrs
+    toJSON
+    ;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mapAttrsToList
+    mapAttrs'
+    ;
 
   cfg = config.within.firefox;
 
@@ -17,6 +27,9 @@ let
 
   onePassword = pkgs.nur.repos.rycee.firefox-addons.onepassword-password-manager;
   onePasswordId = onePassword.addonId;
+
+  ublockOrigin = pkgs.nur.repos.rycee.firefox-addons.ublock-origin;
+  ublockOriginId = ublockOrigin.addonId;
 
   # https://www.userchrome.org/what-is-userchrome-js.html#combinedloader
   firefox =
@@ -150,9 +163,66 @@ let
                   }
                 }, true);
               '';
+
+            # auto redirect / -> /feed/subscriptions
+            "www.youtube.com" = # javascript
+              ''
+                function invalidPath(path) {
+                  return path === "/" || path.startsWith("/shorts");
+                }
+
+                if (invalidPath(window.location.pathname)) {
+                  window.location.replace("/feed/subscriptions");
+                }
+
+                window.addEventListener("DOMContentLoaded", () => {
+                  window.navigation.addEventListener("navigate", (e) => {
+                    const url = new URL(e.destination.url);
+
+                    if (invalidPath(url.pathname)) {
+                      window.location.replace("/feed/subscriptions");
+                    }
+                  });
+                });
+              '';
           };
         };
       };
+
+  extensionSettings = {
+    # https://github.com/uBlockOrigin/uBlock-issues/wiki/Deploying-uBlock-Origin:-configuration
+    "${ublockOriginId}" = {
+      userSettings = toUBlockProps {
+        autoUpdate = false;
+        contextMenuEnabled = false;
+      };
+      toOverwrite.filters = [
+        "www.youtube.com##ytd-rich-section-renderer:not([items-per-row]):not(:first-child)"
+      ];
+    };
+  };
+
+  toUBlockProps = mapAttrsToList (
+    name: value: [
+      name
+      (toUBlockValue value)
+    ]
+  );
+
+  toUBlockValue =
+    value:
+    if value == true then
+      "true"
+    else if value == false then
+      "false"
+    else
+      toString value;
+
+  storageManifests = mapAttrs (name: data: {
+    inherit name data;
+    description = "ignored";
+    type = "storage";
+  }) extensionSettings;
 in
 {
   _class = "homeManager";
@@ -217,7 +287,7 @@ in
           sidebery
           sponsorblock
           dearrow
-          ublock-origin
+          ublockOrigin
           videospeed
           vue-js-devtools
         ];
@@ -358,5 +428,10 @@ in
           '';
       };
     };
+
+    home.file = mapAttrs' (name: json: {
+      name = ".mozilla/managed-storage/${name}.json";
+      value.text = toJSON json;
+    }) storageManifests;
   };
 }
