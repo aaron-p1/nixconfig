@@ -282,6 +282,7 @@
 
             return vim.iter(vim.fs.dir(plugins_path))
                 :filter(function(_, type) return type == 'link' end)
+                :filter(function(name, _) return not vim.startswith(name, "symlink-to-") end)
                 :map(function(name, _) return vim.uv.fs_readlink(plugins_path .. '/' .. name) .. "/lua" end)
                 :filter(function(path) return vim.fn.isdirectory(path) == 1 end)
                 :totable()
@@ -296,7 +297,13 @@
           setup("lua_ls", {
             settings = {
               Lua = {
-                runtime = { version = "LuaJIT" },
+                runtime = {
+                  version = "LuaJIT",
+                  path = {
+                    'lua/?.lua',
+                    'lua/?/init.lua',
+                  }
+                },
                 diagnostics = { globals = { "vim", "Configs" } },
                 workspace = {
                   checkThirdParty = false,
