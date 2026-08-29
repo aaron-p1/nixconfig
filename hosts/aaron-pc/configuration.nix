@@ -41,10 +41,7 @@
 
   within = {
     # ../../nixos/modules/boot.nix
-    boot = {
-      grub = true;
-      kernelPackages = pkgs.linuxPackages_latest;
-    };
+    boot.grub = true;
 
     # ../../nixos/modules/swap.nix
     swap.file = 32;
