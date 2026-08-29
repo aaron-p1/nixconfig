@@ -86,13 +86,9 @@
   };
 
   services = {
-    mullvad-vpn.enable = false;
-
-    scx = {
-      enable = true;
-      scheduler = "scx_lavd";
-      # scheduler = "scx_bpfland";
-    };
+    scx.enable = true;
+    scx.scheduler = "scx_lavd";
+    # scheduler = "scx_bpfland";
   };
 
   programs = {
