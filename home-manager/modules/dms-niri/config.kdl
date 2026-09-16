@@ -247,6 +247,7 @@ binds {
 
   Mod+U              { focus-workspace-down; }
   Mod+I              { focus-workspace-up; }
+  Mod+E              { focus-workspace-previous; }
   Mod+Ctrl+U         { move-column-to-workspace-down; }
   Mod+Ctrl+I         { move-column-to-workspace-up; }
 
