@@ -421,7 +421,7 @@ in
           ''
             @-moz-document domain(github.com) {
               /* fix double click in files not working reliably */
-              .code-navigation-cursor {
+              [data-testid="navigation-cursor"] {
                 pointer-events: none;
               }
             }

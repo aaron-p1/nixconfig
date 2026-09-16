@@ -48,6 +48,7 @@ in
         playerctl
         brightnessctl
         xwayland-satellite
+        cups-pk-helper
         kdePackages.dolphin
       ];
     };
