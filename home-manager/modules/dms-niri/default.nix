@@ -50,6 +50,7 @@ in
         xwayland-satellite
         cups-pk-helper
         kdePackages.dolphin
+        swappy
       ];
     };
   };

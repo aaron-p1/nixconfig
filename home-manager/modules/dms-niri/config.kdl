@@ -317,8 +317,8 @@ binds {
   Mod+W { toggle-column-tabbed-display; }
 
   Print { screenshot; }
-  Ctrl+Print { screenshot-screen; }
-  Alt+Print { screenshot-window; }
+  Ctrl+Print { spawn-sh "dms screenshot --stdout | swappy -f -"; }
+  Alt+Print { spawn-sh "dms screenshot scroll --no-file"; }
 
   // when programs inhibit niri binds
   Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
