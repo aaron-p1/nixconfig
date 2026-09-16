@@ -14,6 +14,9 @@
     # ../modules/zsh.nix
     zsh.enable = true;
 
+    # ../modules/nushell.nix
+    nushell.enable = true;
+
     # ../modules/tmux.nix
     tmux.enable = false;
 

@@ -49,6 +49,8 @@ in
         enableZshIntegration = true;
         clearDefaultKeybinds = true;
         settings = {
+          command = "nu";
+
           window-height = 28;
           window-width = 100;
           window-padding-balance = false;
