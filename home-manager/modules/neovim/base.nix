@@ -8,6 +8,21 @@
 
         vim.fn.mkdir(spelldir, "p")
 
+        local shells = {
+          "nu",
+          "zsh",
+          "bash"
+        }
+
+        local shell_path = vim.iter(shells)
+          :map(function(shell)
+            return vim.fn.exepath(shell)
+          end)
+          :filter(function(path)
+            return path ~= ""
+          end)
+          :nth(1)
+
         local opts = {
           -- common
           termguicolors = true,
@@ -18,6 +33,7 @@
           shelltemp = false,
           mouse = "",
           shada = "!,'100,<50,s10,h,f0",
+          shell = shell_path,
 
           -- menu
           showcmd = true,
