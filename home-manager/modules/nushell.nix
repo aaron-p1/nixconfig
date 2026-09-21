@@ -51,7 +51,10 @@ in
 
           o = "xdg-open";
           eg = "nvim +Git +'bdelete 1'";
-          ssh = "TERM=xterm-256color ssh";
+        };
+
+        environmentVariables = {
+          SHELL = lib.hm.nushell.mkNushellInline "$nu.current-exe";
         };
       };
 
