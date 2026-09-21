@@ -34,7 +34,7 @@ in
     nix = {
       package = pkgs.nixVersions.latest;
       extraOptions = ''
-        experimental-features = nix-command flakes auto-allocate-uids
+        experimental-features = nix-command flakes auto-allocate-uids pipe-operators
         extra-platforms = ${
           concatStringsSep " " ((optional cfg.enablei686 "i686-linux") ++ cfg.emulatedSystems)
         }
