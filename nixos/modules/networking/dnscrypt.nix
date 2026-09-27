@@ -48,7 +48,7 @@ in
         ipv6_servers = true;
         require_dnssec = true;
 
-        server_names = [ "quad9-doh-ip4-port443-filter-pri" ];
+        server_names = [ "quad9-dnscrypt-ip4-filter-pri" ];
 
         blocked_names.blocked_names_file = finalBlockList;
         allowed_names.allowed_names_file = pkgs.writeText "allowed-names.txt" ''
