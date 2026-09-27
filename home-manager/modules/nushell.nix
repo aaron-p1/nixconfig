@@ -55,6 +55,7 @@ in
 
         environmentVariables = {
           SHELL = lib.hm.nushell.mkNushellInline "$nu.current-exe";
+          CARAPACE_BRIDGES = "zsh,fish,bash";
         };
       };
 
