@@ -80,6 +80,8 @@ in
           custom-shader-animation = true;
 
           keybind = lib.mapAttrsToList (key: action: "${key}=${action}") keybinds;
+
+          shell-integration-features = "ssh-env,no-ssh-terminfo";
         };
         themes.alacritty = {
           background = "181818";
