@@ -370,9 +370,21 @@ in
 
         userChrome = # CSS
           ''
+            /* background blur */
+            body, #navigator-toolbox {
+              background: transparent !important;
+            }
+
+            menupopup, panel {
+              --panel-box-shadow: none !important;
+              --panel-box-shadow-margin: 0px !important;
+              --panel-background-color: rgb(30 30 30 / 0.6) !important;
+              --panel-border-radius: 8px !important;
+            }
+
             /* toggle keyboard shortcuts permission indicator */
             #site-shortcuts-icon {
-              list-style-image: url("chrome://browser/skin/quickactions.svg");
+              list-style-image: url("chrome://browser/skin/lightning-bolt.svg");
               /* forward the property/ies into the external SVG */
               -moz-context-properties: fill, fill-opacity;
               fill: currentColor;
@@ -382,39 +394,28 @@ in
               margin: 3px;
             }
 
-            /* hide empty tab notifications (e.g. translation) */
-            #tab-notification-deck notification:empty {
-              display: none !important;
-            }
-
             /* Sidebery hide tab bar and side bar title
                 if Sidebery is open in sidebar */
-            #main-window:has(
-              #sidebar-box[sidebarcommand*="${sideberyPlainId}"]:not([hidden="true"])
-            ) {
+            #main-window:has(#sidebar-box[sidebarcommand*="${sideberyPlainId}"]:not([hidden])) {
               #TabsToolbar {
-                display: none !important;
-              }
-
-              #sidebar-header {
                 display: none !important;
               }
 
               #sidebar-box:not([userresizable="true"]) {
                 width: 220px !important;
               }
+
+              #sidebar-box {
+                padding-inline-start: 0 !important;
+              }
             }
 
-            /* remove shadows to make niri blur work better */
-            menupopup, panel {
-              --panel-shadow-margin: 0 !important;
-              --panel-shadow: none !important;
-              -moz-window-shadow: none !important;
+            #webextpanels-window[sidebarcommand*="${sideberyPlainId}"] {
+              #sidebar-panel-header {
+                display: none !important;
+              }
             }
-            menupopup::part(content),
-            panel::part(content) {
-              box-shadow: none !important;
-            }
+
           '';
 
         userContent = # CSS

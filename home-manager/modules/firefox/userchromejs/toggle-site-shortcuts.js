@@ -80,10 +80,9 @@
   });
 
   const progressListener = {
-    onLocationChange(event) {
-      if (event.loadType & Ci.nsIWebProgressListener.LOCATION_CHANGE_SAME_DOCUMENT)
-        return; // ignore history.pushState, #fragment, etc.
-      // new real document → reset
+    onLocationChange(webProgress, _request, _location, flags) {
+      if (!webProgress?.isTopLevel) return;
+      if (flags & Ci.nsIWebProgressListener.LOCATION_CHANGE_SAME_DOCUMENT) return;
       block();
       updateUI();
     },

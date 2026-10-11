@@ -161,6 +161,7 @@ in
 
     ${shortcutRegistration}
     ${readFile ./toggle-site-shortcuts.js}
+    ${readFile ./sidebar-attr-sync.js}
 
     bWindow.console.log("---------------- Loading userChrome.js finished ----------------");
   }

@@ -89,13 +89,17 @@ window-rule {
 
   default-column-width { proportion 1.0; }
 
+  background-effect {
+    blur true
+    xray false
+  }
+
   popups {
-    opacity 0.85
-    geometry-corner-radius 6
+    geometry-corner-radius 8
 
     background-effect {
       blur true
-      saturation 3
+      xray false
     }
   }
 }
