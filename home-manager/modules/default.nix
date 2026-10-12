@@ -18,7 +18,6 @@ in
     ./mpv.nix
     ./neovim
     ./nsxiv
-    ./nushell.nix
     ./shell-scripts.nix
     ./ssh.nix
     ./tmux.nix
