@@ -81,7 +81,7 @@
     man.enable = true;
 
     # ../modules/graphics/default.nix
-    graphics.dms-niri.enable = true;
+    graphics.dux-niri.enable = true;
 
     # ../modules/bluetooth.nix
     bluetooth.enable = true;

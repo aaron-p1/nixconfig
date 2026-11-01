@@ -7,7 +7,7 @@
 let
   inherit (lib) mkIf;
 
-  osCfg = osConfig.within.graphics.dms-niri;
+  osCfg = osConfig.within.graphics.dux-niri;
 in
 {
   _class = "homeManager";
@@ -18,7 +18,7 @@ in
         source = ./config.kdl;
         force = true;
       };
-      jsonPatch.".config/DankMaterialShell/settings.json".patch = ops: {
+      jsonPatch.".config/dms/settings.json".patch = ops: {
         # workspaceSwitcher
         showWorkspaceApps = true;
         groupWorkspaceApps = false;
@@ -28,7 +28,7 @@ in
 
         notificationOverlayEnabled = true; # enable notifications over full screen apps
 
-        lockPamPath = "/etc/pam.d/dms-lock";
+        lockPamPath = "/etc/pam.d/dux-lock";
         lockPamExternallyManaged = true;
 
         barConfigs = ops.byField {

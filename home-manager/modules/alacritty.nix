@@ -29,14 +29,14 @@ in
 
       settings = {
         window = {
-          opacity = if osConfig.within.graphics.dms-niri.enable then 0.95 else 1.0;
+          opacity = if osConfig.within.graphics.dux-niri.enable then 0.95 else 1.0;
           dimensions = {
             lines = 28;
             columns = 100;
           };
         };
         colors = {
-          transparent_background_colors = osConfig.within.graphics.dms-niri.enable;
+          transparent_background_colors = osConfig.within.graphics.dux-niri.enable;
         };
         font = {
           size = 9;

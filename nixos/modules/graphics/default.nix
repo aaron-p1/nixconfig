@@ -2,7 +2,7 @@ _: {
   _class = "nixos";
 
   imports = [
-    ./dms-niri.nix
+    ./dux-niri.nix
     ./plasma.nix
   ];
 }

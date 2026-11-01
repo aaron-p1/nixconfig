@@ -10,7 +10,7 @@ in
 
     ./alacritty.nix
     ./direnv.nix
-    ./dms-niri
+    ./dux-niri
     ./firefox
     ./ghostty
     ./git.nix

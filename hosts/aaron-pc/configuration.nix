@@ -76,7 +76,7 @@
       };
     };
 
-    graphics.dms-niri.greeter = {
+    graphics.dux-niri.greeter = {
       afterGpu = true;
       output = {
         name = "DVI-I-1";
